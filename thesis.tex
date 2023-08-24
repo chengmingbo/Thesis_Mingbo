@@ -1,0 +1,84 @@
+\documentclass[pdftex,a4paper,twoside]{scrbook}
+
+\input{preamble/preamble}
+
+\begin{document}
+  \include{preamble/cover}
+  
+  \begingroup
+
+  \pagestyle{empty}
+  
+  \setcounter{page}{1}
+  \pagenumbering{roman}
+  
+  \input{preamble/abstract_english}
+  \addcontentsline{toc}{section}{Abstract (English)}
+  \pagestyle{empty}
+  \newpage
+
+  \input{preamble/abstract_german}
+  \addcontentsline{toc}{section}{Abstrakt (Deutsch)}
+  \pagestyle{empty}
+  \newpage
+
+  \input{preamble/acknowledgement}
+  \addcontentsline{toc}{section}{Acknowledgements}
+  \pagestyle{empty}
+  \newpage
+  
+  \input{preamble/autonomy}
+  \addcontentsline{toc}{section}{Selbstst\"andigkeitserkl\"arung (Declaration of Authenticity)}
+  \pagestyle{empty}
+  \newpage
+  
+  \input{preamble/publications}
+  \addcontentsline{toc}{section}{Publications}
+  \pagestyle{empty}
+  \newpage
+
+  \listoffigures
+  \addcontentsline{toc}{section}{List of Figures}
+  
+  \listoftables
+  \addcontentsline{toc}{section}{List of Tables}
+
+	\input{preamble/glossary}
+	\addcontentsline{toc}{section}{Glossary}
+	\pagestyle{empty}
+	\newpage
+
+  \tableofcontents
+  \cleardoublepage
+  \endgroup
+
+  \setcounter{page}{1}
+  \pagenumbering{arabic}
+
+  % Introduction
+  \input{chapter1/chapter1}
+  
+  % Backgroud
+  \input{chapter2/chapter2}
+  
+  % Method
+  \input{chapter3/chapter3}
+  
+  % Experiments
+  \input{chapter4/chapter4}
+  
+  % Results
+  \input{chapter5/chapter5}
+  
+  % Conclusion
+  \input{chapter6/chapter6}
+    
+  \bibliographystyle{preamble/abbrvnat}
+ \bibliography{preamble/thesis}
+
+  \appendix
+  \input{appendix/appendix}
+
+
+
+\end{document}
