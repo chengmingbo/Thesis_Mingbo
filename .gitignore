@@ -1,0 +1,17 @@
+*.pptx
+*.svg
+*.log
+*.lof
+*.aux
+*.bbl
+*.out
+*.toc
+*.lot
+*.nlo
+*.png
+*.jpeg
+*.jpg
+source
+*.key
+*.blg
+*.fdb_latexmk
