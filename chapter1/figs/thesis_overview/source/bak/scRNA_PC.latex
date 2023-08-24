@@ -1,0 +1,8 @@
+\begin{array}{c|ccc}
+\text{scRNA} & \text{cell}_1 & \text{cell}_2 & \cdots & \text{cell}_n  \\
+\hline
+\text{pc}_1 & 2.56 & 3.10 & \cdots & 0.43 \\
+\text{pc}_2 & 0.34 & 0.17 & \cdots & 3.20 \\
+\vdots  & \vdots & \vdots & \ddots & \vdots\\
+\text{pc}_p  & 0.12 & 5.22 & 1.30 & 2.91
+\end{array}

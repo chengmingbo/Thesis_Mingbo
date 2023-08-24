@@ -1,0 +1,8 @@
+\begin{array}{c|ccc}
+\text{scATAC} & \text{cell}_1 & \text{cell}_2 & \cdots & \text{cell}_n  \\
+\hline
+\text{peak}_1 & 0 &  1 & \cdots & 2 \\
+\text{peak}_2 & 2 & 0 & \cdots & 0  \\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+\text{peak}_s  & 0 & 0 & \cdots &0
+\end{array}

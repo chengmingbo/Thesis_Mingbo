@@ -1,0 +1,8 @@
+\begin{array}{c|ccc}
+\text{scRNA} & \text{cell}_1 & \text{cell}_2 & \cdots & \text{cell}_n  \\
+\hline
+\text{gene}_1 & 3 & 0 & \cdots & 0 \\
+\text{gene}_2 & 0 & 2 & \cdots & 1  \\
+\vdots  & \vdots & \vdots & \ddots & 2\\
+\text{gene}_m  & 0 & 4 & 3 & 0
+\end{array}

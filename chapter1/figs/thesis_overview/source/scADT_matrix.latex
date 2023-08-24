@@ -1,0 +1,9 @@
+\begin{array}{c|ccc}
+\text{scADT} & \text{cell}_1 & \text{cell}_2 & \cdots & \text{cell}_n  \\
+\hline
+\text{protein}_1 & 101 &  0 & \cdots & 5 \\
+\text{protein}_2 & 3 & 212 & \cdots & 0  \\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+\text{protein}_t  & 321 & 0 & \cdots &17
+\end{array}
+
