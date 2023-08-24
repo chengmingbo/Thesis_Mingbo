@@ -1,1 +1,0 @@
-\theta_{weighted}(i,j) = w_{rna}(i)\theta_{rna}(r_i, r_j) + w_{protein}(i)\theta_{protein}(p_i, p_j)

@@ -1,4 +1,0 @@
-\begin{align}
-\underset{a_h^{(1)},\cdots,a_h^{(Q)}}{\max} \sum_{i,j=1,i\neq j}^{Q} c_{i,j} \text{cov}\Big(X_h^{(i)}a_h^{(i)}, X_h^{(j)}a_h^{(j)}\Big),\\
-s.t. \Big\|a_h^{(q)}\Big\|_2 = 1 \text{and} \Big\|a_h^{(q)}\Big\|_1 \leq \lambda^{(q)} for\  all\  1 \leq q \leq Q
-\end{align}

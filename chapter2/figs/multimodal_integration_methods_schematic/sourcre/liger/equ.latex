@@ -1,1 +1,0 @@
-\underset{H^i\geq 0, W \geq 0, V^i \geq 0, U^i \geq 0}{\arg\min}\sum_i^d \Bigg\|(E^iP^i) - H^i \big((W 0) + (V^i U^i)\big)\Bigg\|_F^2 + \lambda_i \sum_i^d \Big\|H^i(V^i U^i)\Big\|_F^2
