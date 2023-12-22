@@ -8,18 +8,13 @@
 
 \graphicspath{{chapter3/figs}}
 
-\section{Methods}
-
+\section{Single cell Multi-modal dimensional integration}
 \subsection{Notation}
 
 \subsection{Pre-processing and Dimensional reduction}
 
-\subsection{Single cell Multi-modal dimensional integration}
-
-\subsection{Single cell trajectory inference}
-
 \subsection{Implementation}
-\subsubsection{integration}
+
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{MOJITOO_schematic/fig}
@@ -292,11 +287,13 @@ For the case that $\mathcal{Y}$ has more than two modalities, we perform the pai
 		$i \gets i+1$  \\
 	}
 	\Return $\mathbf{Z}$ 
-	\caption{Multimodal MOJITOO Algorithm }\label{alg:MOJITOO}
+	\caption{Multimodal MOJITOO Algorithm }
 	\label{alg:MOJITOO}
 \end{algorithm}
 
+\subsection{Discussion}
 
+\section{Single cell trajectory inference}
 
 
 %a table shows the R dependencies
@@ -341,4 +338,4 @@ For the case that $\mathcal{Y}$ has more than two modalities, we perform the pai
 \end{table}
 % a table shows the python dependencies
 % check how to rotate the title text of a table, see Li's table 3.2
-\section{Discussion}
+\subsection{Discussion}
