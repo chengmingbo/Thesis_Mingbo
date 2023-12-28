@@ -11,7 +11,17 @@ Background
 
 
 \section{DNA Organization, chromatin accessibility and gene regulation}
-\subsection{DNA Organization}
+In the symphony of life, the function of DNA organization, chromatin accessibility, and gene regulation orchestrates a harmonious dance that dictates the fate and functioning of every living organism. We start this section by first introducing DNA organization. Next, we talk about chromatin accessibility followed by the introduction of gene regulation.
+
+\subsection{DNA Organization: The Architectural Blueprint of Life}
+Deoxyribonucleic Acid, or DNA is the genetic blueprint of life, containing the instructions for the development and functioning of living organisms. It is a long, double-stranded helical structure composed of four nucleotide building blocks: adenine (A), thymine (T), cytosine (C), and guanine (G). The sequence of these nucleotides forms the genetic code, encoding instructions for the development, functioning, and maintenance of all living organisms. DNA is organized into structures called chromosomes, which are located in the cell nucleus.
+
+\subsection{Chromatin accessibility: Gatekeepers of the Genetic Code}
+Chromatin is the complex of DNA and proteins found in the nucleus of a cell. Chromatin accessibility is a crucial molecular concept that describes the degree to which DNA is available or accessible for cellular processes, particularly gene expression. It can exist in two states: open and condensed. Open chromatin refers to the relaxed, accessible state where DNA is available for transcription and gene expression. In this state, the DNA is not tightly wound around histone proteins, allowing regulatory proteins and RNA polymerase to easily access specific DNA sequences, facilitating the transcription of genes into RNA. Open chromatin is associated with active gene expression and is influenced by various factors, including epigenetic modifications such as acetylation and methylation. Conversely, in a "closed" or condensed chromatin state, the DNA is tightly wound around histone proteins, making it less accessible. This state inhibits the binding of transcriptional machinery, leading to reduced or suppressed gene expression. Closed chromatin is associated with inactive or silenced genes.
+
+\subsection{Gene Regulation: The Symphony's Conductor}
+Gene regulation refers to the mechanisms that control the expression of genes. While an organism's DNA carries the instructions for a vast array of biological processes, not all genes are active all the time. Gene regulation allows cells to turn genes on or off, and to fine-tune their activity. This regulation is achieved through the interaction of regulatory proteins, transcription factors, and other molecules that bind to specific DNA sequences, influencing the initiation or inhibition of transcription. Epigenetic modifications, such as DNA methylation and histone modification, also play a crucial role in gene regulation by modifying the accessibility of DNA.
+
 
 \begin{figure}[!ht]
 	\centering
@@ -24,12 +34,8 @@ Background
 
 
 
-\subsection{Chromatin accessibility and gene regulation}
-
-
-
 \section{Single cell sequencing technology}
-Since Sanger sequencing~\cite{sanger1975rapid} analysis was introduced in 1975, numerous advances in methodology have been developed. The invention of a series of rapidly evolving Next Generation Sequencing (NGS) technologies revolutionarily facilitates the study of heterogeneous biological processes with high throughput, shorter time and lower cost. NGS enables researchers to perform profiling of epigenome, transcriptiomes. The development of single cell sequencing technology further enables the study of heterogeneity at single cell resolution. In this section, we will briefly introduce the single cell sequencing technology,  single cell RNA sequencing, single cell ATAC sequencing and single cell protein sequencing.
+Since Sanger sequencing~\cite{sanger1975rapid} analysis was introduced in 1975, numerous advances in methodology have been developed to improve the understanding of the heterogeneity and transcriptomic states present in complex biological systems. The invention of a series of rapidly evolving Next Generation Sequencing (NGS) technologies revolutionarily facilitates the study of heterogeneous biological processes with high throughput, shorter time and lower cost. NGS enables researchers to perform profiling of epigenome, transcriptiomes and proteomoes. The development of single cell sequencing technology further enables the study of heterogeneity at single cell resolution. In this section, we will briefly introduce the single cell sequencing technology,  single cell RNA sequencing, single cell ATAC sequencing and single cell protein sequencing.
 
 
 \begin{figure}[!ht]
@@ -59,7 +65,10 @@ Single cell RNA sequencing(scRNA-seq)~\cite{singlecellsequencing2014, singlecell
 
 
 \subsection{Chromatin accessibility profiling with scATAC-seq}
-%\subsection{Surface protein profiling in single cell}
+Chromatin accessibility profiling using Single-Cell Assay for Transposase-Accessible Chromatin sequencing, or scATAC-seq, has emerged as a revolutionary tool, allowing scientists to unravel the dynamic landscape of chromatin accessibility at a single-cell resolution. This technology not only provides a detailed map of regulatory elements within individual cells but also promises to deepen our understanding of cellular heterogeneity, development, and the intricate orchestration of gene regulation in health and disease. Join us as we delve into the profound insights that chromatin accessibility profiling with scATAC-seq brings to the forefront of genomic research, unlocking the secrets of cellular diversity at an unprecedented level of granularity. ATAC-seq use xxxx, see  
+
+%\subsection{Protein profiling in single cell}
+%Protein analysis at the single cell level has relied on the use of antibodies that bind specifically to target proteins. Flow cytometry uses fluorescently labeled antibodies to convert protein signals into fluorescence signals~\cite{@article{kim2022single}
 
 \begin{figure}[!ht]
 	\centering
@@ -70,8 +79,48 @@ Single cell RNA sequencing(scRNA-seq)~\cite{singlecellsequencing2014, singlecell
 \end{figure}
 
 
-
 \subsection{Simultaneous multi-modal profiling of single cell}
+Single-cell multi-modal technologies typically analyze various types of molecules within a single cell, providing a more profound understanding of biology compared to studying individual molecular layers from separate cells. These advanced technologies unveil cellular heterogeneity across multiple molecular levels within a cell population, offering insights into the interconnectedness or independence of variation across different modalities. The datasets produced by these techniques hold the potential to facilitate a more comprehensive comprehension of the fundamental biological processes and mechanisms that contribute to cellular heterogeneity. Furthermore, they shed light on the associations between normal development, aging, disease etiology, and the intricate links between these phenomena. A variety of multi-modal profiling methods have been proposed recently, see figure Table.\ref{tab:multimodal-methods}
+
+\begin{table}[!ht]
+	\footnotesize
+	\centering
+	\begin{tabular}{lll}%{0.1\linewidth}}
+		\toprule
+		{\textbf{Modalities}}  & {\textbf{Protocols}} & {\textbf{reference}} \\ 
+		\midrule
+		\multirow{5}{*}{\shortstack[l]{\includegraphics[scale=1]{multi-model-methods/Protein_RNA.pdf}}}
+		   & PLAYR & {~\cite{frei2016playr}} \\
+		   & CITE-seq & {~\cite{stoeckius2017citeseq}} \\
+           & REAP-seq & {~\cite{peterson2017reapseq}}\\
+           & RAID & {~\cite{Gerlach2019RAID}} \\
+		   & ECCITE-seq &  {\cite{mimitou2019ECCITE}}\\
+		\midrule
+		\multirow{5}{*}{\shortstack[l]{\includegraphics[scale=1]{multi-model-methods/RNA_ATAC.pdf}}}
+		   & sci-CAR & {~\cite{cao2018scicar}}\\
+           & SNARE-seq & {~\cite{chen2019SNARE}} \\
+           & scNMT-seq & {~\cite{clark2018scnmt}}\\
+		   & scCAT-seq &  {~\cite{liu2019scCAT}} \\ 
+           & multiome & 10x Genomics\\
+		\midrule
+		\multirow{5}{*}{\shortstack[l]{\includegraphics[scale=1]{multi-model-methods/3.pdf}}}
+		& TEA-seq & {~\cite{swanson2021simultaneous}}\\
+		& DOGMA-seq & ~\cite{mimitou2021scalable} \\
+		\\
+		\\
+		\\
+		\bottomrule
+	\end{tabular}
+	\vspace{0.1cm}
+	\caption[Major multimodal methods]{major multimodal methods.}
+	\label{tab:multimodal-methods}
+\end{table}
+
+
+
+
+
+
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{droplets_multiome_scRNA_scATAC/fig}
