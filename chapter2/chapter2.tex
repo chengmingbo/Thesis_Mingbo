@@ -13,13 +13,13 @@ Background
 \section{DNA Organization, chromatin accessibility and gene regulation}
 In the symphony of life, the function of DNA organization, chromatin accessibility, and gene regulation orchestrates a harmonious dance that dictates the fate and functioning of every living organism. We start this section by first introducing DNA organization. Next, we talk about chromatin accessibility followed by the introduction of gene regulation.
 
-\subsection{DNA Organization: The Architectural Blueprint of Life}
+\subsection{DNA Organization}
 Deoxyribonucleic Acid, or DNA is the genetic blueprint of life, containing the instructions for the development and functioning of living organisms. It is a long, double-stranded helical structure composed of four nucleotide building blocks: adenine (A), thymine (T), cytosine (C), and guanine (G). The sequence of these nucleotides forms the genetic code, encoding instructions for the development, functioning, and maintenance of all living organisms. DNA is organized into structures called chromosomes, which are located in the cell nucleus.
 
-\subsection{Chromatin accessibility: Gatekeepers of the Genetic Code}
+\subsection{Chromatin accessibility:}
 Chromatin is the complex of DNA and proteins found in the nucleus of a cell. Chromatin accessibility is a crucial molecular concept that describes the degree to which DNA is available or accessible for cellular processes, particularly gene expression. It can exist in two states: open and condensed. Open chromatin refers to the relaxed, accessible state where DNA is available for transcription and gene expression. In this state, the DNA is not tightly wound around histone proteins, allowing regulatory proteins and RNA polymerase to easily access specific DNA sequences, facilitating the transcription of genes into RNA. Open chromatin is associated with active gene expression and is influenced by various factors, including epigenetic modifications such as acetylation and methylation. Conversely, in a "closed" or condensed chromatin state, the DNA is tightly wound around histone proteins, making it less accessible. This state inhibits the binding of transcriptional machinery, leading to reduced or suppressed gene expression. Closed chromatin is associated with inactive or silenced genes.
 
-\subsection{Gene Regulation: The Symphony's Conductor}
+\subsection{Gene Regulation}
 Gene regulation refers to the mechanisms that control the expression of genes. While an organism's DNA carries the instructions for a vast array of biological processes, not all genes are active all the time. Gene regulation allows cells to turn genes on or off, and to fine-tune their activity. This regulation is achieved through the interaction of regulatory proteins, transcription factors, and other molecules that bind to specific DNA sequences, influencing the initiation or inhibition of transcription. Epigenetic modifications, such as DNA methylation and histone modification, also play a crucial role in gene regulation by modifying the accessibility of DNA.
 
 
@@ -31,7 +31,6 @@ Gene regulation refers to the mechanisms that control the expression of genes. W
 	chromatin\_organization.}
 	\label{fig:chromatin_organization}
 \end{figure}
-
 
 
 \section{Single cell sequencing technology}
@@ -60,15 +59,16 @@ Since Sanger sequencing~\cite{sanger1975rapid} analysis was introduced in 1975, 
 
 
 Single cell RNA sequencing(scRNA-seq)~\cite{singlecellsequencing2014, singlecellsequencing2015} was introduced in 2009~\cite{tang2009mrna}. In general, scRNA-seq protocols can be classified into droplet-based and plate-based methods. Droplet-based methods use droplet microfluidics technology~\cite{dropletcompare2019, droplet2019practice} to capture cells in each droplets. Drop-seq~\cite{dropseq2015} inDrop~\cite{indrop2015} and GemCode/Chromium 10X~\cite{zheng2017massively} use microfluidic droplet chemistry with encapsulation of cells and barcoding beads~\cite{rotem2015high}. Plate-based methods use microwell plates to capture cells in each well. SMART-seq~\cite{smartseq2012} and SMART-seq2~\cite{smartseq22014} use microwell plates to capture cells in each well. The microwell plates are pre-coated with oligo-dT primers. The captured cells are lysed and the RNA is reverse transcribed into cDNA. The cDNA is then amplified by PCR. The amplified cDNA is then sequenced by NGS. The plate-based methods are more expensive and time-consuming, but they have higher sensitivity and lower dropout rate. The droplet-based methods are cheaper and faster, but they have higher dropout rate and lower sensitivity. The droplet-based methods are more suitable for large scale studies, while the plate-based methods are more suitable for small scale studies.
-
 %
 
 
 \subsection{Chromatin accessibility profiling with scATAC-seq}
 Chromatin accessibility profiling using Single-Cell Assay for Transposase-Accessible Chromatin sequencing, or scATAC-seq, has emerged as a revolutionary tool, allowing scientists to unravel the dynamic landscape of chromatin accessibility at a single-cell resolution. This technology not only provides a detailed map of regulatory elements within individual cells but also promises to deepen our understanding of cellular heterogeneity, development, and the intricate orchestration of gene regulation in health and disease. Join us as we delve into the profound insights that chromatin accessibility profiling with scATAC-seq brings to the forefront of genomic research, unlocking the secrets of cellular diversity at an unprecedented level of granularity. ATAC-seq use xxxx, see  
 
-%\subsection{Protein profiling in single cell}
+\subsection{Protein profiling in single cell}
 %Protein analysis at the single cell level has relied on the use of antibodies that bind specifically to target proteins. Flow cytometry uses fluorescently labeled antibodies to convert protein signals into fluorescence signals~\cite{@article{kim2022single}
+Secreted protein play crucial roles in facilitating diverse biological processes, including cell–cell communication, differentiation, migration, and maintaining homeostasis at the population or tissue level. Methods for directly measuring specific protein-secreting cells in clinical settings include enzyme-linked immunospot (ELISPOT) and its variants, such as fluorescence-based immunospot (FluoroSpot) ~\cite{perfetto2004seventeen, karlsson2003comparison}. Indirect assessment of protein secretion function can be conducted through intracellular staining using fluorescence-activated cell sorting (FACS)~\cite{bonner1972fluorescence}. The detection of multiple cytokines in single cells has become possible through intracellular cytokine staining using multicolor flow cytometry ~\cite{irish2004single,hale2009stage}. Mass cytometry is a deviation from traditional flow cytometry utilizing mass spectrometry for detection via rare earth metal probes, has demonstrated highly multiplexed measurement of surface and intracellular proteins~\cite{spitzer2016mass}.
+
 
 \begin{figure}[!ht]
 	\centering
@@ -94,14 +94,14 @@ Single-cell multi-modal technologies typically analyze various types of molecule
 		   & CITE-seq & {~\cite{stoeckius2017citeseq}} \\
            & REAP-seq & {~\cite{peterson2017reapseq}}\\
            & RAID & {~\cite{Gerlach2019RAID}} \\
-		   & ECCITE-seq &  {\cite{mimitou2019ECCITE}}\\
+		   & ECCITE-seq & {~\cite{mimitou2019ECCITE}}\\
 		\midrule
 		\multirow{5}{*}{\shortstack[l]{\includegraphics[scale=1]{multi-model-methods/RNA_ATAC.pdf}}}
 		   & sci-CAR & {~\cite{cao2018scicar}}\\
            & SNARE-seq & {~\cite{chen2019SNARE}} \\
            & scNMT-seq & {~\cite{clark2018scnmt}}\\
-		   & scCAT-seq &  {~\cite{liu2019scCAT}} \\ 
-           & multiome & 10x Genomics\\
+		   & scCAT-seq & {~\cite{liu2019scCAT}} \\ 
+           & multiome & ~10x Genomics\\
 		\midrule
 		\multirow{5}{*}{\shortstack[l]{\includegraphics[scale=1]{multi-model-methods/3.pdf}}}
 		& TEA-seq & {~\cite{swanson2021simultaneous}}\\
@@ -118,9 +118,6 @@ Single-cell multi-modal technologies typically analyze various types of molecule
 
 
 
-
-
-
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{droplets_multiome_scRNA_scATAC/fig}
@@ -129,7 +126,13 @@ Single-cell multi-modal technologies typically analyze various types of molecule
 	\label{fig:droplets_multiome_scRNA_scATAC}
 \end{figure}
 
+
 \section{Computational analysis of single cell}
+\subsection{alignment}
+The first step in the computational analysis of ATAC-seq/RNA-seq/Protein-seq is the alignment. We input raw sequencing reads and produce an alignment file that contains all mapped DNA reads by aligning them to the reference genome. The objective of alignment is to identify the most probable position of these reads given a vast reference genome with billions of base pairs. The most widely used ATAT-seq alignment tool is Bowtie2 whereas the most popular that for RNA-seq is MACS2. These tools are utilized in the Cell Ranger ATAC/RNA/ARC pipeline developed by 10$\times$ Genomics.
+\subsection{scRNA}
+We here describe the computational workflow for scRNA-seq data analysis, including preprocessing(quality control, normalization, feature selection), core analysis (dimensionality reduction, batch correction and clustering), and downstream analysis (cell annotation, trajectory analysis, geneset enrichment and ).
+
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{workflow_scRNA/fig}
@@ -137,7 +140,38 @@ Single-cell multi-modal technologies typically analyze various types of molecule
 	\caption[workflow\_scRNA.]{workflow scRNA. \emph{Source: ~\cite{heumos2023best}} (modified to fit thesis format and/or clarify key points)}
 	\label{fig:workflow_scRNA}
 \end{figure}
+\subsubsection{pre-processing}
+We start from a count matrix where the mRNA sequence reads obtained are aligned to genes and cells of origin through alignment pipeline e.g 10$\times$ cellranger pipeline. The pipeline utilizes either cellular barcodes or unique molecular identifiers (UMIs) in conjunction with a reference genome. We eventually obtain a count matrix representing cells by genes. 
+\begin{description}
+	\item[quality control] We focus on droplet-based scRNA data quality control. Fig~\ref{fig:QCcells}A shows an intact droplet, where a droplet includes a cell and barcode bead to marker the cell id. The objective of quality control is to filter low-quality droplets like Fig~\ref{fig:QCcells}BCDE and correct the noise. Cells characterized by a low number of detected genes, a shallow count depth, and a high proportion of mitochondrial counts are commonly referred to as low-quality cells. This designation is often indicative of cells in a state of decline, potentially exhibiting compromised membranes associated with cell damage or death. Low-quality cells are detected and filtered either by manually setting thresholds, as suggested in a guide ~\cite{luecken2019current}, or through sample-wise automatic filtering based on the number of median absolute deviations~\cite{germain2020pipecomp}. A variety of methods have been proposed for doublets detection such as DoubletFinder, Scrublet and DoubletDecon\cite{mcginnis2019doubletfinder, wolock2019scrublet, depasquale2019doubletdecon}.
+	\item[normalization]  Cells may exhibit varying numbers of gene counts due to disparities in cell size or random variations during sequencing. Count normalization is employed to ensure comparability in cellular profiles. The following variance stabilization ensures that outlier profiles have a limited impact on the overall data structure. A commonly employed normalization method involves dividing the raw UMI count by the total detected RNAs in each cell, multiplying the result by a scaling factor (typically set at 10,000), adding a pseudo-count (usually 1), and subsequently applying a log transformation to the outcome. This size-factor normalization effectively mitigates technical variations arising from sequencing depth, while the log transformation serves to alleviate the impact of expression outliers. This approach is particularly valuable in preventing high-abundance genes from disproportionately influencing downstream analyses due to their elevated technical variability. Log-normalization is the default method in the most popular single cell analysis toolkit Seurat~\cite{stuart2019comprehensive} and scanpy\cite{wolf2018scanpy}. Other methods like scran, sctransform~\cite{l2016scran,hafemeister2019sctransform} are also being used to normalize the count matrix. 
+	\item[feature selection] Single-cell RNA-seq datasets typically contain more than 20,000 genes. Numerous genes lack informativeness and predominantly consist of zero counts. Thus, feature selection is neccessay to select most inforamtive features and reduce the compuating resources. The objective is to exclude uninformative genes that may not reflect meaningful biological variation across samples. Highly variable genes (HVGs) is implemented in various methods including the popular Seurat package~\cite{stuart2019comprehensive}. SCMarker selects features without the need for label information, which assesses the number of modalities for each gene through its expression profile~\cite{wang2019scmarker}. M3Drop models the relationship between mean expression and dropout rate~\cite{andrews2019m3drop}. And OGFSC, a variant of HVGs, based on modelling coefficient of variance of genes across cells. ~\cite{hao2019OGFSC} 
+\end{description}
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{QC_cells/fig}
+	\vspace{0.1cm}
+	\caption[QC\_cells.]{QC cells. \emph{Source: ~\cite{heumos2023best}} (modified to fit thesis format and/or clarify key points)}
+	\label{fig:QCcells}
+\end{figure}
+\subsubsection{Dimensional reduction and Clustering}
+\begin{description}
+	\item[dimensional reduction]B
+	\item[batch correction]C
+	\item[clustering]E 
+\end{description}
+
+\subsubsection{Downstream analysis}
+\begin{description}
+	\item[Differential expression]B
+	\item[cluster annotation]C
+	\item[trajectory inference]E
+	\item[Geneset enrichment]  
+\end{description}
+
+\subsection{scATAC}
+We here describe the computational workflow for scATAC-seq data analysis, including, feature matrix construction, preprocessing(feature definition, quality control,  feature selection), core analysis (dimensionality reduction, batch correction and clustering), and downstream analysis (differenetial accessibility, trajectory inference etc. ).
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{workflow_scATAC/fig}
@@ -146,21 +180,6 @@ Single-cell multi-modal technologies typically analyze various types of molecule
 	\label{fig:workflow_scATAC}
 \end{figure}
 
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{workflow_multimodal/fig}
-	\vspace{0.1cm}
-	\caption[workflow\_multimodal.]{workflow\_multimodal}
-	\label{fig:workflow_multimodal}
-\end{figure}
-
-
-\subsection{scRNA}
-\subsubsection{pre-processing}
-\subsubsection{Dimensional reduction and Clustering}
-\subsubsection{Downstream analysis}
-
-\subsection{scATAC}
 \subsubsection{pre-processing}
 \subsubsection{Dimensional reduction and Clustering}
 \subsubsection{Downstream analysis}
@@ -173,8 +192,13 @@ Single-cell multi-modal technologies typically analyze various types of molecule
 
 
 \subsection{multi-modal analysis}
-
-
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{workflow_multimodal/fig}
+	\vspace{0.1cm}
+	\caption[workflow\_multimodal.]{workflow\_multimodal}
+	\label{fig:workflow_multimodal}
+\end{figure}
 \subsubsection{preprocessing}
 \subsubsection{Dimensional reduction, integration and clustering}
 \subsubsection{Downstream analysis}
@@ -349,8 +373,7 @@ Where $a_h^{(q)}$ is the variable coefficient vector for the $h$-th linear combi
 	\centering
 	\includegraphics[width=0.95\textwidth]{TI_schemtaic/fig}
 	\vspace{0.1cm}
-	\caption[TI\_schemtaic.]{
-	TI\_schemtaic}
+	\caption[TI\_schemtaic.]{TI schemtaic \emph{Source: ~\cite{chen2019stream, wolf2019paga,ji2016tscan,albergante2020ElPiGraph,herring2018pCreode,street2018slingshot,cao2019monocle3,marco2014scuba}}(modified to fit thesis format and/or clarify key points)}
 	\label{fig:TI_schemtaic}
 \end{figure}
 
