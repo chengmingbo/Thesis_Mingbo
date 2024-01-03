@@ -71,37 +71,41 @@ A tri-modal data set of human PBMCs is measured with the DOGMA-seq protocol~\cit
 %% TODO: need split these into two parts: algorithm(chapter2) and execution(chapter4).
 \begin{description}
 \item[MOFA] 
-MOFA+~\cite{argelaguet2020mofa+} uses Bayesian group factor analysis and variational inference to decompose individual modalities simultaneously by estimating a common latent factor matrix $Z$, as well as the weights for the transformation of the modalities to the latent space. MOFA+ includes a procedure to determine the optimal number of factors (dimension of the latent space) and has several hyper parameters for model regularization, detection of number of factors and learning rates. We execute MOFA with default parameters and followed their recommendations  \href{https://raw.githack.com/bioFAM/MOFA2_tutorials/master/R_tutorials/10x_scRNA_scATAC.html}{tutorial} for the analysis of all data. However, we provide now PCA/LSI reductions as input for MOFA, as this improved its computational time (Appendix ~\tref{tab:time}), as well the clustering performance on MOFA's latent space (Appendix Fig.~2). 
+We install MOFA2(1.2.2)\citep{tewari2017mofa} \href{from https://github.com/bioFAM/MOFA2} R CMD INSTALL MOFA2. Next, We execute MOFA with default parameters and follow their recommendations  \href{https://raw.githack.com/bioFAM/MOFA2_tutorials/master/R_tutorials/10x_scRNA_scATAC.html}{tutorial} for the analysis of all data. However, we provide now PCA/LSI reductions as input for MOFA, as this improved its computational time (Appendix ~\tref{tab:time}), as well the clustering performance on MOFA's latent space (Appendix Fig.~2). 
 
 \item[Schema]
-Schema~\cite{singh2021schema} explores metrics learning to re-weigh modality features through maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u *  x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated in other modalities. Schema has two main parameters: minimum desired correlation and number of random pairs.  We run Schema using default parameters as in 
+`pip install schema_learn under the python==3.9.6 environment
+Schema(0.1.5.3)~\cite{singh2021schema} explores metrics learning to re-weigh modality features through maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u *  x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated in other modalities. Schema has two main parameters: minimum desired correlation and number of random pairs.  We run Schema using default parameters as in 
 \href{https://schema-multimodal.readthedocs.io/en/latest/recipes/index.html}{schema tutorial.} 
 
 \item[Seurat4 WNN]
+install Seurat(4.3.0) using remotes::install_version("Seurat", version = "4.3.0") in R(4.1.0) prompt.
 Weighted nearest neighbor (WNN)~\cite{hao2021integrated} constructs single unified representation across multiple modalities. It first creates k-nearest neighbor (KNN) graphs for each modality based on the latent representation of each feature matrix.  Next, it calculates affinities using the exponential kernel between a cell and the average NN for each modality. The latter is used to weigh cells.  WNN has two major free parameters: the number of neighbors and scaling factor of the neighborhood kernel. We execute WNN, which is part of Seurat4, using default parameters. WNN does not provide a shared latent space, but we can use the weighted nearest neighbors graph to build a distance metric that can be used in all benchmarking evaluations.
 
 \item[scAI]
-scAI simultaneously decomposes transcriptomic and epigenomic data into multiple biologically relevant factors~\cite{clark2018scnmt}. Its framework is similar to MOFA, but it can only cope with two modalities at a time. scAI uses a stability method to define the rank (size of the latent space) and has three main free parameters used for model regularization. We execute scAI in only bi-modal with RNA and ATAC-seq datasets with default parameters.
+install scAI(1.0.0) using devtools::install_github("sqjin/scAI") in R prompt.
+ simultaneously decomposes transcriptomic and epigenomic data into multiple biologically relevant factors~\cite{clark2018scnmt}. Its framework is similar to MOFA, but it can only cope with two modalities at a time. scAI uses a stability method to define the rank (size of the latent space) and has three main free parameters used for model regularization. We execute scAI in only bi-modal with RNA and ATAC-seq datasets with default parameters.
 
 
 \item[LIGER]
+
+install rliger(1.0.0) using R install.packages('rliger') in R prompt.
 LIGER~\cite{welch2019single}, which is based on non-negative matrix factorization, was originally proposed for data integration whenever modalities are in the same feature space.  A newer variant of LIGER~\cite{kriebel2021nonnegative} can perform integration, whenever there is some overlap between the features across modalities (shared features), i.e. protein and RNA expression of the same gene or gene accesibility scores for ATAC-seq. LIGER estimates a gene accessibility (ATAC-seq) matrix by counting the total number of ATAC-seq reads within the gene body and promoter regions(3kb upstream) for each gene per cell. An additional unshared feature matrix is further produced by binning the genome into bins of 100,000 bps and counting the overlap of these bins with peaks from the respective data set. LIGER has two major parameters: a regularization term and the number of factors (dimensions of the latent space). Regions associated to ENCODE Blacklist regions~\cite{amemiya2019encode} are removed. Moreover, LIGER can be only executed for bi-modal data sets. 
 
 \item[Symphony Integration]
-Symphony~\cite{kang2021symphony} is a method to create single cell reference atlas for subsequent annotation of new single cell data sets. For a single case study with a multi-ome CITE-seq data, Symphony used canonical correlation analysis to find shared reference. This simple procedure differs from MOJITOO in several ways: it does not use dimension reduction as input; it is not able to cope with more than 2 modalities and it uses the latent space of only one modality (RNA) as shared space. Moreover, Symphony included the execution of batch correction with Harmony after the execution of CCA. The CCA analysis is not part of Symphony source code, but we implemented it based on a script provided by authors (\url{https://github.com/immunogenomics/TB_Tcell_CITEseq/blob/main/R/cca_analysis.R}). 
-Also, due to high computational requirements, we were only able to run this on the dimension reduced space (PCA/LSI) described above. We call this method Symph-Int to reflect the fact that this is not Symphony, but an integration method used in one of the analyses of Symphony manuscript. 
+The CCA analysis is not part of Symphony~\cite{kang2021symphony} source code, we implemented it based on a script provided by authors (\url{https://github.com/immunogenomics/TB_Tcell_CITEseq/blob/main/R/cca_analysis.R}). 
+Also, due to high computational requirements, we were only able to run this on the dimension-reduced space (PCA/LSI) described above. We call this method Symph-Int to reflect the fact that this is not Symphony, but an integration method used in one of the analyses of Symphony manuscript. 
 
 \item[DIABLO]
+We install mixOmics(6.16.3) using bioconductor with BiocManager::install("mixOmics") in R prompt.
 DIABLO~\cite{singh2019diablo} is based on a generalized canonical analysis to integrate multiple data sets in a supervised way. It was originally designed for bulk multi-omics data, where sample labels are available and explored for feature selection. Since labels are not available for single cell multi-modal data evaluated here, we provide a distinct label for each cell. DIABLO is executed as indicated in their \href{http://mixomics.org/mixdiablo/}{tutorial}. Due to a prohibitive computational costs if raw matrices are used, we provide dimension reduced matrices as input.  Another major parameter is the number of CC components, which is usually set to the number of classes - 1. Here, we used 30 components. Also, DIABLO does not provide a common latent space. We therefore used the same strategy to combine latent spaces as for MOJITOO. 
-
 \end{description}
 
 
 \subsection{Evaluation of multi-modal integration Methods}
-The data we used for technique validation is two folds: (1) The data source and pre-processing of the single cell multi-modal for technical validation; (2) The simulated data for trajectory inference. We first described the data source and pre-processing for single cell multi-modal data, next we show how to simulate data for trajectory inference.
+We describe single cell multi-modal for technical validation.
 
 \subsubsection{technical validation}
-
 
 \begin{figure}[!ht]
 	\centering
@@ -113,8 +117,7 @@ The data we used for technique validation is two folds: (1) The data source and 
 \end{figure}
 
 \begin{description} %%formula
-	\item[Requirements of Memory and Running Time].
-	\item[Space Presevation]. 
+	\item[Space Presevation] The high-dimensional space preserves of each dataset can be calculated as the Pearson correlation between all pairwise distances in the high-dimensional spaces and the corresponding distances in the original space~\citep{jain2021multimap}. For multimodal data, space-preserved scores can be obtained for each modality, and these individual scores are then averaged to derive the final space-preserved score.
 	\item[Distance Accuracy]. 
   silhouette to latent space to evaluate the performance of these methods. For each data point $i\in C_i$, where $C_i$ is the label of the data point, we calculate the inner cluster mean distance:
 \begin{equation}
@@ -130,7 +133,12 @@ s(i)=\frac{b(i)-a(i)}{\max\{a(i), b(i)\}}, -1\leq s(i) \leq 1
 \end{equation}
 where $d(i,j)$ is the distance of two cells under some specific latent space, here we considered both euclidean distance and cosine distance.
 
-	\item[clustering Accuracy]. 
+	\item[Clustering Accuracy] Clustering Accuracy measure the clustering accuracy compared to the true labels using different integrated embeddings. In comparing the clustering outcomes with labels from benchmarking datasets, we employed the adjusted rand index (ARI)\citep{hubert1985ARI}. This index assesses the similarity between two clustering results by accounting for the likelihood of randomly grouping elements. Specifically, given a dataset $D$ with $n$ cells, two partitions $ X = \{ X_{1}, X_{2}, \cdots X_{r} \} $ and $ Y = \{ Y_{1}, Y_{2}, \cdots, Y_{s} \} $ denoting different clustering results, the number of common cells for each cluster $i$ and $j$ can be written as $n_{ij} = X_{i} \cap Y_{j} |$, where $ i \in \{1, 2, \cdots, r \} $ and $ j \in \{1, 2, \cdots, s \} $. Then Adjusted Rand Index(ARI) is denoted as follows:
+	\begin{equation}
+		ARI = \frac{\sum_{ij} {n_{ij} \choose 2} - [ \sum_{i} {a_{i} \choose 2} \sum_{j} {b_{j} \choose 2 } ] / {n \choose 2}}{\frac{1}{2} [\sum_{i} {a_{i} \choose 2 } + \sum_{j} {b_{j} \choose 2}] - [\sum_{i} {a_{i} \choose 2} \sum_{j} {b_{j} \choose 2 } ] / {n \choose 2} }
+	\end{equation}
+	where $ a_{i} = \sum_{j=1}^{s} n_{ij} $ and $ b_{j} = \sum_{i=1}^{r} n_{ij} $ respectively. The ARI ranges from a minimum value of 0, denoting random agreement between two data clusterings, to a maximum value of 1, indicating identical clustering results.  To be fair, we perform Louvain clustering with varying resolution (parameter from 0.1 to 2.0 with step=0.1) to estimate the adjusted Rand index. 
+	\item[Requirements of Memory and Running Time] We also compare the peak memory usage and running time to check the effectiveness of these methods. For this, we inspect the time and memory used in the largest datasets in our benchmark (SKIN-SHARE). To obtain curves, we down-sample the number of cells from 30,000 to 3,000.
 \end{description}
 
 % to validate improve the perfomance, ---> PBMC capture major cell types and subtype changings
@@ -155,6 +163,7 @@ where $d(i,j)$ is the distance of two cells under some specific latent space, he
 
 \subsection{Evaluation of trajectory inference}
 % dynverse benchmarking selected metrics description
+The simulated data for trajectory inference. We first described the data source and pre-processing for single cell multi-modal data, next we show how to simulate data for trajectory inference.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{dynverse_metrics/fig}

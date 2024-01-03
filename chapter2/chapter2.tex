@@ -116,8 +116,6 @@ Single-cell multi-modal technologies typically analyze various types of molecule
 	\label{tab:multimodal-methods}
 \end{table}
 
-
-
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{droplets_multiome_scRNA_scATAC/fig}
@@ -129,7 +127,7 @@ Single-cell multi-modal technologies typically analyze various types of molecule
 
 \section{Computational analysis of single cell}
 \subsection{alignment}
-The first step in the computational analysis of ATAC-seq/RNA-seq/Protein-seq is the alignment. We input raw sequencing reads and produce an alignment file that contains all mapped DNA reads by aligning them to the reference genome. The objective of alignment is to identify the most probable position of these reads given a vast reference genome with billions of base pairs. The most widely used ATAT-seq alignment tool is Bowtie2 whereas the most popular that for RNA-seq is STAR. These tools are utilized in the Cell Ranger ATAC/RNA/ARC pipeline developed by 10$\times$ Genomics.
+The first step in the computational analysis of ATAC-seq/RNA-seq/Protein-seq is the alignment. We input raw sequencing reads and produce an alignment file that contains all mapped DNA reads by aligning them to the reference genome. The objective of alignment is to identify the most probable position of these reads given a vast reference genome with billions of base pairs. The most widely used ATAT-seq alignment tool is Bowtie2 whereas the most popular that for RNA-seq is STAR. These tools are utilized in the Cell Ranger ATAC/RNA/ARC pipeline developed by 10$\times$ Genomics. See Fig. \ref{fig:aligment}
 \subsection{scRNA}
 We here describe the computational workflow for scRNA-seq data analysis, including preprocessing(quality control, normalization, feature selection), core analysis (dimensionality reduction, batch correction and clustering), and downstream analysis (cell annotation, trajectory analysis, geneset enrichment and ).
 \begin{figure}[!ht]
@@ -137,9 +135,8 @@ We here describe the computational workflow for scRNA-seq data analysis, includi
 	\includegraphics[width=0.95\textwidth]{alignment/fig}
 	\vspace{0.1cm}
 	\caption[alignment.]{ Illustration of the mapping process. The input consists of a set of reads and a reference genome. In the middle, it gives the results of mapping: the locations of the reads on the reference genome. The first read is aligned at position 100 and the alignment has two mismatches. The second read is aligned at position 114. It is a local alignment with clippings on the left and right. The third read is aligned at position 123. It consists of a 2-base insertion and a 1-base deletion. \emph{Source: ~\cite{galaxyprojectSequenceAnalysis2016alignment}} (modified to fit thesis format and/or clarify key points)}
-	\label{fig:workflow_scRNA}
+	\label{fig:alignment}
 \end{figure}
-\subsubsection{pre-processing}
 
 
 \begin{figure}[!ht]
@@ -149,6 +146,7 @@ We here describe the computational workflow for scRNA-seq data analysis, includi
 	\caption[workflow\_scRNA.]{workflow scRNA. \emph{Source: ~\cite{heumos2023best}} (modified to fit thesis format and/or clarify key points)}
 	\label{fig:workflow_scRNA}
 \end{figure}
+
 \subsubsection{pre-processing}
 We start from a count matrix where the mRNA sequence reads obtained are aligned to genes and cells of origin through an alignment pipeline e.g 10$\times$ cellranger pipeline. The pipeline utilizes either cellular barcodes or unique molecular identifiers (UMIs) in conjunction with a reference genome. We eventually obtain a count matrix representing cells by genes. 
 \begin{description}
@@ -194,17 +192,31 @@ We here describe the computational workflow for scATAC-seq data analysis, includ
 
 \subsubsection{pre-processing}
 \begin{description}
-	\item[Quality control] Similar to single-cell RNA sequencing, the number of fragments per cell serves as a crucial metric for filtering low-quality cells in single-cell ATAC-seq. A low number of fragment reads suggests low-quality cells, while an excessively high number might indicate potential doublets. Additionally, the enrichment of transcription start sites (TSS)~\citep{Granja2021} is commonly employed as a filtering criterion. Other metrics, such as the fraction of reads in peaks (FRiP), the ratio of reads in promoter regions and the ratio of reads in blacklist sites, are also utilized for quality checks in scATAC-seq data. Empirically, for human and mouse data, common quality thresholds include requiring the number of unique nuclear fragments to be greater than 1000, ensuring the FRiP is greater than 0.3, and targeting TSS enrichment scores greater than 5 or 6. The threshold should be determined based on the characteristics of samples in practice. Doublets detection is also necessary for scATAC-seq data. DoubletsFinder~\citep{mcginnis2019doubletfinder} mentioned in scRNA preprocessing section is also applicable for detecting doublets in scATAC-seq data. ArchR\citep{Granja2021} also implemented a doublets detection function. It generates synthetic doublets in silico by blending the reads from thousands of combinations of individual cells and finding their nearest neighbors to identify doublets whose signals closely resemble those of the synthetic doublets.
-	\item[Normalization] For scATAC data, the normalization is slightly different from scRNA. Generally, The term-frequency inverse-document-frequency (TF-IDF) method transforms a cell-to-feature matrix, assigning greater weight to rarer peaks within the cell population. The transformed data matrix tends to capture peaks that exhibit greater variability, making them more informative for distinguishing between distinct cell types. Popular scATAC-seq toolkits like Signac and ArchR both use TF-IDF to normalize the count matrix.
-	\item[Feature selection] Since the number of peaks is usually much larger than the number of genes, feature selection is more important in scATAC-seq data. The most popular method is to select peaks with high variance across cells. E.g. Signac uses the variance of the TF-IDF transformed matrix to select peaks. 
+	\item[Quality control] 
+	Similar to single-cell RNA sequencing, the number of fragments per cell serves as a crucial metric for filtering low-quality cells in single-cell ATAC-seq. A low number of fragment reads suggests low-quality cells, while an excessively high number might indicate potential doublets. Additionally, the enrichment of transcription start sites (TSS)~\citep{Granja2021} is commonly employed as a filtering criterion. Other metrics, such as the fraction of reads in peaks (FRiP), the ratio of reads in promoter regions and the ratio of reads in blacklist sites, are also utilized for quality checks in scATAC-seq data. Empirically, for human and mouse data, common quality thresholds include requiring the number of unique nuclear fragments to be greater than 1000, ensuring the FRiP is greater than 0.3, and targeting TSS enrichment scores greater than 5 or 6. The threshold should be determined based on the characteristics of samples in practice. Doublets detection is also necessary for scATAC-seq data. DoubletsFinder~\citep{mcginnis2019doubletfinder} mentioned in scRNA preprocessing section is also applicable for detecting doublets in scATAC-seq data. ArchR\citep{Granja2021} also implemented a doublets detection function. It generates synthetic doublets in silico by blending the reads from thousands of combinations of individual cells and finding their nearest neighbors to identify doublets whose signals closely resemble those of the synthetic doublets.
+	
+	\item[Normalization] 
+	For scATAC data, the normalization is slightly different from scRNA. Generally, The term-frequency inverse-document-frequency (TF-IDF) method transforms a cell-to-feature matrix, assigning greater weight to rarer peaks within the cell population. The transformed data matrix tends to capture peaks that exhibit greater variability, making them more informative for distinguishing between distinct cell types. Popular scATAC-seq toolkits like Signac and ArchR both use TF-IDF to normalize the count matrix.
+	
+	\item[Feature selection] 
+	Since the number of peaks is usually much larger than the number of genes, feature selection is more important in scATAC-seq data. The most popular method is to select peaks with high variance across cells. E.g. Signac uses the variance of the TF-IDF transformed matrix to select peaks. 
 \end{description}
 \subsubsection{Dimensional reduction and Clustering}
 \begin{description}
-	\item[dimensional reduction] Unkike the scRNA data, usually scATAC uses Latent semantic indexing(LSI) to reduce the dimensions, which were first introduced for the analysis of scATAC-seq data by ~\citep{cusanovich2015multiplex}. It combines the steps of TF-IDF followed by Singular value decomposition(SVD). Signac~\citep{signac} use LSI as the default dimension reduction methods, whereas ArchR implemented Iterative Latent Semantic Indexing(iterativeLSI)~\citep{satpathy2019massively, granja2019single} which initiates by performing an initial Latent Semantic Indexing (LSI) transformation on the most accessible bins and identified lower-resolution clusters that remain unaffected by batch confounding. To note, usually the first LSI component capture sequencing depth, it's recommended to check the correlation between each component and the sequencing depth to exclude the noise introduced for the downstream analysis~\citep{signac}. For visualization, UMAP and t-SNE are the best choices in this scenario.
-	\item[batch correction] Like scRNA, batch effects also need to be handled(technical replicates, different days of lab work, different individuals etc.) in scATAC data. Batch correction methods like Harmony\citep{korsunsky2019harmony} used in scRNA data usually still work in scATAC data, which we will not elaborate on here.
-	\item[clustering] Graph-based clustering approaches are commonly used in scATAC data as scRNA data, which we will skip in this part.
-	\item[label transfer] Likewise, we can transfer labels from some previous studies to scATAC data. Usually, this is done by integrating scATAC with existing scRNA data, e.g. we can use Seurat\citep{stuart2019seurat3} label transferring methods to achieve the task. Another way is to use multimodal as a molecular bridge to do the transferring, which enables the mapping of scATAC onto scRNA-seq references\citep{hao2023dictionary}.
-	\item[annotation] Apart from label transfer, we can also use gene score differentiation to identify cell types for each cluster. Unlike scRNA data, there are no gene features that we can use to help annotate the clusters. One way is to calculate the gene score based on the accessibility of regulatory elements in the vicinity of the gene. Signac extracts gene coordinates and extends them to include the 2 kb upstream region (as promoter accessibility is often correlated with gene expression) and then counts the number of fragments for each cell that map to each of these regions. Whereas ArchR creates a tile matrix using a user-defined tile size (default is 500 bp), overlaps these tiles with the user-defined gene window (default is 100 kb on either side of the gene), and then calculates the distance from each tile (start or end) to the gene body, with optional extensions upstream or downstream, or to the gene start.
+	\item[dimensional reduction] 
+	Unkike the scRNA data, usually scATAC uses Latent semantic indexing(LSI) to reduce the dimensions, which were first introduced for the analysis of scATAC-seq data by ~\citep{cusanovich2015multiplex}. It combines the steps of TF-IDF followed by Singular value decomposition(SVD). Signac~\citep{signac} use LSI as the default dimension reduction methods, whereas ArchR implemented Iterative Latent Semantic Indexing(iterativeLSI)~\citep{satpathy2019massively, granja2019single} which initiates by performing an initial Latent Semantic Indexing (LSI) transformation on the most accessible bins and identified lower-resolution clusters that remain unaffected by batch confounding. To note, usually the first LSI component capture sequencing depth, it's recommended to check the correlation between each component and the sequencing depth to exclude the noise introduced for the downstream analysis~\citep{signac}. For visualization, UMAP and t-SNE are the best choices in this scenario.
+	
+	\item[batch correction]
+	 Like scRNA, batch effects also need to be handled(technical replicates, different days of lab work, different individuals etc.) in scATAC data. Batch correction methods like Harmony\citep{korsunsky2019harmony} used in scRNA data usually still work in scATAC data, which we will not elaborate on here.
+	
+	 \item[clustering]
+	 Graph-based clustering approaches are commonly used in scATAC data as scRNA data, which we will skip in this part.
+	
+	 \item[label transfer]
+	 Likewise, we can transfer labels from some previous studies to scATAC data. Usually, this is done by integrating scATAC with existing scRNA data, e.g. we can use Seurat\citep{stuart2019seurat3} label transferring methods to achieve the task. Another way is to use multimodal as a molecular bridge to do the transferring, which enables the mapping of scATAC onto scRNA-seq references\citep{hao2023dictionary}.
+	
+	 \item[annotation] 
+	Apart from label transfer, we can also use gene score differentiation to identify cell types for each cluster. Unlike scRNA data, there are no gene features that we can use to help annotate the clusters. One way is to calculate the gene score based on the accessibility of regulatory elements in the vicinity of the gene. Signac extracts gene coordinates and extends them to include the 2 kb upstream region (as promoter accessibility is often correlated with gene expression) and then counts the number of fragments for each cell that map to each of these regions. Whereas ArchR creates a tile matrix using a user-defined tile size (default is 500 bp), overlaps these tiles with the user-defined gene window (default is 100 kb on either side of the gene), and then calculates the distance from each tile (start or end) to the gene body, with optional extensions upstream or downstream, or to the gene start.
 \end{description}
 \subsubsection{Downstream analysis}
 \begin{description}
@@ -259,7 +271,6 @@ We here describe the computational workflow for scATAC-seq data analysis, includ
 	A) MOFA schematic B) scAI schematic C) Liger D) Seurat weighted nearest neighbor(WNN) E) schema  F) DIABLO . \emph{Source ~\cite{tewari2017mofa,jin2020scai,kriebel2022uinmf,hao2021integrated,singh2021schema,singh2019diablo}}(modified to fit thesis format and/or clarify key points)}
 	\label{fig:multimodal_integration_methods_schematic}
 \end{figure}
-
 
 
 % table of single cell multimodal integration methods
@@ -374,8 +385,7 @@ is updated by fixing the other blocks. The updated rules are:
 Liger converges threshold is set to $\epsilon = 10^{-10}$, and the maximum number of iterations is set to 30 for each analysis.
 
 \subsubsection{MOFA}
-
-MOFA~\citep{argelaguet2020mofa+} decomposes simultaneous multimodal of $M$ data matrics $Y^1, \cdots, Y^M$ of dimensions $N\times D_m$, where $N$ denotes the number of cells and $D_m$ denotes the number of features, $G$ is the number of sample groups, and $N_g$ is the number of samples in the $g$th group and $K$ is the number of factors. The matrix decomposition is:
+MOFA+~\cite{argelaguet2020mofa+} uses Bayesian group factor analysis and variational inference to decompose individual modalities simultaneously by estimating a common latent factor matrix $Z$, as well as the weights for the transformation of the modalities to the latent space. MOFA+ includes a procedure to determine the optimal number of factors (dimension of the latent space) and has several hyper parameters for model regularization, detection of number of factors and learning rates. Specifically, it decomposes simultaneous multimodal of $M$ data matrics $Y^1, \cdots, Y^M$ of dimensions $N\times D_m$, where $N$ denotes the number of cells and $D_m$ denotes the number of features, $G$ is the number of sample groups, and $N_g$ is the number of samples in the $g$th group and $K$ is the number of factors. The matrix decomposition is:
 \begin{equation}
 Y_{gm} = ZgW_m^{T} + \varepsilon_{gm}, 
 \end{equation}
@@ -393,19 +403,7 @@ DIABLO is a generalization of sGCCA~\citep{tenenhaus2014variable}, which is a mu
 Where $a_h^{(q)}$ is the variable coefficient vector for the $h$-th linear combination of the $q$-th data matrix, and $c_{i,j}$ is the weight of the correlation between the $i$-th and $j$-th data matrices. The first constraint is to normalize the linear combination, and the second constraint is to sparsify the linear combination. DIABLO solves the optimization problem by iteratively updating the $a_h^{(q)}$ and $c_{i,j}$ until convergence. The update rules are:
 
 \subsubsection{Symphony integration}
-% a figure of single cell multimodal integration methods theory
-\subsection{Computational Methods for trajectory inference}
-
-% table summarizing method
-
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{TI_schemtaic/fig}
-	\vspace{0.1cm}
-	\caption[TI\_schemtaic.]{TI schemtaic \emph{Source: ~\cite{chen2019stream, wolf2019paga,ji2016tscan,albergante2020ElPiGraph,herring2018pCreode,street2018slingshot,cao2019monocle3,marco2014scuba}}(modified to fit thesis format and/or clarify key points)}
-	\label{fig:TI_schemtaic}
-\end{figure}
+Symphony~\cite{kang2021symphony} is a method to create single cell reference atlas for subsequent annotation of new single cell data sets. For a single case study with a multi-ome CITE-seq data, Symphony used canonical correlation analysis to find shared references. This simple procedure differs from MOJITOO in several ways: it does not use dimension reduction as input; it is not able to cope with more than 2 modalities and it uses the latent space of only one modality (RNA) as shared space.  Moreover, Symphony included the execution of batch correction with Harmony after the execution of CCA.
 
 \begin{table}[!ht]
 	\small
@@ -429,11 +427,52 @@ Where $a_h^{(q)}$ is the variable coefficient vector for the $h$-th linear combi
 \end{table}
 
 
+% a figure of single cell multimodal integration methods theory
+\subsection{Computational Methods for trajectory inference}
+% table summarizing method
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{TI_schemtaic/fig}
+	\vspace{0.1cm}
+	\caption[TI\_schemtaic.]{TI schemtaic \emph{Source: ~\cite{chen2019stream, wolf2019paga,ji2016tscan,albergante2020ElPiGraph,herring2018pCreode,street2018slingshot,cao2019monocle3,marco2014scuba}}(modified to fit thesis format and/or clarify key points)}
+	\label{fig:TI_schemtaic}
+\end{figure}
+
+
+
+\begin{table}[!ht]
+	\small
+	\centering
+	\begin{tabular}{llll}
+		\toprule
+		Name & Programming & Technique  & Reference \\
+		\midrule
+		RaceID/StemID &   R &  k-medoids clustering  &   \cite{grun2016stemid} \\
+		Monocle3 & R   & DDRTree/SimplePPT/L1Graph   & \cite{cao2019monocle3} \\
+		PAGA	 &  Python &  kNN graph partitioning  & \cite{wolf2019paga} \\
+		TSCAN &  R & MST &    \cite{ji2016tscan}\\
+		slingshot & R  &  MST  & \cite{street2018slingshot}\\
+		pCreode & Python & d-kNN graph & \cite{herring2018pCreode} \\
+		STREAM& Python  &  ElPigraph & \cite{chen2019stream}\\
+		MST& R  &  MST &   \cite{book2023mclust}\\
+		ElPigraph& Python/R  &  ElPigraph & \cite{albergante2020ElPiGraph}\\
+		celltree& R&  LDA &  \cite{duverle2016celltree}\\
+		slice& R  &  MST & \cite{guo2017slice}\\
+		\bottomrule
+	\end{tabular}
+	\vspace{0.1cm}
+	\caption[Overview of computational trajectory inference methods]{Overview of computational trajectory inference methods.}
+	\label{tab:methods_integration_overview}
+\end{table}
+
+
+
 \subsubsection{STREAM}
 The Elastic principal graph:
 \begin{equation}
 	\begin{aligned}
-& U^{phi}(X, G) = \frac{1}{|x|}\sum_{j=1}^{|V|} \sum_{i:P(i)=j} \min \left(\left\|X_i - \phi(V_j)^2, R_0^2\right\|\right) \\
+& U^{\phi}(X, G) = \frac{1}{|x|}\sum_{j=1}^{|V|} \sum_{i:P(i)=j} \min \left(\left\|X_i - \phi(V_j)^2, R_0^2\right\|\right) \\
 &\quad + \sum_{E^{(i)}}[\lambda + \alpha (\max(2, \deg(E^{(i)}(0))) - 2)](\phi(E^{(i)}(0)) - \phi(E^{(i)}(1)))^2 \\
 &\quad + \mu \sum_{S^{(j)}} \left(\phi(S^{(j)(0)}) - \frac{1}{\deg (S^{(j)(0)})} \sum_{i = 1}^{\deg (S^{(j)(0)})}\right)^2
 	\end{aligned}
@@ -450,7 +489,7 @@ TSCAN first uses PCA to reduce the dimensionality. It uses the clustering algori
 Slicer is a KNN-based trajectory inference method that utilizes alpha-hull to estimate the k parameter for locally linear embedding dimensionality reduction. First, Slicer computes a KNN graph from locally linear embedding, next it finds the most “extreme” cells in the graph. The user needs to specify a starting cell from extreme cells, Slicer then find the shortest path to all other cells. Next, the geodesic entropy is used to find branches; high values indicate the existence of a branching point.
 \subsubsection{slice} SLICE comprises two main functions: quantitatively assessing cell differentiation state through single-cell entropy and reconstructing single-cell lineages in silico. The calculation of single-cell entropy (scEntropy) involves computing the expected value for each cell, representing the uncertainty in cellular functions' activation based on gene expression patterns. The scEntropy is utilized to measure the differentiation state of individual cells. Stable states are identified within scRNA-seq datasets using clustering or graph-based methods, considering the scEntropy of each cell. SLICE then constructs a lineage model by inferring a directed minimum spanning tree among stable states, reflecting differentiation trajectories. The reconstruction of cell transitional paths involves either a shortest-path approach or a principal curve-based approach, revealing the dynamics of gene expression during differentiation. Lineage-dependent differentially expressed genes are identified based on smoothed expression profiles, and temporal gene expression patterns are unveiled through clustering analysis. This comprehensive approach allows for an unbiased exploration of cellular differentiation and lineage relationships in scRNA-seq data.
 \subsubsection{RaceID/StemID} StemID uses RaceID, an advanced version of RaceID to perform clustering. Next, to address the challenge of determining branching points in systems with multiple cell lineages for building the lineage tree with guided topology StemID predefines the tree's structure by allowing potential differentiation trajectories between pairs of clusters. Each trajectory links the medoids of two clusters, and collectively, these inter-cluster links determine the possible lineage tree's topology. To mitigate technical noise and computational load, It initially reduces input space dimensionality, emphasizing maximal preservation of point-to-point distances. Next, it assigns each cell to its likely position on a single inter-cluster link based on the projection of the vector connecting a cluster's medoid to one of its cells onto links with other clusters' medoids. By normalizing link lengths and identifying densely populated links, StemID discerns potential differentiation trajectories. This approach, applied to intestinal data, successfully revealed a lineage tree consistent with the known structure.
-\subsubsection{ElPiGraph}
+\subsubsection{ElPiGraph} Elastic Principal Graphs (ElPiGraphs) serve as structured approximators for data, comprising vertices connected by edges. These vertices are embedded into the data space, minimizing mean squared distance (MSD) to data points. Notably, ElPiGraphs differ from unstructured k-means by incorporating edges to define an elastic energy term. This term, coupled with MSD, penalizes edge stretching and branch bending. ElPiGraph employs a topological grammar for optimal graph structure determination, building on a core algorithm initially introduced and tested in earlier publications. In essence, an elastic principal graph is an undirected graph in multidimensional space, optimizing data approximation and graph elastic energy. Key parameters, including trimming radius ($R_0$), edge elasticity ($\lambda$), star bending elasticity ($\mu$), and a complexity control coefficient ($\alpha$), guide the optimization process. ElPiGraph achieves efficient minimization by employing a quadratic problem-solving approach for vertex coordinates. Its innovation lies in the use of topological grammars, exploring diverse graph structures and iteratively refining configurations until specified conditions are met. Notably, ElPiGraph yields an explicit principal tree in data space, facilitating independent study or mapping data onto the tree for analysis in intrinsic coordinates. 
 \subsubsection{celltree} To identify and utilize this group structure, celltree adapts a natural language processing(NLP) statistical approach known as Latent Dirichlet Allocation(LDA) to build a topic model. By comparing the different per-cell topic histograms, celltree can evaluate their similarity and infer complex hierarchical structures. By looking at the topics themselves, one can obtain useful biological insights into the gene sets characterizing the different stages of that hierarchy. Based on this lower-dimensional model, they construct a visual representation of the cell population. finally, they introduce “backbone trees” to easily visualize cells along complex differentiation paths.
 \subsubsection{pCreode} pCreode infer a trajactory for single-cell data through 6 steps i) Conducts density-dependent down-sampling to normalize the representation of both rare and overrepresented cell states; 2) Constructs a density-based k-nearest neighbor (d-kNN) network using the down-sampled data; 3) Automatically distinguishes end-states from transition states by employing K-means clustering and assessing silhouette scores for cells with low closeness values (< mean); 4) Establishes topology through a hierarchical placement strategy, positioning cells on path nodes between end-states. This enables the arrangement of data points along an ancestral continuum; 5) Aligns topology with maximal consensus through an iterative process involving the assignment and repositioning of path nodes based on neighborhood cell densities; 6)Develops a scoring metric within pCreode to compare dissimilarities between topologies facilitating the selection of the most representative graph for visualization purposes.
 
