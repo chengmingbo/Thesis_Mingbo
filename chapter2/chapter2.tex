@@ -268,7 +268,7 @@ We here describe the computational workflow for scATAC-seq data analysis, includ
 	\includegraphics[width=0.95\textwidth]{multimodal_integration_methods_schematic/fig}
 	\vspace{0.1cm}
 	\caption[multimodal\_integration\_methods\_schematic.]{
-	A) MOFA schematic B) scAI schematic C) Liger D) Seurat weighted nearest neighbor(WNN) E) schema  F) DIABLO . \emph{Source ~\cite{tewari2017mofa,jin2020scai,kriebel2022uinmf,hao2021integrated,singh2021schema,singh2019diablo}}(modified to fit thesis format and/or clarify key points)}
+	A) MOFA schematic B) scAI schematic C) Liger D) Seurat weighted nearest neighbor(WNN) E) schema  F) DIABLO . \emph{Source ~\cite{tewari2017mofa,jin2020scai,kriebel2022uinmf,hao2021seurat4,singh2021schema,singh2019diablo}}(modified to fit thesis format and/or clarify key points)}
 	\label{fig:multimodal_integration_methods_schematic}
 \end{figure}
 
@@ -295,7 +295,7 @@ Where $\gamma_j$ and s are hyperparameters that determine the importance of the 
 
 
 \subsubsection{Seurat WNN}
-Weighted nearest neighbor (WNN)~\citep{hao2021integrated} constructs a single unified representation across multiple modalities. It takes CITE-seq~\cite{citeseq2017} with scRNA and protein modalities for example to explain the algorithm. First, it creates k-nearest neighbor graphs for each modality based on the pre-computed latent representation of each feature matrix. Where $r_i$ represents the L2-normalized latent representation of $cell_i$ in modality RNA and $p_i$ represents the L2-normalized latent representation of $cell_i$ in modality protein. $\{knn_{r,i,1}\cdots knn_{r,i,k}\}$ is the set of $k$-nearest RNA neighbors of cell $i$ and $\{knn_{p,i,1}\cdots knn_{p,i,k}\}$ is the set of $k$-nearest protein neighbors of cell $i$. Next, it predicts cell $i$ modality profile within and across modalities, the within modality prediction is:
+Weighted nearest neighbor (WNN)~\citep{hao2021seurat4} constructs a single unified representation across multiple modalities. It takes CITE-seq~\cite{citeseq2017} with scRNA and protein modalities for example to explain the algorithm. First, it creates k-nearest neighbor graphs for each modality based on the pre-computed latent representation of each feature matrix. Where $r_i$ represents the L2-normalized latent representation of $cell_i$ in modality RNA and $p_i$ represents the L2-normalized latent representation of $cell_i$ in modality protein. $\{knn_{r,i,1}\cdots knn_{r,i,k}\}$ is the set of $k$-nearest RNA neighbors of cell $i$ and $\{knn_{p,i,1}\cdots knn_{p,i,k}\}$ is the set of $k$-nearest protein neighbors of cell $i$. Next, it predicts cell $i$ modality profile within and across modalities, the within modality prediction is:
 \begin{equation}
 	\begin{aligned}
 		&\hat{r}_{i, knn_r}=\frac{\sum_{j=1}^{k} r_{k n n_{r, i, j}}}{k} \\
@@ -414,7 +414,7 @@ Symphony~\cite{kang2021symphony} is a method to create single cell reference atl
 		\midrule
 		MOFA     &   Matrix Decomposition &  universal &  any & slow &   \cite{argelaguet2020mofa+} \\
 		Schema & Metrics learning   & universal  &  any & fast & \cite{singh2021schema} \\
-		Seurat WNN	 &  WNN &  universal &  any & fast  & \cite{hao2021integrated} \\
+		Seurat WNN	 &  WNN &  universal &  any & fast  & \cite{hao2021seurat4} \\
 		DIABLO &  PLS-DA & universal &  any & slow & \cite{singh2019diablo}\\
 		scAI & Matrix Decomposition  &  scRNA,scATAC & 2 & slow & \cite{jin2020scai}\\
 		Liger & NMF                &  shared-features&  2 & fast& \cite{kriebel2021nonnegative} \\
