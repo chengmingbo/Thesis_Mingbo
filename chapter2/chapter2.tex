@@ -10,9 +10,21 @@ In this chapter, we introduce the background knowledge needed to understand the 
 
 
 \section{DNA Organization, chromatin accessibility and gene regulation}
+\label{background:DNA_Chromatin_Regulation}
 In the symphony of life, the function of DNA organization, chromatin accessibility, and gene regulation orchestrates a harmonious dance that dictates the fate and functioning of every living organism. We start this section by first introducing DNA organization. Next, we talk about chromatin accessibility followed by the introduction of gene regulation.
 
 Deoxyribonucleic Acid, or DNA is the genetic blueprint of life, containing the instructions for the development and functioning of living organisms. It is a long, double-stranded helical structure composed of four nucleotide building blocks: adenine (A), thymine (T), cytosine (C), and guanine (G). The sequence of these nucleotides forms the genetic code, encoding instructions for the development, functioning, and maintenance of all living organisms. DNA is organized into structures called chromosomes, which are located in the cell nucleus.
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{central_dogma/fig}
+	\vspace{0.1cm}
+	\caption[central dogma.]{The figure illustrates DNA transcription and RNA translation central dogma.} 
+	\label{fig:central_dogma}
+\end{figure}
+
+
 
 
 \begin{figure}[!ht]
@@ -30,8 +42,10 @@ Gene regulation refers to the mechanisms that control the expression of genes. W
 
 
 \section{Single cell sequencing technology}
+\label{background:profiling_singlecell}
 Since Sanger sequencing~\citep{sanger1975rapid} analysis was introduced in 1975, numerous advances in methodology have been developed to improve the understanding of the heterogeneity and transcriptomic states present in complex biological systems. The invention of a series of rapidly evolving Next Generation Sequencing (NGS) technologies revolutionarily facilitates the study of heterogeneous biological processes with high throughput, shorter time and lower cost. NGS enables researchers to perform profiling of epigenomes, transcriptomes and proteomes. The development of single-cell sequencing technology further enables the study of heterogeneity at single-cell resolution. In this section, we will briefly introduce single-cell sequencing technology, single-cell RNA sequencing, single-cell ATAC sequencing and single-cell protein sequencing.
 
+To begin, let's establish clear definitions for Genome, Epigenome, Transcriptome, and Proteome. Genome is the complete set of DNA, which holds all the genetic information of an organism\citep{hubbard2002genome}, Epigenome is the complete set of reversible chemical changes to the DNA and histone proteins of an organism\citep{bernstein2007epigenome}, Transcriptome is the complete set of RNA molecules in a cell or a collection of cells\citep{haoudi2006proteome}, Proteome is the complete set of proteins expressed in a cell, tissue, or organism\citep{wang2009transcriptome}. The term “-omics” refer to the exploration of corresponding omic data. Genomics specifically focuses on the investigation of an organism's genome.  Likewise, Epigenomics, Transcriptomics, and Proteomics encompass the study of epigenomes, transcriptomes, and proteomes, respectively.
 
 \begin{figure}[!ht]
 	\centering
@@ -41,45 +55,47 @@ Since Sanger sequencing~\citep{sanger1975rapid} analysis was introduced in 1975,
 	\label{fig:multimodal_single_cell}
 \end{figure}
 
-
-
 \subsection{Transcriptomics profiling with scRNA-seq}
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{rna_scRNA/fig}
-	\vspace{0.1cm}
-	\caption[bulk rna and single cell rna sequencing comparison.]{bulk rna and single cell rna sequencing.}
-	\label{fig:rna_scRNA}
-\end{figure}
+\label{background:sec1:scRNA}
 
 Single-cell RNA sequencing (scRNA-seq)\citep{singlecellsequencing2014, singlecellsequencing2015} has emerged as a powerful tool that allows the study of gene expression at the individual cell level, providing insights into the heterogeneity and dynamics of cellular responses in various biological contexts. In contrast to traditional bulk RNA-seq, which averages gene expression across millions of cells, scRNA-seq enables the investigation of transcriptomic profiles within specific cell types, offering a more detailed understanding of cellular behaviors during development or in response to perturbations.
 
-Single-cell RNA sequencing(scRNA-seq) was introduced in 2009 ~\citep{tang2009mrna}. In general, scRNA-seq protocols can be classified into droplet-based and plate-based methods. Droplet-based methods use droplet microfluidics technology~\citep{dropletcompare2019, droplet2019practice} to capture cells in each droplet. In this procedure, a dissociated mixture of cells is introduced into a microfluidic device, while beads coated with primers are introduced at a separate input. The device is specifically designed to create aqueous droplets within mineral oil, with the inputs strategically arranged to enable the simultaneous capture of cells and beads within a droplet. In this capture event, the reagents carried along with the bead induce cell lysis, allowing poly(A) tagged RNA molecules to bind to the capture probes on the bead's surface. Subsequently, reverse transcription and PCR amplification are initiated, resulting in the generation of an individual cDNA library for each cell, which is uniquely tagged with the barcode sequence present on the bead. A variety of droplet-based methods have beend developed including Drop-seq~\citep{dropseq2015}, inDrop~\citep{indrop2015} and GemCode/Chromium 10X~\citep{zheng2017massively}. Droplet-based capture technologies offer the advantage of capturing a significantly larger number of cells simultaneously, reaching up to tens of thousands. Additionally, these approaches exhibit reduced selectivity regarding cell size and generate fewer doublets. Plate-based methods employ passive cell separation into discrete wells on a plate. In these wells, cells undergo processes such as lysis, reverse transcription, and subsequent PCR amplification of the gathered cDNA. Following these steps, the resulting product is extracted from the plate, and libraries are then prepared for Illumina sequencing. Many plate-based methods have been developed including CEL-Seq\citep{hashimshony2012celseq}, CEL-Seq2\citep{hashimshony2016celseq2}, SMART-seq~\citep{goetz2012smartseq} and SMART-seq2~\citep{Picelli2014smartseq}. Plate-based cell capture technologies utilize chips with a fixed-size window, limiting the capture to cells of specific sizes during a single run. Droplet-based techniques are currently the most commonly used cell capture technologies in single-cell RNA fields, whereas plate-based methods are more expensive and time-consuming.
+Single-cell RNA sequencing(scRNA-seq) was introduced in 2009 ~\citep{tang2009mrna}. In general, scRNA-seq protocols can be classified into droplet-based and plate-based methods. Droplet-based methods use droplet microfluidics technology~\citep{dropletcompare2019, droplet2019practice} to capture cells in each droplet. In this procedure, a dissociated mixture of cells is introduced into a microfluidic device, while beads coated with primers are introduced at a separate input. The device is specifically designed to create aqueous droplets within mineral oil, with the inputs strategically arranged to enable the simultaneous capture of cells and beads within a droplet. In this capture event, the reagents carried along with the bead induce cell lysis, allowing poly(A) tagged RNA molecules to bind to the capture probes on the bead's surface. Subsequently, reverse transcription and PCR amplification are initiated, resulting in the generation of an individual cDNA library for each cell, which is uniquely tagged with the barcode sequence present on the bead. A variety of droplet-based methods have been developed including Drop-seq~\citep{dropseq2015}, inDrop~\citep{indrop2015} and GemCode/Chromium 10X~\citep{zheng2017massively}. Droplet-based capture technologies offer the advantage of capturing a significantly larger number of cells simultaneously, reaching up to tens of thousands. Additionally, these approaches exhibit reduced selectivity regarding cell size and generate fewer doublets. Plate-based methods employ passive cell separation into discrete wells on a plate. In these wells, cells undergo processes such as lysis, reverse transcription, and subsequent PCR amplification of the gathered cDNA. Following these steps, the resulting product is extracted from the plate, and libraries are then prepared for Illumina sequencing. Many plate-based methods have been developed including CEL-Seq\citep{hashimshony2012celseq}, CEL-Seq2\citep{hashimshony2016celseq2}, SMART-seq~\citep{goetz2012smartseq} and SMART-seq2~\citep{Picelli2014smartseq}. Plate-based cell capture technologies utilize chips with a fixed-size window, limiting the capture to cells of specific sizes during a single run. Droplet-based techniques are currently the most commonly used cell capture technologies in single-cell RNA fields, whereas plate-based methods are more expensive and time-consuming.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{scRNA_to_count_matrix/fig}
+	\vspace{0.1cm}
+	\caption[single cell RNA sequencing to count matrix.]{single cell RNA sequencing to count matrix.}
+	\label{fig:scRNA_to_count_matrix}
+\end{figure}
 
 Droplet-based capture methods often incorporate Unique Molecular Identifiers (UMIs), and short random nucleotide sequences. Given the minimal RNA amounts in individual cells (approximately 10-30 pg, with less than 5 percent being mRNA), a crucial PCR amplification step is employed to generate sufficient cDNA for sequencing. Variable amplification rates based on nucleotide sequences can introduce distortions in transcript proportions within a library. UMIs aim to improve gene expression quantification by aiding in PCR duplicate removal during amplification In droplet-based capture protocols, nucleotide probes include a poly(T) sequence binding to mature mRNA, a consistent barcode sequence across all probes on a bead, and an 8-10 base UMI sequence unique to each probe. The length of UMI sequences makes capturing two copies of a transcript on two probes with the same UMI highly improbable. After reverse transcription, amplification, sequencing, and alignment, de-duplication involves identifying reads with the same UMI aligning to the same position, indicating PCR duplicates rather than genuinely expressed transcript copies. To ensure method effectiveness, each read must be associated with a UMI, resulting in sequencing only a small section at the 3' end of each transcript. 
 
 
 \subsection{Chromatin accessibility profiling with scATAC-seq}
+\label{background:sec1:scATAC}
 
 Advancements in Next-Generation Sequencing (NGS) technology have led to the development of various methods for comprehensive genome-wide profiling of chromatin accessibility through sequencing. DNase-seq(deoxyribonuclease I hypersensitive sites sequencing)\citep{boyle2008dnasseq} uses DNase I nuclease to perform the digestion. FAIRE-seq(formaldehyde-assisted isolation of regulatory elements sequencing)\citep{giresi2007faireseq} physical isolation of protein-bound and protein-free DNA fragments. ATAC-seq(assay for transposase-accessible chromatin using sequencing)\citep{buenrostro2013atacseq} use Tn5 transposase to insert sequencing adapters into accessible regions of the genome. Due to the employment of a hyperactive Tn5 transposase, which tags and fragments DNA sequences in open chromatin regions simultaneously, ATAC-seq requires shorter sample preparation times and a lower number of cells for high-quality profiling of chromatin accessibility compared to other methods, ATAC-seq has gained prominence as the most extensively utilized.\citep{minnoye2021chromatin}.
-
-Protocols for single-cell ATAC-sequencing (scATAC-seq) have been devised, enabling the unbiased identification of cell-type-specific regulatory elements within heterogeneous cell populations. This approach boasts a high throughput, capable of processing tens of thousands of cells per assay. scATAC-seq has proven successful in elucidating the regulatory landscape of adult mouse tissues \citep{cusanovich2018single}, as well as in studying the human and mouse brain \cite{lake2018humanbrain, sinnamon2019accessible} etc. Several scATAC-seq methods have been developed to measure open chromatin at single cell level, e.g., the Microfluidics-based method (Buenrostro et al., 2015), which uses physical isolation of single cells. Specifically, it employs a programmable microfluidics device to compartmentalize single cells into nanoscale reaction chambers. After cell viability is confirmed with the use of a microscope, ATAC-seq is performed on each captured cell individually. sci-ATAC-seq(the split-and-pool combinatorial cellular indexing) method \citep{cusanovich2015multiplex} performs several rounds of combinatorial indexing to uniquely barcode individual cells. First, it uses a cell sorter to dispense a defined number of nuclei (typically 2,500) into the wells of a 96-well plate, each containing a Tn5 transposase loaded with a unique combination of barcodes. The tagmentation reaction thus introduces the first round of indexes. Next, the nuclei are pooled, mixed and dispensed in each well of 96-well plates in the defined number of 25 nuclei. Each well contains a unique combination of barcoded adaptors, which are integrated during the PCR amplification thus providing the second round of indexing. After sequencing, it is then possible to identify each cell 26 based on a unique set of barcodes. Due to the number of nuclei aliquoted in each well for the second indexing round at least 100 times lower than the first indexing round, the number of collisions, namely, cells having identical barcodes is statistically ensured to be low (estimated and measured at ~ 11\%). Another highly effective method is the droplet-based single-cell Assay for Transposase-Accessible Chromatin with sequencing (scATAC-seq)\citep{satpathy2019massively}, involving cell partitioning through a microfluidic device. Initially, nuclei are isolated from a single-cell suspension and transposed in bulk using transposase Tn5. Subsequently, transposed nuclei are loaded onto a microfluidic chip to generate gel beads in emulsion (GEM). Each gel bead is barcoded with single-stranded oligonucleotides, comprising a 29-bp sequencing adapter, a 16-bp barcode selected from 750,000 designed sequences for GEM indexing, and the first 14 bp of read 1N, serving as the priming sequence in the linear amplification reaction for barcode incorporation into transposed DNA. After GEM generation, gel beads are dissolved, releasing oligonucleotides for linear amplification of transposed DNA. Finally, the droplet emulsion is broken, and barcoded DNA fragments are pooled for PCR amplification, generating indexed libraries suitable for high-throughput sequencing. Due to the advantages of high throughput and low costs for droplet-based single-cell ATAC-seq technology, the method is increasingly popular and has been commercialized by 10x Genomic(Chromium Next Gem Single Cell ATAC-seq Library Kit)\cite{satpathy2019massively}.
-
-
-\subsection{Protein profiling in single cell}
-%%Protein analysis at the single-cell level has relied on the use of antibodies that bind specifically to target proteins. Flow cytometry uses fluorescently labeled antibodies to convert protein signals into fluorescence signals~\citep{@article{kim2022single}
-%Secreted proteins play crucial roles in facilitating diverse biological processes, including cell–cell communication, differentiation, migration, and maintaining homeostasis at the population or tissue level. Methods for directly measuring specific protein-secreting cells in clinical settings include enzyme-linked immunospot (ELISPOT) and its variants, such as fluorescence-based immunospot (FluoroSpot) ~\citep{perfetto2004seventeen, karlsson2003comparison}. Indirect assessment of protein secretion function can be conducted through intracellular staining using fluorescence-activated cell sorting (FACS)~\citep{bonner1972fluorescence}. The detection of multiple cytokines in single cells has become possible through intracellular cytokine staining using multicolor flow cytometry ~\citep{irish2004single,hale2009stage}. Mass cytometry is a deviation from traditional flow cytometry utilizing mass spectrometry for detection via rare earth metal probes, has demonstrated highly multiplexed measurement of surface and intracellular proteins~\citep{spitzer2016mass}.
-%
-To comprehensively assess the expression patterns of individual proteins, researchers typically opt for mass spectrometry or flow cytometry rather than sequencing ~\citep{kim2022single}. The application of mass spectrometry to single-cell proteomics poses technical challenges related to factors like required sample amounts and detection coverage. Efforts are underway to develop methods that enable the measurement of more protein molecules with lower sample input. In recent single-cell studies, CyToF, a mass cytometry-based method, has been employed to analyze dozens of surface and intracellular proteins using metal-labeled antibodies. Particularly beneficial for immune cells, profiling cell surface proteins aids in cell type classification. CyToF has been extensively utilized in studies, including those in general and cancer immunology, often in conjunction with scRNA-seq analysis\citep{kashima2020single}.
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{scATAC-seq/fig}
 	\vspace{0.1cm}
-	\caption[ATAC sequenceing schematic flow.]{ATAC sequencing. \emph{Source: ~\cite{yan2020reads}} (modified to fit thesis format and/or clarify key points)}
+	\caption[ATAC sequenceing schematic flow.]{The ATAC-seq assay is employed for the identification of chromatin accessibility. Initially, the hyperactive Tn5 transposase selectively targets and modifies DNA regions characterized as "open" chromatin. Through a process known as tagmentation, the enzyme introduces sequencing adapters (or priming sequences) into these open regions. Next, the resulting DNA fragments are amplified and input to high-throughput sequencing. \emph{Source: ~\cite{yan2020reads}} (modified to fit thesis format and/or clarify key points)}
 	\label{fig:ATAC-seq}
 \end{figure}
+
+
+Protocols for single-cell ATAC-sequencing (scATAC-seq) have been devised, enabling the unbiased identification of cell-type-specific regulatory elements within heterogeneous cell populations. This approach boasts a high throughput, capable of processing tens of thousands of cells per assay. scATAC-seq has proven successful in elucidating the regulatory landscape of adult mouse tissues \citep{cusanovich2018single}, as well as in studying the human and mouse brain \cite{lake2018humanbrain, sinnamon2019accessible} etc. Several scATAC-seq methods have been developed to measure open chromatin at single cell level, e.g., the Microfluidics-based method (Buenrostro et al., 2015), which uses physical isolation of single cells. Specifically, it employs a programmable microfluidics device to compartmentalize single cells into nanoscale reaction chambers. After cell viability is confirmed with the use of a microscope, ATAC-seq is performed on each captured cell individually. sci-ATAC-seq(the split-and-pool combinatorial cellular indexing) method \citep{cusanovich2015multiplex} performs several rounds of combinatorial indexing to uniquely barcode individual cells. First, it uses a cell sorter to dispense a defined number of nuclei (typically 2,500) into the wells of a 96-well plate, each containing a Tn5 transposase loaded with a unique combination of barcodes. The tagmentation reaction thus introduces the first round of indexes. Next, the nuclei are pooled, mixed and dispensed in each well of 96-well plates in the defined number of 25 nuclei. Each well contains a unique combination of barcoded adaptors, which are integrated during the PCR amplification thus providing the second round of indexing. After sequencing, it is then possible to identify each cell 26 based on a unique set of barcodes. Due to the number of nuclei aliquoted in each well for the second indexing round at least 100 times lower than the first indexing round, the number of collisions, namely, cells having identical barcodes is statistically ensured to be low (estimated and measured at ~ 11\%). Another highly effective method is the droplet-based single-cell Assay for Transposase-Accessible Chromatin with sequencing (scATAC-seq)\citep{satpathy2019massively}, involving cell partitioning through a microfluidic device. Initially, nuclei are isolated from a single-cell suspension and transposed in bulk using transposase Tn5. Subsequently, transposed nuclei are loaded onto a microfluidic chip to generate gel beads in emulsion (GEM). Each gel bead is barcoded with single-stranded oligonucleotides, comprising a 29-bp sequencing adapter, a 16-bp barcode selected from 750,000 designed sequences for GEM indexing, and the first 14 bp of read 1N, serving as the priming sequence in the linear amplification reaction for barcode incorporation into transposed DNA. After GEM generation, gel beads are dissolved, releasing oligonucleotides for linear amplification of transposed DNA. Finally, the droplet emulsion is broken, and barcoded DNA fragments are pooled for PCR amplification, generating indexed libraries suitable for high-throughput sequencing. Due to the advantages of high throughput and low costs for droplet-based single-cell ATAC-seq technology, the method is increasingly popular and has been commercialized by 10x Genomic(Chromium Next Gem Single Cell ATAC-seq Library Kit)\cite{satpathy2019massively}.
+
+
+\subsection{Protein profiling in single cell}
+\label{background:sec1:protein}
+%%Protein analysis at the single-cell level has relied on the use of antibodies that bind specifically to target proteins. Flow cytometry uses fluorescently labeled antibodies to convert protein signals into fluorescence signals~\citep{@article{kim2022single}
+%Secreted proteins play crucial roles in facilitating diverse biological processes, including cell–cell communication, differentiation, migration, and maintaining homeostasis at the population or tissue level. Methods for directly measuring specific protein-secreting cells in clinical settings include enzyme-linked immunospot (ELISPOT) and its variants, such as fluorescence-based immunospot (FluoroSpot) ~\citep{perfetto2004seventeen, karlsson2003comparison}. Indirect assessment of protein secretion function can be conducted through intracellular staining using fluorescence-activated cell sorting (FACS)~\citep{bonner1972fluorescence}. The detection of multiple cytokines in single cells has become possible through intracellular cytokine staining using multicolor flow cytometry ~\citep{irish2004single,hale2009stage}. Mass cytometry is a deviation from traditional flow cytometry utilizing mass spectrometry for detection via rare earth metal probes, has demonstrated highly multiplexed measurement of surface and intracellular proteins~\citep{spitzer2016mass}.
+%
+To comprehensively assess the expression patterns of individual proteins, researchers typically opt for mass spectrometry or flow cytometry rather than sequencing ~\citep{kim2022single}. The application of mass spectrometry to single-cell proteomics poses technical challenges related to factors like required sample amounts and detection coverage. Efforts are underway to develop methods that enable the measurement of more protein molecules with lower sample input. In recent single-cell studies, CyToF, a mass cytometry-based method, has been employed to analyze dozens of surface and intracellular proteins using metal-labeled antibodies. Particularly beneficial for immune cells, profiling cell surface proteins aids in cell type classification. CyToF has been extensively utilized in studies, including those in general and cancer immunology, often in conjunction with scRNA-seq analysis\citep{kashima2020single}.
 
 
 
@@ -94,11 +110,23 @@ To comprehensively assess the expression patterns of individual proteins, resear
 
 
 \subsection{Simultaneous multi-modal profiling of single cell}
+\label{background:sec1:mulitmodal}
 Single-cell multi-modal technologies typically analyze various types of molecules within a single cell, providing a more profound understanding of biology compared to studying individual molecular layers from separate cells. These advanced technologies unveil cellular heterogeneity across multiple molecular levels within a cell population, offering insights into the interconnectedness or independence of variation across different modalities. The datasets produced by these techniques hold the potential to facilitate a more comprehensive comprehension of the fundamental biological processes and mechanisms that contribute to cellular heterogeneity. Furthermore, they shed light on the associations between normal development, aging, disease etiology, and the intricate links between these phenomena. A variety of multi-modal profiling methods have been proposed recently,
 
 DNA methylation, histone modifications such as methylation and acetylation, and chromatin accessibility together play a role in gene expression and have demonstrated capabilities for measurement at a single-cell resolution. Two methods account for single-cell multimodal analyses of the DNA methylome and transcriptome methods including single-cell methylome and transcriptome sequencing(scM\&T-seq)\citep{angermueller2016scmntseq}, single-cell methylome and transcriptome sequencing (scMT-seq)\citep{hu2016scmtseq}. Based on these methods single-cell chromatin accessibility sequencing methods DNase sequencing (scDNase-seq), single-cell combinatorial indexing assay for transposase-accessible chromatin with sequencing (sci-ATAC-seq)\citep{cusanovich2015multiplex}, single-cell assay for transposase-accessible chromatin using sequencing (scATAC-seq), nucleosome occupancy and methylation sequencing (NOMe-seq)\citep{kelly2012nomeseq} and single-cell micrococcal nuclease sequencing (scMNase-seq)\citep{lai2018scmnaseseq}, numerous approaches have been devised for the concurrent multimodal analysis of chromatin accessibility and transcriptomes, including single-cell combinatorial indexing chromatin accessibility and mRNA (sci-CAR)\citep{cao2018scicar}, single-nucleus chromatin accessibility and mRNA expression sequencing (SNARE-seq)\citep{chen2019SNARE}. Single-cell nucleosome, methylation and transcription sequencing (scNMT-seq)\citep{clark2018scnmt} is capable of profiling chromatin accessibility DNA methylation and transcription in a single cell.
 
-Various techniques capable of simultaneously measuring the transcriptome and proteome within a single cell have been created. These methods include proximity extension assay/specific RNA target amplification (PEA/STA), proximity ligation assay for RNA (PLAYR), cellular indexing of transcriptomes and epitopes by sequencing(CITE-seq)\citep{stoeckius2017citeseq} and RNA expression and protein sequencing assay (REAP-seq)\citep{peterson2017reapseq}. And, expanded CRISPR-compatible cellular indexing of transcriptomes and epitopes by sequencing(ECCITE-seq)\citep{mimitou2019ECCITE} is modified and extended from CITE-seq. ECCITE-seq offers diverse modalities of information, including transcriptome, protein, clonotype, and CRISPR perturbation data at a single-cell resolution.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{droplets_multiome_scRNA_scATAC/fig}
+	\vspace{0.1cm}
+	\caption[10X Droplets-based simultaneous sequencing of scRNA and scATAC.]{droplets\_multiome\_scRNA\_scATAC. \emph{Source: ~\cite{satpathy2019massively}} (modified to fit thesis format and/or clarify key points)}
+	\label{fig:droplets_multiome_scRNA_scATAC}
+\end{figure}
+
+Various techniques capable of simultaneously measuring the transcriptome and proteome within a single cell have been created. These methods include proximity extension assay/specific RNA target amplification (PEA/STA), proximity ligation assay for RNA (PLAYR), cellular indexing of transcriptomes and epitopes by sequencing(CITE-seq)\citep{stoeckius2017citeseq} and RNA expression and protein sequencing assay (REAP-seq)\citep{peterson2017reapseq}. And, expanded CRISPR-compatible cellular indexing of transcriptomes and epitopes by sequencing(ECCITE-seq)\citep{mimitou2019ECCITE} is modified and extended from CITE-seq. ECCITE-seq offers diverse modalities of information, including transcriptome, protein, clonotype, and CRISPR perturbation data at a single-cell resolution. Take CITE-seq as an example, it uses DNA-barcoded antibodies to convert the detection of proteins into a quantitative, sequenceable readout. Oligos bound to antibodies serve as synthetic transcripts, captured in the majority of large-scale oligo(dT)-based single-cell RNA sequencing (scRNA-seq) library preparation protocols like 10x Genomics, Drop-seq
+
+
+ Antibody-bound oligos act as synthetic transcripts that are captured during most large-scale oligodT-based scRNA-seq library preparation protocols (e.g. 10x Genomics, Drop-seq
 
 Several Methods for single-cell multimodal analyses of the genome and transcriptome have been developed, including gDNA-mRNA sequencing (DR-seq)\citep{dey2015drseq}, genome and transcriptome sequencing(G\&T-seq)\citep{macaulay2015gttseq}, simultaneous isolation of genomic DNA and total RNA (SIDR)\citep{han2018sidr} and TARGET-seq\citep{rodriguez2019targetseq} and single cell triple omics sequencing (scTrio-seq)\citep{hou2016sctrioseq}. 
 
@@ -139,20 +167,15 @@ see figure Table.\ref{tab:multimodal-methods}
 	\label{tab:multimodal-methods}
 \end{table}
 
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{droplets_multiome_scRNA_scATAC/fig}
-	\vspace{0.1cm}
-	\caption[10X Droplets-based simultaneous sequencing of scRNA and scATAC.]{droplets\_multiome\_scRNA\_scATAC. \emph{Source: ~\cite{satpathy2019massively}} (modified to fit thesis format and/or clarify key points)}
-	\label{fig:droplets_multiome_scRNA_scATAC}
-\end{figure}
-
 
 \section{Computational analysis of single cell}
+\label{background:computational_singlecell}
 \subsection{alignment}
-The first step in the computational analysis of ATAC-seq/RNA-seq/Protein-seq is the alignment. We input raw sequencing reads and produce an alignment file that contains all mapped DNA reads by aligning them to the reference genome. The objective of alignment is to identify the most probable position of these reads given a vast reference genome with billions of base pairs. The most widely used ATAT-seq alignment tool is Bowtie2 whereas the most popular that for RNA-seq is STAR. These tools are utilized in the Cell Ranger ATAC/RNA/ARC pipeline developed by 10$\times$ Genomics. See Fig. \ref{fig:aligment}
+\label{background:sec2:alignment}
+The first step in the computational analysis of ATAC-seq/RNA-seq is the alignment,  in which, raw sequencing reads(DNA for scATAC-seq, RNA for scRNA-seq) are aligned to the reference genome to ensure these reads are located in the most probable position of the reference genome. Several alignment tools have been developed to achieve the task. The most widely used aligners are Bowtie2\citep{langmead2012bowtie2}, BWA\citep{li2009BWA} and STAR\citep{dobin2013star}.  These tools are utilized in the Cell Ranger ATAC/RNA/ARC pipeline developed by 10$\times$ Genomics. See Fig. \ref{fig:alignment}
 \subsection{scRNA}
-We here describe the computational workflow for scRNA-seq data analysis, including preprocessing(quality control, normalization, feature selection), core analysis (dimensionality reduction, batch correction and clustering), and downstream analysis (cell annotation, trajectory analysis, geneset enrichment and ).
+\label{background:sec2:scRNA}
+We here describe the computational workflow for scRNA-seq data analysis, including preprocessing(quality control, normalization, feature selection), core analysis (dimensionality reduction, batch correction and clustering), and downstream analysis (cell annotation, trajectory analysis and geneset enrichment).
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{alignment/fig}
@@ -173,8 +196,12 @@ We here describe the computational workflow for scRNA-seq data analysis, includi
 \subsubsection{pre-processing}
 We start from a count matrix where the mRNA sequence reads obtained are aligned to genes and cells of origin through an alignment pipeline e.g 10$\times$ cellranger pipeline. The pipeline utilizes either cellular barcodes or unique molecular identifiers (UMIs) in conjunction with a reference genome. We eventually obtain a count matrix representing cells by genes. 
 \begin{description}
-	\item[quality control] We focus on droplet-based scRNA data quality control. Fig~\ref{fig:QCcells}A shows an intact droplet, where a droplet includes a cell and barcode bead to mark the cell ID. The objective of quality control is to filter low-quality droplets like Fig~\ref{fig:QCcells}BCDE and correct the noise. Cells characterized by a low number of detected genes, a shallow count depth, and a high proportion of mitochondrial counts are commonly referred to as low-quality cells. This designation is often indicative of cells in a state of decline, potentially exhibiting compromised membranes associated with cell damage or death. Low-quality cells are detected and filtered either by manually setting thresholds, as suggested in a guide ~\citep{luecken2019current}, or through sample-wise automatic filtering based on the number of median absolute deviations~\citep{germain2020pipecomp}. A variety of methods have been proposed for doublets detection such as DoubletFinder, Scrublet and DoubletDecon\citep{mcginnis2019doubletfinder, wolock2019scrublet, depasquale2019doubletdecon}.
-	\item[normalization]  Cells may exhibit varying numbers of gene counts due to disparities in cell size or random variations during sequencing. Count normalization is employed to ensure comparability in cellular profiles. The following variance stabilization ensures that outlier profiles have a limited impact on the overall data structure. A common normalization method involves dividing the raw UMI count by the total detected RNAs in each cell, multiplying the result by a scaling factor (typically set at 10,000), adding a pseudo-count (usually 1), and subsequently applying a log transformation to the outcome. This size-factor normalization effectively mitigates technical variations arising from sequencing depth, while the log transformation serves to alleviate the impact of expression outliers. This approach is particularly valuable in preventing high-abundance genes from disproportionately influencing downstream analyses due to their elevated technical variability. Log-normalization is the default method in the most popular single cell analysis toolkit Seurat~\citep{stuart2019seurat3} written in R and scanpy\citep{wolf2018scanpy} implemented in python. Other methods like scran, sctransform~\citep{l2016scran,hafemeister2019sctransform} are also being used to normalize the count matrix in some scenarios. 
+	\item[quality control] 
+	We focus on droplet-based scRNA data quality control. Fig~\ref{fig:QCcells}A shows an intact droplet, where a droplet includes a cell and barcode bead to mark the cell ID. The objective of quality control is to filter low-quality droplets like Fig~\ref{fig:QCcells}BCDE and correct the noise. Cells characterized by a low number of detected genes, a shallow count depth, and a high proportion of mitochondrial counts are commonly referred to as low-quality cells. This designation is often indicative of cells in a state of decline, potentially exhibiting compromised membranes associated with cell damage or death. Low-quality cells are detected and filtered either by manually setting thresholds, as suggested in a guide ~\citep{luecken2019current}, or through sample-wise automatic filtering based on the number of median absolute deviations~\citep{germain2020pipecomp}. A variety of methods have been proposed for doublets detection such as DoubletFinder, Scrublet and DoubletDecon\citep{mcginnis2019doubletfinder, wolock2019scrublet, depasquale2019doubletdecon}.
+
+	\item[normalization]
+	Cells may exhibit varying numbers of gene counts due to disparities in cell size or random variations during sequencing. Count normalization is employed to ensure comparability in cellular profiles. The following variance stabilization ensures that outlier profiles have a limited impact on the overall data structure. A common normalization method involves dividing the raw UMI count by the total detected RNAs in each cell, multiplying the result by a scaling factor (typically set at 10,000), adding a pseudo-count (usually 1), and subsequently applying a log transformation to the outcome. This size-factor normalization effectively mitigates technical variations arising from sequencing depth, while the log transformation serves to alleviate the impact of expression outliers. This approach is particularly valuable in preventing high-abundance genes from disproportionately influencing downstream analyses due to their elevated technical variability. Log-normalization is the default method in the most popular single cell analysis toolkit Seurat~\citep{stuart2019seurat3} written in R and scanpy\citep{wolf2018scanpy} implemented in python. Other methods like scran, sctransform~\citep{l2016scran,hafemeister2019sctransform} are also being used to normalize the count matrix in some scenarios.
+
 	\item[feature selection] Single-cell RNA-seq datasets typically contain more than 20,000 genes. Numerous genes lack informativeness and predominantly consist of zero counts. Thus, feature selection is necessary to select the most informative features(usually 3,000~5,000 genes) and reduce the computing resources. The objective is to exclude uninformative genes that may not reflect meaningful biological variation across samples. Of all these feature selection approaches, Seurat categorizes genes based on their average expression, and the gene presenting the greatest ratio of variance to mean within each group is chosen as the Highly Variable Gene (HVG) for that particular bin. ~\citep{stuart2019seurat3}; SCMarker selects features without the need for label information, which assesses the number of modalities for each gene through its expression profile~\citep{wang2019scmarker}; M3Drop models the relationship between mean expression and dropout rate~\citep{andrews2019m3drop}; And OGFSC, a variant of HVGs, based on modeling coefficient of variance of genes across cells. ~\citep{hao2019OGFSC}
 \end{description}
 
@@ -187,21 +214,29 @@ We start from a count matrix where the mRNA sequence reads obtained are aligned 
 \end{figure}
 \subsubsection{Dimensional reduction and Clustering}
 \begin{description}
-	\item[dimensional reduction] Dimensional reduction is twofold: to retain the distances between cells and to visualize the data. scRNA usually uses Principal Component Analysis (PCA) to reduce the dimensionality of the data and retain the distances between cells. While Uniform Manifold Approximation and Projection (UMAP) or t-Distributed Stochastic Neighbor Embedding (t-SNE) are commonly used to visualize the data~\citep{mcinnes2018umap, van2008tsne}.
-	\item[batch correction] Batch effects are a common confounding factor in single-cell RNA-seq experiments. Batch effects are systematic differences in measurements between batches (e.g., technical replicates, different days of lab work, different individuals, etc.) that are not due to the biological signal of interest. Batch effects can be caused by a variety of factors, including differences in reagents, equipment, and personnel. Many methods have been proposed to correct batch effects. Seurat uses canonical correlation analysis (CCA)~\citep{stuart2019seurat3} to find anchors between batches and then uses the anchors to do the correction. Scanpy uses batch-balanced k-nearest neighbors (BBKNN)~\citep{polanski2020bbknn} to find mutual nearest neighbors between batches to correct batch effects. Harmony~\citep{korsunsky2019harmony} iteratively removes batch effects present by clustering similar cells from different batches at each iteration while maximizing the diversity of batches within each cluster and then calculates a correction factor for each cell to be applied. Benchmarking of batch correction methods ~\citep{tran2020benchmark} shows that Harmony is the best method.
-	\item[clustering] With the batch-corrected data, we next can cluster cells into groups with similar expression profiles that explain the heterogeneity in the data. Many methods have been proposed for clustering, and graph-based clustering methods are the most popular. E.g. Seurat uses Louvain as the default clustering algorithm~\citep{stuart2019seurat3} whereas Scanpy sets default clustering methods with Leiden algorithm~\citep{traag2019louvain}. An independent benchmarking of clustering methods ~\citep{duo2018benchclustering} shows SC3~\citep{kiselev2017sc3} and Seurat delivered the overall best performance and were the only ones to properly recover the cell types in the droplet-based data sets.
-	\item[reference mapping] With an existing similar annotated single cell reference data, reference mapping is to transfer labels from the annotated data to the new studies. Seurat uses Canonical Correlation Analysis (CCA) to find anchors between the new dataset and the reference dataset and then transfer labels from the reference dataset to the new dataset. scArches~\citep{lotfollahi2022scarches} reuses neural network models by adding input nodes and weights for new studies and then fine-tuning only those parameters using a neural network to transfer labels from the reference dataset to the new dataset. Symphony builds upon Harmony~\citep{korsunsky2019harmony} batch correction method which can also query the position of a cell in the reference embedding ~\citep{kang2021symphony}.  
+	\item[dimensional reduction]
+	Dimensional reduction is twofold: to retain the distances between cells and to visualize the data. scRNA usually uses Principal Component Analysis (PCA) to reduce the dimensionality of the data and retain the distances between cells. While Uniform Manifold Approximation and Projection (UMAP) or t-Distributed Stochastic Neighbor Embedding (t-SNE) are commonly used to visualize the data~\citep{mcinnes2018umap, van2008tsne}.
+
+	\item[batch correction]
+	Batch effects are a common confounding factor in single-cell RNA-seq experiments. Batch effects are systematic differences in measurements between batches (e.g., technical replicates, different days of lab work, different individuals, etc.) that are not due to the biological signal of interest. Batch effects can be caused by a variety of factors, including differences in reagents, equipment, and personnel. Many methods have been proposed to correct batch effects. Seurat uses canonical correlation analysis (CCA)~\citep{stuart2019seurat3} to find anchors between batches and then uses the anchors to do the correction. Scanpy uses batch-balanced k-nearest neighbors (BBKNN)~\citep{polanski2020bbknn} to find mutual nearest neighbors between batches to correct batch effects. Harmony~\citep{korsunsky2019harmony} iteratively removes batch effects present by clustering similar cells from different batches at each iteration while maximizing the diversity of batches within each cluster and then calculates a correction factor for each cell to be applied. Benchmarking of batch correction methods ~\citep{tran2020benchmark} shows that Harmony is the best method.
+
+	\item[clustering] 
+	With the batch-corrected data, we next can cluster cells into groups with similar expression profiles that explain the heterogeneity in the data. Many methods have been proposed for clustering, and graph-based clustering methods are the most popular. E.g. Seurat uses Louvain as the default clustering algorithm~\citep{stuart2019seurat3} whereas Scanpy sets default clustering methods with Leiden algorithm~\citep{traag2019louvain}. An independent benchmarking of clustering methods ~\citep{duo2018benchclustering} shows SC3~\citep{kiselev2017sc3} and Seurat delivered the overall best performance and were the only ones to properly recover the cell types in the droplet-based data sets.
+
+	\item[reference mapping]
+	With existing similar annotated single-cell reference data, reference mapping is to transfer labels from the annotated data to the new studies. Seurat uses Canonical Correlation Analysis (CCA) to find anchors between the new dataset and the reference dataset and then transfer labels from the reference dataset to the new dataset. scArches~\citep{lotfollahi2022scarches} reuses neural network models by adding input nodes and weights for new studies and then fine-tuning only those parameters using a neural network to transfer labels from the reference dataset to the new dataset. Symphony builds upon Harmony~\citep{korsunsky2019harmony} batch correction method which can also query the position of a cell in the reference embedding ~\citep{kang2021symphony}.  
 \end{description}
 
 \subsubsection{Downstream analysis}
 \begin{description}
-	\item[Differential gene expression] Differential gene expression is to find which genes are significantly expressed between clusters or conditions. These genes can provide information to help annotate cluster cell types. They can also be used to interpret the biological differences affected by the conditions of interest. Wilcoxon rank-sum test is the most popular method to find differentially expressed genes. Student's t-test sometimes is also used to achieve the task. Other model like MAST use hurdle model to find differentially expressed genes~\citep{finak2015mast}. Popular single cell RNA analysis toolkits like Seurat and scanpy both have implemented Wilcoxon rank-sum test, t-test and linear models like logistic regression to find differentially expressed genes.
-	\item[cluster annotation] Reference mapping is one way to identify cell type of cell groups in single cell analysis. Usually, the task of annotation is a more complicated task, which requires the knowledge of the domain and the biological context. The most popular way to annotate cell types is still to use marker genes. Marker genes are genes that are highly expressed in a specific cell type. With significantly highly expressed genes found by differential gene expression, biologist can curate marker genes to identify cell types to annotate heterogeneous cell groups. Cluster annotation is a very important task in single cell analysis. It is crucial to identify cell types and interpret the biological meaning of the cell groups. 
-	\item[trajectory inference] Trajectory inference, also known as pseudotemporal ordering, is a computational technique employed in single-cell transcriptomics to elucidate the pattern of a dynamic process undergone by cells. Trajectory inference arranges cells based on their progression through the identified process. 
+	\item[Differential gene expression] Differential gene expression is to find which genes are significantly expressed between clusters or conditions. These genes can provide information to help annotate cluster cell types. They can also be used to interpret the biological differences affected by the conditions of interest. Wilcoxon rank-sum test is the most popular method to find differentially expressed genes. Student's t-test sometimes is also used to achieve the task. Other models like MAST use the hurdle model to find differentially expressed genes ~\citep{finak2015mast}. Popular single-cell RNA analysis toolkits like Seurat and Scanpy both have implemented the Wilcoxon rank-sum test, t-test and linear models like logistic regression to find differentially expressed genes.
+	\item[cluster annotation] Reference mapping is one way to identify cell type of cell groups in single cell analysis. Usually, the task of annotation is a more complicated task, which requires the knowledge of the domain and the biological context. The most popular way to annotate cell types is still to use marker genes. Marker genes are genes that are highly expressed in a specific cell type. With significantly highly expressed genes found by differential gene expression, biologist can curate marker genes to identify cell types to annotate heterogeneous cell groups. Cluster annotation is a very important task in single-cell analysis. It is crucial to identify cell types and interpret the biological meaning of the cell groups. 
+	\item[trajectory inference] Trajectory inference, also known as pseudotemporal ordering, is a computational technique employed in single-cell transcriptomics to elucidate the pattern of a dynamic process undergone by cells. Trajectory inference arranges cells based on their progression through the identified process. We will go into details for several popular methods in \sref{background:sec2:TI}
 	\item[Geneset enrichment] Gene set enrichment analysis facilitates the summarization of numerous molecular insights into interpretable terms, such as pathways, which are defined as sets of genes known to be involved based on previous studies. Commonly used databases for this purpose include MSigDB, Gene Ontology, KEGG, and Reactome. 
 \end{description}
 
 \subsection{scATAC}
+\label{background:sec2:scRNA}
 We here describe the computational workflow for scATAC-seq data analysis, including, feature matrix construction, preprocessing(feature definition, quality control,  feature selection), core analysis (dimensionality reduction, batch correction and clustering), and downstream analysis (differenetial accessibility, trajectory inference etc. ).
 \begin{figure}[!ht]
 	\centering
@@ -227,7 +262,7 @@ We here describe the computational workflow for scATAC-seq data analysis, includ
 \subsubsection{Dimensional reduction and Clustering}
 \begin{description}
 	\item[dimensional reduction] 
-	Unkike the scRNA data, usually scATAC uses Latent semantic indexing(LSI) to reduce the dimensions, which were first introduced for the analysis of scATAC-seq data by ~\citep{cusanovich2015multiplex}. It combines the steps of TF-IDF followed by Singular value decomposition(SVD). Signac~\citep{signac} use LSI as the default dimension reduction methods, whereas ArchR implemented Iterative Latent Semantic Indexing(iterativeLSI)~\citep{satpathy2019massively, granja2019single} which initiates by performing an initial Latent Semantic Indexing (LSI) transformation on the most accessible bins and identified lower-resolution clusters that remain unaffected by batch confounding. To note, usually the first LSI component capture sequencing depth, it's recommended to check the correlation between each component and the sequencing depth to exclude the noise introduced for the downstream analysis~\citep{signac}. For visualization, UMAP and t-SNE are the best choices in this scenario.
+	Unlike the scRNA data, usually, scATAC uses Latent semantic indexing(LSI) to reduce the dimensions, which were first introduced for the analysis of scATAC-seq data by ~\citep{cusanovich2015multiplex}. It combines the steps of TF-IDF followed by Singular value decomposition(SVD). Signac~\citep{signac} use LSI as the default dimension reduction methods, whereas ArchR implemented Iterative Latent Semantic Indexing(iterativeLSI)~\citep{satpathy2019massively, granja2019single} which initiates by performing an initial Latent Semantic Indexing (LSI) transformation on the most accessible bins and identified lower-resolution clusters that remain unaffected by batch confounding. To note, usually the first LSI component captures sequencing depth, it's recommended to check the correlation between each component and the sequencing depth to exclude the noise introduced for the downstream analysis~\citep{signac}. For visualization, UMAP and t-SNE are the best choices in this scenario.
 	
 	\item[batch correction]
 	 Like scRNA, batch effects also need to be handled(technical replicates, different days of lab work, different individuals etc.) in scATAC data. Batch correction methods like Harmony\citep{korsunsky2019harmony} used in scRNA data usually still work in scATAC data, which we will not elaborate on here.
@@ -251,26 +286,49 @@ We here describe the computational workflow for scATAC-seq data analysis, includ
 
 %%might ignore the surface protein part
 \subsection{surface protein}
-\subsubsection{pre-processing}
-\subsubsection{Dimensional reduction and Clustering}
-\subsubsection{Downstream analysis}
-
+\label{background:sec2:protein}
+The surface protein analysis is simpler than scRNA and scATAC-seq, It's often profiled with scRNA-seq. Therefore, the quality check is usually done by detecting single-cell RNA feature distributions. We can perform similar normalization, and dimensional reduction as scRNA-seq. 
 
 \subsection{multi-modal analysis}
+\label{background:sec2:multimodal}
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{workflow_multimodal/fig}
 	\vspace{0.1cm}
-	\caption[A common computational mulitmodal analysis workflow.]{workflow\_multimodal}
+	\caption[A common computational multimodal analysis workflow.]{A common workflow for single-cell multimodal datasets analysis}
 	\label{fig:workflow_multimodal}
 \end{figure}
 \subsubsection{preprocessing}
 \subsubsection{Dimensional reduction, integration and clustering}
 \subsubsection{Downstream analysis}
 
-
 \section{Related works}
-\subsection{Challenge of multi-modal analysis}
+\label{background:related_works}
+\subsection{Challenge of single cell multi-modal integration and trajectory inference}
+\label{background:sec2:challenge}
+
+
+\subsubsection{Challenge of single cell multi-modal integration}
+\label{background:sec2:challenge_integration}
+Single-cell multi-modal profiling is a new area. And task of the integration of single cell multimodal , although there are some tools have been developed to achieve the task of integration, there are some tools have  
+
+\begin{itemize}
+	\item \textbf{Heterogeneous statistical properties:}
+	 Different modalities hold distinct statistical properties.  For example, the feature size of protein usually is around 100. ATAC feature space size is hundreds of thousands, And Gene expression matrix feature space size is 10s of 1000. The sparsity of different modalities is diverse, protein counts are usually dense and ATAC peaks are sparse.
+	feature size :protein(~100), ATAC(~100,000),  RNA(~10,000)
+	sparsity levels(zeros): protein(<50\%), ATAC(~97\%), RNA(~90\%) \citep{li2021chromatin}
+
+	\item \textbf{Increasing number of cells:}  The integration methods should be efficient enough so as to cope with increasing library size. Nowadays, We can sequence as many as even millions of cells.
+	\item \textbf{Different modality types make flexibility difficult:} more and more  protocols are created to simultaneously measure features in the same single cell like open chromatin, gene expression, protein, DNA methylation. And the combinations of modality types pose a challenge to the integration, some methods can only tackle 2 modalities, and some others can only work for specific feature matrix
+	\item \textbf{Difficulties for interpreting the latent space:} interepration of each component of the latent space, when associate molucular features with the latent space, we can interpreate each component using features from specific modalities.
+	association of features (genes, peaks, proteins) to latent spaces
+\end{itemize}
+
+
+\subsubsection{Challenge of single cell trajectory inference}
+\label{background:sec2:challenge_TI}
+
+
 % a figure shows the feature type differences among different modalities
 
 \begin{figure}[!ht]
@@ -284,7 +342,7 @@ We here describe the computational workflow for scATAC-seq data analysis, includ
 
 
 \subsection{Computational Methods for single cell multimodal integration}
-
+\label{background:sec2:integration}
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{multimodal_integration_methods_schematic/fig}
@@ -293,6 +351,29 @@ We here describe the computational workflow for scATAC-seq data analysis, includ
 	A) MOFA schematic B) scAI schematic C) Liger D) Seurat weighted nearest neighbor(WNN) E) schema  F) DIABLO . \emph{Source ~\cite{tewari2017mofa,jin2020scai,kriebel2022uinmf,hao2021seurat4,singh2021schema,singh2019diablo}}(modified to fit thesis format and/or clarify key points)}
 	\label{fig:multimodal_integration_methods_schematic}
 \end{figure}
+
+
+\begin{table}[!ht]
+	\small
+	\centering
+	\begin{tabular}{llllll}
+		\toprule
+		Name & algorithm & protocol & \#modalities  & efficiency & Reference \\
+		\midrule
+		MOFA     &   Matrix Decomposition &  universal &  any & slow &   \cite{argelaguet2020mofa+} \\
+		Schema & Metrics learning   & universal  &  any & fast & \cite{singh2021schema} \\
+		Seurat WNN	 &  WNN &  universal &  any & fast  & \cite{hao2021seurat4} \\
+		DIABLO &  PLS-DA & universal &  any & slow & \cite{singh2019diablo}\\
+		scAI & Matrix Decomposition  &  scRNA,scATAC & 2 & slow & \cite{jin2020scai}\\
+		Liger & NMF                &  shared-features&  2 & fast& \cite{kriebel2021nonnegative} \\
+		Symphony\_int& CCA  &  universal & 2 & fast & \cite{kang2021symphony}\\
+		\bottomrule
+	\end{tabular}
+	\vspace{0.1cm}
+	\caption[Overview of computational integration methods]{Overview of computational integration methods.}
+	\label{tab:methods_integration_overview}
+\end{table}
+
 
 
 % table of single cell multimodal integration methods
@@ -427,41 +508,10 @@ Where $a_h^{(q)}$ is the variable coefficient vector for the $h$-th linear combi
 \subsubsection{Symphony integration}
 Symphony~\cite{kang2021symphony} is a method to create single cell reference atlas for subsequent annotation of new single cell data sets. For a single case study with a multi-ome CITE-seq data, Symphony used canonical correlation analysis to find shared references. This simple procedure differs from MOJITOO in several ways: it does not use dimension reduction as input; it is not able to cope with more than 2 modalities and it uses the latent space of only one modality (RNA) as shared space.  Moreover, Symphony included the execution of batch correction with Harmony after the execution of CCA.
 
-\begin{table}[!ht]
-	\small
-	\centering
-	\begin{tabular}{llllll}
-		\toprule
-		Name & algorithm & protocol & \#modalities  & efficiency & Reference \\
-		\midrule
-		MOFA     &   Matrix Decomposition &  universal &  any & slow &   \cite{argelaguet2020mofa+} \\
-		Schema & Metrics learning   & universal  &  any & fast & \cite{singh2021schema} \\
-		Seurat WNN	 &  WNN &  universal &  any & fast  & \cite{hao2021seurat4} \\
-		DIABLO &  PLS-DA & universal &  any & slow & \cite{singh2019diablo}\\
-		scAI & Matrix Decomposition  &  scRNA,scATAC & 2 & slow & \cite{jin2020scai}\\
-		Liger & NMF                &  shared-features&  2 & fast& \cite{kriebel2021nonnegative} \\
-		Symphony\_int& CCA  &  universal & 2 & fast & \cite{kang2021symphony}\\
-		\bottomrule
-	\end{tabular}
-	\vspace{0.1cm}
-	\caption[Overview of computational integration methods]{Overview of computational integration methods.}
-	\label{tab:methods_integration_overview}
-\end{table}
-
-
 % a figure of single cell multimodal integration methods theory
 \subsection{Computational Methods for trajectory inference}
 % table summarizing method
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{TI_schemtaic/fig}
-	\vspace{0.1cm}
-	\caption[illustration of TI competing methods schematic.]{TI schemtaic \emph{Source: ~\cite{chen2019stream, wolf2019paga,ji2016tscan,albergante2020ElPiGraph,herring2018pCreode,street2018slingshot,cao2019monocle3,grun2016stemid}}(modified to fit thesis format and/or clarify key points)}
-	\label{fig:TI_schemtaic}
-\end{figure}
-
-
+\label{background:sec2:TI}
 
 \begin{table}[!ht]
 	\small
@@ -487,6 +537,16 @@ Symphony~\cite{kang2021symphony} is a method to create single cell reference atl
 	\caption[Overview of computational trajectory inference methods]{Overview of computational trajectory inference methods.}
 	\label{tab:methods_ti_overview}
 \end{table}
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{TI_schemtaic/fig}
+	\vspace{0.1cm}
+	\caption[illustration of TI competing methods schematic.]{TI schemtaic \emph{Source: ~\cite{chen2019stream, wolf2019paga,ji2016tscan,albergante2020ElPiGraph,herring2018pCreode,street2018slingshot,cao2019monocle3,grun2016stemid}}(modified to fit thesis format and/or clarify key points)}
+	\label{fig:TI_schemtaic}
+\end{figure}
+
 
 
 
@@ -519,3 +579,5 @@ Slicer is a KNN-based trajectory inference method that utilizes alpha-hull to es
 
 % a figure of single cell trajectory inference methods theory 
 \section{Discussion}
+\label{background:Discussion}
+
