@@ -218,8 +218,7 @@ We start from a count matrix where the mRNA sequence reads obtained are aligned 
 	Dimensional reduction is twofold: to retain the distances between cells and to visualize the data. scRNA usually uses Principal Component Analysis (PCA) to reduce the dimensionality of the data and retain the distances between cells. While Uniform Manifold Approximation and Projection (UMAP) or t-Distributed Stochastic Neighbor Embedding (t-SNE) are commonly used to visualize the data~\citep{mcinnes2018umap, van2008tsne}.
 
 	\item[batch correction]
-	Batch effects are a common confounding factor in single-cell RNA-seq experiments. Batch effects are systematic differences in measurements between batches (e.g., technical replicates, different days of lab work, different individuals, etc.) that are not due to the biological signal of interest. Batch effects can be caused by a variety of factors, including differences in reagents, equipment, and personnel. Many methods have been proposed to correct batch effects. Seurat uses canonical correlation analysis (CCA)~\citep{stuart2019seurat3} to find anchors between batches and then uses the anchors to do the correction. Scanpy uses batch-balanced k-nearest neighbors (BBKNN)~\citep{polanski2020bbknn} to find mutual nearest neighbors between batches to correct batch effects. Harmony~\citep{korsunsky2019harmony} iteratively removes batch effects present by clustering similar cells from different batches at each iteration while maximizing the diversity of batches within each cluster and then calculates a correction factor for each cell to be applied. Benchmarking of batch correction methods ~\citep{tran2020benchmark} shows that Harmony is the best method.
-
+	Batch effects are a common confounding factor in single-cell RNA-seq experiments. Namely, they are systematic differences in measurements between batches (e.g., technical replicates, different days of lab work, different individuals, etc.) that are not due to the biological signal of interest. Batch effects can be caused by a variety of factors, including differences in reagents, equipment, and personnel. Numerous methods have been proposed to address batch effects. Seurat employs canonical correlation analysis (CCA) to identify anchors between batches, utilizing these anchors for subsequent correction) ~\citep{stuart2019seurat3}. Scanpy uses batch-balanced k-nearest neighbors (BBKNN) to identify mutual nearest neighbors across batches, facilitating batch effect correction ~\citep{polanski2020bbknn} . Harmony addresses batch effects iteratively by clustering similar cells from different batches at each iteration, maximizing batch diversity within clusters, and calculating correction factors for subsequent application ~\citep{korsunsky2019harmony}. Comparative evaluations of batch correction methods indicate Harmony's superior performance ~\citep{tran2020benchmark}. 
 	\item[clustering] 
 	With the batch-corrected data, we next can cluster cells into groups with similar expression profiles that explain the heterogeneity in the data. Many methods have been proposed for clustering, and graph-based clustering methods are the most popular. E.g. Seurat uses Louvain as the default clustering algorithm~\citep{stuart2019seurat3} whereas Scanpy sets default clustering methods with Leiden algorithm~\citep{traag2019louvain}. An independent benchmarking of clustering methods ~\citep{duo2018benchclustering} shows SC3~\citep{kiselev2017sc3} and Seurat delivered the overall best performance and were the only ones to properly recover the cell types in the droplet-based data sets.
 
@@ -310,7 +309,7 @@ The surface protein analysis is simpler than scRNA and scATAC-seq, It's often pr
 
 \subsubsection{Challenge of single cell multi-modal integration}
 \label{background:sec2:challenge_integration}
-Single-cell multi-modal profiling is a new area. And task of the integration of single cell multimodal , although there are some tools have been developed to achieve the task of integration, there are some tools have  
+Single-cell multi-modal profiling is a new area. And the task of the integration of single-cell multimodal, although there are some tools have been developed to achieve the task of integration, there are some tools have  
 
 \begin{itemize}
 	\item \textbf{Heterogeneous statistical properties:}
@@ -318,17 +317,33 @@ Single-cell multi-modal profiling is a new area. And task of the integration of 
 	feature size :protein(~100), ATAC(~100,000),  RNA(~10,000)
 	sparsity levels(zeros): protein(<50\%), ATAC(~97\%), RNA(~90\%) \citep{li2021chromatin}
 
-	\item \textbf{Increasing number of cells:}  The integration methods should be efficient enough so as to cope with increasing library size. Nowadays, We can sequence as many as even millions of cells.
+	%### TODO
+	%##  check the 6 dataset of future number of several 
+
+
+	\item \textbf{Increasing number of cells:}  The integration methods should be efficient enough to cope with increasing library size. Nowadays, We can sequence as many as even millions of cells.
 	\item \textbf{Different modality types make flexibility difficult:} more and more  protocols are created to simultaneously measure features in the same single cell like open chromatin, gene expression, protein, DNA methylation. And the combinations of modality types pose a challenge to the integration, some methods can only tackle 2 modalities, and some others can only work for specific feature matrix
 	\item \textbf{Difficulties for interpreting the latent space:} interepration of each component of the latent space, when associate molucular features with the latent space, we can interpreate each component using features from specific modalities.
 	association of features (genes, peaks, proteins) to latent spaces
+	\item \textbf{overfitting}: MOFA thesis
+	\item \textbf{Scalability}: MOFA thesis
+	\item \textbf{Discriminating biological vs technical sources of variation}: MOFA thesis
+	\item \textbf{Assay noise}
+	\item \textbf{Principled validation of the model outputs} evaluation
 \end{itemize}
 
 
 \subsubsection{Challenge of single cell trajectory inference}
 \label{background:sec2:challenge_TI}
 
+Computational trajectory analysis, which explores non-linear embeddings in the cellular space and algorithms to find paths or trees in these spaces, is quite popular in the analysis of single cells ~\citep{wolf2019paga,chen2019stream,street2018slingshot,Lynch2022}. Despite the power of these approaches~\cite{Saelens2019}. There are still some challenges that need to be addressed:
 
+\begin{itemize}
+	\item \textbf{Complex and multi-branching trajectories not working for these approaches}
+	\item \textbf{Most approaches use 2D or 3D to fit trajectories} High dimensional information is not available for these methods
+	\item \textbf{Graph-based methods only use the information of nodes} Methods of use Minimum spanning Tree, ElPigraph or diffusion process usually only consider the cell position information. No methods has consider high order information of a graph, like edges and  triangles.
+	\item \textbf{Few Methods are designed for multimodal data} 
+\end{itemize}
 % a figure shows the feature type differences among different modalities
 
 \begin{figure}[!ht]
@@ -341,17 +356,9 @@ Single-cell multi-modal profiling is a new area. And task of the integration of 
 
 
 
-\subsection{Computational Methods for single cell multimodal integration}
+\subsection{Computational Methods for single-cell multimodal integration}
 \label{background:sec2:integration}
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{multimodal_integration_methods_schematic/fig}
-	\vspace{0.1cm}
-	\caption[Illustration of mulitmodal integration competing methods schematic.]{
-	A) MOFA schematic B) scAI schematic C) Liger D) Seurat weighted nearest neighbor(WNN) E) schema  F) DIABLO . \emph{Source ~\cite{tewari2017mofa,jin2020scai,kriebel2022uinmf,hao2021seurat4,singh2021schema,singh2019diablo}}(modified to fit thesis format and/or clarify key points)}
-	\label{fig:multimodal_integration_methods_schematic}
-\end{figure}
-
+The challenges discussed in \sref{background:sec2:challenge_integration} regarding the integration of single-cell multimodal data pose difficulties in developing an efficient and effective integration method. 
 
 \begin{table}[!ht]
 	\small
@@ -373,6 +380,17 @@ Single-cell multi-modal profiling is a new area. And task of the integration of 
 	\caption[Overview of computational integration methods]{Overview of computational integration methods.}
 	\label{tab:methods_integration_overview}
 \end{table}
+
+Several methods have been developed to address this task, and we will now review the computational single-cell multimodal integration methods available in the literature. These methods can be classified into four groups based on the techniques they employ. The first group encompasses matrix decomposition, which breaks down the multimodal count matrix into the product of two matrices. One matrix contains the latent factors representing the features, while the other incorporates the cells embedded in the latent factor space (e.g., MOFA, scAI, Liger). The second group endeavors to construct a weighted nearest network that captures common information across all modalities (e.g., Seurat WNN). The third group seeks to maximize the covariance or correlation between two modalities (e.g., DIABLO, Symphony). The fourth group employs metric learning to reweigh modality features by maximizing their agreement with other modalities(Schema). \tref{tab:methods_integration_overview} summarizes the characteristics of each method and \fref{fig:multimodal_integration_methods_schematic} shows the workflow of these methods.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{multimodal_integration_methods_schematic/fig}
+	\vspace{0.1cm}
+	\caption[Illustration of mulitmodal integration competing methods schematic.]{
+	A) MOFA schematic B) scAI schematic C) Liger D) Seurat weighted nearest neighbor(WNN) E) schema  F) DIABLO . \emph{Source ~\cite{tewari2017mofa,jin2020scai,kriebel2022uinmf,hao2021seurat4,singh2021schema,singh2019diablo}}(modified to fit thesis format and/or clarify key points)}
+	\label{fig:multimodal_integration_methods_schematic}
+\end{figure}
 
 
 
@@ -509,10 +527,11 @@ Where $a_h^{(q)}$ is the variable coefficient vector for the $h$-th linear combi
 Symphony~\cite{kang2021symphony} is a method to create single cell reference atlas for subsequent annotation of new single cell data sets. For a single case study with a multi-ome CITE-seq data, Symphony used canonical correlation analysis to find shared references. This simple procedure differs from MOJITOO in several ways: it does not use dimension reduction as input; it is not able to cope with more than 2 modalities and it uses the latent space of only one modality (RNA) as shared space.  Moreover, Symphony included the execution of batch correction with Harmony after the execution of CCA.
 
 % a figure of single cell multimodal integration methods theory
-\subsection{Computational Methods for trajectory inference}
-% table summarizing method
 \label{background:sec2:TI}
+\subsection{Computational Methods for trajectory inference}
+ The challenges highlighted in \sref{background:sec2:challenge_TI} regarding the trajectory inference of single-cell multimodal data present complexities in developing methods for handling multimodal data and data exhibiting intricate trajectory structures. 
 
+% table summarizing method
 \begin{table}[!ht]
 	\small
 	\centering
@@ -537,7 +556,7 @@ Symphony~\cite{kang2021symphony} is a method to create single cell reference atl
 	\caption[Overview of computational trajectory inference methods]{Overview of computational trajectory inference methods.}
 	\label{tab:methods_ti_overview}
 \end{table}
-
+In this section, we discuss several published trajectory inference methods, All of them are top methods according to the dynverse trajectory inference evaluation system except STREAM a new method not yet implemented in dynverse. These methods can be broadly categorized into six groups. The first group involves methods utilizing a minimum spanning tree(MST) to capture the backbone in the embeddings of a dataset (e.g., TSCAN, slingshot, MST, slice). The second group includes methods like ElPiGraph, which leverages Elastic Principal Graphs to yield an explicit principal tree in data space (ElPiGraph, STREAM). The third group employs topic model Latent Dirichlet Allocation (LDA) from the natural language processing (NLP) field for inference. The fourth group encompasses methods such as PAGA, using kNN graph partitioning, and pCreode, creating a d-kNN graph. The fifth group utilizes cluster distances for inference to derive the structure (RaceID/StemID). The last method, Monocle3, seeks to create a principal graph on dimension reductions. These methods are summarized in \tref{tab:methods_ti_overview} and \fref{fig:TI_schemtaic} illustrates the workflow of most of the methods.
 
 \begin{figure}[!ht]
 	\centering
@@ -546,7 +565,6 @@ Symphony~\cite{kang2021symphony} is a method to create single cell reference atl
 	\caption[illustration of TI competing methods schematic.]{TI schemtaic \emph{Source: ~\cite{chen2019stream, wolf2019paga,ji2016tscan,albergante2020ElPiGraph,herring2018pCreode,street2018slingshot,cao2019monocle3,grun2016stemid}}(modified to fit thesis format and/or clarify key points)}
 	\label{fig:TI_schemtaic}
 \end{figure}
-
 
 
 
@@ -560,7 +578,8 @@ The Elastic principal graph:
 	\end{aligned}
 \end{equation}	
 where $X=\{X_i\}, i = 1\cdots|X|$ is a set of points, $E^{(i)}(0)$ and $E^{(i)(1)}$ denotes the two vertices of a graph edge $E^{(i)}$, and $S^{(j)(0)},\cdots S^{(j)}(k)$ denote the vertices of the a star $S^{(j)}$ in the graph. $P(i)$ is a data point partitioning function associating each data point $X_i$ to the closest vertex index that $P(i) = \arg\min_{j=1\cdots |V|}$. $phi{V_j}$ is the mapping function that $\phi: V \rightarrow R^{m}$, which defines a position of $j$th graph vertex in the multidimensional space of data. Finally, $R_0$ is the trimming radius such that points further than $R_0$ from any nodes don't contribute to the optimization of the graph, and $\lambda$ is the edge stretching elasticity modulo regularizing the total length of the graph, and $\alpha$ is a coefficient to control the complexity of the graph. $\mu$ is the star bending elasticity that controls the smoothness of the graph.
-\subsubsection{PAGA} Given single-cell RNA sequencing (scRNA-seq) data, PAGA adopts a series of steps inspired by Seurat and implemented in Scanpy. These steps involve basic data filtering, total count normalization, log transformation, identification of highly variable genes, potential regression of confounding factors, and scaling to z-scores. The processed data undergoes principal component analysis (PCA), representing it in a reduced space. Graph construction follows, creating a symmetrized kNN-like graph using UMAP's approximate nearest neighbor search. It uses Euclidean distance and either adaptive Gaussian kernels or the exponential kernel within UMAP. Graph partitioning employs the Louvain algorithm, generating a PAGA graph for undirected cases and considering velocity graphs for directed cases. Pseudotime estimation involves an extended version of diffusion pseudotime (DPT), accommodating disconnected graphs. PAGA achieves consistent embeddings across resolutions by initializing an embedding of a fine-grained graph using the coordinates of a coarse-grained graph, preserving topology. The process ensures minimal displacement and topology preservation in the embedding space.
+\subsubsection{PAGA} 
+Given single-cell RNA sequencing (scRNA-seq) data, PAGA adopts a series of steps inspired by Seurat and implemented in Scanpy. These steps involve basic data filtering, total count normalization, log transformation, identification of highly variable genes, potential regression of confounding factors, and scaling to z-scores. The processed data undergoes principal component analysis (PCA), representing it in a reduced space. Graph construction follows, creating a symmetrized kNN-like graph using UMAP's approximate nearest neighbor search. It uses Euclidean distance and either adaptive Gaussian kernels or the exponential kernel within UMAP. Graph partitioning employs the Louvain algorithm, generating a PAGA graph for undirected cases and considering velocity graphs for directed cases. Pseudotime estimation involves an extended version of diffusion pseudotime (DPT), accommodating disconnected graphs. PAGA achieves consistent embeddings across resolutions by initializing an embedding of a fine-grained graph using the coordinates of a coarse-grained graph, preserving topology. The process ensures minimal displacement and topology preservation in the embedding space.
 \subsubsection{Monocle3}
 Monocle undergoes a comprehensive five-step process in single-cell dataset analysis. Firstly, it normalizes and pre-processes data, addressing technical variations. The second step involves reducing dimensionality by projecting cells onto the top 50 principal components, with options for further reduction using t-SNE or UMAP. In the third step, Monocle 3 clusters and partitions cells, recognizing disconnected trajectories or "supergroups" that capture diverse cellular responses. Subsequently, it learns a principal graph, utilizing methods like DDRTree, SimplePPT, or L1Graph, accommodating tree-like or looped trajectories. Finally, Monocle 3 conducts differential expression analysis and visualization, empowering users to explore gene dynamics across clusters and trajectories with sophisticated testing methods.
 \subsubsection{Slingshot}
@@ -569,15 +588,53 @@ Slingshot is single-cell lineage inference tool capable of handling datasets wit
 TSCAN first uses PCA to reduce the dimensionality. It uses the clustering algorithm Mclust to model the datasets as a mixture of normal distributions, to cluster the cells while automatically determining the number of clusters using the Bayesian information criterion. Next, It infers a trajectory by identifying the longest connected path through the Minimum Spanning Tree (MST) tree, which is created through the cluster center. Finally, all the cells are projected to the nearest point on the trajectory, creating the final ordering. TSCAN automatically determines both start and end cell clusters without prior gene dimension filtering. However, slight changes in center locations can significantly impact the identified trajectory.
 \subsubsection{Slicer}
 Slicer is a KNN-based trajectory inference method that utilizes alpha-hull to estimate the k parameter for locally linear embedding dimensionality reduction. First, Slicer computes a KNN graph from locally linear embedding, next it finds the most “extreme” cells in the graph. The user needs to specify a starting cell from extreme cells, Slicer then find the shortest path to all other cells. Next, the geodesic entropy is used to find branches; high values indicate the existence of a branching point.
-\subsubsection{slice} SLICE comprises two main functions: quantitatively assessing cell differentiation state through single-cell entropy and reconstructing single-cell lineages in silico. The calculation of single-cell entropy (scEntropy) involves computing the expected value for each cell, representing the uncertainty in cellular functions' activation based on gene expression patterns. The scEntropy is utilized to measure the differentiation state of individual cells. Stable states are identified within scRNA-seq datasets using clustering or graph-based methods, considering the scEntropy of each cell. SLICE then constructs a lineage model by inferring a directed minimum spanning tree among stable states, reflecting differentiation trajectories. The reconstruction of cell transitional paths involves either a shortest-path approach or a principal curve-based approach, revealing the dynamics of gene expression during differentiation. Lineage-dependent differentially expressed genes are identified based on smoothed expression profiles, and temporal gene expression patterns are unveiled through clustering analysis. This comprehensive approach allows for an unbiased exploration of cellular differentiation and lineage relationships in scRNA-seq data.
-\subsubsection{RaceID/StemID} StemID uses RaceID, an advanced version of RaceID to perform clustering. Next, to address the challenge of determining branching points in systems with multiple cell lineages for building the lineage tree with guided topology StemID predefines the tree's structure by allowing potential differentiation trajectories between pairs of clusters. Each trajectory links the medoids of two clusters, and collectively, these inter-cluster links determine the possible lineage tree's topology. To mitigate technical noise and computational load, It initially reduces input space dimensionality, emphasizing maximal preservation of point-to-point distances. Next, it assigns each cell to its likely position on a single inter-cluster link based on the projection of the vector connecting a cluster's medoid to one of its cells onto links with other clusters' medoids. By normalizing link lengths and identifying densely populated links, StemID discerns potential differentiation trajectories. This approach, applied to intestinal data, successfully revealed a lineage tree consistent with the known structure.
-\subsubsection{ElPiGraph} Elastic Principal Graphs (ElPiGraphs) serve as structured approximators for data, comprising vertices connected by edges. These vertices are embedded into the data space, minimizing mean squared distance (MSD) to data points. Notably, ElPiGraphs differ from unstructured k-means by incorporating edges to define an elastic energy term. This term, coupled with MSD, penalizes edge stretching and branch bending. ElPiGraph employs a topological grammar for optimal graph structure determination, building on a core algorithm initially introduced and tested in earlier publications. In essence, an elastic principal graph is an undirected graph in multidimensional space, optimizing data approximation and graph elastic energy. Key parameters, including trimming radius ($R_0$), edge elasticity ($\lambda$), star bending elasticity ($\mu$), and a complexity control coefficient ($\alpha$), guide the optimization process. ElPiGraph achieves efficient minimization by employing a quadratic problem-solving approach for vertex coordinates. Its innovation lies in the use of topological grammars, exploring diverse graph structures and iteratively refining configurations until specified conditions are met. Notably, ElPiGraph yields an explicit principal tree in data space, facilitating independent study or mapping data onto the tree for analysis in intrinsic coordinates. 
-\subsubsection{celltree} To identify and utilize this group structure, celltree adapts a natural language processing(NLP) statistical approach known as Latent Dirichlet Allocation(LDA) to build a topic model. By comparing the different per-cell topic histograms, celltree can evaluate their similarity and infer complex hierarchical structures. By looking at the topics themselves, one can obtain useful biological insights into the gene sets characterizing the different stages of that hierarchy. Based on this lower-dimensional model, they construct a visual representation of the cell population. finally, they introduce “backbone trees” to easily visualize cells along complex differentiation paths.
-\subsubsection{pCreode} pCreode infer a trajactory for single-cell data through 6 steps i) Conducts density-dependent down-sampling to normalize the representation of both rare and overrepresented cell states; 2) Constructs a density-based k-nearest neighbor (d-kNN) network using the down-sampled data; 3) Automatically distinguishes end-states from transition states by employing K-means clustering and assessing silhouette scores for cells with low closeness values (< mean); 4) Establishes topology through a hierarchical placement strategy, positioning cells on path nodes between end-states. This enables the arrangement of data points along an ancestral continuum; 5) Aligns topology with maximal consensus through an iterative process involving the assignment and repositioning of path nodes based on neighborhood cell densities; 6)Develops a scoring metric within pCreode to compare dissimilarities between topologies facilitating the selection of the most representative graph for visualization purposes.
+\subsubsection{slice} 
+SLICE comprises two main functions: quantitatively assessing cell differentiation state through single-cell entropy and reconstructing single-cell lineages in silico. The calculation of single-cell entropy (scEntropy) involves computing the expected value for each cell, representing the uncertainty in cellular functions' activation based on gene expression patterns. The scEntropy is utilized to measure the differentiation state of individual cells. Stable states are identified within scRNA-seq datasets using clustering or graph-based methods, considering the scEntropy of each cell. SLICE then constructs a lineage model by inferring a directed minimum spanning tree among stable states, reflecting differentiation trajectories. The reconstruction of cell transitional paths involves either a shortest-path approach or a principal curve-based approach, revealing the dynamics of gene expression during differentiation. Lineage-dependent differentially expressed genes are identified based on smoothed expression profiles, and temporal gene expression patterns are unveiled through clustering analysis. This comprehensive approach allows for an unbiased exploration of cellular differentiation and lineage relationships in scRNA-seq data.
+\subsubsection{RaceID/StemID} 
+StemID uses RaceID, an advanced version of RaceID to perform clustering. Next, to address the challenge of determining branching points in systems with multiple cell lineages for building the lineage tree with guided topology StemID predefines the tree's structure by allowing potential differentiation trajectories between pairs of clusters. Each trajectory links the medoids of two clusters, and collectively, these inter-cluster links determine the possible lineage tree's topology. To mitigate technical noise and computational load, It initially reduces input space dimensionality, emphasizing maximal preservation of point-to-point distances. Next, it assigns each cell to its likely position on a single inter-cluster link based on the projection of the vector connecting a cluster's medoid to one of its cells onto links with other clusters' medoids. By normalizing link lengths and identifying densely populated links, StemID discerns potential differentiation trajectories. This approach, applied to intestinal data, successfully revealed a lineage tree consistent with the known structure.
+\subsubsection{ElPiGraph}
+ Elastic Principal Graphs (ElPiGraphs) serve as structured approximators for data, comprising vertices connected by edges. These vertices are embedded into the data space, minimizing mean squared distance (MSD) to data points. Notably, ElPiGraphs differ from unstructured k-means by incorporating edges to define an elastic energy term. This term, coupled with MSD, penalizes edge stretching and branch bending. ElPiGraph employs a topological grammar for optimal graph structure determination, building on a core algorithm initially introduced and tested in earlier publications. In essence, an elastic principal graph is an undirected graph in multidimensional space, optimizing data approximation and graph elastic energy. Key parameters, including trimming radius ($R_0$), edge elasticity ($\lambda$), star bending elasticity ($\mu$), and a complexity control coefficient ($\alpha$), guide the optimization process. ElPiGraph achieves efficient minimization by employing a quadratic problem-solving approach for vertex coordinates. Its innovation lies in the use of topological grammars, exploring diverse graph structures and iteratively refining configurations until specified conditions are met. Notably, ElPiGraph yields an explicit principal tree in data space, facilitating independent study or mapping data onto the tree for analysis in intrinsic coordinates. 
+\subsubsection{celltree}
+ To identify and utilize this group structure, celltree adapts a natural language processing(NLP) statistical approach known as Latent Dirichlet Allocation(LDA) to build a topic model. By comparing the different per-cell topic histograms, celltree can evaluate their similarity and infer complex hierarchical structures. By looking at the topics themselves, one can obtain useful biological insights into the gene sets characterizing the different stages of that hierarchy. Based on this lower-dimensional model, they construct a visual representation of the cell population. finally, they introduce “backbone trees” to easily visualize cells along complex differentiation paths.
+\subsubsection{pCreode} 
+pCreode infer a trajactory for single-cell data through 6 steps i) Conducts density-dependent down-sampling to normalize the representation of both rare and overrepresented cell states; 2) Constructs a density-based k-nearest neighbor (d-kNN) network using the down-sampled data; 3) Automatically distinguishes end-states from transition states by employing K-means clustering and assessing silhouette scores for cells with low closeness values (< mean); 4) Establishes topology through a hierarchical placement strategy, positioning cells on path nodes between end-states. This enables the arrangement of data points along an ancestral continuum; 5) Aligns topology with maximal consensus through an iterative process involving the assignment and repositioning of path nodes based on neighborhood cell densities; 6)Develops a scoring metric within pCreode to compare dissimilarities between topologies facilitating the selection of the most representative graph for visualization purposes.
 
 % table of single cell trajectory inference methods
 
 % a figure of single cell trajectory inference methods theory 
 \section{Discussion}
 \label{background:Discussion}
+In this chapter, we initially provided an overview of DNA structure and gene regulatory processes. Subsequently, we introduced the profiling techniques for single-cell transcriptome, epigenome, and proteome, including simultaneous profiling protocols. We then delved into the computational analyses associated with these modalities. Following that, we addressed the challenges posed by two critical analyses: single-cell multimodal integration and trajectory inference. Lastly, we conducted a review of related work about these two computational analysis aspects.
+
+
+Single-cell simultaneous modalities profiling is a nascent area, offering insights into biological processes and cellular heterogeneity. However, the complexity of different modalities' features and the growing library size present challenges, necessitating tools for integration and trajectory inference. In this thesis, we investigate these aspects with two main goals:
+
+
+
+ For single cell multimodal integration:
+\begin{itemize}
+	\item 
+	The objective is to develop an innovative computational method proficient in integrating more than two modalities with efficacy. The method should adeptly handle scenarios where modalities lack shared features and effectively address batch correction issues arising from diverse data batches. Furthermore, the method must yield a cohesive latent space suitable for clustering, data visualization, and subsequent analyses. Crucially, this latent space should be interpretable, facilitating the association of a component with the original feature count matrix. This interpretability enables a nuanced understanding of components, encompassing aspects such as gene expression and TF activity.
+	\item 
+	Establishing a comprehensive benchmarking framework for multimodal integration is imperative. Acknowledging that ground truth labels (cell type) may not infallibly represent actual biological facts due to manual cell annotation, it is crucial to devise a sophisticated set of benchmarking metrics. Beyond employing the Adjusted Rand Index to gauge clustering arrangement alignment with true labels, the benchmarking should encompass structural similarity evaluations between the shared latent space and each individual modality. Additionally, it should address the evolving levels of shared latent space distances among cells originating from the original modalities.
+ 
+	\item 
+	We should curate diverse sets of simultaneous multimodal datasets for benchmarking, incorporating two datasets that simultaneously profile single-cell RNA sequencing (scRNA) and single-cell Assay for Transposase-Accessible Chromatin sequencing (scATAC), two datasets comprising scRNA and single-cell surface protein information, and two datasets involving all three prevalent types: scRNA, scATAC, and single cell surface protein. This comprehensive approach ensures a more equitable and robust benchmarking outcome.
+
+	\item 
+	We should strive to interpret the components of the latent space using a dataset, gaining biological insights to determine whether it effectively captures cell type signals or signals related to cell fate differentiation. Additionally, we aim to interpret the latent space by associating it with the gene expression count matrix and epigenomic peak count matrix, selecting features to demonstrate the capabilities of our model.
+\end{itemize}
+
+For Trajectory inference:
+
+\begin{itemize}
+	\item 
+	The development of a new computational method should involve the ability to infer a trajectory tree effectively capturing cell differentiation events. Additionally, the method should adeptly handle complex tree structure datasets, delving deeper into the graph structure by considering not only the relations between nodes and edges but also the edges and triangles within a graph. Furthermore, the method should be applicable to single-cell multimodal data. To evaluate its efficacy, we will generate high-dimensional simulated data with varying tree structures, ranging from small to large, to assess the model's capability to capture intricate tree structures. Benchmarking will be performed using the dynverse Trajectory Inference evaluation framework, comparing our method with top-ranked methods.
+
+	\item 
+	The evaluation of the methods should encompass topological similarity between the inferred trajectory and the ground truth. Additionally, it should assess the accuracy of cell branches belonging and scrutinize the cell order within each branch
+
+	\item The application of our method to in-house single-cell multimodal data involves implementing the 10x multiome protocol on kidney organoid data at four distinct time points: day 5, day 12, day 19, and day 25. We aim to assess the capability of our method in capturing cell differentiation. Additionally, we plan to uncover insights by exploring the trajectories of our model through statistical differentiation of branches and correlation analyses between genes and transcription factor(TF) activities. To further validate our findings, we intend to conduct TF knockouts and assess their impact on preventing incorrect cell type differentiation.
+\end{itemsize}
+
 
