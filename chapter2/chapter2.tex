@@ -235,7 +235,7 @@ We start from a count matrix where the mRNA sequence reads obtained are aligned 
 \end{description}
 
 \subsection{scATAC}
-\label{background:sec2:scRNA}
+\label{background:sec2:scATAC}
 We here describe the computational workflow for scATAC-seq data analysis, including, feature matrix construction, preprocessing(feature definition, quality control,  feature selection), core analysis (dimensionality reduction, batch correction and clustering), and downstream analysis (differenetial accessibility, trajectory inference etc. ).
 \begin{figure}[!ht]
 	\centering
@@ -277,16 +277,31 @@ We here describe the computational workflow for scATAC-seq data analysis, includ
 \end{description}
 \subsubsection{Downstream analysis}
 \begin{description}
-	\item[differential accessibility] Often, our focus lies in identifying peaks that are exclusive to an individual cluster or a specific subset of clusters. 
+	\item[differential accessibility] 
+	To gain insights into cluster/cell type-specific biology, one can perform differential accessibility analysis, akin to scRNA differential gene expression. Various statistical methods have been employed for this task, including the aforementioned Wilcoxon test from scRNA, which is also applicable here. Additionally, binomial tests \citep{cusanovich2018single}, and logistic regression models \citep{hao2021seurat4} are commonly used in scATAC-seq tools. Typically, methods for differential accessibility take into account the removal of technical biases, such as unique nuclear fragments and TSS enrichment. ArchR \citep{Granja2021} selects a set of background cells that match the known biases for each cell group and performs comparisons between each cell group and its background cells. Signac \citep{hao2021seurat4} employs logistic regression for differential accessibility analysis and treats the total number of fragments as a latent variable to mitigate the effects of technical biases.
+	
 	\item[trajectory inference]
-	\item[co-accessibility]
-	\item[TF activity]   
+	Trajectory analysis has been discussed in \sref{background:sec2:scRNA}. Similar analysis can be also done using scATAC-seq data.
+
+	\item[linkage analysis]
+	Accessibility profiles along the linear genome in individual cells have been shown to correlate with higher-order chromosome folding \citep{Buenrostro2015}. Consequently, scATAC-seq data enables the extraction of promoter–enhancer interactions and gene regulatory networks through linkage analysis analysis. Two main types of the analysis are peak-to-peak co-accessible analysis and peak-to-gene linkage analysis. Cicero \citep{pliner2018cicero} is an algorithm designed for establishing genome-wide connections between distal enhancers and promoters based on co-accessibility patterns in scATAC-seq data. Basically, peak-to-peak co-accessibility analysis seeks correlations of accessibility between two peaks across cells, but it doesn't necessarily indicate a direct regulatory relationship due to frequent co-accessibility of cell type-specific peaks. To overcome this, peak-to-gene linkage analysis integrates scRNA-seq data, calculating correlations between peak accessibility and gene expression\citep{Granja2021}. This method, compared to peak-to-peak co-accessibility analysis, more accurately reflects gene regulatory interactions\citep{shi2022scatacoverview}.
 \end{description}
 
 %%might ignore the surface protein part
 \subsection{surface protein}
 \label{background:sec2:protein}
-The surface protein analysis is simpler than scRNA and scATAC-seq, It's often profiled with scRNA-seq. Therefore, the quality check is usually done by detecting single-cell RNA feature distributions. We can perform similar normalization, and dimensional reduction as scRNA-seq. 
+The surface protein analysis is simpler than scRNA and scATAC-seq, It's often profiled with scRNA-seq.
+\begin{description}
+	\item[quality check] 
+	Antibody-derived tags (ADT) data exhibit higher density compared to scRNA-seq and scATAC-seq data. In droplet-based assays, non-zero counts for ADTs are commonly observed due to ambient contamination and nonspecific antibody binding. It is advisable to remove libraries with zero counts for the entire or a majority of the antibody panel. However, caution should be exercised when removing cells with low total ADT counts, as this may inadvertently exclude cell types that do not express a specific set of proteins or express only a few~\citep{amezquita2020adtqc}. Given these considerations, a meticulous evaluation of individual quality control metrics is essential in the ADT modality. For protocols that simultaneously measure RNA and ADTs, such as CITE-seq, quality control for RNA and ADTs should be conducted separately. Since antibody efficacy can vary, batch correction of ADT data across multiple studies should also be performed\citep{zheng2022adtqc}.
+
+	\item[preprocessing]
+	Cell characteristics can introduce heterogeneous capture efficiency, leading to biases in cell composition. The increase in tag count is observed only in cells expressing the targeted proteins, potentially specific cell types\citep{zheng2022adtqc}. To address this, normalization techniques such as centered log-ratio (CLR) transformation\citep{stoeckius2017simultaneous}.
+
+
+	\item[downstream analysis]
+	The downstream analysis of ADT data follows a similar pipeline to unimodal RNA analysis, wherein annotated clusters can be tested for differential abundance.
+\end{description}
 
 \subsection{multi-modal analysis}
 \label{background:sec2:multimodal}
@@ -297,15 +312,22 @@ The surface protein analysis is simpler than scRNA and scATAC-seq, It's often pr
 	\caption[A common computational multimodal analysis workflow.]{A common workflow for single-cell multimodal datasets analysis}
 	\label{fig:workflow_multimodal}
 \end{figure}
-\subsubsection{preprocessing}
-\subsubsection{Dimensional reduction, integration and clustering}
-\subsubsection{Downstream analysis}
+
+\begin{description}
+	\item[preprocessing]
+	Typically, the preprocessing task in multimodal data analysis can be distributed to separate tasks for each unimodal, except for the quality check stage. In the quality check phase, methods specific to each unimodal can be employed to identify the highest quality cells for subsequent analysis. See \sref{background:sec2:scRNA}, \sref{background:sec2:scATAC} and \sref{background:sec2:protein} for details.
+
+	\item[Dimensional reduction, integration and clustering]
+	In the realm of single-cell multimodal analysis, a challenge arises from the potential dimension reduction in each modality, complicating downstream analyses such as visualization and clustering. To tackle this issue, a common strategy involves integrating multimodal data into a unified dimensionality. Some methods take the original count matrix as input, exemplified by MOFA \citep{argelaguet2020mofa+} or scAI \citep{jin2020scai}. Alternatively, certain approaches incorporate a dimension reduction step into their model, as demonstrated by Schema\citep{singh2021schema}. However, it is essential to recognize the significance of batch correction, especially when dealing with multiple batches of data. Once a unified latent space is obtained, downstream analyses, including clustering and visualization, can be conducted using this consolidated space.
+
+	\item[downstream analysis]
+	Many tasks in single-cell multimodal analysis are similar to single-cell unimodal analysis, like differential gene expression, trajectory inference, geneset enrichment. However, single-cell multimodal analysis can enhance certain tasks performed in unimodal analysis, providing deeper insights, such as obtaining more accurate Gene Regulatory Networks (GRN). This approach allows for a more comprehensive exploration of gene regulation. Specifically, multimodal datasets that incorporate both epigenomic (e.g., snATAC-seq, methylation) and transcriptomic measurements are instrumental in identifying regulatory relationships. Additionally, the integration of scRNA-seq and proteomic data proves valuable for a detailed examination of signaling networks. For instance, scMega \citep{li2023scmega} utilizes scRNA-seq and scATAC-seq data to infer GRN.
+\end{description}
 
 \section{Related works}
 \label{background:related_works}
 \subsection{Challenge of single cell multi-modal integration and trajectory inference}
 \label{background:sec2:challenge}
-
 
 \subsubsection{Challenge of single cell multi-modal integration}
 \label{background:sec2:challenge_integration}
@@ -355,7 +377,6 @@ Computational trajectory analysis, which explores non-linear embeddings in the c
 \end{figure}
 
 
-
 \subsection{Computational Methods for single-cell multimodal integration}
 \label{background:sec2:integration}
 The challenges discussed in \sref{background:sec2:challenge_integration} regarding the integration of single-cell multimodal data pose difficulties in developing an efficient and effective integration method. 
@@ -391,7 +412,6 @@ Several methods have been developed to address this task, and we will now review
 	A) MOFA schematic B) scAI schematic C) Liger D) Seurat weighted nearest neighbor(WNN) E) schema  F) DIABLO . \emph{Source ~\cite{tewari2017mofa,jin2020scai,kriebel2022uinmf,hao2021seurat4,singh2021schema,singh2019diablo}}(modified to fit thesis format and/or clarify key points)}
 	\label{fig:multimodal_integration_methods_schematic}
 \end{figure}
-
 
 
 % table of single cell multimodal integration methods
@@ -611,12 +631,12 @@ Single-cell simultaneous modalities profiling is a nascent area, offering insigh
 
 
 
- For single cell multimodal integration:
+1.  Develop a single cell multimodal integration method:
 \begin{itemize}
 	\item 
 	The objective is to develop an innovative computational method proficient in integrating more than two modalities with efficacy. The method should adeptly handle scenarios where modalities lack shared features and effectively address batch correction issues arising from diverse data batches. Furthermore, the method must yield a cohesive latent space suitable for clustering, data visualization, and subsequent analyses. Crucially, this latent space should be interpretable, facilitating the association of a component with the original feature count matrix. This interpretability enables a nuanced understanding of components, encompassing aspects such as gene expression and TF activity.
 	\item 
-	Establishing a comprehensive benchmarking framework for multimodal integration is imperative. Acknowledging that ground truth labels (cell type) may not infallibly represent actual biological facts due to manual cell annotation, it is crucial to devise a sophisticated set of benchmarking metrics. Beyond employing the Adjusted Rand Index to gauge clustering arrangement alignment with true labels, the benchmarking should encompass structural similarity evaluations between the shared latent space and each individual modality. Additionally, it should address the evolving levels of shared latent space distances among cells originating from the original modalities.
+	Establishing a comprehensive benchmarking framework for multimodal integration is imperative. All methods aferomentioned\sref{background:sec2:integration} will be evaluated in \sref{cha:mulitmodal_bench}. Acknowledging that ground truth labels (cell type) may not infallibly represent actual biological facts due to manual cell annotation, it is crucial to devise a sophisticated set of benchmarking metrics. Beyond employing the Adjusted Rand Index to gauge clustering arrangement alignment with true labels, the benchmarking should encompass structural similarity evaluations between the shared latent space and each individual modality. Additionally, it should address the evolving levels of shared latent space distances among cells originating from the original modalities.
  
 	\item 
 	We should curate diverse sets of simultaneous multimodal datasets for benchmarking, incorporating two datasets that simultaneously profile single-cell RNA sequencing (scRNA) and single-cell Assay for Transposase-Accessible Chromatin sequencing (scATAC), two datasets comprising scRNA and single-cell surface protein information, and two datasets involving all three prevalent types: scRNA, scATAC, and single cell surface protein. This comprehensive approach ensures a more equitable and robust benchmarking outcome.
@@ -625,16 +645,23 @@ Single-cell simultaneous modalities profiling is a nascent area, offering insigh
 	We should strive to interpret the components of the latent space using a dataset, gaining biological insights to determine whether it effectively captures cell type signals or signals related to cell fate differentiation. Additionally, we aim to interpret the latent space by associating it with the gene expression count matrix and epigenomic peak count matrix, selecting features to demonstrate the capabilities of our model.
 \end{itemize}
 
-For Trajectory inference:
+2. Develop a Trajectory inference method for single cell multimodal data:
 
 \begin{itemize}
 	\item 
-	The development of a new computational method should involve the ability to infer a trajectory tree effectively capturing cell differentiation events. Additionally, the method should adeptly handle complex tree structure datasets, delving deeper into the graph structure by considering not only the relations between nodes and edges but also the edges and triangles within a graph. Furthermore, the method should be applicable to single-cell multimodal data. To evaluate its efficacy, we will generate high-dimensional simulated data with varying tree structures, ranging from small to large, to assess the model's capability to capture intricate tree structures. Benchmarking will be performed using the dynverse Trajectory Inference evaluation framework, comparing our method with top-ranked methods.
+	The aim is to develop a new computational method to infer a trajectory tree effectively capturing cell differentiation events. The method should adeptly handle complex tree structure datasets, delving deeper into the graph structure by considering not only the relations between nodes and edges but also the edges and triangles within a graph. Furthermore, the method should be applicable to single-cell multimodal data. 
+	
+	\item 
+	The method should offer an elegant visualization of the inferred trajectory tree. Additionally, it should provide functions to perform branch differentiation, enabling the identification of significantly expressed marker genes or marker TF activities for specific comparisons. To facilitate single-cell multimodal analysis, the method should also incorporate an approach to correlate different features, such as gene expression and transcription factor activity, along a trajectory branch.
+	
+	\item 
+	To evaluate its efficacy, we will generate high-dimensional simulated data with varying tree branches, ranging from small to large, to assess the model's capability to capture intricate tree structures. Benchmarking will be performed using the dynverse Trajectory Inference evaluation framework, comparing our method with top-ranked methods.
 
 	\item 
-	The evaluation of the methods should encompass topological similarity between the inferred trajectory and the ground truth. Additionally, it should assess the accuracy of cell branches belonging and scrutinize the cell order within each branch
+	All methods aferomentioned~\sref{background:sec2:TI} will be evaluate in \sref{cha:phlower_bench} The evaluation of the methods should include an examination of the topological similarity between the inferred trajectory and the ground truth. Furthermore, it should evaluate the accuracy of cell branch allocation and scrutinize the order of cells within each branch, as well as the accuracy of branching point allocation.
 
 	\item The application of our method to in-house single-cell multimodal data involves implementing the 10x multiome protocol on kidney organoid data at four distinct time points: day 5, day 12, day 19, and day 25. We aim to assess the capability of our method in capturing cell differentiation. Additionally, we plan to uncover insights by exploring the trajectories of our model through statistical differentiation of branches and correlation analyses between genes and transcription factor(TF) activities. To further validate our findings, we intend to conduct TF knockouts and assess their impact on preventing incorrect cell type differentiation.
-\end{itemsize}
+	
+\end{itemize}
 
 
