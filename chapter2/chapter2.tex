@@ -335,24 +335,28 @@ Single-cell multi-modal profiling is a new area. And the task of the integration
 
 \begin{itemize}
 	\item \textbf{Heterogeneous statistical properties:}
-	 Different modalities hold distinct statistical properties.  For example, the feature size of protein usually is around 100. ATAC feature space size is hundreds of thousands, And Gene expression matrix feature space size is 10s of 1000. The sparsity of different modalities is diverse, protein counts are usually dense and ATAC peaks are sparse.
-	feature size :protein(~100), ATAC(~100,000),  RNA(~10,000)
-	sparsity levels(zeros): protein(<50\%), ATAC(~97\%), RNA(~90\%) \citep{li2021chromatin}
+	 Different modalities hold distinct statistical properties which pose a challenge to the task of single cell mulitmodal integration. The feature size, the sparse level of the feature matrix and the distribution of the feature matrix are different among different modalities. See the features of modalities from 6 single cell multimodal data comparison in \ref{fig:modalities_differences}.
 
-	%### TODO
-	%##  check the 6 dataset of future number of several 
+	\item \textbf{Flexibility:}
+	Increasingly, new protocols are being developed to simultaneously measure features in the same single cell, such as open chromatin, gene expression, protein, and DNA methylation. The combinations of different modality types present a challenge for integration; some methods can only handle two modalities, while others are limited to specific feature matrices.	
 
+	\item \textbf{Scalability:} As sequencing costs decrease and technologies improve, we anticipate that multimodal datasets will follow a similar trend as single-cell RNA sequencing (scRNA-seq), where in less than ten years, the size of experiments increased from the order of tens to millions of cells.  
 
-	\item \textbf{Increasing number of cells:}  The integration methods should be efficient enough to cope with increasing library size. Nowadays, We can sequence as many as even millions of cells.
-	\item \textbf{Different modality types make flexibility difficult:} more and more  protocols are created to simultaneously measure features in the same single cell like open chromatin, gene expression, protein, DNA methylation. And the combinations of modality types pose a challenge to the integration, some methods can only tackle 2 modalities, and some others can only work for specific feature matrix
-	\item \textbf{Difficulties for interpreting the latent space:} interepration of each component of the latent space, when associate molucular features with the latent space, we can interpreate each component using features from specific modalities.
-	association of features (genes, peaks, proteins) to latent spaces
-	\item \textbf{overfitting}: MOFA thesis
-	\item \textbf{Scalability}: MOFA thesis
-	\item \textbf{Discriminating biological vs technical sources of variation}: MOFA thesis
+	\item \textbf{Interpretability:}
+	Interepration of each component of the latent space, when associate molucular features with the latent space, we can interpreate each component using features from specific modalities. association of features (genes, peaks, proteins) to latent spaces
+	\item \textbf{Overfitting}: xxx 
+	\item \textbf{Discriminating biological vs technical sources of variation}: xxx
 	\item \textbf{Assay noise}
 	\item \textbf{Principled validation of the model outputs} evaluation
 \end{itemize}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{feature_statistic/fig}
+	\vspace{0.1cm}
+	\caption[features characteristics comparison showing challenge of mulitmodal integration.]{modalities\_differences.}
+	\label{fig:modalities_differences}
+\end{figure}
 
 
 \subsubsection{Challenge of single cell trajectory inference}
@@ -367,14 +371,6 @@ Computational trajectory analysis, which explores non-linear embeddings in the c
 	\item \textbf{Few Methods are designed for multimodal data} 
 \end{itemize}
 % a figure shows the feature type differences among different modalities
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{modalities_differences/fig}
-	\vspace{0.1cm}
-	\caption[features characteristics comparison showing challenge of mulitmodal integration.]{modalities\_differences.}
-	\label{fig:modalities_differences}
-\end{figure}
 
 
 \subsection{Computational Methods for single-cell multimodal integration}
@@ -393,7 +389,7 @@ The challenges discussed in \sref{background:sec2:challenge_integration} regardi
 		Seurat WNN	 &  WNN &  universal &  any & fast  & \cite{hao2021seurat4} \\
 		DIABLO &  PLS-DA & universal &  any & slow & \cite{singh2019diablo}\\
 		scAI & Matrix Decomposition  &  scRNA,scATAC & 2 & slow & \cite{jin2020scai}\\
-		Liger & NMF                &  shared-features&  2 & fast& \cite{kriebel2021nonnegative} \\
+		Liger & NMF  &  shared-features&  2 & fast& \cite{kriebel2021nonnegative} \\
 		Symphony\_int& CCA  &  universal & 2 & fast & \cite{kang2021symphony}\\
 		\bottomrule
 	\end{tabular}

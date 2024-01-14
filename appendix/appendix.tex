@@ -10,6 +10,50 @@
 \graphicspath{{appendix/figs}}
 
 
+\begin{table*}[ht]
+\centering
+\caption[Feature characteristics of 6 mulitmodal data]{Number of features, zero features, and different non-zero features statistic of 6 single cell mulitmodal data.}
+\begin{tabular}{llrrrrrrrr} 
+  \toprule & 
+  \rotatebox{90}{Modality} & 
+  \rotatebox{90}{\#features} & 
+  \rotatebox{90}{feature =0 $(\%)$} &
+  \rotatebox{90}{feature =1$(\%)$} & 
+  \rotatebox{90}{feature =2$(\%)$}  &
+  \rotatebox{90}{feature 3-5$(\%)$} &
+  \rotatebox{90}{feature 6-10$(\%)$} &
+  \rotatebox{90}{feature 11-100$(\%)$} & 
+  \rotatebox{90}{feature 100-$(\%)$} \\
+ dataset & & & & & & & & & \\
+\midrule
+\multirow{3}{*}{\shortstack[l]{tea}}
+ & RNA & 36,601 & 97.05 & 69.81 & 17.07 & 10.01 & 1.861 & 1.189 & 0.056\\ 
+ & ATAC & 128,853 & 98.02 & 37.36 & 49.47 & 12.35 & 0.82 & 3.9e-3 & 0 \\ 
+ & ADT & 47 & 18.54 & 16 & 11.55 & 20.46 & 16.96 & 26.13 & 8.911 \\
+\midrule
+\multirow{3}{*}{\shortstack[l]{dogma}}
+& RNA & 36,495 & 94.01 & 58.48 & 19.73 & 15.92 & 4.25 & 1.60 & 0.021 \\
+& ATAC & 68,963 & 92.48 & 5.671 & 65.09 & 19.64 & 8.88 & 0.72 & 0 \\
+& ADT & 210 & 45.61 & 38.79 & 19.09 & 19.34 & 8.32 & 12.72 & 1.73 \\
+\midrule
+\multirow{2}{*}{\shortstack[l]{skin}}
+& RNA & 23,296 & 97.24 & 81.46 & 11.66 & 4.67 & 0.80 & 1.26 & 0.15 \\
+& ATAC & 344,592 & 98.83 & 95.17 & 4.40 & 0.42 & 4.25e-3 & 1.4e-4 & 0\\
+\midrule
+\multirow{2}{*}{\shortstack[l]{pbmc}}
+& RNA & 36,601 & 94.56 & 64.59 & 18.17 & 12.27 & 3.16 & 1.73 & 0.086\\
+& ATAC & 108,377 & 93.35 & 5.86 & 65.83 & 18.94 & 8.55 & 0.81 & 7.53e-5 \\
+\midrule
+\multirow{2}{*}{\shortstack[l]{cite\_bm}}
+& RNA & 17,009 & 94.79 & 69.86 & 11.84 & 8.06 & 4.16 & 5.86 & 0.20 \\
+& ADT & 25 & 0.48 & 1.11 & 1.70 & 7.30 & 12.86 & 52.44 & 24.6 \\
+\midrule
+\multirow{2}{*}{\shortstack[l]{cite\_lung}}
+& RNA & 33,514 & 98.32 & 72.16 & 11.79 & 9.412 & 4.18 & 2.40 & 0.054 \\
+& ADT & 52 & 17.19 & 21.2 & 16.87 & 27.57 & 15.31 & 18.55 & 0.51 \\
+\bottomrule \end{tabular}
+\label{tab:multimodal_feature_statistic}
+\end{table*}
 
 \begin{table*}[ht]
 \centering
