@@ -20,10 +20,9 @@ Deoxyribonucleic Acid, or DNA is the genetic blueprint of life, containing the i
 	\centering
 	\includegraphics[width=0.95\textwidth]{central_dogma/fig}
 	\vspace{0.1cm}
-	\caption[central dogma.]{The figure illustrates DNA transcription and RNA translation central dogma.} 
+	\caption[central dogma.]{Central dogma of molecular biology including DNA replication, transcription and RNA translation.} 
 	\label{fig:central_dogma}
 \end{figure}
-
 
 
 
@@ -31,7 +30,7 @@ Deoxyribonucleic Acid, or DNA is the genetic blueprint of life, containing the i
 	\centering
 	\includegraphics[width=0.95\textwidth]{chromatin_organization/fig}
 	\vspace{0.1cm}
-	\caption[chomosome, chromatin and gene regulation.]{The figure illustrates the the how gene regulation processed. \emph{Source: ~\citep{heumos2023best}}(modified to fit thesis format and/or clarify key points)}
+	\caption[chomosome, chromatin and gene regulation.]{The figure illustrates the gene regulation processed.The regulation of gene expression is orchestrated through an intricate interplay of regulatory mechanisms, including DNA methylation, histone modifications, and transcription factor activity. Chromosomes reside within the nucleus, and chromatin accessibility is intricately linked to higher-order structures and DNA modifications. The organization of chromatin involves scaffold/matrix attachment regions (S/MARs) and interactions with nuclear components like nuclear pore complexes (NPCs) or lamins, affecting chromatin compactness and gene expression. Local accessibility, distinguishing between densely packed heterochromatin and open euchromatin, is dynamically regulated by ATP-dependent and ATP-independent chromatin remodeling complexes, histone modifications (e.g., acetylation, methylation, phosphorylation), and transcription factor binding. Nucleosome positioning can be influenced by transcription factor binding, leading to the recruitment of histone-modifying enzymes and chromatin remodelers. At the DNA level, CpG methylation affects protein binding, including that of transcription factors and histone-modifying enzymes, collectively contributing to the silencing of corresponding genomic regions. These epigenetic events play a crucial role in the regulation of gene activity. \emph{Source: ~\citep{heumos2023best}}(modified to fit thesis format and/or clarify key points)}
 	\label{fig:chromatin_organization}
 \end{figure}
 
@@ -217,7 +216,7 @@ We start from a count matrix where the mRNA sequence reads obtained are aligned 
 	\centering
 	\includegraphics[width=0.95\textwidth]{QC_cells/fig}
 	\vspace{0.1cm}
-	\caption[Droplets-based sequencing of dying cells, doublet and empty droplet .]{QC cells. \emph{Source: ~\cite{heumos2023best}} (modified to fit thesis format and/or clarify key points)}
+	\caption[Droplets-based sequencing of dying cells, doublet and empty droplet .]{Droplet-based protocols for single-cell analysis require rigorous quality checks to ensure accurate downstream analysis. A) An intact droplet should ideally contain a single cell and a corresponding barcode for cell identification. B) Contamination may occur through the introduction of ambient RNA, leading to the inclusion of extraneous RNA reads not originating from the targeted cell. C) Droplets capturing dying cells typically exhibit lower levels of detected RNA reads, indicating compromised cell integrity. D) Occasionally, a droplet may capture more than one cell, posing challenges for subsequent analysis. E) Empty droplets, which capture no cells, are easily identified and can be excluded from analysis. These considerations emphasize the importance of thorough quality control measures in droplet-based single-cell protocols to ensure the reliability and accuracy of the generated data. \emph{Source: ~\cite{heumos2023best}} (modified to fit thesis format and/or clarify key points)}
 	\label{fig:QCcells}
 \end{figure}
 \subsubsection{Dimensional reduction and clustering}
@@ -436,16 +435,26 @@ The challenges discussed in \sref{background:sec2:challenge_integration} regardi
 
 Several methods have been developed to address this task, and we will now review the computational single-cell multimodal integration methods available in the literature. These methods can be classified into four groups based on the techniques they employ. The first group encompasses matrix decomposition, which breaks down the multimodal count matrix into the product of two matrices. One matrix contains the latent factors representing the features, while the other incorporates the cells embedded in the latent factor space (e.g., MOFA, scAI, Liger). The second group endeavors to construct a weighted nearest network that captures common information across all modalities (e.g., Seurat WNN). The third group seeks to maximize the covariance or correlation between two modalities (e.g., DIABLO, Symphony). The fourth group employs metric learning to reweigh modality features by maximizing their agreement with other modalities(Schema). \tref{tab:methods_integration_overview} summarizes the characteristics of each method and \fref{fig:multimodal_integration_methods_schematic} shows the workflow of these methods.
 
-\begin{figure}[!ht]
+\begin{figure}[!hb]
 	\centering
 	\includegraphics[width=0.95\textwidth]{multimodal_integration_methods_schematic/fig}
 	\vspace{0.1cm}
 	\caption[Illustration of mulitmodal integration competing methods schematic.]{
-	A) MOFA schematic B) scAI schematic C) Liger D) Seurat weighted nearest neighbor(WNN) E) schema  F) DIABLO . \emph{Source ~\cite{tewari2017mofa,jin2020scai,kriebel2022uinmf,hao2021seurat4,singh2021schema,singh2019diablo}}(modified to fit thesis format and/or clarify key points)}
+	A) MOFA takes M data matrices as input $Y_1, \cdots Y_m$, one or more from each data modality, with co-occurrent samples but features that are not necessarily related and that can differ in numbers. MOFA decomposes these matrices into a matrix of factors ($Z$) for each sample and $M$ weight matrices, one for each data modality ($W_1,\cdots, W_M$) where white cells in the weight matrices correspond to zeros (i.e., inactive features). The cross symbol in the data matrices represents missing values. 
+}
 	\label{fig:multimodal_integration_methods_schematic}
 \end{figure}
 
-
+\addtocounter{figure}{-1}
+\begin{figure}[t!]
+  \caption{
+	B) scAI iteratively learns aggregated epigenomic profiles and low-dimensional representations from parallel scRNA-seq and scATAC-seq/single cell DNA methylation data. Input matrices consist of cells in rows and genes or loci in columns. The first step involves aggregating the epigenomic profile based on a randomly initiated cell-cell similarity matrix. In the second step, both transcriptomic and aggregated epigenomic data are concurrently decomposed into low-rank matrices, with gene, locus, and cell loading matrices indicating contributions for each factor. The third step computes a cell-cell similarity matrix based on the cell loading matrix. These steps iterate until a predefined stop criterion is met.
+	C) Liger Schematic representation of the matrix factorization strategy (top) and the formulation of the optimization problem (bottom). The introduction of a factor matrix $U_i$ enables the utilization of unshared features in joint matrix factorization. Each dataset ($E_i$) undergoes decomposition into shared metagenes ($W$), dataset-specific metagenes constructed from shared features ($V_i$), unshared metagenes ($U_i$), and cell factor loadings ($H_i$). The inclusion of the U matrix enables unshared features occurring in only one dataset to contribute to the resulting integration.
+	D) Seurat weighted nearest neighbor(WNN) constructs a single unified representation across multiple modalities by initially creating k-nearest neighbor (KNN) graphs for each modality based on the latent representation of each feature matrix. Subsequently, it calculates affinities using the exponential kernel between a cell and the average nearest neighbors for each modality. The latter is utilized to weigh cells in the unified representation.
+	E) Schema explores metrics learning to re-weigh modality features through maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u * x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated in other modalities.
+	F) DIABLO . \emph{Source ~\cite{tewari2017mofa,jin2020scai,kriebel2022uinmf,hao2021seurat4,singh2021schema,singh2019diablo}}(modified to fit thesis format and/or clarify key points)
+  }
+\end{figure}
 % table of single cell multimodal integration methods
 \subsubsection{Schema}
 Schema~\citep{singh2021schema}  applied metrics learning to reweigh modality features by maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u *  x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated other modalities. Specifically, it assumes $N$ observations across $r$ datasets $D_j$, where $j=1,\cdots,r$ and $D_j  = \{x_i^{j}: i = 1,2,\cdots,N\}$ contains data for each observation. First, it refers $D_1$ as the primary modality and $D_2,\cdots,D_r$ as the secondary modalities. Next, it computes the pairwise distances $\rho_1,\cdots,\rho_j$ for each modality $D_j$ where $\rho_j(x_n^{j}, x_m^{(j)})$ is the distance between observation $n$ and $m$ in $D_j$. Then, it aims to find a transformation $\Omega$ with $\Omega(D)$ generating a dataset $D^{*}$ such that the Euclidean metric $\rho^{*}$ on $D^{*}$ on $D^{*}$ aligns the various metrics. $\Omega$ is limited to be a scaling transformation:
@@ -610,28 +619,41 @@ Symphony~\cite{kang2021symphony} is a method to create single cell reference atl
 \end{table}
 In this section, we discuss several published trajectory inference methods, All of them are top methods according to the dynverse trajectory inference evaluation system except STREAM a new method not yet implemented in dynverse. These methods can be broadly categorized into six groups. The first group involves methods utilizing a minimum spanning tree(MST) to capture the backbone in the embeddings of a dataset (e.g., TSCAN, slingshot, MST, slice). The second group includes methods like ElPiGraph, which leverages Elastic Principal Graphs to yield an explicit principal tree in data space (ElPiGraph, STREAM). The third group employs topic model Latent Dirichlet Allocation (LDA) from the natural language processing (NLP) field for inference. The fourth group encompasses methods such as PAGA, using kNN graph partitioning, and pCreode, creating a d-kNN graph. The fifth group utilizes cluster distances for inference to derive the structure (RaceID/StemID). The last method, Monocle3, seeks to create a principal graph on dimension reductions. These methods are summarized in \tref{tab:methods_ti_overview} and \fref{fig:TI_schemtaic} illustrates the workflow of most of the methods.
 
-\begin{figure}[!ht]
+\begin{figure}[hb!]
 	\centering
 	\includegraphics[width=0.95\textwidth]{TI_schemtaic/fig}
 	\vspace{0.1cm}
-	\caption[illustration of TI competing methods schematic.]{TI schemtaic \emph{Source: ~\cite{chen2019stream, wolf2019paga,ji2016tscan,albergante2020ElPiGraph,herring2018pCreode,street2018slingshot,cao2019monocle3,grun2016stemid}}(modified to fit thesis format and/or clarify key points)}
+	\caption[illustration of TI competing methods schematic.]{\textbf{Trajectory inference methods schematic} 
+	A)  STREAM first selection of informative genes from a single cell count matrix, followed by dimensionality reduction. Next, it learns and fits simultaneous tree structure by ElPiGraph. The optimal structure is selected based on the elastic energy minimization among a set of candidate structures that are constructed every time a tree node is added. The final tree is interpreted as a set of connected curves representing different trajectories. 
+	}
 	\label{fig:TI_schemtaic}
 \end{figure}
-
-
+\addtocounter{figure}{-1}
+\begin{figure}[t!]
+  \caption{
+	B) PAGA uses partition-based graph abstraction generating a topology-preserving map of single cells. It creates a kNN graph and partitions it using the Louvain algorithm at a desired resolution where partitions represent groups of connected cells. Next, A PAGA graph is obtained by associating a node with each partition and connecting each node by weighted edges that represent a statistical measure of connectivity between partitions. PAGA graphs reveal the denoised topology of the data at a chosen resolution by discarding low-weight edges.
+	C) TSCAN initially constructs a cluster-based Minimum Spanning Tree(MST) with multiple paths. Next, TSCAN orders cells along each path by projecting them onto the tree edges. 
+	D) ElPiGraph creates an elastic graph by first defining the initial graph topology and embedding it into the data space. The graph structure is fit to the data using minimization of the mean square error, regularized by the elastic energy. The elastic energy includes a term reflecting the overall stretching of the graph(red) and a term reflecting the overall bending of the graph branches and the harmonicity of branching points (green). ElPiGraph next explores a large region of the structural space by exhaustively applying a set of graph rewriting rules and selecting, at each step, the leading structure to the minimum overall energy of the graph embedding.
+	E) pCreode carries out 6 steps to infer a trajectory. It creates a density-based k-nearest neighbor (d-kNN) network and constructs topology with a hierarchical placement strategy of cells on path nodes between end-state clusters. Next, it iteratively redoes the arrangement of the topology according to the neighborhood cell densities.
+	F) Monocle3 aims to learn a principal graph by using SimplePPT, DDRTree or L1Graph, with which, each cell is projected onto the graph. By selecting the starting points on the graph, Monocle measures the distance from these points to each cell, determining a cell's pseudotime as the distance to the closest starting point on the graph.
+	G) RaceID/StemID initially conducts clustering using RaceID2 (k-medoids clustering). Next, it infers putative differentiation trajectories by linking the medoids of two clusters, defining the possible topology of the lineage tree. It then assigns each cell to an inter-cluster link by selecting the longest projection.
+	\emph{Source: ~\cite{chen2019stream, wolf2019paga,ji2016tscan,albergante2020ElPiGraph,herring2018pCreode,street2018slingshot,cao2019monocle3,grun2016stemid}}(modified to fit thesis format and/or clarify key points)}% Continued caption
+\end{figure}
 
 \subsubsection{STREAM}
-The Elastic principal graph:
-\begin{equation}
-	\begin{aligned}
-& U^{\phi}(X, G) = \frac{1}{|x|}\sum_{j=1}^{|V|} \sum_{i:P(i)=j} \min \left(\left\|X_i - \phi(V_j)^2, R_0^2\right\|\right) \\
-&\quad + \sum_{E^{(i)}}[\lambda + \alpha (\max(2, \deg(E^{(i)}(0))) - 2)](\phi(E^{(i)}(0)) - \phi(E^{(i)}(1)))^2 \\
-&\quad + \mu \sum_{S^{(j)}} \left(\phi(S^{(j)(0)}) - \frac{1}{\deg (S^{(j)(0)})} \sum_{i = 1}^{\deg (S^{(j)(0)})}\right)^2
-	\end{aligned}
-\end{equation}	
-where $X=\{X_i\}, i = 1\cdots|X|$ is a set of points, $E^{(i)}(0)$ and $E^{(i)(1)}$ denotes the two vertices of a graph edge $E^{(i)}$, and $S^{(j)(0)},\cdots S^{(j)}(k)$ denote the vertices of the a star $S^{(j)}$ in the graph. $P(i)$ is a data point partitioning function associating each data point $X_i$ to the closest vertex index that $P(i) = \arg\min_{j=1\cdots |V|}$. $phi{V_j}$ is the mapping function that $\phi: V \rightarrow R^{m}$, which defines a position of $j$th graph vertex in the multidimensional space of data. Finally, $R_0$ is the trimming radius such that points further than $R_0$ from any nodes don't contribute to the optimization of the graph, and $\lambda$ is the edge stretching elasticity modulo regularizing the total length of the graph, and $\alpha$ is a coefficient to control the complexity of the graph. $\mu$ is the star bending elasticity that controls the smoothness of the graph.
+STREAM takes a single-cell gene expression matrix as input. Next, it performs three main steps: selection of informative genes, dimensionality reduction, and simultaneous tree structure learning and fitting by ElPiGraph. The optimal structure is selected based on the elastic energy minimization among a set of candidate structures that are constructed every time a tree node is added. The final tree is interpreted as a set of connected curves representing different trajectories. 
+%The Elastic principal graph:
+%\begin{equation}
+%	\begin{aligned}
+%& U^{\phi}(X, G) = \frac{1}{|x|}\sum_{j=1}^{|V|} \sum_{i:P(i)=j} \min \left(\left\|X_i - \phi(V_j)^2, R_0^2\right\|\right) \\
+%&\quad + \sum_{E^{(i)}}[\lambda + \alpha (\max(2, \deg(E^{(i)}(0))) - 2)](\phi(E^{(i)}(0)) - \phi(E^{(i)}(1)))^2 \\
+%&\quad + \mu \sum_{S^{(j)}} \left(\phi(S^{(j)(0)}) - \frac{1}{\deg (S^{(j)(0)})} \sum_{i = 1}^{\deg (S^{(j)(0)})}\right)^2
+%	\end{aligned}
+%\end{equation}	
+%where $X=\{X_i\}, i = 1\cdots|X|$ is a set of points, $E^{(i)}(0)$ and $E^{(i)(1)}$ denotes the two vertices of a graph edge $E^{(i)}$, and $S^{(j)(0)},\cdots S^{(j)}(k)$ denote the vertices of the a star $S^{(j)}$ in the graph. $P(i)$ is a data point partitioning function associating each data point $X_i$ to the closest vertex index that $P(i) = \arg\min_{j=1\cdots |V|}$. $phi{V_j}$ is the mapping function that $\phi: V \rightarrow R^{m}$, which defines a position of $j$th graph vertex in the multidimensional space of data. Finally, $R_0$ is the trimming radius such that points further than $R_0$ from any nodes don't contribute to the optimization of the graph, and $\lambda$ is the edge stretching elasticity modulo regularizing the total length of the graph, and $\alpha$ is a coefficient to control the complexity of the graph. $\mu$ is the star bending elasticity that controls the smoothness of the graph.
 \subsubsection{PAGA} 
-Given single-cell RNA sequencing (scRNA-seq) data, PAGA adopts a series of steps inspired by Seurat and implemented in Scanpy. These steps involve basic data filtering, total count normalization, log transformation, identification of highly variable genes, potential regression of confounding factors, and scaling to z-scores. The processed data undergoes principal component analysis (PCA), representing it in a reduced space. Graph construction follows, creating a symmetrized kNN-like graph using UMAP's approximate nearest neighbor search. It uses Euclidean distance and either adaptive Gaussian kernels or the exponential kernel within UMAP. Graph partitioning employs the Louvain algorithm, generating a PAGA graph for undirected cases and considering velocity graphs for directed cases. Pseudotime estimation involves an extended version of diffusion pseudotime (DPT), accommodating disconnected graphs. PAGA achieves consistent embeddings across resolutions by initializing an embedding of a fine-grained graph using the coordinates of a coarse-grained graph, preserving topology. The process ensures minimal displacement and topology preservation in the embedding space.
+Probabilistic Approximate Graph Abstraction(PAGA) uses partition-based graph abstraction generating a topology-preserving map of single cells. High-dimensional gene expression data is represented as a kNN graph by choosing a suitable low-dimensional representation and an associated distance metric for computing neighborhood relations. The kNN graph is partitioned using the Louvain algorithm at a desired resolution where partitions represent groups of connected cells. A PAGA graph is obtained by associating a node with each partition and connecting each node by weighted edges that represent a statistical measure of connectivity between partitions. By discarding spurious edges with low weights, PAGA graphs reveal the denoised topology of the data at a chosen resolution and reveal its connected and disconnected regions. Combining high-confidence paths in the PAGA graph with a random-walk-based distance measure on the single-cell graph, PAGA orders cells within each partition according to their distance from a root cell. A PAGA path then averages all single-cell paths that pass through the corresponding groups of cells. This allows to trace gene expression changes along complex trajectories at single-cell resolution.
+
 \subsubsection{Monocle3}
 Monocle undergoes a comprehensive five-step process in single-cell dataset analysis. Firstly, it normalizes and pre-processes data, addressing technical variations. The second step involves reducing dimensionality by projecting cells onto the top 50 principal components, with options for further reduction using t-SNE or UMAP. In the third step, Monocle 3 clusters and partitions cells, recognizing disconnected trajectories or "supergroups" that capture diverse cellular responses. Subsequently, it learns a principal graph, utilizing methods like DDRTree, SimplePPT, or L1Graph, accommodating tree-like or looped trajectories. Finally, Monocle 3 conducts differential expression analysis and visualization, empowering users to explore gene dynamics across clusters and trajectories with sophisticated testing methods.
 \subsubsection{Slingshot}
@@ -649,6 +671,8 @@ StemID uses RaceID, an advanced version of RaceID to perform clustering. Next, t
 \subsubsection{celltree}
  To identify and utilize this group structure, celltree adapts a natural language processing(NLP) statistical approach known as Latent Dirichlet Allocation(LDA) to build a topic model. By comparing the different per-cell topic histograms, celltree can evaluate their similarity and infer complex hierarchical structures. By looking at the topics themselves, one can obtain useful biological insights into the gene sets characterizing the different stages of that hierarchy. Based on this lower-dimensional model, they construct a visual representation of the cell population. finally, they introduce “backbone trees” to easily visualize cells along complex differentiation paths.
 \subsubsection{pCreode} 
+%pCreode infer a trajactory for single-cell data through 7 steps: (i) Input single-cell expression data. (ii) Density-normalized representation after down-sampling the original dataset. Overlay shows density post down-sampling. (iii) Density-based k-nearest neighbor (d-kNN) network from down-sampled data. Overlay represents closeness centrality, a surrogate for cell state. (iv) K-means clustering identifies end-states based on low closeness values ($<$mean). The number of clusters is doubled for rare cell types. (v) Topology constructed with a hierarchical placement strategy between end-states, allowing data points along an ancestral continuum. Overlay shows original cell density. (vi) Aligned topology (red) achieved through iterative assignment and repositioning of path nodes using neighborhood cell densities. (vii) Representative topology extracted using p-Creode scoring from an ensemble of N topologies, with node size indicating the original cell density.
+
 pCreode infer a trajactory for single-cell data through 6 steps i) Conducts density-dependent down-sampling to normalize the representation of both rare and overrepresented cell states; 2) Constructs a density-based k-nearest neighbor (d-kNN) network using the down-sampled data; 3) Automatically distinguishes end-states from transition states by employing K-means clustering and assessing silhouette scores for cells with low closeness values (< mean); 4) Establishes topology through a hierarchical placement strategy, positioning cells on path nodes between end-states. This enables the arrangement of data points along an ancestral continuum; 5) Aligns topology with maximal consensus through an iterative process involving the assignment and repositioning of path nodes based on neighborhood cell densities; 6)Develops a scoring metric within pCreode to compare dissimilarities between topologies facilitating the selection of the most representative graph for visualization purposes.
 
 % table of single cell trajectory inference methods
