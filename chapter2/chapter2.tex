@@ -196,7 +196,12 @@ We here describe the computational workflow for scRNA-seq data analysis, includi
 	\centering
 	\includegraphics[width=0.95\textwidth]{workflow_scRNA/fig}
 	\vspace{0.1cm}
-	\caption[A common computational scRNA analysis workflow]{workflow scRNA. \emph{Source: ~\cite{heumos2023best}} (modified to fit thesis format and/or clarify key points)}
+	\caption[A common computational scRNA analysis workflow]{
+		\textbf{A common computational scRNA analysis workflow}. 
+		\textbf{Step1:} Preprocessing starts with cell by gene count matrix, including quality control, normalization and feature selection. 
+		\textbf{Step2:} core analysis, including dimensionality reduction, batch correction and clustering and reference mapping.
+		\textbf{Step3:} Downstream analysis, including differential expression, cell annotation, trajectory analysis and geneset enrichment.
+	workflow scRNA. \emph{Source: ~\cite{heumos2023best}} (modified to fit thesis format and/or clarify key points)}
 	\label{fig:workflow_scRNA}
 \end{figure}
 
@@ -257,7 +262,16 @@ We here describe the computational workflow for scATAC-seq data analysis, includ
 	\centering
 	\includegraphics[width=0.95\textwidth]{workflow_scATAC/fig}
 	\vspace{0.1cm}
-	\caption[A common computational scATAC analysis workflow]{workflow scATAC  \emph{Source: ~\cite{heumos2023best}} (modified to fit thesis format and/or clarify key points)}
+	\caption[A common computational scATAC analysis workflow]{
+	\textbf{workflow scATAC:}
+	\textbf{Step1:} Feature matrix construction using peaks or bins.
+	\textbf{Step2:} Preprocessing including feature selection, quality control, and feature selection.
+	\textbf{Step3:} Core analysis including dimensional reduction, batch correction, clustering, label transferring, and cell type annotation.
+	\textbf{Step4:} Downstream analysis including differential accessibility, trajectory inference, linkage analysis, TF activity and Motif discovery.
+
+
+
+	\emph{Source: ~\cite{heumos2023best}} (modified to fit thesis format and/or clarify key points)}
 	\label{fig:workflow_scATAC}
 \end{figure}
 
