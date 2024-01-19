@@ -462,7 +462,7 @@ Several methods have been developed to address this task, and we will now review
 
 \addtocounter{figure}{-1}
 \begin{figure}[t!]
-  \caption{
+  \caption[]{
 	B) scAI iteratively learns aggregated epigenomic profiles and low-dimensional representations from parallel scRNA-seq and scATAC-seq/single cell DNA methylation data. Input matrices consist of cells in rows and genes or loci in columns. The first step involves aggregating the epigenomic profile based on a randomly initiated cell-cell similarity matrix. In the second step, both transcriptomic and aggregated epigenomic data are concurrently decomposed into low-rank matrices, with gene, locus, and cell loading matrices indicating contributions for each factor. The third step computes a cell-cell similarity matrix based on the cell loading matrix. These steps iterate until a predefined stop criterion is met.
 	C) Liger Schematic representation of the matrix factorization strategy (top) and the formulation of the optimization problem (bottom). The introduction of a factor matrix $U_i$ enables the utilization of unshared features in joint matrix factorization. Each dataset ($E_i$) undergoes decomposition into shared metagenes ($W$), dataset-specific metagenes constructed from shared features ($V_i$), unshared metagenes ($U_i$), and cell factor loadings ($H_i$). The inclusion of the U matrix enables unshared features occurring in only one dataset to contribute to the resulting integration.
 	D) Seurat weighted nearest neighbor(WNN) constructs a single unified representation across multiple modalities by initially creating k-nearest neighbor (KNN) graphs for each modality based on the latent representation of each feature matrix. Subsequently, it calculates affinities using the exponential kernel between a cell and the average nearest neighbors for each modality. The latter is utilized to weigh cells in the unified representation.
@@ -645,7 +645,7 @@ In this section, we discuss several published trajectory inference methods, All 
 \end{figure}
 \addtocounter{figure}{-1}
 \begin{figure}[t!]
-  \caption{
+  \caption[]{
 	B) PAGA uses partition-based graph abstraction generating a topology-preserving map of single cells. It creates a kNN graph and partitions it using the Louvain algorithm at a desired resolution where partitions represent groups of connected cells. Next, A PAGA graph is obtained by associating a node with each partition and connecting each node by weighted edges that represent a statistical measure of connectivity between partitions. PAGA graphs reveal the denoised topology of the data at a chosen resolution by discarding low-weight edges.
 	C) TSCAN initially constructs a cluster-based Minimum Spanning Tree(MST) with multiple paths. Next, TSCAN orders cells along each path by projecting them onto the tree edges. 
 	D) ElPiGraph creates an elastic graph by first defining the initial graph topology and embedding it into the data space. The graph structure is fit to the data using minimization of the mean square error, regularized by the elastic energy. The elastic energy includes a term reflecting the overall stretching of the graph(red) and a term reflecting the overall bending of the graph branches and the harmonicity of branching points (green). ElPiGraph next explores a large region of the structural space by exhaustively applying a set of graph rewriting rules and selecting, at each step, the leading structure to the minimum overall energy of the graph embedding.
