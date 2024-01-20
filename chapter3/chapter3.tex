@@ -5,10 +5,19 @@
 
 \chapter{Methods}
 \label{chapter:methods}
-
 \graphicspath{{chapter3/figs}}
 
+In the previous chapter, we introduced the concept of profiling the single-cell transcriptome, genome, epigenome, and proteome, along with simultaneous sequencing. We also outlined the common workflow for analyzing single-cell sequencing data from different protocols and that of single-cell multimodal analysis. We discussed the challenges associated with single-cell multimodal integration due to various feature distributions and types. To tackle this, our goal is to develop computational methods to effectively integrate single cells of multiple modalities. Another challenge in single-cell multimodal analysis is inferring a trajectory to capture cell fate differentiation. To address this challenge, we aim to develop a computational trajectory inference method tailored for single-cell multimodal data, particularly in complex datasets."
+
+In this chapter, we exclusively present and formalize our computational solution towards the two goals. Specifically, we divide the chapter into two main parts: single-cell multimodal dimensional integration (Section \sref{methods:integration}) and trajectory inference\sref{methods:TI}.
+
+In \sref{methods:integration}, we first introduce the notation that is necessary to formalize our methods.
+
+In \sref{methods:TI}, Similarly, we first introduce the notation that is necessary to formalize our methods.
+
+
 \section{Single cell Multi-modal dimensional integration}
+\label{methods:integration}
 \subsection{Notation}
 
 \subsection{Pre-processing and Dimensional reduction}
@@ -294,7 +303,7 @@ For the case that $\mathcal{Y}$ has more than two modalities, we perform the pai
 \subsection{Discussion}
 
 \section{Single cell trajectory inference}
-
+\label{methods:TI}
 
 %a table shows the R dependencies
 \subsubsection{trajectory inference}

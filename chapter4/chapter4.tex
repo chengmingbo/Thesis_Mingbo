@@ -2,6 +2,7 @@
 % Chapter 4 -> MOJITOO Experiments and Results
 % Author: Mingbo Cheng
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\addbibresource{~/MEGA/MEGAsync/phd/thesis_Cheng/preamble/thesis.bib}
 \chapter{MOJITOO Experiments \& Results }
 \label{chapter:MOJITOO_bench}
 
@@ -176,7 +177,8 @@ where $d(i,j)$ is the distance of two cells under some specific latent space, he
 	\centering
 	\includegraphics[width=0.95\textwidth]{ari/fig}
 	\vspace{0.1cm}
-	\caption[Evaluation of clustering accuracy for multi-modal integration methods.]{Evaluation of clustering accuracy for multi-modal integration methods.}
+	\caption[Evaluation of clustering accuracy for multi-modal integration methods.]{
+	\textbf{Evaluation of clustering accuracy for multi-modal integration methods.} Boxplots showing ARI scores (y-axis) versus methods (x-axis) for distinct clustering solutions for all six data-sets. Asterisks indicate P-values of $<$0.05(*), $<$0.01(**), $<$0.001(***), $<$0.0001(****) obtained via t-test comparing the ARI values of MOJITOO versus other methods. }
 	\label{fig:ari}
 \end{figure}
 
@@ -186,7 +188,7 @@ where $d(i,j)$ is the distance of two cells under some specific latent space, he
 	\includegraphics[width=0.95\textwidth]{silouette/fig}
 	\vspace{0.1cm}
 	\caption[Evaluation of distance accuracy for multi-modal integration methods.]{
-        Evaluation of distance accuracy for multi-modal integration methods.}
+        \textbf{Evaluation of distance accuracy for multi-modal integration methods.} Barplots showing silhouette score (y-axis) versus methods (x-axis) for six benchmark datasets. }
 	\label{fig:silouette}
 \end{figure}
 
@@ -195,7 +197,8 @@ where $d(i,j)$ is the distance of two cells under some specific latent space, he
 	\centering
 	\includegraphics[width=0.95\textwidth]{structure/fig}
 	\vspace{0.1cm}
-	\caption[Evaluation of space preservation for multi-modal integration methods.]{Evaluation of space preservation for multi-modal integration methods.}
+	\caption[Evaluation of space preservation for multi-modal integration methods.]{
+	\textbf{Evaluation of space preservation for multi-modal integration methods.}  We show the average (trace) and modality-specific structure scores (dots) (y-axis) versus methods (x-axis) for the six datasets.}
 	\label{fig:structure}
 \end{figure}
 
@@ -203,7 +206,7 @@ where $d(i,j)$ is the distance of two cells under some specific latent space, he
 	\centering
 	\includegraphics[width=0.95\textwidth]{ranking/fig}
 	\vspace{0.1cm}
-	\caption[Evaluation of ranking for multi-modal integration methods.]{Evaluation of ranking for multi-modal integration methods.}
+	\caption[Evaluation of ranking for multi-modal integration methods.]{\textbf{Evaluation of ranking for multi-modal integration methods.} \textbf{A)} Boxplots showing the combined structure score ranking of the method over all datasets, where the highest rank indicates the best performer. \textbf{B)} Boxplots showing the combined silhouette score ranking of the method over all datasets, where the highest rank indicates the best performer. \textbf{C)} Boxplots showing the combined ARI score ranking of the method over all datasets, where the highest rank indicates the best performer.}
 	\label{fig:ranking}
 \end{figure}
 
@@ -212,7 +215,7 @@ where $d(i,j)$ is the distance of two cells under some specific latent space, he
 	\centering
 	\includegraphics[width=0.95\textwidth]{time_memory/fig}
 	\vspace{0.1cm}
-	\caption[Evaluation of time and memory consumption for multi-modal integration methods.]{Evaluation of time and memory consumption for multi-modal integration methods.}
+	\caption[Evaluation of time and memory consumption for multi-modal integration methods.]{\textbf{Evaluation of time and memory consumption for multi-modal integration methods.} Time and memory consumption on the Skin-SHARE. (A) Line plots showing elapsed time (log of seconds) for each method (y-axis). (B) Line plots showing peak memory (Gigabytes) required by each method (y-axis). In both A–B, the x-axis shows the number of cells used (randomly sampled) from the \texttt{Skin-SHARE} data}
 	\label{fig:time_memory}
 \end{figure}
 
@@ -220,7 +223,7 @@ where $d(i,j)$ is the distance of two cells under some specific latent space, he
 	\centering
 	\includegraphics[width=0.95\textwidth]{pbmc_multiome_umap/fig}
 	\vspace{0.1cm}
-	\caption[UMAP of multiome PBMC comparison for different multi-modal integration methods.]{UMAP of multiome PBMC comparison for different multi-modal integration methods.}
+	\caption[UMAP of multiome PBMC comparison for different multi-modal integration methods.]{\textbf{UMAP of multiome \texttt{PBMC-multiome} comparison for different multi-modal integration methods.}UMAPs showing cell type distribution derived from integration methods on \texttt{PBMC-multiome} dataset. }
 	\label{fig:pbmc_multiome_umap}
 \end{figure}
 
@@ -229,7 +232,7 @@ where $d(i,j)$ is the distance of two cells under some specific latent space, he
 	\centering
 	\includegraphics[width=0.95\textwidth]{CC_UMAP/fig}
 	\vspace{0.1cm}
-	\caption[CCs in the UMAP.]{CCs in the UMAP.}
+	\caption[CCs in the UMAP.]{\textbf{CCs in the UMAP.} (A–F) UMAP with the scores of CC1 to CC6. We highlight major cell types (or sub-types) associated to positive or negative CC scores and arrows indicate directions associated to the activation of particular immune cells}
 	\label{fig:CC_UMAP}
 \end{figure}
 
@@ -238,17 +241,16 @@ where $d(i,j)$ is the distance of two cells under some specific latent space, he
 	\centering
 	\includegraphics[width=0.95\textwidth]{CC_Genes/fig}
 	\vspace{0.1cm}
-	\caption[UMAP of multiome PBMC comparison for different multi-modal integration methods.]{UMAP of multiome PBMC comparison for different multi-modal integration methods.}
+	\caption[Heatmaps of top 10 positive and negative genes select by CC1 and CC2.]{\textbf{Heatmaps of top 10 positive and negative genes select by CC1 and CC2.} \textbf{A)} Heatmap with scores for the top 10 positive and negative genes for CC1 (y-axis) versus cells (x-axis). Cells are ordered by CC1 scores (high to low). \textbf{B)} showing the heatmap of top genes for CC2}
 	\label{fig:CC_Genes}
 \end{figure}
-
 
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{CC_Peaks/fig}
 	\vspace{0.1cm}
-	\caption[UMAP of multiome PBMC comparison for different multi-modal integration methods.]{UMAP of multiome PBMC comparison for different multi-modal integration methods.}
+	\caption[Genome browser tracks of top 2 positive and negative peaks for CC1 and CC2.]{ \textbf{A)} Genome browser tracks with top 2 positive and negative peaks for CC1. Tracks correspond to normalized cell-specific pseudo bulk ATAC-seq profiles generated by deeptools \citep{ramirez2016deeptools2}. Cell-specific tracks are ordered by CC1 score (high to low). \textbf{B)} showing the genome browser of top peaks for CC2.}
 	\label{fig:CC_Peaks}
 \end{figure}
 
