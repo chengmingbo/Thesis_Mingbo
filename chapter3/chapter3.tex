@@ -19,17 +19,23 @@ In \sref{methods:TI}, Similarly, we first introduce the notation that is necessa
 \section{Single cell Multi-modal dimensional integration}
 \label{methods:integration}
 \subsection{Notation}
+$\mathbf{0}_{p\times q}: $ A $p\times q$ block matrix with all zero elements.\\
+$I_p:$ a p-dimensional identity matrix.\\
+$A^{-\top}:$ the transposed inverse of $A$\\
+$A^{1/2}:$ a square root of $A$\\
+$A^{-\top/2}:$ the transposed inverse of $A^{-1/2}$\\
+$<\mathbf{z}_a, \mathbf{z}_b>:$ the angel between $\mathbf{z}_a$ and $\mathbf{z}_b$
 
 \subsection{Pre-processing and Dimensional reduction}
 \subsection{Integration}
 
 \subsubsection{Canonical Correlation analysis}
-Canonical Correlation analysis(CCA) was first introduced H.Hotelling\citep{hotelling1935cca1,HOTELLING1936cca2} as a multivariate statistical methods for the analysis of paired sets of variables. In multivariate statistical analysis, the dataset consists of several variables measured across a group of observations or individuals. In the context of Canonical Correlation Analysis (CCA), the variables for a given observation can be divided into two distinct sets, representing the two perspectives or views of the data. Let the views $a$ and $b$ be denoted by the matrices $X_a\in\mathbb{R}^{n\times p}$ and $X_b\in \mathbb{R}^{n\times q}$. The row vectors $x_a^k\in \mathbb{R}^{p}$ and $x_b^k$ for $k\in\{1,2,\cdots, n\}$ denotes the sets of empirical multivariate observations in $X_a$ and $X_b$. The observations are presumed to be collectively drawn from a normal multivariate distribution. And the column vectors $a_i\in \mathbb{R}^n$ for $i\in \{1,2,\cdots, p\}$ and $b_j\in \mathbb{R}^n$ for ${j\in \{1,2,\cdots, q\}}$ denote the variable vectors of the n observations respectively. The problem in CCA can be defined to derive the linear relations between the variables in $X_a$ and $X_b$ such that the linear transformation:
+Canonical Correlation analysis(CCA) was first introduced H.Hotelling\citep{hotelling1935cca1,HOTELLING1936cca2} as a multivariate statistical methods for the analysis of paired sets of variables. In multivariate statistical analysis, the dataset consists of several variables measured across a group of observations or individuals. In the context of Canonical Correlation Analysis (CCA), the variables for a given observation can be divided into two distinct sets, representing the two perspectives or views of the data. Let the views $a$ and $b$ be denoted by the matrices $\mathbf{X}_a\in\mathbb{R}^{n\times p}$ and $\mathbf{X}_b\in \mathbb{R}^{n\times q}$. The row vectors $\mathbf{x}_a^k\in \mathbb{R}^{p}$ and $\mathbf{x}_b^k$ for $k\in\{1,2,\cdots, n\}$ denotes the sets of empirical multivariate observations in $\mathbf{X}_a$ and $\mathbf{X}_b$. The observations are presumed to be collectively drawn from a normal multivariate distribution. And the column vectors $a_i\in \mathbb{R}^n$ for $i\in \{1,2,\cdots, p\}$ and $b_j\in \mathbb{R}^n$ for ${j\in \{1,2,\cdots, q\}}$ denote the variable vectors of the n observations respectively. The problem in CCA can be defined to derive the linear relations between the variables in $\mathbf{X}_a$ and $\mathbf{X}_b$ such that the linear transformation:
 \begin{equation}
-X_a\mathbf{w}_a=\mathbf{z}_a\quad\text{and}\quad X_b\mathbf{w}_b=\mathbf{ z}_b
+\mathbf{X}_a\mathbf{w}_a=\mathbf{z}_a\quad\text{and}\quad \mathbf{X}_b\mathbf{w}_b=\mathbf{ z}_b
 \end{equation}
 
-where $X_a\in \mathbb{R}^{n\times p}$, ${\mathbf w}_a\in\mathbb{R}^p$, ${\mathbf z}_a\in\mathbb{R}^n$  and $X_b\in \mathbb{R}^{n\times q}$, $\mathbf{w}_b\in\mathbb{R}^p$, ${\mathbf z}_b\in\mathbb{R}^n$. The matrices $X_a$ and $X_b$ symbolize linear transformations of positions ${\mathbf w}_a$ and ${\mathbf w}_b$ onto the images ${\mathbf z}_a$ and ${\mathbf z}_b$ within the space $\mathbb{R}^n$. The terms ``canonical weight vectors'' typically describe the positions ${\mathbf w}_a$ and ${\mathbf w}_b$, while the images ${\mathbf z}_a$ and ${\mathbf z}_b$ are often referred to as ``canonical variates''. The cosine of the angle between ${\mathbf z}_a$ and ${\mathbf z}_b$, referred to as the canonical correlation. The aim of Canonical Correlation Analysis (CCA) is to discover two positions, $\mathbf{w}_a \in \mathbb{R}^p$ and $\mathbf{w}_b \in \mathbb{R}^q$, such that, upon linear transformations $X_a \in \mathbb{R}^{n\times p}$ and $X_b \in \mathbb{R}^{n\times q}$, they are mapped in a manner that maximizes the cosine of the angle between the position vectors of their images, $z_a \in \mathbb{R}^n$ and $z_b \in \mathbb{R}^n$. The first canonical correlation which equals $\cos\theta_1$ corresponding the smallest angle such that:
+where $\mathbf{X}_a\in \mathbb{R}^{n\times p}$, ${\mathbf w}_a\in\mathbb{R}^p$, ${\mathbf z}_a\in\mathbb{R}^n$  and $\mathbf{X}_b\in \mathbb{R}^{n\times q}$, $\mathbf{w}_b\in\mathbb{R}^p$, ${\mathbf z}_b\in\mathbb{R}^n$. The matrices $\mathbf{X}_a$ and $\mathbf{X}_b$ symbolize linear transformations of positions ${\mathbf w}_a$ and ${\mathbf w}_b$ onto the images ${\mathbf z}_a$ and ${\mathbf z}_b$ within the space $\mathbb{R}^n$. The terms ``canonical weight vectors'' typically describe the positions ${\mathbf w}_a$ and ${\mathbf w}_b$, while the images ${\mathbf z}_a$ and ${\mathbf z}_b$ are often referred to as ``canonical variates''. The cosine of the angle between ${\mathbf z}_a$ and ${\mathbf z}_b$, referred to as the canonical correlation. The aim of Canonical Correlation Analysis (CCA) is to discover two positions, $\mathbf{w}_a \in \mathbb{R}^p$ and $\mathbf{w}_b \in \mathbb{R}^q$, such that, upon linear transformations $\mathbf{X}_a \in \mathbb{R}^{n\times p}$ and $\mathbf{X}_b \in \mathbb{R}^{n\times q}$, they are mapped in a manner that maximizes the cosine of the angle between the position vectors of their images, $\mathbf{z}_a \in \mathbb{R}^n$ and $\mathbf{z}_b \in \mathbb{R}^n$. The first canonical correlation which equals $\cos\theta_1$ corresponding the smallest angle such that:
 \begin{equation}
 \begin{aligned}
 &\cos \theta_1 = \underset{{\mathbf z}_a, {\mathbf z}_b \in\mathbb{R}^n}{\max}<{\mathbf z}_a, {\mathbf z}_b> 
@@ -53,18 +59,117 @@ Let the maximum be attained by $z_{a}^{(1)}$ and $z_{b}^{(1)}$. The pair of imag
 \subsubsection{Solving the Optimization Problem}
 They are several ways to solved the CCA problem. The first approch is to apply the standard eigenvalue problem\citep{HOTELLING1936cca2,hooper1959ccaeigen}. It can also be sovled by convert it to a generalised eigenvalue problem\citep{bach2002kernel,hardoon2004canonical}. The mostly used methods to solve the problem is using Singular Value Decomposition (SVD), which was first introduce by\citep{healy1957ccasvd}, and described by \citep{ewerbring1989canonical}. We here only introduce the the SVD solution which is applied in our MOJITOO package.
 
-To solve the problem, we first need to construct joint convariance matrix:
+%\citep{HOTELLING1936cca2} shows that we can obtain canonical correlation by solving the  eigendecomposition problem:
+%\begin{equation}
+%    \det(C_{ab}^\top C_{aa}^{-1} C_{ab} - \lambda C_{bb}) = 0
+%\end{equation}
+
+To solve the CCA problem using SVD, we first introduce the joint covariance matrix $C$ such that
 \begin{equation}
-	\begin{pmatrix}
+	C = \begin{pmatrix}
 		C_{aa} & C_{ab}\\
-		C_{bb} & C_{ba}\\
+		C_{ba} & C_{bb}\\
 	\end{pmatrix}	
-\end{equation}}
+\end{equation}
+Where  and $C_{aa} = \frac{1}{n-1} \mathbf{X}_a^\top \mathbf{X}_a$ is the empirical variance matrices between the variables in $\mathbf{X}_a$, $C_{bb} = \frac{1}{n-1} \mathbf{X}_b^\top \mathbf{X}_b$ is the empirical variance matrices between the variables in $\mathbf{X}_b$ and $C_{ab} = \frac{1}{n-1} \mathbf{X}_a^\top \mathbf{X}_b$ is the sample covariance matrix between variable column vectors in $\mathbf{X}_a$ and $\mathbf{X}_b$
 
-where $C_{ab} = \frac{1}{n-1} X_a^T X_b$ is the sample convariance matrix between variable column vectors in $X_a$, $X_b$ and $C_{aa} = \frac{1}{n-1} X_a^T X_a$ is the empirical variance matrices between the variables in $X_a$ and 
-$C_{bb} = \frac{1}{n-1} X_b^T X_b$ is the empirical variance matrices between the variables in $X_b$.
+Next, we reform the CCA problem using the covariance matrices above mentioned. The CCA problem is to find two linear transformations $\mathbf{W}_a$ and $\mathbf{W}_b$ such that:
+\begin{equation}
+     \mathbf{W}_a^\top C_{aa} \mathbf{W}_a = I_p, \quad  \mathbf{W}_b^\top C_{bb} \mathbf{W}_b = I_q, \quad  \mathbf{W}_a^\top C_{ab}  \mathbf{W}_b = D
+\end{equation}
+Where $D=\diag (\gamma_i)$, that is:
+\begin{equation}
+\begin{pmatrix}
+     \mathbf{W}_a^\top & {\mathbf 0}\\
+    {\mathbf 0} &  \mathbf{W}_b^\top
+    \end{pmatrix}
+    \begin{pmatrix}
+    C_{aa} & C_{ab}\\
+    C_{ba} & C_{bb}
+    \end{pmatrix}
+    \begin{pmatrix}
+     \mathbf{W}_a & {\mathbf 0}\\
+    {\mathbf 0} &  \mathbf{W}_b
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+    I_p & D\\
+    D & I_q
+\end{pmatrix}
+\end{equation}
 
+We define the canonical variables:
+\begin{equation}
+    \mathbf{Z}_a= \mathbf{W}_a^\top \mathbf{X}_a, \quad \mathbf{Z}_b = \mathbf{W}_b^\top \mathbf{X}_b
+\end{equation}
 
+we have a joint covariance matrix
+\begin{equation}
+    \begin{pmatrix}
+    I_p & D \\
+    D & I_q
+    \end{pmatrix}
+\end{equation}
+The diagonal elements $\gamma_i$ of D denote the canonical correlations. Thus we find the linear compounds $\mathbf{w}_a$ and $\mathbf{w}_b$ to maximize the cross-correlations. 
+
+Since both $C_{aa}$ and $C_{bb}$ are symmetric positive definite, we can perform Cholesky Decomposition on them to get:
+\begin{equation}
+    C_{aa} = C_{aa}^{\top/2} C_{aa}^{1/2}, \quad C_{bb} = C_{bb}^{\top/2} C_{bb}^{1/2}
+\end{equation}
+
+Applying the inverses of the square root factors symmetrically on the joint covariance matrix $C$, the matrix is transformed into:
+\begin{equation}
+\begin{pmatrix}
+    C_{aa}^{-\top/2} & {\mathbf 0}\\
+    {\mathbf 0} & C_{bb}^{-\top/2}
+    \end{pmatrix}
+    \begin{pmatrix}
+    C_{aa} & C_{ab}\\
+    C_{ba} & C_{bb}
+    \end{pmatrix}
+    \begin{pmatrix}
+    C_{aa}^{-1/2} & {\mathbf 0}\\
+    {\mathbf 0} & C_{bb}^{-1/2}
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+    I_p & C_{aa}^{-1/2}C_{ab}C_{bb}^{-1/2}\\
+    C_{bb}^{-1/2}C_{ba}C_{aa}^{-1/2} & I_q
+\end{pmatrix}
+\end{equation}
+
+The canonical correlation problem is reduced to that of finding a SVD of triple product:
+\begin{equation}
+    U^{\top} C_{aa}^{-1/2}C_{ab}C_{bb}^{-1/2} V = D
+\end{equation}
+The matrix $C$ is thus reduced to the joint covariance matrix such that:
+\begin{equation}
+    \begin{pmatrix}
+        U^\top & {\mathbf 0}\\
+        {\mathbf 0} & V^\top
+    \end{pmatrix}
+    \begin{pmatrix}
+        I_p & C_{aa}^{-1/2}C_{ab}C_{bb}^{-1/2}\\
+        C_{bb}^{-1/2}C_{ba}C_{aa}^{-1/2} & I_q
+    \end{pmatrix}
+    \begin{pmatrix}
+        U & {\mathbf 0}\\
+        {\mathbf 0} & V
+    \end{pmatrix} = 
+    \begin{pmatrix}
+    I_p & D\\
+    D^\top & I_q
+    \end{pmatrix}
+\end{equation}
+
+With the desired transformation $W_a$ and $W_b$:
+\begin{equation}
+    W_a = C_{aa}^{-1/2} U, \quad W_b = C_{bb}^{-1/2}V
+\end{equation}
+Where the singular values $\gamma_i$ are in descending order such that:
+\begin{equation}
+    \gamma_1 \geq \gamma_2 \geq \cdots \geq 0    
+\end{equation}
 
 \subsubsection{Selecting the number of components}
 
@@ -180,11 +285,11 @@ where $Z\in\mathbb{R}^{n\times {k}}$ and ${k}$ is the number of canonical variab
 
 \subsubsection{solving the problem of cannonical correlation analysis}
 
-$X_a\in \mathbb{R}^{n\times p}$
+$\mathbf{X}_a\in \mathbb{R}^{n\times p}$
 
-$X_b\in \mathbb{R}^{n\times q}$
+$\mathbf{X}_b\in \mathbb{R}^{n\times q}$
 
-linear transformation: $X_a{\mathbf w}_a={\mathbf z}_a$ and $X_b{\mathbf w}_b={\mathbf z}_b$ 
+linear transformation: $\mathbf{X}_a{\mathbf w}_a={\mathbf z}_a$ and $\mathbf{X}_b{\mathbf w}_b={\mathbf z}_b$ 
 
 objective:
 
@@ -196,24 +301,24 @@ $\cos \theta_r = \underset{{\mathbf z}_a^r, {\mathbf z}_b^r \in\mathbb{R}^n}{\ma
 
 
 
-empirical covariance matrix:  $C_{ab}=\frac{1}{n-1}X_a^TX_b$    Time complexity: $O(n\times p \times q)$
+empirical covariance matrix:  $C_{ab}=\frac{1}{n-1}\mathbf{X}_a^T\mathbf{X}_b$    Time complexity: $O(n\times p \times q)$
 
-empirical variance matrix: $C_{aa}=\frac{1}{n-1}X_a^TX_a\quad C_{bb}=\frac{1}{n-1}X_b^TX_b$       Time complexity: $O(n\times p \times p)$,  $O(n\times q \times q)$
+empirical variance matrix: $C_{aa}=\frac{1}{n-1}\mathbf{X}_a^T\mathbf{X}_a\quad C_{bb}=\frac{1}{n-1}\mathbf{X}_b^T\mathbf{X}_b$       Time complexity: $O(n\times p \times p)$,  $O(n\times q \times q)$
 
 since correction between ${\mathbf z}_a$ and ${\mathbf z}_b$ does not change with the scaling, so that we can constrain ${\mathbf w}_a$ and ${\mathbf w}_b$:
 
 $$
-{\mathbf z}_a^T{\mathbf z}_a={\mathbf w}_a^TX_a^TX_a{\mathbf w}_a={\mathbf w}_a^T C_{aa}{\mathbf w}_a=1\\
-{\mathbf z}_b^T{\mathbf z}_b={\mathbf w}_b^TX_b^TX_b{\mathbf w}_b={\mathbf w}_b^T C_{bb}{\mathbf w}_b=1
+{\mathbf z}_a^T{\mathbf z}_a={\mathbf w}_a^T\mathbf{X}_a^T\mathbf{X}_a{\mathbf w}_a={\mathbf w}_a^T C_{aa}{\mathbf w}_a=1\\
+{\mathbf z}_b^T{\mathbf z}_b={\mathbf w}_b^T\mathbf{X}_b^T\mathbf{X}_b{\mathbf w}_b={\mathbf w}_b^T C_{bb}{\mathbf w}_b=1
 $$
 
 
 
 
-since $X_a$ and $X_b$ should be centered, the covariance between  ${\mathbf z}_a$ and ${\mathbf z}_b$:
+since $\mathbf{X}_a$ and $\mathbf{X}_b$ should be centered, the covariance between  ${\mathbf z}_a$ and ${\mathbf z}_b$:
 
 $$
-{\mathbf z}_a^T{\mathbf z}_b={\mathbf w}_a^TX_a^TX_b{\mathbf w}_b={\mathbf w}_a^T C_{ab}{\mathbf w}_b
+{\mathbf z}_a^T{\mathbf z}_b={\mathbf w}_a^T\mathbf{X}_a^T\mathbf{X}_b{\mathbf w}_b={\mathbf w}_a^T C_{ab}{\mathbf w}_b
 $$
 
 $$
