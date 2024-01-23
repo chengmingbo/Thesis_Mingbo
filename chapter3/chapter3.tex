@@ -181,7 +181,12 @@ Where the singular values $\gamma_i$ are in descending order such that:
     \gamma_1 \geq \gamma_2 \geq \cdots \geq 0    
 \end{equation}
 
+
+\subsubsection{uniform latent component}
+xxx
+
 \subsubsection{Selecting the number of components}
+Although the CCA can calculate as many as $\min(p, q)$, we can not make use all of them. There are two ways to select the top components. One way is to check the correlation of the components between two correlation variables. A second way is to perform a correlation statistical test to exclude unrelated CC pairs. 
 
 \begin{figure}[!ht]
 	\centering
@@ -198,6 +203,7 @@ multicca, or iterative CCA
 
 \subsection{Implementation}
 
+The time complexity of CCA for the calculation of $C_{aa}$ and $C_{bb}$ is $O(n\times p \times p)$ and $O(n\times q \times q)$ respectively whereas the time complexity of $C_{ab}$ is $O(n\times p \times q)$. And the time complexity of the  calculation of SVD to solve the problem is $O(\min(p^2q,qp^2))$.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{MOJITOO_schematic/fig}
@@ -475,6 +481,17 @@ For the case that $\mathcal{Y}$ has more than two modalities, we perform the pai
 \end{algorithm}
 
 \subsection{Discussion}
+\begin{itemize}
+    \item We developed an integration approach through CCA. We use Pearson statistical test to select correlated components. Moveover, we adds the correlated components not only to obtain a unified latent space, but also to avoid higher dimensions which would probably cause curse of dimensionality\citep{Dreyfus2003}. The latent space can be use to the downstream analysis like clustering, trajectory inference, visulization etc. 
+
+    \item The method we proposal doesn't need care about the feature types. More over the methods input dimensional reduction from each modality, which gives chances to apply a customized batch correction methods make it flexible to both the modalities and the batch correction methods.
+    
+    \item Our method is implement by R and is compatible with popular single cell analysis toolkit such as Seurat and ArchR. We have provided a tutorial to demonstrate how to apply our method to integrate multimodal data using Signac \url{https://github.com/CostaLab/MOJITOO/blob/main/vignettes/SeuratObject_integration.Rmd} and ArchR\url{https://github.com/CostaLab/MOJITOO/blob/main/vignettes/ArchRObject_integration.Rmd}. On top of that, we also implement a simple python version for users who cooperate with scanpy or episcanpy\url{https://github.com/CostaLab/MOJITOO/tree/main/pymojitoo}. 
+\end{itemize}
+
+Canonical correlation analysis is a linear method that retains the most information from the original data. Comparing to other methods, Matrix factorization is widely used(e.g. MOFA, scAI, Liger) due to its intuitive matrix multiplication representations. However, The matrix factorization is highly depends on the initialization. 
+
+
 
 \section{Single cell trajectory inference}
 \label{methods:TI}
