@@ -46,9 +46,18 @@ where $\mathbf{X}_a\in \mathbb{R}^{n\times p}$, ${\mathbf w}_a\in\mathbb{R}^p$, 
 \end{equation}
 Let the maximum be attained by $z_{a}^{(1)}$ and $z_{b}^{(1)}$. The pair of images $z_{a}^{(2)}$ and $z_{b}^{(2)}$, which has the second smallest enclosing angle $\theta_2$, is located in the orthogonal complements of $z_{a}^{(1)}$ and $z_{b}^{(1)}$. The procedure continues until no more pairs are found. Therefore, the $r$ angles $\theta_r \in [0, \frac{\pi}{2}]$ for $r = (1,2,\cdots,q)$ when $p > q$ that can be found are recursively defined by:
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{CC_corrlation_scatter/fig}
+	\vspace{0.1cm}
+	\caption[Scatter plot showing the correlation between scRNA and scATAC.]{\textbf{Scatter plot showing the correlation between scRNA and scATAC.} Data is from \texttt{PBMC-Multiome} scatter plots show the highly correlated scRNA and scATAC for the top 8 components. The number indicate the $i$th CC. X-axis is scRNA CC coordinates whereas Y-axis presents the scATAC coodinates}
+	\label{fig:CC_corrlation_scatter}
+\end{figure}
+
 \begin{equation}
 \begin{aligned}
-\cos \theta_r = &\underset{{\mathbf z}_a^r, {\mathbf z}_b^r \in\mathbb{R}^n}{\max}<{\mathbf z}_a^r, {\mathbf z}_b^r>\\ 					&\text{subject to  } & \|{\mathbf z}_a\|_2=1\quad \|{\mathbf z}_b\|_2=1\\
+\cos \theta_r = &\underset{{\mathbf z}_a^r, {\mathbf z}_b^r \in\mathbb{R}^n}{\max}<{\mathbf z}_a^r, {\mathbf z}_b^r>\\
+                &\text{subject to  } & \|{\mathbf z}_a\|_2=1\quad \|{\mathbf z}_b\|_2=1\\
 				  & & <{\mathbf z}_a^j, {\mathbf z}_a^r>=0\quad <{\mathbf z}_b^j, {\mathbf z}_b^r>=0,\\
 				  & & \forall j \neq r: \quad j,r = 1,2,\cdots,\min(p,q).
 \end{aligned}
@@ -110,7 +119,7 @@ we have a joint covariance matrix
     D & I_q
     \end{pmatrix}
 \end{equation}
-The diagonal elements $\gamma_i$ of D denote the canonical correlations. Thus we find the linear compounds $\mathbf{w}_a$ and $\mathbf{w}_b$ to maximize the cross-correlations. 
+The diagonal elements $\gamma_i$ of D denote the canonical correlations. Thus we find the linear compounds $\mathbf{Z}_a$ and $\mathbf{Z}_b$ to maximize the cross-correlations. 
 
 Since both $C_{aa}$ and $C_{bb}$ are symmetric positive definite, we can perform Cholesky Decomposition on them to get:
 \begin{equation}
@@ -164,7 +173,7 @@ The matrix $C$ is thus reduced to the joint covariance matrix such that:
 
 With the desired transformation $W_a$ and $W_b$:
 \begin{equation}
-    W_a = C_{aa}^{-1/2} U, \quad W_b = C_{bb}^{-1/2}V
+    \mathbf{W}_a = C_{aa}^{-1/2} U, \quad \mathbf{W}_b = C_{bb}^{-1/2}V
 \end{equation}
 Where the singular values $\gamma_i$ are in descending order such that:
 \begin{equation}
