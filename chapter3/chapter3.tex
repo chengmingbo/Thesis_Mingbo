@@ -107,6 +107,7 @@ Where $D=\diag (\gamma_i)$, that is:
 \end{pmatrix}
 \end{equation}
 
+
 We define the canonical variables:
 \begin{equation}
     \mathbf{Z}_a= \mathbf{W}_a^\top \mathbf{X}_a, \quad \mathbf{Z}_b = \mathbf{W}_b^\top \mathbf{X}_b
@@ -181,6 +182,14 @@ Where the singular values $\gamma_i$ are in descending order such that:
 \end{equation}
 
 \subsubsection{Selecting the number of components}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{CC_pval_select/fig}
+	\vspace{0.1cm}
+	\caption[Line plots showing the CCs correlations and statistics test p-values.]{\textbf{Line plots showing the CCs correlations and statistics test p-values.} Data is from \texttt{PBMC-Multiome}. Left, showing the correlation of scRNA and scATAC CC components from 1 to 49. Right showing the Pearson correlation test outcome from 1 to 49, the red line indicates the significant p-value equals to 0.05}
+	\label{fig:CC_pval_select}
+\end{figure}
 
 
 \subsubsection{Solving Problems with multivariable}
