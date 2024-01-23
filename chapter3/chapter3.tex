@@ -2,7 +2,7 @@
 % Chapter 3 -> Methods
 % Author: Mingbo Cheng
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\addbibresource{~/MEGA/MEGAsync/phd/thesis_Cheng/preamble/thesis.bib}
 \chapter{Methods}
 \label{chapter:methods}
 \graphicspath{{chapter3/figs}}
@@ -21,6 +21,57 @@ In \sref{methods:TI}, Similarly, we first introduce the notation that is necessa
 \subsection{Notation}
 
 \subsection{Pre-processing and Dimensional reduction}
+\subsection{Integration}
+
+\subsubsection{Canonical Correlation analysis}
+Canonical Correlation analysis(CCA) was first introduced H.Hotelling\citep{hotelling1935cca1,HOTELLING1936cca2} as a multivariate statistical methods for the analysis of paired sets of variables. In multivariate statistical analysis, the dataset consists of several variables measured across a group of observations or individuals. In the context of Canonical Correlation Analysis (CCA), the variables for a given observation can be divided into two distinct sets, representing the two perspectives or views of the data. Let the views $a$ and $b$ be denoted by the matrices $X_a\in\mathbb{R}^{n\times p}$ and $X_b\in \mathbb{R}^{n\times q}$. The row vectors $x_a^k\in \mathbb{R}^{p}$ and $x_b^k$ for $k\in\{1,2,\cdots, n\}$ denotes the sets of empirical multivariate observations in $X_a$ and $X_b$. The observations are presumed to be collectively drawn from a normal multivariate distribution. And the column vectors $a_i\in \mathbb{R}^n$ for $i\in \{1,2,\cdots, p\}$ and $b_j\in \mathbb{R}^n$ for ${j\in \{1,2,\cdots, q\}}$ denote the variable vectors of the n observations respectively. The problem in CCA can be defined to derive the linear relations between the variables in $X_a$ and $X_b$ such that the linear transformation:
+\begin{equation}
+X_a\mathbf{w}_a=\mathbf{z}_a\quad\text{and}\quad X_b\mathbf{w}_b=\mathbf{ z}_b
+\end{equation}
+
+where $X_a\in \mathbb{R}^{n\times p}$, ${\mathbf w}_a\in\mathbb{R}^p$, ${\mathbf z}_a\in\mathbb{R}^n$  and $X_b\in \mathbb{R}^{n\times q}$, $\mathbf{w}_b\in\mathbb{R}^p$, ${\mathbf z}_b\in\mathbb{R}^n$. The matrices $X_a$ and $X_b$ symbolize linear transformations of positions ${\mathbf w}_a$ and ${\mathbf w}_b$ onto the images ${\mathbf z}_a$ and ${\mathbf z}_b$ within the space $\mathbb{R}^n$. The terms ``canonical weight vectors'' typically describe the positions ${\mathbf w}_a$ and ${\mathbf w}_b$, while the images ${\mathbf z}_a$ and ${\mathbf z}_b$ are often referred to as ``canonical variates''. The cosine of the angle between ${\mathbf z}_a$ and ${\mathbf z}_b$, referred to as the canonical correlation. The aim of Canonical Correlation Analysis (CCA) is to discover two positions, $\mathbf{w}_a \in \mathbb{R}^p$ and $\mathbf{w}_b \in \mathbb{R}^q$, such that, upon linear transformations $X_a \in \mathbb{R}^{n\times p}$ and $X_b \in \mathbb{R}^{n\times q}$, they are mapped in a manner that maximizes the cosine of the angle between the position vectors of their images, $z_a \in \mathbb{R}^n$ and $z_b \in \mathbb{R}^n$. The first canonical correlation which equals $\cos\theta_1$ corresponding the smallest angle such that:
+\begin{equation}
+\begin{aligned}
+&\cos \theta_1 = \underset{{\mathbf z}_a, {\mathbf z}_b \in\mathbb{R}^n}{\max}<{\mathbf z}_a, {\mathbf z}_b> 
+			   = \underset{{\mathbf z}_a, {\mathbf z}_b \in\mathbb{R}^n}{\max}
+			   		 \frac{\mathbf{z}_a^\top \mathbf{z}_b}{\|\mathbf{z}_a\| \|\mathbf{z}_b\|} \\
+&\text{subject to}\quad \|{\mathbf z}_a\|_2=1\quad \|{\mathbf z}_b\|_2=1
+\end{aligned}
+\end{equation}
+Let the maximum be attained by $z_{a}^{(1)}$ and $z_{b}^{(1)}$. The pair of images $z_{a}^{(2)}$ and $z_{b}^{(2)}$, which has the second smallest enclosing angle $\theta_2$, is located in the orthogonal complements of $z_{a}^{(1)}$ and $z_{b}^{(1)}$. The procedure continues until no more pairs are found. Therefore, the $r$ angles $\theta_r \in [0, \frac{\pi}{2}]$ for $r = (1,2,\cdots,q)$ when $p > q$ that can be found are recursively defined by:
+
+\begin{equation}
+\begin{aligned}
+\cos \theta_r = &\underset{{\mathbf z}_a^r, {\mathbf z}_b^r \in\mathbb{R}^n}{\max}<{\mathbf z}_a^r, {\mathbf z}_b^r>\\ 					&\text{subject to  } & \|{\mathbf z}_a\|_2=1\quad \|{\mathbf z}_b\|_2=1\\
+				  & & <{\mathbf z}_a^j, {\mathbf z}_a^r>=0\quad <{\mathbf z}_b^j, {\mathbf z}_b^r>=0,\\
+				  & & \forall j \neq r: \quad j,r = 1,2,\cdots,\min(p,q).
+\end{aligned}
+\end{equation}
+
+ To conclude, the essence of Canonical Correlation Analysis (CCA) lies in identifying two positions within their respective data spaces. These positions are chosen such that their images on a unit ball minimize the angle between them, consequently maximizing the canonical correlation. The linear transformations of these positions are governed by the data matrices. The determination of the number of relevant positions can be achieved by analyzing the values of canonical correlations or by applying statistical significance tests.
+
+\subsubsection{Solving the Optimization Problem}
+They are several ways to solved the CCA problem. The first approch is to apply the standard eigenvalue problem\citep{HOTELLING1936cca2,hooper1959ccaeigen}. It can also be sovled by convert it to a generalised eigenvalue problem\citep{bach2002kernel,hardoon2004canonical}. The mostly used methods to solve the problem is using Singular Value Decomposition (SVD), which was first introduce by\citep{healy1957ccasvd}, and described by \citep{ewerbring1989canonical}. We here only introduce the the SVD solution which is applied in our MOJITOO package.
+
+To solve the problem, we first need to construct joint convariance matrix:
+\begin{equation}
+	\begin{pmatrix}
+		C_{aa} & C_{ab}\\
+		C_{bb} & C_{ba}\\
+	\end{pmatrix}	
+\end{equation}}
+
+where $C_{ab} = \frac{1}{n-1} X_a^T X_b$ is the sample convariance matrix between variable column vectors in $X_a$, $X_b$ and $C_{aa} = \frac{1}{n-1} X_a^T X_a$ is the empirical variance matrices between the variables in $X_a$ and 
+$C_{bb} = \frac{1}{n-1} X_b^T X_b$ is the empirical variance matrices between the variables in $X_b$.
+
+
+
+\subsubsection{Selecting the number of components}
+
+
+\subsubsection{Solving Problems with multivariable}
+
+multicca, or iterative CCA
 
 \subsection{Implementation}
 
