@@ -86,6 +86,14 @@ Let the maximum be attained by $z_{a}^{(1)}$ and $z_{b}^{(1)}$. The pair of imag
 
  To conclude, the essence of Canonical Correlation Analysis (CCA) lies in identifying two positions within their respective data spaces. These positions are chosen such that their images on a unit ball minimize the angle between them, consequently maximizing the canonical correlation. The linear transformations of these positions are governed by the data matrices. The determination of the number of relevant positions can be achieved by analyzing the values of canonical correlations or by applying statistical significance tests.
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{CCA_ADD/fig}
+	\vspace{0.1cm}
+	\caption[CCA schematic showing the linear transformation.]{\textbf{CCA schematics showing the linear transformation..} Data is from \texttt{PBMC-Multiome}. \textbf{A)} Same cell $a$ and $b$ in scRNA and scATAC space presents different coordinates. \textbf{B)} After the linear transformation, cell $a$ and $b$ are project to the same space with the angle minimized. Our method add up the the two vectors into for a cell to get a unified coordinate in the CCA space.}
+	\label{fig:CC_pval_select}
+\end{figure}
+
 \subsubsection{Solving the Optimization Problem}
 They are several ways to solved the CCA problem. The first approch is to apply the standard eigenvalue problem\citep{HOTELLING1936cca2,hooper1959ccaeigen}. It can also be sovled by convert it to a generalised eigenvalue problem\citep{bach2002kernel,hardoon2004canonical}. The mostly used methods to solve the problem is using Singular Value Decomposition (SVD), which was first introduce by\citep{healy1957ccasvd}, and described by \citep{ewerbring1989canonical}. We here only introduce the the SVD solution which is applied in our MOJITOO package.
 
