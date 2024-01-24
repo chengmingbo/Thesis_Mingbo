@@ -209,9 +209,6 @@ CCA does not directly gives an unified dimension reduction for single cell mulit
 \end{equation}
 Which $Z\in \mathbb{R}^{q}$ is the share latent space. 
 
-\subsubsection{Selecting the number of components}
-Another aspect is that should we keep all components from CCA. Although the CCA can calculate as many as $\min(p, q)$, we can not make use all of them since the last several components are almost irrelevant, see fig \fref{fig:CC_corrlations_last}. There are two ways to select the top components. One way is to check the correlation of the components between two correlation variables. A second way is to perform a correlation statistical test to exclude unrelated CC pairs. 
-
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{CC_pval_select/fig}
@@ -220,14 +217,14 @@ Another aspect is that should we keep all components from CCA. Although the CCA 
 	\label{fig:CC_pval_select}
 \end{figure}
 
+\subsubsection{Selecting the number of components}
+Another aspect is that should we keep all components from CCA. Although the CCA can calculate as many as $\min(p, q)$, we can not make use all of them since the last several components are almost irrelevant, see fig \fref{fig:CC_corrlations_last}. There are two ways to select the top components. One way is to check the correlation of the components between two correlation variables. A second way is to perform a correlation statistical test to exclude unrelated CC pairs See \fref{fig:CC_pval_select}. Our method use pval to select correlated components by measuring the Pearson correlation and using a student's $t$-test for significance. The $p$-values are then corrected using BH(Benjamini Hochberg)\cite{benjamini1995controlling} and only canonical components with adjusted p-values < 0.05 are retained. 
 
 \subsubsection{Solving Problems with multivariable}
-
-multicca, or iterative CCA
+Another issue to be addressed is that conventional CCA cannot handle more than two modalities. Although Multi-CCA has been developed to simultaneously correlate more than 3 variables, it can would probably lead overfitting problem. Thus, we use another way to handle the multimodalities using CCA. For the case that Y has more than two modalities, we perform the pairwise integration of modalities starting with the pair with highest dimensionality. The result of this CCA is then used for integration
+with the next modality. See \alref{alg:MOJITOO} for a brief description, which receives a set of matrices $\{Y_{1},\cdots, Y_{m}\}$ with increasing dimensions $p_{i}\geq p_{i+1}$ as input. This heuristic algorithm was adopted to avoid the high computational costs of multiple CCA, which grows exponentially with the number of modalities. 
 
 \subsection{Implementation}
-
-The time complexity of CCA for the calculation of $C_{aa}$ and $C_{bb}$ is $O(n\times p \times p)$ and $O(n\times q \times q)$ respectively whereas the time complexity of $C_{ab}$ is $O(n\times p \times q)$. And the time complexity of the  calculation of SVD to solve the problem is $O(\min(p^2q,qp^2))$.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{MOJITOO_schematic/fig}
@@ -235,6 +232,8 @@ The time complexity of CCA for the calculation of $C_{aa}$ and $C_{bb}$ is $O(n\
 	\caption[MOJITOO\_schematic.]{MOJITOO\_schematic}
 	\label{fig:MOJITOO_schematic}
 \end{figure}
+
+The time complexity of CCA for the calculation of $C_{aa}$ and $C_{bb}$ is $O(n\times p \times p)$ and $O(n\times q \times q)$ respectively whereas the time complexity of $C_{ab}$ is $O(n\times p \times q)$. And the time complexity of the  calculation of SVD to solve the problem is $O(\min(p^2q,qp^2))$.
 
 \begin{table}[!ht]
 	\centering
@@ -270,218 +269,8 @@ The time complexity of CCA for the calculation of $C_{aa}$ and $C_{bb}$ is $O(n\
 	\caption[MOJITOO tool R package dependencies]{MOJITOO tool R package dependencies.}
 	\label{tab:mojitoo_R_dependencies}
 \end{table}
-  
-
-MOJITOO takes as input a set of matrices from $m$ modalities:
-\begin{align}
-    \mathcal{X}=\{X^{(1)},\cdots,X^{(m)}\}
-\end{align}
-where $X^{(i)} \in \mathbb{R}^{n\times s^{(i)}}$ represents the data of a particular single cell modality, $n$ represents the number of cells, and $s^{(i)}$ represents the number of features in modality $i$. Here, we focus on multimodal data, where the cells are the same across matrices and there is no direct relation between the features of the distinct modalities. 
-
-\subsubsection{Reducing the dimension for each modality}
-
-We first obtain a dimension reduced matrix for each modality independently using a modality-specific approach: 
-\begin{align}
-    Y^{(i)}=f^{(i)}(X^{(i)})
-\end{align}
-where $Y^{(i)} \in \mathbb{R}^{n\times p^{(i)}}$ represents the low-dimensional matrix for modality $i$, $p^{(i)}$ represents the number of dimensions and $f^{(i)}$ represents the specific dimension reduction method for this modality. MOJITOO uses latent semantic indexing (LSI) for scATAC-seq and principal component analysis (PCA) for other modalities, as is usual in the literature~\cite{granja2021archr, signac, hao2021integrated}.
-The rationale behind the use of dimension reduction is two-fold. First, low-dimensional matrices reduce the computing time of the CCA analysis without impacting accuracy for a minimum number of dimensions. Moreover, it allows to work directly on batch-corrected data, which is usually represented in a low-dimensional space~\cite{hao2021integrated, korsunsky2019fast}. Of note, batch correction is recommended previous to MOJITOO, whenever the data is affected by batch effects. 
-
-\subsubsection{Learning a shared space with canonical correlation analysis with two modalities}
-
-MOJITOO aims to learn a shared latent space $Z$ from the set of low dimensional matrices   $\mathcal{Y}=\{Y^{(1)},\cdots,Y^{(m)}\}$
-\begin{align}
-    Z = \text{MOJITOO}(Y^{(1)}, \cdots, Y^{(m)}),
-\end{align}
-where $Z \in \mathbb{R}^{n\times k}$ represents the cells, $n$ is the number of cells and $k$ is the dimension of this latent space. When $\mathcal{Y}$ has two modalities, we first use CCA\footnote{This notation is based on a geometrical interpretation of CCA.} to project the matrices $Y^{(1)}$ and $Y^{(2)}$ to vectors ${\mathbf z_1^{(1)}}$ and ${\mathbf z_1^{(2)}}$:
-\begin{equation}
-\begin{split}
-{\mathbf z_1^{(1)}}=Y^{(1)} {\mathbf w_1^{(1)}}, \\
-{\mathbf z_1^{(2)}}=Y^{(2)} {\mathbf w_1^{(2)}},
-\end{split}
-\end{equation}
-where ${\mathbf z_1^{(1)}}$ and ${\mathbf z_1^{(2)}}$ represent canonical components (CC). The vectors ${\mathbf w_1^{(1)}}$ and ${\mathbf w_1^{(2)}}$ can be obtained by solving the following optimization problem:
-\begin{equation}
-    \mathbf w_1^{(1)}, \mathbf w_1^{(2)} = \argmax \cos(\mathbf z_1^{(1)}, \mathbf z_1^{(2)}),
-\end{equation}
-where ${\mathbf w_1^{(1)}}\in\mathbb{R}^{p^{(1)}}$, ${\mathbf w_1^{(2)}}\in \mathbb{R}^{p^{(2)}}$ represent the first canonical weight vectors, and $\cos(\cdot)$ is the cosine similarity between two vectors $a$ and $b$ defined by:
-\begin{equation}
-    \cos(a,b)=\frac{a.b}{|a|.|b|}.
-\end{equation}
-
-This is repeated $\hat{k}=\min(p^{(1)}, p^{(2)})$ times, such that new canonical vectors are orthogonal to previously estimated vectors. These provide the matrices:
-\begin{equation}
-    \begin{split}
-      W^{(1)} = \Big[ {\mathbf w}_1^{(1)},\cdots,{\mathbf w}_{\hat{k}}^{(1)}\Big], \\
-      W^{(2)} = \Big[ {\mathbf w}_1^{(2)},\cdots,{\mathbf w}_{\hat{k}}^{(2)}\Big].
-    \end{split}
-\end{equation}
-These can be used to estimate the modality transformed space as
-\begin{equation}
-    \begin{split}
-      Z^{(1)}=Y^{(1)}\cdot W^{(1)}, \\
-      Z^{(2)}=Y^{(2)}\cdot W^{(2)}.
-    \end{split}
-\end{equation}
-A unique latent space is obtained as
-\begin{align}
-Z = Z^{(1)} + Z^{(2)},
-\end{align}
-where $Z\in\mathbb{R}^{n\times {k}}$ and ${k}$ is the number of canonical variables retained. 
 
 
-
-\subsubsection{solving the problem of cannonical correlation analysis}
-
-$\mathbf{X}_a\in \mathbb{R}^{n\times p}$
-
-$\mathbf{X}_b\in \mathbb{R}^{n\times q}$
-
-linear transformation: $\mathbf{X}_a{\mathbf w}_a={\mathbf z}_a$ and $\mathbf{X}_b{\mathbf w}_b={\mathbf z}_b$ 
-
-objective:
-
-$\cos \theta_1 = \underset{{\mathbf z}_a, {\mathbf z}_b \in\mathbb{R}^n}{\max}<{\mathbf z}_a, {\mathbf z}_b>$, subject to  $\|{\mathbf z}_a\|_2=1\quad \|{\mathbf z}_b\|_2=1$
-
-$\qquad{\vdots}$
-
-$\cos \theta_r = \underset{{\mathbf z}_a^r, {\mathbf z}_b^r \in\mathbb{R}^n}{\max}<{\mathbf z}_a^r, {\mathbf z}_b^r>$, subject to  $\|{\mathbf z}_a\|_2=1\quad \|{\mathbf z}_b\|_2=1$, $<{\mathbf z}_a^j, {\mathbf z}_a^r>=0\quad<{\mathbf z}_b^j, {\mathbf z}_b^r>=0$
-
-
-
-empirical covariance matrix:  $C_{ab}=\frac{1}{n-1}\mathbf{X}_a^T\mathbf{X}_b$    Time complexity: $O(n\times p \times q)$
-
-empirical variance matrix: $C_{aa}=\frac{1}{n-1}\mathbf{X}_a^T\mathbf{X}_a\quad C_{bb}=\frac{1}{n-1}\mathbf{X}_b^T\mathbf{X}_b$       Time complexity: $O(n\times p \times p)$,  $O(n\times q \times q)$
-
-since correction between ${\mathbf z}_a$ and ${\mathbf z}_b$ does not change with the scaling, so that we can constrain ${\mathbf w}_a$ and ${\mathbf w}_b$:
-
-$$
-{\mathbf z}_a^T{\mathbf z}_a={\mathbf w}_a^T\mathbf{X}_a^T\mathbf{X}_a{\mathbf w}_a={\mathbf w}_a^T C_{aa}{\mathbf w}_a=1\\
-{\mathbf z}_b^T{\mathbf z}_b={\mathbf w}_b^T\mathbf{X}_b^T\mathbf{X}_b{\mathbf w}_b={\mathbf w}_b^T C_{bb}{\mathbf w}_b=1
-$$
-
-
-
-
-since $\mathbf{X}_a$ and $\mathbf{X}_b$ should be centered, the covariance between  ${\mathbf z}_a$ and ${\mathbf z}_b$:
-
-$$
-{\mathbf z}_a^T{\mathbf z}_b={\mathbf w}_a^T\mathbf{X}_a^T\mathbf{X}_b{\mathbf w}_b={\mathbf w}_a^T C_{ab}{\mathbf w}_b
-$$
-
-$$
-\cos \theta=\underset{{\mathbf z}_a, {\mathbf z}_b \in\mathbb{R}^n}{\max}<{\mathbf z}_a, {\mathbf z}_b>=\underset{{\mathbf w}_a\in \mathbb{R}^p, {\mathbf w}_b \in\mathbb{R}^q}{\max} {\mathbf w}_a^T C_{ab}{\mathbf w}_b\\
-\textbf{ object to:  }  \|{\mathbf z}_a\|_2=\sqrt{{\mathbf w}_a^T C_{aa}{\mathbf w}_a}=1\quad \|{\mathbf z}_b\|_2=\sqrt{{\mathbf w}_b^T C_{bb}{\mathbf w}_b}=1
-$$
-
-
-
-Use Cholesky decomposition to decompose symmetric matrix 
-
-
-$$
-C_{aa}=C_{aa}^{1/2}C_{aa}^{1/2}
-$$
-
-$$
-C_{bb}=C_{bb}^{1/2}C_{bb}^{1/2}
-$$
-
-$$
-\begin{pmatrix}
-C_{aa}^{-1/2} & {\mathbf 0}\\
-{\mathbf 0} & C_{bb}^{-1/2}
-\end{pmatrix}
-\begin{pmatrix}
-C_{aa} & C_{ab}\\
-C_{ba} & C_{bb}
-\end{pmatrix}
-\begin{pmatrix}
-C_{aa}^{-1/2} & {\mathbf 0}\\
-{\mathbf 0} & C_{bb}^{-1/2}
-\end{pmatrix}
-=
-\begin{pmatrix}
-I_q & C_{aa}^{-1/2}C_{ab}C_{bb}^{-1/2}\\
-C_{bb}^{-1/2}C_{ba}C_{aa}^{-1/2} & I_p
-\end{pmatrix}
-$$
-
-
-$$
-C_{aa}^{-1/2}C_{ab}C_{bb}^{-1/2}=U^TSV
-$$
-
-$$
-\arg\max {\mathbf w}_a^T C_{ab}{\mathbf w}_b=\arg\max (C_{aa}^{1/2}{\mathbf w}_a)^TC_{aa}^{-1/2}C_{ab}C_{bb}^{-1/2}C_{bb}^{1/2}{\mathbf w}_b
-$$
-
-
-$$
-{\mathbf w}_a = C_{aa}^{-1/2}U\quad {\mathbf w}_b = C_{bb}^{-1/2}V\quad
-$$
-
-$C_{aa}^{-1/2}C_{ab}C_{bb}^{-1/2}$ SVD fit the constraint:
-
-Let $\tilde{{\mathbf w}}_a=C_{aa}^{1/2}{\mathbf w}_a$ and  $\tilde{{\mathbf w}}_b=C_{bb}^{1/2}{\mathbf w}_b$ , we can write the constraint ${\mathbf w}_a^T C_{aa}{\mathbf w}_a={\mathbf w}_b^T C_{bb}{\mathbf w}_b=1$ as:
-$$
-\tilde{{\mathbf w}}_a^T\tilde{{\mathbf w}}_a=1\\
-\tilde{{\mathbf w}}_b^T\tilde{{\mathbf w}}_b=1
-$$
-Since $C_{aa}$ and $C_{bb}$ are non-singular, $C_{aa}^{1/2}$ and $C_{bb}^{1/2}$ are non-singular, the objective (3)
-$$
-\arg\max \tilde{{\mathbf w}}_a C_{aa}^{-1/2}C_{ab}C_{bb}^{-1/2}\tilde{{\mathbf w}}_b\\
-\textbf{subject to } \|\tilde{\mathbf w}_a\|=1\textbf{ and  }\|\tilde{\mathbf w}_b\|=1
-$$
-
-$$
-\tilde{\mathbf w}_a=u_1\\
-\tilde{\mathbf w}_b=v_1
-$$
-
-$$
-{\mathbf w}_{a_1}=C_{aa}^{-1/2}u_1\\
-{\mathbf w}_{b_1}=C_{bb}^{-1/2}v_1
-$$
-
-
-
-
-SVD solving
-
-$$
-A=U^TSV, \textbf{where } U^T=U^{-1}, V^T=V^{-1}, S\textbf{ is diagnal}
-$$
-
-
-$$
-AA^T=USV^TVS^TU^T=US^2U^T\\
-A^TA=VS^TU^TUSV^T=VS^2V^T
-$$
-
-$$
-\lambda_i=\sigma_i^2\\
-AA^Tu_i = \lambda_i u_i\\
-A^TAv_i = \lambda_i v_i
-$$
-
-$$
-\textbf{Time complexity: }O(\min(p^2q,qp^2))
-$$
-
-
-
-
-
-To further remove the noise from the latent space $Z$, we only keep highly correlated canonical components $z_i^{(1)}$ and $z_i^{(2)}$ by measuring the Pearson correlation and using a student's $t$-test for significance. The $p$-values are then corrected using BH(Benjamini Hochberg)\cite{benjamini1995controlling} and only canonical components with adjusted p-values < 0.05 are retained. 
-
-MOJITOO uses an algorithm based on generalized eigenvector decomposition~\cite{Ramsay97functionaldata} to estimate the canonical components. MOJITOO has a time complexity of $\mathcal{O}(max\{p^{(1)},p^{(2)}\}^{2} \times n)$ for computing covariance matrices and $\mathcal{O}(\min\{p^{(1)},p^{(2)}\}\times p^{(1)}\times p^{(2)})$ for the eigenvector decomposition. As $n$ (number of cells) is usually 100 times larger than $p^{(i)}$ (number of reduced dimensions in $Y^{(i)}$) the first term dominates the complexity. 
-
-Of note, CCA is one of the several steps in the integration algorithm of an earlier version of Seurat~\cite{butler2018integrating}. This had the objective to integrate distinct scRNA-seq experiments and CCA was performed in the common gene space, i.e. on transposed $Y^{(i)}$ matrices and the objective was to find matching cells.
-
-\subsubsection{Learning a shared space for multiple modalities}
-
-For the case that $\mathcal{Y}$ has more than two modalities, we perform the pairwise integration of modalities starting with the pair with highest dimensionality. The result of this CCA is then used for integration with the next modality. See algorithm~\ref{alg:MOJITOO} for a brief description, which receives a set of matrices $\{Y^{(1)},\cdots, Y^{(m)}\}$ with increasing dimensions $p^{(i)}\geq p^{(i+1)}$ as input. This heuristic algorithm was adopted to avoid the high computational costs of multiple CCA, which grows exponentially with the number of modalities. 
 \begin{algorithm}
 	\Input{
 	$Y^{(1)},...,Y^{(m)}$
