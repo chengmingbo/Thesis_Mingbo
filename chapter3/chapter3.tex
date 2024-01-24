@@ -35,12 +35,21 @@ where $X_{i} \in \mathbb{R}^{n\times s_{i}}$ represents the data of a particular
 \begin{align}
     Y_{i}=f_{i}(X_{i})
 \end{align}
-where $Y_{i} \in \mathbb{R}^{n\times p^{i}}$ represents the low-dimensional matrix for modality $i$, $p_{i}$ represents the number of dimensions and $f_{i}$ represents the specific dimension reduction method for this modality. Our method uses latent semantic indexing (LSI) for scATAC-seq and principal component analysis (PCA) for other modalities, as is usual in the literature~\cite{granja2021archr, signac, hao2021seurat4}.
-The rationale behind the use of dimension reduction is two-fold. First, low-dimensional matrices reduce the computing time of the CCA analysis without impacting accuracy for a minimum number of dimensions. Moreover, it allows to work directly on batch-corrected data, which is usually represented in a low-dimensional space~\cite{hao2021integrated, korsunsky2019fast}. Of note, batch correction is recommended previous to the integration, whenever the data is affected by batch effects. 
+where $Y_{i} \in \mathbb{R}^{n\times p_{i}}$ represents the low-dimensional matrix for modality $i$, $p_{i}$ represents the number of dimensions and $f_{i}$ represents the specific dimension reduction method for this modality. 
+
+The pre-processing for transcriptome, epigenome, proteome modalities has been described in \sref{background:sec2:scRNA}, \sref{background:sec2:scATAC} and \sref{background:sec2:protein}. We use the mostly used methods to do the pre-processing. We perform log normalization followed by a feature selection for scRNA-seq data with top 3,000 features and scale the data; For scATAC-seq data, we run TF-IDF transformation peaks. For surface protein data, we applies centered log ratio transformation. 
+
+To reduce the dimensions, we use latent semantic indexing (LSI) for scATAC-seq and principal component analysis (PCA) for other modalities, as is usual in the literature~\cite{granja2021archr, signac, hao2021seurat4}. LSI applies SVD on the feature matrix of scATAC data such that:
+\begin{equation}
+    Y_{j}' = U\Sigma V^\top
+\end{equation}
+Where $Y_{j}'\in \mathbb{R}^{n\times s_{j}}$ represents the TF-IDF transformed feature matrix, columns of left singular vector $U\in \mathbb{R}^{n\times p_j}$ is the reduced dimensions.  
+
+The rationale behind the use of dimension reduction is two-fold. First, low-dimensional matrices reduce the computing time of the CCA analysis without impacting accuracy for a minimum number of dimensions. Moreover, it allows to work directly on batch-corrected data, which is usually represented in a low-dimensional space~\cite{hao2021seurat4, korsunsky2019harmony}. Of note, batch correction is recommended previous to the integration, whenever the data is affected by batch effects, see \fref{fig:batch_correction}. 
 
 \subsection{Integration}
 
-\subsubsection{Canonical Correlation analysis}
+\subsubsection{Canonical Correlation analysis for two modalities}
 Canonical Correlation analysis(CCA) was first introduced H.Hotelling\citep{hotelling1935cca1,HOTELLING1936cca2} as a multivariate statistical methods for the analysis of paired sets of variables. In multivariate statistical analysis, the dataset consists of several variables measured across a group of observations or individuals. In the context of Canonical Correlation Analysis (CCA), the variables for a given observation can be divided into two distinct sets, representing the two perspectives or views of the data. Let the views $a$ and $b$ be denoted by the matrices $\mathbf{Y}_a\in\mathbb{R}^{n\times p}$ and $\mathbf{Y}_b\in \mathbb{R}^{n\times q}$. The row vectors $\mathbf{y}_a^k\in \mathbb{R}^{p}$ and $\mathbf{y}_b^k$ for $k\in\{1,2,\cdots, n\}$ denotes the sets of empirical multivariate observations in $\mathbf{Y}_a$ and $\mathbf{Y}_b$. The observations are presumed to be collectively drawn from a normal multivariate distribution. And the column vectors $a_i\in \mathbb{R}^n$ for $i\in \{1,2,\cdots, p\}$ and $b_j\in \mathbb{R}^n$ for ${j\in \{1,2,\cdots, q\}}$ denote the variable vectors of the n observations respectively. The problem in CCA can be defined to derive the linear relations between the variables in $\mathbf{Y}_a$ and $\mathbf{Y}_b$ such that the linear transformation:
 \begin{equation}
 \mathbf{Y}_a\mathbf{w}_a=\mathbf{z}_a\quad\text{and}\quad \mathbf{Y}_b\mathbf{w}_b=\mathbf{ z}_b
@@ -193,11 +202,15 @@ Where the singular values $\gamma_i$ are in descending order such that:
 \end{equation}
 
 
-\subsubsection{uniform latent component}
-xxx
+\subsubsection{Uniform latent component}
+CCA does not directly gives an unified dimension reduction for single cell mulitmodal data. It's not a good idea to combine $Z_a$ and $Z_b$ which would gives $q\times 2$ dimensions since too large dimension would increase the risk of the curse of dimensionality. Morrover, correlated components are similar to each other, which is a waste of storage. Furthermore, the larger dimension number will decrease the efficiency of downstream analysis. Thus we figure out a simple way get unified shared latent space without abandoning information from CCA, which is just to add $Z_a$ and $Z_b$ up such that:
+\begin{equation}
+    Z = Z_a + Z_b
+\end{equation}
+Which $Z\in \mathbb{R}^{q}$ is the share latent space. 
 
 \subsubsection{Selecting the number of components}
-Although the CCA can calculate as many as $\min(p, q)$, we can not make use all of them. There are two ways to select the top components. One way is to check the correlation of the components between two correlation variables. A second way is to perform a correlation statistical test to exclude unrelated CC pairs. 
+Another aspect is that should we keep all components from CCA. Although the CCA can calculate as many as $\min(p, q)$, we can not make use all of them since the last several components are almost irrelevant, see fig \fref{fig:CC_corrlations_last}. There are two ways to select the top components. One way is to check the correlation of the components between two correlation variables. A second way is to perform a correlation statistical test to exclude unrelated CC pairs. 
 
 \begin{figure}[!ht]
 	\centering
