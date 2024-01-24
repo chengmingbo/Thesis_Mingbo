@@ -9,7 +9,7 @@
 
 In the previous chapter, we introduced the concept of profiling the single-cell transcriptome, genome, epigenome, and proteome, along with simultaneous sequencing. We also outlined the common workflow for analyzing single-cell sequencing data from different protocols and that of single-cell multimodal analysis. We discussed the challenges associated with single-cell multimodal integration due to various feature distributions and types. To tackle this, our goal is to develop computational methods to effectively integrate single cells of multiple modalities. Another challenge in single-cell multimodal analysis is inferring a trajectory to capture cell fate differentiation. To address this challenge, we aim to develop a computational trajectory inference method tailored for single-cell multimodal data, particularly in complex datasets."
 
-In this chapter, we exclusively present and formalize our computational solution towards the two goals. Specifically, we divide the chapter into two main parts: single-cell multimodal dimensional integration (Section \sref{methods:integration}) and trajectory inference\sref{methods:TI}.
+In this chapter, we exclusively present and formalize our computational solution towards the two goals. Specifically, we divide the chapter into two main parts: single-cell multimodal dimensional integration (\sref{methods:integration}) and trajectory inference \sref{methods:TI}.
 
 In \sref{methods:integration}, we first introduce the notation that is necessary to formalize our methods.
 
@@ -37,9 +37,10 @@ where $X_{i} \in \mathbb{R}^{n\times s_{i}}$ represents the data of a particular
 \end{align}
 where $Y_{i} \in \mathbb{R}^{n\times p_{i}}$ represents the low-dimensional matrix for modality $i$, $p_{i}$ represents the number of dimensions and $f_{i}$ represents the specific dimension reduction method for this modality. 
 
-The pre-processing for transcriptome, epigenome, proteome modalities has been described in \sref{background:sec2:scRNA}, \sref{background:sec2:scATAC} and \sref{background:sec2:protein}. We use the mostly used methods to do the pre-processing. We perform log normalization followed by a feature selection for scRNA-seq data with top 3,000 features and scale the data; For scATAC-seq data, we run TF-IDF transformation peaks. For surface protein data, we applies centered log ratio transformation. 
+The pre-processing steps for transcriptome, epigenome, and proteome modalities have been detailed in \sref{background:sec2:scRNA}, \sref{background:sec2:scATAC}, and \sref{background:sec2:protein}. We employ widely used methods for pre-processing, including log normalization followed by feature selection for scRNA-seq data, retaining the top 3,000 features and scaling the data. For scATAC-seq data, we apply TF-IDF transformation to the peaks. In the case of surface protein data, a centered log ratio transformation is employed.
 
-To reduce the dimensions, we use latent semantic indexing (LSI) for scATAC-seq and principal component analysis (PCA) for other modalities, as is usual in the literature~\cite{granja2021archr, signac, hao2021seurat4}. LSI applies SVD on the feature matrix of scATAC data such that:
+
+To reduce dimensions, we employ latent semantic indexing (LSI) for scATAC-seq and principal component analysis (PCA) for other modalities, following the common practice in the literature~\cite{granja2021archr, signac, hao2021seurat4}. LSI involves applying singular value decomposition (SVD) on the feature matrix of scATAC data, such that:
 \begin{equation}
     Y_{j}' = U\Sigma V^\top
 \end{equation}
@@ -295,16 +296,20 @@ The time complexity of CCA for the calculation of $C_{aa}$ and $C_{bb}$ is $O(n\
 
 \subsection{Discussion}
 \begin{itemize}
-    \item We developed an integration approach through CCA. We use Pearson statistical test to select correlated components. Moveover, we adds the correlated components not only to obtain a unified latent space, but also to avoid higher dimensions which would probably cause curse of dimensionality\citep{Dreyfus2003}. The latent space can be use to the downstream analysis like clustering, trajectory inference, visulization etc. 
 
-    \item The method we proposal doesn't need care about the feature types. More over the methods input dimensional reduction from each modality, which gives chances to apply a customized batch correction methods make it flexible to both the modalities and the batch correction methods.
-    
-    \item Our method is implement by R and is compatible with popular single cell analysis toolkit such as Seurat and ArchR. We have provided a tutorial to demonstrate how to apply our method to integrate multimodal data using Signac \url{https://github.com/CostaLab/MOJITOO/blob/main/vignettes/SeuratObject_integration.Rmd} and ArchR\url{https://github.com/CostaLab/MOJITOO/blob/main/vignettes/ArchRObject_integration.Rmd}. On top of that, we also implement a simple python version for users who cooperate with scanpy or episcanpy\url{https://github.com/CostaLab/MOJITOO/tree/main/pymojitoo}. 
+    \item We developed an integration approach through Canonical Correlation Analysis (CCA). We use the Pearson statistical test to select correlated components. Moreover, we add the correlated components not only to obtain a unified latent space but also to avoid higher dimensions, which could potentially cause the curse of dimensionality \citep{Dreyfus2003}. The latent space can be used for downstream analyses such as clustering, trajectory inference, visualization, etc.
+
+
+    \item The method we propose does not require consideration of feature types. Furthermore, the method takes dimensional reduction inputs from each modality, providing opportunities to apply customized batch correction methods, making it flexible for both modalities and batch correction methods.
+
+    \item Our method is implemented in R and is compatible with popular single-cell analysis toolkits such as Seurat and ArchR. We have provided a tutorial demonstrating how to apply our method to integrate multimodal data using Signac \url{https://github.com/CostaLab/MOJITOO/blob/main/vignettes/SeuratObject_integration.Rmd} and ArchR \url{https://github.com/CostaLab/MOJITOO/blob/main/vignettes/ArchRObject_integration.Rmd}. Additionally, we have implemented a simple Python version for users collaborating with scanpy or episcanpy \url{https://github.com/CostaLab/MOJITOO/tree/main/pymojitoo}.
 \end{itemize}
 
-Canonical correlation analysis is a linear method that retains the most information from the original data. Comparing to other methods, Matrix factorization is widely used(e.g. MOFA, scAI, Liger) due to its intuitive matrix multiplication representations. However, The matrix factorization is highly depends on the initialization. 
+When examining the concepts behind these single-cell multimodal integration methods, canonical correlation analysis (CCA) is a linear method designed to preserve the maximum amount of information from the original dataset. Other approaches, matrix factorization, such as MOFA, scAI, and Liger, is widely employed due to its intuitive matrix multiplication representations. However, matrix factorization poses a non-convex optimization challenge and may be susceptible to a significant drawback wherein the solution exhibits bias towards one of the optimization variables.
 
+Methods like Seurat WNN generate intricate weighted nearest neighbors networks to capture inter-modality similarities. Nevertheless, this method treats the contribution of each modality equally to derive the final network. In contrast, Schema employs metric learning to reweigh each modality by maximizing the similarity of distance pairs from each modality. However, this approach distorts the distribution of the original data, delivering suboptimal results, and incurs high computational costs owing to its reliance on quadratic programming.
 
+Certain methodologies, such as DIABLO and Symphony, have explored the concept of maximizing covariance or correlation between two modalities. However, the primary use of DIABLO involves employing PLS-DA in a supervised manner for bulk data, where sample labels contribute to the optimization problem. Additionally, DIABLO inputs the original count matrix, leading to remarkably expensive time and memory usage. Symphony serves as a label-transfer method, utilizing canonical correlation analysis for identifying shared references in single-case studies with single-cell CITE-seq data. Nevertheless, Symphony does not incorporate dimension reduction as input, lacks the capability to handle more than two modalities, and employs a suboptimal approach to batch correction removal.
 
 \section{Single cell trajectory inference}
 \label{methods:TI}
