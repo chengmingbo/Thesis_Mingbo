@@ -7,7 +7,7 @@
 \label{chapter:methods}
 \graphicspath{{chapter3/figs}}
 
-In the previous chapter, we introduced the concept of profiling the single-cell transcriptome, genome, epigenome, and proteome, along with simultaneous sequencing. We also outlined the common workflow for analyzing single-cell sequencing data from different protocols and that of single-cell multimodal analysis. We discussed the challenges associated with single-cell multimodal integration due to various feature distributions and types. To tackle this, our goal is to develop computational methods to effectively integrate single cells of multiple modalities. Another challenge in single-cell multimodal analysis is inferring a trajectory to capture cell fate differentiation. To address this challenge, we aim to develop a computational trajectory inference method tailored for single-cell multimodal data, particularly in complex datasets."
+In the previous chapter, we introduced the concept of profiling the single-cell transcriptome, genome, epigenome, and proteome, along with simultaneous sequencing. We also outlined the common workflow for analyzing single-cell sequencing data from different protocols and that of single-cell multimodal analysis. We discussed the challenges associated with single-cell multimodal integration due to various feature distributions and types. To tackle this, our goal is to develop computational methods to effectively integrate single cells of multiple modalities. Another challenge in single-cell multimodal analysis is inferring a trajectory to capture cell fate differentiation. To address this challenge, we aim to develop a computational trajectory inference method tailored for single-cell multimodal data, particularly in complex datasets.
 
 In this chapter, we exclusively present and formalize our computational solution towards the two goals. Specifically, we divide the chapter into two main parts: single-cell multimodal dimensional integration (\sref{methods:integration}) and trajectory inference \sref{methods:TI}.
 
@@ -107,7 +107,7 @@ Next, we reform the CCA problem using the covariance matrices above mentioned. T
 \begin{equation}
      \mathbf{W}_a^\top C_{aa} \mathbf{W}_a = I_p, \quad  \mathbf{W}_b^\top C_{bb} \mathbf{W}_b = I_q, \quad  \mathbf{W}_a^\top C_{ab}  \mathbf{W}_b = D
 \end{equation}
-Where $D=\diag (\gamma_i)$, that is:
+Where $D=\text{diag} (\gamma_i)$, that is:
 \begin{equation}
 \begin{pmatrix}
      \mathbf{W}_a^\top & {\mathbf 0}\\
