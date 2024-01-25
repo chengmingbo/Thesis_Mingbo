@@ -233,7 +233,7 @@ Another issue to be addressed is that conventional CCA cannot handle more than t
 with the next modality. See \alref{alg:MOJITOO} for a brief description, which receives a set of matrices $\{Y_{1},\cdots, Y_{m}\}$ with increasing dimensions $p_{i}\geq p_{i+1}$ as input. This heuristic algorithm was adopted to avoid the high computational costs of multiple CCA, which grow exponentially with the number of modalities. 
 
 \subsection{Implementation}
-We implemented our Canonical correlation analysis(CCA) based approach to solve the integration of single cell multimodal data as an R package. Our method name is MOJITOO(\textbf{M}ulti-m\textbf{O}dal \textbf{Joint} \textbf{I}ntegra\textbf{T}ion of c\textbf{O}mp\textbf{O}nents) and will be referenced as such throughout this thesis. The method's implementation is all steps as described in this chapter. MOJITOO first was released in January 2022. \fref{fig:MOJITOO_schematic} shows the workflow of MOJITOO and \tref{tab:mojitoo_R_dependencies} summarized the dependencies of MOJITOO package.
+We implemented our Canonical Correlation Analysis (CCA) based approach to address the integration of single-cell multimodal data as an R package. Our method is named MOJITOO (\textbf{M}ulti-m\textbf{O}dal \textbf{Joint} \textbf{I}ntegra\textbf{T}ion of c\textbf{O}mp\textbf{O}nents) and will be referred to as such throughout this thesis. The method's implementation encompasses all the steps described in this chapter. MOJITOO was initially released in January 2022. \fref{fig:MOJITOO_schematic} illustrates the workflow of MOJITOO, and \tref{tab:mojitoo_R_dependencies} summarizes the dependencies of the MOJITOO package.
 
 \begin{figure}[!ht]
 	\centering
@@ -291,26 +291,26 @@ We used a local Linux Mint 21.1 x86\_64 64-bit machine running with 12 Intel(R) 
 
 For more information about MOJITOO implementation, source code, tutorials and examples, please see:
 \begin{center}
-https://github.com/CostaLab/MOJITOO
+\url{https://github.com/CostaLab/MOJITOO}
 \end{center}
 
 
 
 \begin{algorithm}
 	\Input{
-	$Y^{(1)},...,Y^{(m)}$
+	$Y_{1},...,Y_{m}$
 	}
 
 	$i \gets 2$ \\
-	$Z^{(1)} \gets Y^{(1)}$ \\
+	$Z_{1} \gets Y_{1}$ \\
 	\While{$i < m$}
 	{
-		$W^{(1)}, W^{(2)} \gets CCA(Z^{(1)}, Y^{(i)})$ \\ 
-		$Z^{(1)} \gets Z^{(1)}\times W^{(1)}$ \\ 
-		$Z^{(2)} \gets Y^{(i)}\times W^{(2)}$  \\
-		$Z \gets Z^{(1)} + Z^{(2)}$ \\ 
+		$W_{1}, W_{2} \gets CCA(Z_{1}, Y_{i})$ \\ 
+		$Z_{(1)} \gets Z_{1}\times W_{1}$ \\ 
+		$Z_{2} \gets Y_{i}\times W_{2}$  \\
+		$Z \gets Z_{1} + Z_{2}$ \\ 
 		$Z \gets Z[, 1:k]$\Comment{only consider significantly correlated dimension } 
-		$Z^{(1)} \gets Z$ \\
+		$Z_{1} \gets Z$ \\
 		$i \gets i+1$  \\
 	}
 	\Return $\mathbf{Z}$ 
@@ -321,7 +321,7 @@ https://github.com/CostaLab/MOJITOO
 \subsection{Discussion}
 \begin{itemize}
 
-    \item We developed an integration approach through Canonical Correlation Analysis (CCA). We use the Pearson statistical test to select correlated components. Moreover, we add the correlated components not only to obtain a unified latent space but also to avoid higher dimensions, which could potentially cause the curse of dimensionality \citep{Dreyfus2003}. The latent space can be used for downstream analyses such as clustering, trajectory inference, visualization, etc.
+    \item We developed an integration approach through Canonical Correlation Analysis (CCA). We use the Pearson statistical test to select correlated components. Moreover, we add the correlated components not only to obtain a unified latent space but also to avoid higher dimensions, which could potentially cause the curse of dimensionality \citep{Dreyfus2003}. To integrate more than two modalities, we employ an iterative process instead of the intuitive multi-CCA method to prevent overfitting. The latent space can be used for downstream analyses such as clustering, trajectory inference, visualization, etc.
 
 
     \item The method we propose does not require consideration of feature types. Furthermore, the method takes dimensional reduction inputs from each modality, providing opportunities to apply customized batch correction methods, making it flexible for both modalities and batch correction methods.
