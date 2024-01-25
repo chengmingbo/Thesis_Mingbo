@@ -9,7 +9,7 @@
 \graphicspath{{chapter4/figs}}
 In the previous chapter, we introduced our computational approach, MOJITOO, for the integration of single-cell multimodal data. Here, we outline the experimental framework employed in this thesis to validate our method and subsequently present the results. The framework comprises two sections: technical validation and biological validation. In technical validation (Section 4.1.1), the primary objective is to assess the performance of our approach and compare it to other methods. Moving to biological validation (Section 4.1.2), we apply MOJITOO to the \texttt{PBMC-Multiome} data generated from mouse Peripheral Blood Mononuclear Cells(PBMC). We test its capability to integrate each canonical component (CC) of the data and its effectiveness in identifying top genes and peaks associated with each CC to gain insights into the data.
 
-In Section 4.2, we present the results described in Section 4.1. Specifically, in 4.2.1, we showcase the technical validation by comparing clustering accuracy, distance accuracy, and space preservation among competing methods. Additionally, we provide a comparison of computational resources, highlighting the efficiency of these methods. Next, we will introduce (in Section 4.2.2) the biological validation to demonstrate the effectiveness of MOJITOO in PBMC data. We conclude this chapter with a final discussion of our experimental workflow and the results in Section 4.3.
+In Section 4.2, we present the results described in Section 4.1. Specifically, in 4.2.1, we showcase the technical validation by comparing clustering accuracy, distance accuracy, and structure preservation among competing methods. Additionally, we provide a comparison of computational resources, highlighting the efficiency of these methods. Next, we will introduce (in Section 4.2.2) the biological validation to demonstrate the effectiveness of MOJITOO in PBMC data. We conclude this chapter with a final discussion of our experimental workflow and the results in Section 4.3.
 
 
 \section{Experiments}
@@ -17,7 +17,7 @@ In Section 4.2, we present the results described in Section 4.1. Specifically, i
 In this section, we outline the experimental framework. We begin by introducing the single-cell multimodal data used in the benchmarking (Section 4.1.1). Following that, we delve into the specifics of executing eight computational single-cell integration approaches (Section 4.1.2). Subsequently, we present the technical evaluation of the competing methods (Section 4.1.3). Moving on, we showcase the biological inspection (Section 4.1.4). Finally, we provide a list of the statistical methods employed (Section 4.1.5).
 
 \subsection{Multimodal benchmarking data}
-\label{MOJITOO:exp:bench}
+\label{MOJITOO:exp:data}
 We utilize publicly available multimodal datasets with two or three modalities in our evaluation. The initial two datasets consist of single-cell CITE-seq data, capturing single-cell RNA and surface proteins simultaneously. The third and fourth datasets involve single-cell data measuring both single-cell RNA and single-cell ATAC simultaneously. Lastly, the last two datasets encompass single-cell data that simultaneously measure single RNA, single-cell ATAC-seq, and single-cell protein. \tref{tab:MOJITOO_DATA} summarize the detail of these data.
 
 \begin{table}[!ht]
@@ -61,9 +61,6 @@ We utilize publicly available multimodal datasets with two or three modalities i
 	The tri-modal dataset is based on human PBMCs measured with the TEA-seq protocol~\citep{swanson2021simultaneous}. It contains transcripts, epitopes and chromatin accessibility of 25,517 PBMCs grouped into 12 cell types ({\texttt{PBMC-TEA}}). For this data set, we obtain original matrices and combine data from distinct wells from GEO (GSE158013). As this scATAC-seq lacks uniform peaks, we create an integrated matrix by combining peaks, allowing an extension of 250 bps. Ultimately, we intersect all barcodes from scRNA-seq, protein, and scATAC-seq to obtain matrices in the same cellular space.
 \end{description}
 
-BM-CITE---Next, we applied the ~\hyperref[sec:preproccessing]{pre-processing} pipeline.	
-For scATAC-seq, we obtain an integrated matrix by combing peaks (allowing an extension of ±250bps). We finally intersect all barcodes from scRNA-seq, protein and scATAC-seq to obtain matrices in the same cell space. Characteristics of each of the six data sets are described in ~\tref{tab:MOJITOO_DATA}.
-
 \subsection{Execution of single cell multi-modal integration data}
 \label{MOJITOO:exp:run}
 % List how to install and run the competing methods
@@ -86,7 +83,9 @@ We initiate a standardized pre-processing pipeline for all previous datasets, co
 \end{description}
 
 \subsubsection{Competing methods}
-%% TODO: need split these into two parts: algorithm(chapter2) and execution(chapter4).
+\label{MOJITOO:exp:methods}
+%% TODO: need split these into two parts: algorithm(chapter2) and execution(chapter).
+Here, we describe the installation and execution procedures for the competing methods.
 \begin{description}
     \item[MOFA] 
     We obtained MOFA2 (version 1.2.2)\citep{tewari2017mofa} from \href{https://github.com/bioFAM/MOFA2}{https://github.com/bioFAM/MOFA2} and installed it using the command `R CMD INSTALL MOFA2'. Subsequently, we executed MOFA with default parameters and followed their recommendations in the tutorial \url{https://raw.githack.com/bioFAM/MOFA2_tutorials/master/R_tutorials/10x_scRNA_scATAC.html} for analyzing all the data. However, we now provide PCA/LSI reductions as input for MOFA, as this has improved its computational time (Appendix ~\atref{tab:time}), as well as the clustering performance in MOFA's latent space\afref{fig:MOFA}.
@@ -112,10 +111,10 @@ We initiate a standardized pre-processing pipeline for all previous datasets, co
 
 \subsection{Evaluation of multi-modal integration Methods}
 \label{MOJITOO:exp:metrics}
-We describe single cell multi-modal for technical validation.
+In this section, we outline the methodology employed to assess the results generated by executing the single-cell multimodal integration methods, as described earlier.
 
-\subsubsection{technical validation}
 
+We employed various metrics to evaluate the single cell mulitmodal integration methods, including structure preservation, distance accuracy, clustering accuracy, and computational resource requirements, such as memory usage and running time consumption. These metrics allowed us to assess the results from different perspectives. \fref{fig:evaluation_MOJITOO} provides an overview framework for the integration methods' evaluation.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{evaluation_MOJITOO/fig}
@@ -151,30 +150,33 @@ where $d(i,j)$ is the distance of two cells under some specific latent space, he
 \end{description}
 
 % to validate improve the perfomance, ---> PBMC capture major cell types and subtype changings
-\subsection{Biological Validatation}
-\label{MOJITOO:exp:bio}
+%\subsection{Biological Insight}
+%\label{MOJITOO:exp:bio}
 
-\subsection{Statistical methods}
 \label{MOJITOO:exp:statistic}
 % Nemenyi post-hoc test
 
 
-
 \section{Results}
 \label{MOJITOO:out}
-\subsection{Evaluation of multi-modal integration}
-\subsection{Evaluation of PBMC data}
+In this section, we present the results generated by the single cell multimodal integration methods described in \sref{MOJITOO:exp}.
 
+\subsection{Evaluation of multi-modal integration}
+We present the benchmarking results using the data described in \sref{MOJITOO:exp:data} and the methods outlined in \sref{MOJITOO:exp:methods}. The evaluation is conducted based on the metrics outlined in \sref{MOJITOO:exp:metrics}.
+
+\subsubsection{Benchmarking Structure Preseravtion}
+First, we evaluate algorithms regarding their structure preservation, i.e. the average similarity between the Euclidean distances in the shared space and distances in the space of each modality\citep{jain2021multimap}. Results(\fref{fig:structure}) indicate the highest structure scores for MOJITOO (4 out of 6) followed by DIABLO (1 out of 6) and MOFA (1 out of 6). A ranking(\fref{fig:ranking}A) of the structure scores indicates MOJITOO as the best algorithm followed by DIABLO, MOFA, and Symph-Int. Interestingly, we observe that MOFA and Symph-Int tend to obtain higher structure scores for RNA and that MOJITOO and DIABLO have a lower variance of structure scores across modalities. This suggests that the MOJITOO and DIABLO shared space captures information of all individual modalities more uniformly than competing methods. The lower performance of Symphony integration compared to other CCA methods (MOJITOO and DIABLO) is explained by the fact it only considers CCs from the RNA space as integrated embedding.
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.95\textwidth]{ari/fig}
+	\includegraphics[width=0.95\textwidth]{structure/fig}
 	\vspace{0.1cm}
-	\caption[Evaluation of clustering accuracy for multi-modal integration methods.]{
-	\textbf{Evaluation of clustering accuracy for multi-modal integration methods.} Boxplots showing ARI scores (y-axis) versus methods (x-axis) for distinct clustering solutions for all six data-sets. Asterisks indicate P-values of $<$0.05(*), $<$0.01(**), $<$0.001(***), $<$0.0001(****) obtained via t-test comparing the ARI values of MOJITOO versus other methods. }
-	\label{fig:ari}
+	\caption[Evaluation of structure preservation for multi-modal integration methods.]{
+	\textbf{Evaluation of structure preservation for multi-modal integration methods.}  We show the average (trace) and modality-specific structure scores (dots) (y-axis) versus methods (x-axis) for the six datasets.}
+	\label{fig:structure}
 \end{figure}
 
-
+\subsubsection{Benchmarking Distance Accuracy}
+Next, we make use of the cell types reported in the original manuscripts introducing the single-cell datasets as true labels for benchmarking. First, we use these labels to evaluate the silhouette scores by contrasting class labels with Euclidean distance matrices estimates on the shared space. Regarding silhouette(\fref{fig:silouette}), MOFA is best in four out of six datasets, while MOJITOO is best in the other two datasets. MOJITOO obtains second rank in four out of six datasets and is ranked second in the overall ranking(\fref{fig:ranking}). 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{silouette/fig}
@@ -184,14 +186,15 @@ where $d(i,j)$ is the distance of two cells under some specific latent space, he
 	\label{fig:silouette}
 \end{figure}
 
-
+\subsubsection{Benchmarking Clustering Accuracy}
+we perform Louvain clustering at distinct resolutions (0.1–2.0) on the shared latent space. We then measure the agreement of clustering results with labels using the Adjusted Rand Index (ARI)(\fref{fig:ari}). WNN and Symphony have the highest ARI in two datasets each, while DIABLO and MOJITOO have the highest values in one dataset each. MOJITOO has a higher rank than two in all datasets and has the highest overall rank followed by WNN and DIABLO\fref{fig:ranking}. Moreover, we also perform a sensitivity analysis on MOJITOO to inspect if the dimension of the original PCA/LSI space has an impact on its performance \afref{fig:Input_Dimensions}. We observe that if 50 or more components are used, MOJITOO obtains similar clustering and structure preservation scores. 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.95\textwidth]{structure/fig}
+	\includegraphics[width=0.95\textwidth]{ari/fig}
 	\vspace{0.1cm}
-	\caption[Evaluation of space preservation for multi-modal integration methods.]{
-	\textbf{Evaluation of space preservation for multi-modal integration methods.}  We show the average (trace) and modality-specific structure scores (dots) (y-axis) versus methods (x-axis) for the six datasets.}
-	\label{fig:structure}
+	\caption[Evaluation of clustering accuracy for multi-modal integration methods.]{
+	\textbf{Evaluation of clustering accuracy for multi-modal integration methods.} Boxplots showing ARI scores (y-axis) versus methods (x-axis) for distinct clustering solutions for all six data sets. Asterisks indicate P-values of $<$0.05(*), $<$0.01(**), $<$0.001(***), $<$0.0001(****) obtained via t-test comparing the ARI values of MOJITOO versus other methods. }
+	\label{fig:ari}
 \end{figure}
 
 \begin{figure}[!ht]
@@ -202,7 +205,8 @@ where $d(i,j)$ is the distance of two cells under some specific latent space, he
 	\label{fig:ranking}
 \end{figure}
 
-
+\subsubsection{Benchmarking Requirements of Memory and Time}
+We next evaluated the memory usage and running time consumption of single-cell integration methods, as illustrated in \fref{fig:time_memory}. Overall, MOJITOO demonstrated the lowest time consumption (\fref{fig:time_memory}B and \atref{tab:memory}) and minimal memory requirements (\fref{fig:time_memory}B and \atref{tab:time}). In the largest dataset with 30,000 cells, MOJITOO exhibited the fastest performance, completing the analysis in only 2.5 minutes and utilizing 6.4 GB of memory. The low memory requirements suggest that MOJITOO can even run efficiently on commonly available laptops for large datasets with over 100,000 cells. These results indicate that MOJITOO exhibits excellent scalability.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{time_memory/fig}
@@ -211,6 +215,8 @@ where $d(i,j)$ is the distance of two cells under some specific latent space, he
 	\label{fig:time_memory}
 \end{figure}
 
+\subsection{Evaluation of PBMC data}
+Examples of low dimensional embeddings obtained by distinct integration methods with the PBMC-Multiome dataset are provided in \fref{fig:pbmc_multiome_umap}.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{pbmc_multiome_umap/fig}
@@ -218,7 +224,6 @@ where $d(i,j)$ is the distance of two cells under some specific latent space, he
 	\caption[UMAP of multiome PBMC comparison for different multi-modal integration methods.]{\textbf{UMAP of multiome \texttt{PBMC-multiome} comparison for different multi-modal integration methods.}UMAPs showing cell type distribution derived from integration methods on \texttt{PBMC-multiome} dataset. }
 	\label{fig:pbmc_multiome_umap}
 \end{figure}
-
 
 \begin{figure}[!ht]
 	\centering
@@ -245,6 +250,10 @@ where $d(i,j)$ is the distance of two cells under some specific latent space, he
 	\caption[Genome browser tracks of top 2 positive and negative peaks for CC1 and CC2.]{ \textbf{A)} Genome browser tracks with top 2 positive and negative peaks for CC1. Tracks correspond to normalized cell-specific pseudo bulk ATAC-seq profiles generated by deeptools \citep{ramirez2016deeptools2}. Cell-specific tracks are ordered by CC1 score (high to low). \textbf{B)} showing the genome browser of top peaks for CC2.}
 	\label{fig:CC_Peaks}
 \end{figure}
+
+\section{Statistical methods}
+For comparisons involving multiple methods and datasets, we employed the non-parametric Friedman test with the Nemenyi post-hoc test (Demšar, 2006). The Friedman test(Friedman, 1937, 1940) was utilized to compare the average ranks of the methods across all datasets. The null hypothesis assumes that all the methods are equivalent, and their ranks are equal. We utilized the friedmanTest function from the R package PMCMRplus to conduct the Friedman rank sum test. If the null hypothesis was rejected, indicating that at least one method is significantly different from the others, we proceeded with the Nemenyi post-hoc test (Nemenyi, 1963) to compare all pairs. Therefore, to compare k methods, a total of k(k − 1)/2 hypotheses were tested, and this was accomplished using the frdAllPairsNemenyiTest function from the R package PMCMRplus.
+
 
 \section{Discussion}
 
