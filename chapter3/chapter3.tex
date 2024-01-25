@@ -71,7 +71,7 @@ Let the maximum be attained by $z_{a}^{(1)}$ and $z_{b}^{(1)}$. The pair of imag
 	\centering
 	\includegraphics[width=0.95\textwidth]{CC_corrlation_scatter/fig}
 	\vspace{0.1cm}
-	\caption[Scatter plot showing the correlation between scRNA and scATAC.]{\textbf{Scatter plot showing the correlation between scRNA and scATAC.} Data is from \texttt{PBMC-Multiome} scatter plots show the highly correlated scRNA and scATAC for the top 8 components. The number indicate the $i$th CC. X-axis is scRNA CC coordinates whereas Y-axis presents the scATAC coodinates}
+	\caption[Scatter plot illustrating the correlation between scRNA and scATAC.]{\textbf{Scatter plot illustrating the correlation between scRNA and scATAC.} The data is derived from \texttt{PBMC-Multiome}, and the scatter plots depict the highly correlated scRNA and scATAC for the top 8 components. The numbers indicate the $i$-th canonical correlation (CC). The X-axis represents scRNA CC coordinates, while the Y-axis presents the scATAC coordinates.}
 	\label{fig:CC_corrlation_scatter}
 \end{figure}
 
@@ -90,18 +90,16 @@ Let the maximum be attained by $z_{a}^{(1)}$ and $z_{b}^{(1)}$. The pair of imag
 	\centering
 	\includegraphics[width=0.95\textwidth]{CCA_ADD/fig}
 	\vspace{0.1cm}
-	\caption[CCA schematic showing the linear transformation.]{\textbf{CCA schematics showing the linear transformation..} Data is from \texttt{PBMC-Multiome}. \textbf{A)} Same cell $a$ and $b$ in scRNA and scATAC space presents different coordinates. \textbf{B)} After the linear transformation, cell $a$ and $b$ are project to the same space with the angle minimized. Our method add up the the two vectors into for a cell to get a unified coordinate in the CCA space.}
+	\caption[CCA schematic showing the linear transformation.]{\textbf{CCA schematics illustrating the linear transformation.} The data is sourced from \texttt{PBMC-Multiome}. \textbf{A)} The same cells, denoted as $a$ and $b$, in the scRNA and scATAC space exhibit distinct coordinates. \textbf{B)} Following the linear transformation, cells $a$ and $b$ are projected into the same space with minimized angles. Our approach involves aggregating the two vectors for a cell, resulting in a unified coordinate within the CCA space.}
 	\label{fig:CC_pval_select}
 \end{figure}
 
 \subsubsection{Solving the Optimization Problem}
-They are several ways to solved the CCA problem. The first approch is to apply the standard eigenvalue problem\citep{HOTELLING1936cca2,hooper1959ccaeigen}. It can also be sovled by convert it to a generalised eigenvalue problem\citep{bach2002kernel,hardoon2004canonical}. The mostly used methods to solve the problem is using Singular Value Decomposition (SVD), which was first introduce by\citep{healy1957ccasvd}, and described by \citep{ewerbring1989canonical}. We here only introduce the the SVD solution which is applied in our MOJITOO package.
-
+There are several ways to solve the CCA problem. The first approach is to apply the standard eigenvalue problem \citep{HOTELLING1936cca2,hooper1959ccaeigen}. It can also be solved by converting it into a generalized eigenvalue problem \citep{bach2002kernel,hardoon2004canonical}. The most commonly used method to solve the problem is by employing Singular Value Decomposition (SVD), first introduced by \citep{healy1957ccasvd}, and further described by \citep{ewerbring1989canonical}. Here, we only introduce the SVD solution, which is applied in our package.
 %\citep{HOTELLING1936cca2} shows that we can obtain canonical correlation by solving the  eigendecomposition problem:
 %\begin{equation}
 %    \det(C_{ab}^\top C_{aa}^{-1} C_{ab} - \lambda C_{bb}) = 0
 %\end{equation}
-
 To solve the CCA problem using SVD, we first introduce the joint covariance matrix $C$ such that
 \begin{equation}
 	C = \begin{pmatrix}
@@ -210,9 +208,10 @@ Where the singular values $\gamma_i$ are in descending order such that:
     \gamma_1 \geq \gamma_2 \geq \cdots \geq 0    
 \end{equation}
 
+The time complexity of CCA for the calculation of $C_{aa}$ and $C_{bb}$ is $O(n\times p \times p)$ and $O(n\times q \times q)$ respectively whereas the time complexity of $C_{ab}$ is $O(n\times p \times q)$. And the time complexity of the  calculation of SVD to solve the problem is $O(\min(p^2q,qp^2))$.
 
 \subsubsection{Uniform latent component}
-CCA does not directly gives an unified dimension reduction for single cell mulitmodal data. It's not a good idea to combine $Z_a$ and $Z_b$ which would gives $q\times 2$ dimensions since too large dimension would increase the risk of the curse of dimensionality. Morrover, correlated components are similar to each other, which is a waste of storage. Furthermore, the larger dimension number will decrease the efficiency of downstream analysis. Thus we figure out a simple way get unified shared latent space without abandoning information from CCA, which is just to add $Z_a$ and $Z_b$ up such that:
+CCA does not directly provide a unified dimension reduction for single-cell multimodal data. Combining $Z_a$ and $Z_b$ into $q\times 2$ dimensions is not advisable, as a larger dimension increases the risk of the curse of dimensionality. Moreover, correlated components are similar to each other, leading to redundant storage. Additionally, a larger dimensionality negatively impacts the efficiency of downstream analysis. Therefore, we propose a simple method to obtain a unified shared latent space without discarding information from CCA, which involves adding $Z_a$ and $Z_b$ together as follows:
 \begin{equation}
     Z = Z_a + Z_b
 \end{equation}
@@ -227,23 +226,30 @@ Which $Z\in \mathbb{R}^{q}$ is the share latent space.
 \end{figure}
 
 \subsubsection{Selecting the number of components}
-Another aspect is that should we keep all components from CCA. Although the CCA can calculate as many as $\min(p, q)$, we can not make use all of them since the last several components are almost irrelevant, see fig \fref{fig:CC_corrlations_last}. There are two ways to select the top components. One way is to check the correlation of the components between two correlation variables. A second way is to perform a correlation statistical test to exclude unrelated CC pairs See \fref{fig:CC_pval_select}. Our method use pval to select correlated components by measuring the Pearson correlation and using a student's $t$-test for significance. The $p$-values are then corrected using BH(Benjamini Hochberg)\cite{benjamini1995controlling} and only canonical components with adjusted p-values < 0.05 are retained. 
+Another consideration is whether to retain all components from CCA. Although CCA can calculate as many as $\min(p, q)$ components, not all of them are useful, as the last several components are almost irrelevant, as shown in \fref{fig:CC_corrlations_last}. There are two approaches to select the top components. One method involves examining the correlation of components between two correlation variables. Another approach is to perform a correlation statistical test to exclude unrelated CC pairs, as illustrated in Fig \fref{fig:CC_pval_select}. Our method employs p-values to select correlated components by measuring Pearson correlation and using a student's $t$-test for significance. The $p$-values are then corrected using the BH (Benjamini-Hochberg) method \cite{benjamini1995controlling}, and only canonical components with adjusted p-values < 0.05 are retained.
 
 \subsubsection{Solving Problems with multivariable}
 Another issue to be addressed is that conventional CCA cannot handle more than two modalities. Although Multi-CCA has been developed to simultaneously correlate more than 3 variables, it can would probably lead overfitting problem. Thus, we use another way to handle the multimodalities using CCA. For the case that Y has more than two modalities, we perform the pairwise integration of modalities starting with the pair with highest dimensionality. The result of this CCA is then used for integration
-with the next modality. See \alref{alg:MOJITOO} for a brief description, which receives a set of matrices $\{Y_{1},\cdots, Y_{m}\}$ with increasing dimensions $p_{i}\geq p_{i+1}$ as input. This heuristic algorithm was adopted to avoid the high computational costs of multiple CCA, which grows exponentially with the number of modalities. 
+with the next modality. See \alref{alg:MOJITOO} for a brief description, which receives a set of matrices $\{Y_{1},\cdots, Y_{m}\}$ with increasing dimensions $p_{i}\geq p_{i+1}$ as input. This heuristic algorithm was adopted to avoid the high computational costs of multiple CCA, which grow exponentially with the number of modalities. 
 
 \subsection{Implementation}
+We implemented our Canonical correlation analysis(CCA) based approach to solve the integration of single cell multimodal data as an R package. Our method name is MOJITOO(\textfb{M}ulti-m\textfb{O}dal \textfb{Joint} \textfb{I}ntegra\textfb{T}ion of c\textfb{O}mp\textfb{O}nents) and will be referenced as such throughout this thesis. The method's implementation is all steps as described in this chapter. MOJITOO first was released in January 2022. \fref{fig:MOJITOO_schematic} shows the workflow of MOJITOO and \tref{tab:mojitoo_R_dependencies} summarized the dependencies of MOJITOO package.
+
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{MOJITOO_schematic/fig}
 	\vspace{0.1cm}
-	\caption[MOJITOO workflow for multimodal data integration.]{\textbf{MOJITOO workflow for multimodal data integration.}}
+	\caption[MOJITOO workflow for multimodal data integration.]{\textbf{MOJITOO workflow for multimodal data integration.} MOJITOO takes dimension reductions of multiple modalities as input. The modalities undergo initial preprocessing, followed by dimension reduction and batch correction if necessary. MOJITOO starts by selecting the two modalities with more features. Subsequently, CCA is employed to correlate the two spaces. The resulting latent spaces are summed to create a shared latent space. A correlation test is then conducted to retain only significant components. The output shared space is iteratively used in the next round of the same operation along with a new modality's dimension reduction. Eventually, the final shared latent space for all modalities is obtained.}
 	\label{fig:MOJITOO_schematic}
 \end{figure}
 
-The time complexity of CCA for the calculation of $C_{aa}$ and $C_{bb}$ is $O(n\times p \times p)$ and $O(n\times q \times q)$ respectively whereas the time complexity of $C_{ab}$ is $O(n\times p \times q)$. And the time complexity of the  calculation of SVD to solve the problem is $O(\min(p^2q,qp^2))$.
+MOJITOO requires, at a minimum, a list of dimensional reductions and their specified dimensions as input. The method operates without additional pre-assumption parameters, unless customization of p-value adjusted settings is desired, in which case parameters other than BH (Benjamini-Hochberg) can be adjusted. The integration function `mojitto' accepts any number of dimension reductions, and batch correction for each modality is recommended if needed. MOJITOO outputs a dimension reduction with the default name `mojitoo'.
 
+By default, MOJITOO is designed to work seamlessly with Seurat. It also offers a range of visualization methods for each shared latent component (CC) or for selecting features associated with a specific CC. For CC inspection, `GeneCCDimPlot' generates a UMAP scatter plot of CCs, enabling a detailed examination of each component in the UMAP. `ClusterCCViolin' creates a violin plot for each cluster to visualize CC distribution. For selecting the top positive or negative features, MOJITOO employs `GeneCCHeatmap' to display the top features, such as gene expression, peaks, and transcription factors. Additionally, `ATACTrack' generates genome browser tracks to inspect peaks in each cluster.
+
+Furthermore, MOJITOO is compatible with the widely-used scATAC-seq analysis tool ArchR and has implemented a set of functions for retrieving and setting count matrices, dimensional reduction, and metadata from both Seurat and ArchR. Additionally, for those who prefer Python, we have also implemented a simple Python version that is compatible with popular Python tools like Scanpy and EpiScanpy.
+
+To ensure users utilize MOJITOO correctly, we have provided separate R Markdown vignettes to illustrate how to use MOJITOO with Seurat (\url{https://github.com/CostaLab/MOJITOO/blob/main/vignettes/SeuratObject_integration.Rmd}) and ArchR (\url{https://github.com/CostaLab/MOJITOO/blob/main/vignettes/ArchRObject_integration.Rmd}). Additionally, we have deployed a website listing the MOJITOO API and vignettes at \url{https://costalab.github.io/MOJITOO/index.html}. For Python users, the source code and a simple example are illustrated here: \url{https://github.com/CostaLab/MOJITOO/tree/main/pymojitoo}.
 \begin{table}[!ht]
 	\centering
 	\begin{tabular}{lll}
@@ -267,7 +273,7 @@ The time complexity of CCA for the calculation of $C_{aa}$ and $C_{bb}$ is $O(n\
 		  ggplot2 & >= 3.3.5 & \url{} \\
 		  ComplexHeatmap & >= 2.11.1 & \url{} \\
 		  patchwork & >= 1.1.1 & \url{} \\
-		  Gviz & >= Gviz & \url{} \\
+		  Gviz & >= 1.36.2 & \url{} \\
 		  grid & >= 4.1.0 & \url{} \\
 		  tidyr & >= 1.1.4 & \url{} \\
 		  fda & >= 5.5.1 & \url{} \\
@@ -278,6 +284,16 @@ The time complexity of CCA for the calculation of $C_{aa}$ and $C_{bb}$ is $O(n\
 	\caption[MOJITOO tool R package dependencies]{MOJITOO tool R package dependencies.}
 	\label{tab:mojitoo_R_dependencies}
 \end{table}
+
+We have tested MOJITOO with R 4.0-4.3 with Rcpp 1.0.7, Seurat 3.2.3,  Signac 1.0.0, reticulate 1.22, corpcor 1.6.10,  S4Vectors 0.30.2,  ramify 0.3.3,  plyr 1.8.6,  rhdf5 2.36.0,  Matrix 1.3-4,  glue 1.4.2,  dplyr 1.0.7,  reshape2 1.4.4,  pbapply 1.5-0,  ggplot2 3.3.5, ComplexHeatmap 2.11.1, patchwork 1.1.1, Gviz 1.36.2, grid 4.1.0, tidyr 1.1.4, fda 5.5.1, and assertthat 0.2.1. We have also tested Python version(3.8-3.10) with numpy 1.23.5, sklearn 1.1.2, scipy 1.10.1, statsmodels 0.14.0, scanpy 1.9.3, and anndata 0.9.2.
+
+We used a local Linux Mint 21.1 x86\_64 64-bit machine running with 12 Intel(R) Core(TM) i5-10400 CPU at 2.90GHz and 64 GB RAM. Moreover, we ran MOJITOO on a High-Performance Computing (HPC) cluster mainly based on AMD EPYC 7452 64-bit nodes at 2.35 GHz and 500 GB RAM with  Rocky Linux 8.9. 
+
+For more information about MOJITOO implementation, source code, tutorials and examples, please see:
+\begin{center}
+https://github.com/CostaLab/MOJITOO
+\end{center}
+
 
 
 \begin{algorithm}
@@ -310,7 +326,7 @@ The time complexity of CCA for the calculation of $C_{aa}$ and $C_{bb}$ is $O(n\
 
     \item The method we propose does not require consideration of feature types. Furthermore, the method takes dimensional reduction inputs from each modality, providing opportunities to apply customized batch correction methods, making it flexible for both modalities and batch correction methods.
 
-    \item Our method is implemented in R and is compatible with popular single-cell analysis toolkits such as Seurat and ArchR. We have provided a tutorial demonstrating how to apply our method to integrate multimodal data using Signac \url{https://github.com/CostaLab/MOJITOO/blob/main/vignettes/SeuratObject_integration.Rmd} and ArchR \url{https://github.com/CostaLab/MOJITOO/blob/main/vignettes/ArchRObject_integration.Rmd}. Additionally, we have implemented a simple Python version for users collaborating with scanpy or episcanpy \url{https://github.com/CostaLab/MOJITOO/tree/main/pymojitoo}.
+    \item Our method is implemented in R and is compatible with popular single-cell analysis toolkits such as Seurat and ArchR. We have provided a tutorial demonstrating how to apply our method to integrate multimodal data using Seurat \url{https://github.com/CostaLab/MOJITOO/blob/main/vignettes/SeuratObject_integration.Rmd} and ArchR \url{https://github.com/CostaLab/MOJITOO/blob/main/vignettes/ArchRObject_integration.Rmd}. Additionally, we have implemented a simple Python version for users collaborating with scanpy or episcanpy \url{https://github.com/CostaLab/MOJITOO/tree/main/pymojitoo}.
 \end{itemize}
 
 When examining the concepts behind these single-cell multimodal integration methods, canonical correlation analysis (CCA) is a linear method designed to preserve the maximum amount of information from the original dataset. Other approaches, matrix factorization, such as MOFA, scAI, and Liger, is widely employed due to its intuitive matrix multiplication representations. However, matrix factorization poses a non-convex optimization challenge and may be susceptible to a significant drawback wherein the solution exhibits bias towards one of the optimization variables.

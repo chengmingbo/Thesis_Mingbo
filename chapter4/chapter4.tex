@@ -130,8 +130,8 @@ We describe single cell multi-modal for technical validation.
 	\centering
 	\includegraphics[width=0.95\textwidth]{evaluation_MOJITOO/fig}
 	\vspace{0.1cm}
-	\caption[evaluation\_MOJITOO]{
-	evaluation\_MOJITOO.}
+	\caption[MOJITOO evaluation workflow]{
+	\textbf{MOJITOO evaluation workflow.} \textbf{A)} We input 6 single-cell multimodal datasets. Subsequently, we carry out pre-processing using standard pipelines from Seurat and Signac, followed by dimensional reduction. Harmony batch correction is applied to data \texttt{PMBC-TEA}, \texttt{BM-CITE}, and \texttt{LUNG-CITE} due to their batches. Integration methods are then executed to obtain the shared latent space. The evaluation of Adjusted Rand Index (ARI) requires clustering in the range from 0.1 to 2.0 with a step of 0.1. Silhouette score and Structure score are also utilized for benchmarking. \textbf{B)} We utilize the largest dataset, \texttt{Skin-SHARE}, to measure time consumption and memory usage for each competing method. Initially, we downsample the data from 30,000 cells to 3,000 with a step of 3,000 to obtain 10 different dataset sizes. Subsequently, all methods are executed to measure the time elapsed and peak memory usage.} 
 	\label{fig:evaluation_MOJITOO}
 \end{figure}
 
