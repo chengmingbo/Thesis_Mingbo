@@ -216,7 +216,16 @@ We next evaluated the memory usage and running time consumption of single-cell i
 \end{figure}
 
 \subsection{Evaluation of PBMC data}
-Examples of low dimensional embeddings obtained by distinct integration methods with the PBMC-Multiome dataset are provided in \fref{fig:pbmc_multiome_umap}.
+Examples of low dimensional embeddings obtained by distinct integration methods with the PBMC-Multiome dataset are provided in 
+
+
+Additionally, we explore the use of the dimensions of the latent space ($Z$) as factors for interpreting the PBMC multiome data. We denote the latent features as canonical components (CC). As shown in \fref{fig:CC_UMAP}, positive or negative values for the top CCs discern well all major cell types (Fig.~\ref{fig:CC_UMAP}). High values of CC1 are associated to myeloid cells (CD14+ and CD16+ monocytes and dendritic cells), while negative values are associated to T and NK cells (\fref{fig:CC_UMAP}A). CC2 values discern B cell and plasmacytoid dendritic cells (pDC) from other cells, while CC3 differentiates B cells from pDCs (\fref{fig:CC_UMAP}B-C). Further CCs capture subtle changes between major cell sub-types (Fig.~\ref{fig:CC_UMAP}D-E). CC4 and CC5 capture changes between naive T cells and active T CD8 and active T CD4 cells respectively, while CC5 captures differences between naive monocytes (CD14+) and activated monocytes (CD16+). Other smaller cell types (dendritic cells, platelets, double negative T cells and pre-B and progenitor B cells) can be characterized with further CCs (Supplementary Fig.~5). We also evaluated CCs with low correlation, which were considered as noise by MOJITOO (Supplementary Fig. 6). We observe that these CCs have high scores for a few cells and low concordance across modalities. This supports their low biological relevance.
+
+
+Next, we explore the $U$ matrices, which provide values associating molecular features with the latent dimensions (CCs). Indeed, the expression of genes with high CC1 values includes monocyte genes such as LYN and FCN1, while negative CC1 values are associated to T cell genes BCL11B and IL7R (\fref{fig:CC_Genes}A). Similarly, we observe that top-ranked peaks with high or low CC1 scores have monocyte or T cell-specific open chromatin. These include regions close to the T cell gene BCL11B (\fref{fig:CC_Peaks}A). High CC2 values are associated with B cell genes IGHM and BCL11A, while low CC1 genes (BCBL11B and IL32) are associated with T cells (\fref{fig:CC_Genes}B). As before, we observe cell-specific open chromatin patterns on top-ranked ATAC-seq peaks associated with high and low CC2 values(\fref{fig:CC_Peaks}B). Altogether, these results indicate that MOJITOO CCs can be used to capture major cell types of peripheral blood cells as well as to detect modality-specific molecular features associated to these.
+
+
+\fref{fig:pbmc_multiome_umap}.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{pbmc_multiome_umap/fig}
@@ -254,8 +263,11 @@ Examples of low dimensional embeddings obtained by distinct integration methods 
 \section{Statistical methods}
 For comparisons involving multiple methods and datasets, we employed the non-parametric Friedman test with the Nemenyi post-hoc test (Demšar, 2006). The Friedman test(Friedman, 1937, 1940) was utilized to compare the average ranks of the methods across all datasets. The null hypothesis assumes that all the methods are equivalent, and their ranks are equal. We utilized the friedmanTest function from the R package PMCMRplus to conduct the Friedman rank sum test. If the null hypothesis was rejected, indicating that at least one method is significantly different from the others, we proceeded with the Nemenyi post-hoc test (Nemenyi, 1963) to compare all pairs. Therefore, to compare k methods, a total of $k(k-1)/2$ hypotheses were tested, and this was accomplished using the frdAllPairsNemenyiTest function from the R package PMCMRplus.
 
-
 \section{Discussion}
 
+In this chapter, we described the experimental framework to evaluate our computational method and next present the benchmarking results.
 
+A comprehensive analysis with six bi-modal and tri-modal multimodal datasets indicates that MOJITOO has the best performance regarding the preservation of the structures across modalities and the recovery of clusters, while it is ranked second regarding distance representation. Moreover, MOJITOO has the lowest time and memory requirements requiring 2.5 min and 6.4 GB in the largest dataset with 30.000 cells. WNN, which is the standard method for integration in Seurat, performed well on the clustering problem (2nd after MOJITOO) and had a low computational time, but had a poor performance in the structure preservation and silhouette scores. Moreover, WNN, which outputs a distance matrix on the shared space, does not provide latent features as MOJITOO, DIABLO or MOFA. MOFA performed well on distance representation, but was ranked fourth in the clustering problem and third at structure preservation score. DIABLO, which is also based in CCA, had an good predictive performance (2nd for structure preservation and 3rd in clustering and distance preservation), but had an a poor computational performance being the 2nd slowest method.
+
+An interesting result is the fact the structure preservation scores are more uniform across modalities for CCA-based methods MOJITOO and DIABLO, while runner-up methods (MOFA) obtained highest scores for the RNA modality. This is possibly rooted on the analytical frameworks of these methods. CCA analysis explicitly finds canonical vectors with high correlation across modalities, while matrix factorization methods (MOFA) do not explicitly guarantee factors are uniformly well represented across modalities. Of note, the CCA approach explored in Symphony was also biased toward structure preservation in RNA, due to the fact it only use RNA canonical vectors as a final latent representation. 
 
