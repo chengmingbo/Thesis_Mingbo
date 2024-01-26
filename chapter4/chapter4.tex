@@ -186,8 +186,17 @@ Next, we make use of the cell types reported in the original manuscripts introdu
 	\label{fig:silouette}
 \end{figure}
 
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{pbmc_multiome_umap/fig}
+	\vspace{0.1cm}
+	\caption[UMAP of multiome PBMC comparison for different multi-modal integration methods.]{\textbf{UMAP of multiome \texttt{PBMC-multiome} comparison for different multi-modal integration methods.}UMAPs showing cell type distribution derived from integration methods on \texttt{PBMC-multiome} dataset. }
+	\label{fig:pbmc_multiome_umap}
+\end{figure}
+
 \subsubsection{Benchmarking Clustering Accuracy}
-we perform Louvain clustering at distinct resolutions (0.1–2.0) on the shared latent space. We then measure the agreement of clustering results with labels using the Adjusted Rand Index (ARI)(\fref{fig:ari}). WNN and Symphony have the highest ARI in two datasets each, while DIABLO and MOJITOO have the highest values in one dataset each. MOJITOO has a higher rank than two in all datasets and has the highest overall rank followed by WNN and DIABLO\fref{fig:ranking}. Moreover, we also perform a sensitivity analysis on MOJITOO to inspect if the dimension of the original PCA/LSI space has an impact on its performance \afref{fig:Input_Dimensions}. We observe that if 50 or more components are used, MOJITOO obtains similar clustering and structure preservation scores. 
+we perform Louvain clustering at distinct resolutions (0.1–2.0) on the shared latent space. We then measure the agreement of clustering results with labels using the Adjusted Rand Index (ARI)(\fref{fig:ari}). WNN and Symphony have the highest ARI in two datasets each, while DIABLO and MOJITOO have the highest values in one dataset each. MOJITOO has a higher rank than two in all datasets and has the highest overall rank followed by WNN and DIABLO\fref{fig:ranking}. Moreover, we also perform a sensitivity analysis on MOJITOO to inspect if the dimension of the original PCA/LSI space has an impact on its performance \afref{fig:Input_Dimensions}. We observe that if 50 or more components are used, MOJITOO obtains similar clustering and structure preservation scores \fref{fig:pbmc_multiome_umap}.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{ari/fig}
@@ -225,14 +234,6 @@ Additionally, we explore the use of the dimensions of the latent space ($Z$) as 
 Next, we explore the $U$ matrices, which provide values associating molecular features with the latent dimensions (CCs). Indeed, the expression of genes with high CC1 values includes monocyte genes such as LYN and FCN1, while negative CC1 values are associated to T cell genes BCL11B and IL7R (\fref{fig:CC_Genes}A). Similarly, we observe that top-ranked peaks with high or low CC1 scores have monocyte or T cell-specific open chromatin. These include regions close to the T cell gene BCL11B (\fref{fig:CC_Peaks}A). High CC2 values are associated with B cell genes IGHM and BCL11A, while low CC1 genes (BCBL11B and IL32) are associated with T cells (\fref{fig:CC_Genes}B). As before, we observe cell-specific open chromatin patterns on top-ranked ATAC-seq peaks associated with high and low CC2 values(\fref{fig:CC_Peaks}B). Altogether, these results indicate that MOJITOO CCs can be used to capture major cell types of peripheral blood cells as well as to detect modality-specific molecular features associated to these.
 
 
-\fref{fig:pbmc_multiome_umap}.
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{pbmc_multiome_umap/fig}
-	\vspace{0.1cm}
-	\caption[UMAP of multiome PBMC comparison for different multi-modal integration methods.]{\textbf{UMAP of multiome \texttt{PBMC-multiome} comparison for different multi-modal integration methods.}UMAPs showing cell type distribution derived from integration methods on \texttt{PBMC-multiome} dataset. }
-	\label{fig:pbmc_multiome_umap}
-\end{figure}
 
 \begin{figure}[!ht]
 	\centering
