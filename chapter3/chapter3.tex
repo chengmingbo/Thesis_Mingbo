@@ -339,7 +339,8 @@ Certain methodologies, such as DIABLO and Symphony, have explored the concept of
 \label{methods:TI}
 
 %a table shows the R dependencies
-\subsubsection{trajectory inference}
+\subsection{Trajectory Inference}
+
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{PHLOWER_schematic/fig}
@@ -382,7 +383,7 @@ Certain methodologies, such as DIABLO and Symphony, have explored the concept of
 % a table shows the python dependencies
 % check how to rotate the title text of a table, see Li's table 3.2
 
-\subsubsection{Implementation}
+\subsection{Implementation}
 We developed our Graph Hodge Laplacian (HL)-based approach to address the trajectory inference (TI) of single-cell multimodal data as a Python module. Our method is named PHLOWER (\textit{gra}\textbf{P}h \textbf{H}odge \textbf{L}aplacian inferring traject\textbf{O}ry flo\textbf{W}s of c\textbf{E}ll diffe\textbf{R}entiation) and will be referred to as such throughout this thesis. The method's implementation encompasses all the steps described in this chapter. PHLOWER was initially released in September 2023. \fref{fig:PHLOWER_schematic} illustrates the workflow of PHLOWER, and \tref{tab:phlower_python_dependencies} summarizes the dependencies of the PHLOWER module.
 
 PHLOWER requires, at a minimum, dimensional reduction as input as well as a count matrix to be processed by itself. The output of PHLOWER is a STREAM tree as visualization that shows the cell differentiation tree. In addition, PHLOWER outputs a tree structure with detailed random walk paths for downstream analysis.

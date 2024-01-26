@@ -90,12 +90,12 @@ Advancements in Next-Generation Sequencing (NGS) technology have led to the deve
 Protocols for single-cell ATAC-sequencing (scATAC-seq) have been devised, enabling the unbiased identification of cell-type-specific regulatory elements within heterogeneous cell populations. This approach boasts a high throughput, capable of processing tens of thousands of cells per assay. scATAC-seq has proven successful in elucidating the regulatory landscape of adult mouse tissues \citep{cusanovich2018single}, as well as in studying the human and mouse brain \cite{lake2018humanbrain, sinnamon2019accessible} etc. Several scATAC-seq methods have been developed to measure open chromatin at single cell level, e.g., the Microfluidics-based method (Buenrostro et al., 2015), which uses physical isolation of single cells. Specifically, it employs a programmable microfluidics device to compartmentalize single cells into nanoscale reaction chambers. After cell viability is confirmed with the use of a microscope, ATAC-seq is performed on each captured cell individually. sci-ATAC-seq(the split-and-pool combinatorial cellular indexing) method \citep{cusanovich2015multiplex} performs several rounds of combinatorial indexing to uniquely barcode individual cells. First, it uses a cell sorter to dispense a defined number of nuclei (typically 2,500) into the wells of a 96-well plate, each containing a Tn5 transposase loaded with a unique combination of barcodes. The tagmentation reaction thus introduces the first round of indexes. Next, the nuclei are pooled, mixed and dispensed in each well of 96-well plates in the defined number of 25 nuclei. Each well contains a unique combination of barcoded adaptors, which are integrated during the PCR amplification thus providing the second round of indexing. After sequencing, it is then possible to identify each cell 26 based on a unique set of barcodes. Due to the number of nuclei aliquoted in each well for the second indexing round at least 100 times lower than the first indexing round, the number of collisions, namely, cells having identical barcodes is statistically ensured to be low (estimated and measured at ~ 11\%). Another highly effective method is the droplet-based single-cell Assay for Transposase-Accessible Chromatin with sequencing (scATAC-seq)\citep{satpathy2019massively}, involving cell partitioning through a microfluidic device. Initially, nuclei are isolated from a single-cell suspension and transposed in bulk using transposase Tn5. Subsequently, transposed nuclei are loaded onto a microfluidic chip to generate gel beads in emulsion (GEM). Each gel bead is barcoded with single-stranded oligonucleotides, comprising a 29-bp sequencing adapter, a 16-bp barcode selected from 750,000 designed sequences for GEM indexing, and the first 14 bp of read 1N, serving as the priming sequence in the linear amplification reaction for barcode incorporation into transposed DNA. After GEM generation, gel beads are dissolved, releasing oligonucleotides for linear amplification of transposed DNA. Finally, the droplet emulsion is broken, and barcoded DNA fragments are pooled for PCR amplification, generating indexed libraries suitable for high-throughput sequencing. Due to the advantages of high throughput and low costs for droplet-based single-cell ATAC-seq technology, the method is increasingly popular and has been commercialized by 10x Genomic(Chromium Next Gem Single Cell ATAC-seq Library Kit)\cite{satpathy2019massively}.
 
 
-\subsection{Protein profiling in single cell}
-\label{background:sec1:protein}
+%\subsection{Protein profiling in single cell}
+%\label{background:sec1:protein}
 %%Protein analysis at the single-cell level has relied on the use of antibodies that bind specifically to target proteins. Flow cytometry uses fluorescently labeled antibodies to convert protein signals into fluorescence signals~\citep{@article{kim2022single}
 %Secreted proteins play crucial roles in facilitating diverse biological processes, including cell–cell communication, differentiation, migration, and maintaining homeostasis at the population or tissue level. Methods for directly measuring specific protein-secreting cells in clinical settings include enzyme-linked immunospot (ELISPOT) and its variants, such as fluorescence-based immunospot (FluoroSpot) ~\citep{perfetto2004seventeen, karlsson2003comparison}. Indirect assessment of protein secretion function can be conducted through intracellular staining using fluorescence-activated cell sorting (FACS)~\citep{bonner1972fluorescence}. The detection of multiple cytokines in single cells has become possible through intracellular cytokine staining using multicolor flow cytometry ~\citep{irish2004single,hale2009stage}. Mass cytometry is a deviation from traditional flow cytometry utilizing mass spectrometry for detection via rare earth metal probes, has demonstrated highly multiplexed measurement of surface and intracellular proteins~\citep{spitzer2016mass}.
 %
-To comprehensively assess the expression patterns of individual proteins, researchers typically opt for mass spectrometry or flow cytometry rather than sequencing ~\citep{kim2022single}. The application of mass spectrometry to single-cell proteomics poses technical challenges related to factors like required sample amounts and detection coverage. Efforts are underway to develop methods that enable the measurement of more protein molecules with lower sample input. In recent single-cell studies, CyToF, a mass cytometry-based method, has been employed to analyze dozens of surface and intracellular proteins using metal-labeled antibodies. Particularly beneficial for immune cells, profiling cell surface proteins aids in cell type classification. CyToF has been extensively utilized in studies, including those in general and cancer immunology, often in conjunction with scRNA-seq analysis\citep{kashima2020single}.
+%To comprehensively assess the expression patterns of individual proteins, researchers typically opt for mass spectrometry or flow cytometry rather than sequencing ~\citep{kim2022single}. The application of mass spectrometry to single-cell proteomics poses technical challenges related to factors like required sample amounts and detection coverage. Efforts are underway to develop methods that enable the measurement of more protein molecules with lower sample input. In recent single-cell studies, CyToF, a mass cytometry-based method, has been employed to analyze dozens of surface and intracellular proteins using metal-labeled antibodies. Particularly beneficial for immune cells, profiling cell surface proteins aids in cell type classification. CyToF has been extensively utilized in studies, including those in general and cancer immunology, often in conjunction with scRNA-seq analysis\citep{kashima2020single}.
 
 
 
@@ -181,7 +181,7 @@ see figure Table.\ref{tab:multimodal-methods}
 \subsection{Alignment}
 \label{background:sec2:alignment}
 The first step in the computational analysis of ATAC-seq/RNA-seq is the alignment,  in which, raw sequencing reads(DNA for scATAC-seq, RNA for scRNA-seq) are aligned to the reference genome to ensure these reads are located in the most probable position of the reference genome. Several alignment tools have been developed to achieve the task. The most widely used aligners are Bowtie2\citep{langmead2012bowtie2}, BWA\citep{li2009BWA} and STAR\citep{dobin2013star}.  These tools are utilized in the Cell Ranger ATAC/RNA/ARC pipeline developed by 10$\times$ Genomics. See Fig. \ref{fig:alignment}
-\subsection{scRNA}
+\subsection{Computational Analysis of Single Cell RNA-seq}
 \label{background:sec2:scRNA}
 We here describe the computational workflow for scRNA-seq data analysis, including preprocessing(quality control, normalization, feature selection), core analysis (dimensionality reduction, batch correction and clustering), and downstream analysis (cell annotation, trajectory analysis and geneset enrichment).
 \begin{figure}[!ht]
@@ -257,7 +257,7 @@ We start from a count matrix where the mRNA sequence reads obtained are aligned 
 	Gene set enrichment analysis facilitates the summarization of numerous molecular insights into interpretable terms, such as pathways, which are defined as sets of genes known to be involved based on previous studies. Commonly used databases for this purpose include MSigDB, Gene Ontology, KEGG, and Reactome. 
 \end{description}
 
-\subsection{scATAC}
+\subsection{Computational Analysis of Single Cell ATAC-seq}
 \label{background:sec2:scATAC}
 We here describe the computational workflow for scATAC-seq data analysis, including, feature matrix construction, preprocessing(feature definition, quality control,  feature selection), core analysis (dimensionality reduction, batch correction and clustering), and downstream analysis (differential accessibility, trajectory inference etc. ).
 \begin{figure}[!ht]
@@ -326,7 +326,7 @@ In contrast to scRNA-seq data, which relies on clearly defined gene features, sc
 \end{description}
 
 %%might ignore the surface protein part
-\subsection{Surface protein}
+\subsection{Computational Analysis of Single Cell Surface Protein}
 \label{background:sec2:protein}
 The surface protein analysis is simpler than scRNA and scATAC-seq, It's often profiled together with scRNA-seq e.g., CITE-seq simulatenously profiles scRNA and suface protein.
 \begin{description}
@@ -341,8 +341,10 @@ The surface protein analysis is simpler than scRNA and scATAC-seq, It's often pr
 	The downstream analysis of ADT data follows a similar pipeline to unimodal RNA analysis, wherein annotated clusters can be tested for differential abundance.
 \end{description}
 
-\subsection{Single-cell multi-modal analysis}
-\label{background:sec2:multimodal}
+%\section{Related works}
+%\label{background:related_works}
+\section{Computational Analysis of Single Cell Multimodal Omics}
+\label{background:multimodal}
 We will describe the computational workflow for the analysis of single-cell multimodal data. Numerous analyses designed for unimodal datasets can be adapted for multimodal data. However, the establishment of a consistent dimension reduction approach proves advantageous for subsequent analyses. This section, we will encompass an introduction to multimodal analysis,  preprocessing, dimensional reduction, integration, clustering, and downstream analysis.
 
 \begin{figure}[!ht]
@@ -364,8 +366,7 @@ We will describe the computational workflow for the analysis of single-cell mult
 	Many tasks in single-cell multimodal analysis are similar to single-cell unimodal analysis, like differential gene expression, trajectory inference, geneset enrichment. However, single-cell multimodal analysis can enhance certain tasks performed in unimodal analysis, providing deeper insights, such as obtaining more accurate Gene Regulatory Networks (GRN). It allows for a more comprehensive exploration of gene regulation. Specifically, multimodal datasets that incorporate both epigenomic (e.g., snATAC-seq, methylation) and transcriptomic measurements are instrumental in identifying regulatory relationships. For instance, scMega \citep{li2023scmega} utilizes scRNA-seq and scATAC-seq data to infer GRN. Additionally, the integration of scRNA-seq and proteomic data proves valuable for a detailed examination of signaling networks. 
 \end{description}
 
-\section{Related works}
-\label{background:related_works}
+
 \subsection{Challenge of single cell multi-modal integration and trajectory inference}
 \label{background:sec2:challenge}
 
