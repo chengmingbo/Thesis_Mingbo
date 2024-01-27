@@ -674,29 +674,20 @@ Symphony~\cite{kang2021symphony} is a method to create single cell reference atl
 \end{table}
 In this section, we discuss several published trajectory inference methods, All of them are top methods according to the dynverse trajectory inference evaluation system\citep{saelens2019comparison} except STREAM a new method not yet implemented in dynverse. These methods can be broadly categorized into six groups. The first group involves methods utilizing a minimum spanning tree(MST) to capture the backbone in the embeddings of a dataset (e.g., TSCAN, slingshot, MST, slice). The second group includes methods like ElPiGraph, which leverages Elastic Principal Graphs to yield an explicit principal tree in data space (ElPiGraph, STREAM). The third group employs topic model Latent Dirichlet Allocation (LDA) from the natural language processing (NLP) field for inference. The fourth group encompasses methods such as PAGA, using kNN graph partitioning, and pCreode, creating a d-kNN graph. The fifth group utilizes cluster distances for inference to derive the structure (RaceID/StemID). The last method, Monocle3, seeks to create a principal graph on dimension reductions. These methods are summarized in \tref{tab:methods_ti_overview} and \fref{fig:TI_schemtaic} illustrates the workflow of most of the methods.
 
-\begin{figure}[hb!]
-	\centering
-	\includegraphics[width=0.95\textwidth]{TI_schemtaic/fig}
-	\vspace{0.1cm}
-	\caption[illustration of TI competing methods schematic.]{\textbf{Trajectory inference methods schematic} 
-	A)  STREAM first selection of informative genes from a single cell count matrix, followed by dimensionality reduction. Next, it learns and fits simultaneous tree structure by ElPiGraph. The optimal structure is selected based on the elastic energy minimization among a set of candidate structures that are constructed every time a tree node is added. The final tree is interpreted as a set of connected curves representing different trajectories. 
-	}
-	\label{fig:TI_schemtaic}
-\end{figure}
-\addtocounter{figure}{-1}
-\begin{figure}[t!]
-  \caption[]{
-	B) PAGA uses partition-based graph abstraction generating a topology-preserving map of single cells. It creates a kNN graph and partitions it using the Louvain algorithm at a desired resolution where partitions represent groups of connected cells. Next, A PAGA graph is obtained by associating a node with each partition and connecting each node by weighted edges that represent a statistical measure of connectivity between partitions. PAGA graphs reveal the denoised topology of the data at a chosen resolution by discarding low-weight edges.
-	C) TSCAN initially constructs a cluster-based Minimum Spanning Tree(MST) with multiple paths. Next, TSCAN orders cells along each path by projecting them onto the tree edges. 
-	D) ElPiGraph creates an elastic graph by first defining the initial graph topology and embedding it into the data space. The graph structure is fit to the data using minimization of the mean square error, regularized by the elastic energy. The elastic energy includes a term reflecting the overall stretching of the graph(red) and a term reflecting the overall bending of the graph branches and the harmonicity of branching points (green). ElPiGraph next explores a large region of the structural space by exhaustively applying a set of graph rewriting rules and selecting, at each step, the leading structure to the minimum overall energy of the graph embedding.
-	E) pCreode carries out 6 steps to infer a trajectory. It creates a density-based k-nearest neighbor (d-kNN) network and constructs topology with a hierarchical placement strategy of cells on path nodes between end-state clusters. Next, it iteratively redoes the arrangement of the topology according to the neighborhood cell densities.
-	F) Monocle3 aims to learn a principal graph by using SimplePPT, DDRTree or L1Graph, with which, each cell is projected onto the graph. By selecting the starting points on the graph, Monocle measures the distance from these points to each cell, determining a cell's pseudotime as the distance to the closest starting point on the graph.
-	G) RaceID/StemID initially conducts clustering using RaceID2 (k-medoids clustering). Next, it infers putative differentiation trajectories by linking the medoids of two clusters, defining the possible topology of the lineage tree. It then assigns each cell to an inter-cluster link by selecting the longest projection.
-	\emph{Source: ~\cite{chen2019stream, wolf2019paga,ji2016tscan,albergante2020ElPiGraph,herring2018pCreode,street2018slingshot,cao2019monocle3,grun2016stemid}}(modified to fit thesis format and/or clarify key points)}% Continued caption
-\end{figure}
 
 \subsubsection{STREAM}
 Single-cell Trajectories Reconstruction, Exploration And Mapping(STREAM) takes a single-cell gene expression matrix as input\citep{chen2019stream}. Next, it performs three main steps: selection of informative genes, dimensionality reduction, and simultaneous tree structure learning and fitting by ElPiGraph. The optimal structure is selected based on the elastic energy minimization among a set of candidate structures that are constructed every time a tree node is added. The final tree is interpreted as a set of connected curves representing different trajectories. 
+
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.95\textwidth]{TI_Alg_STREAM/fig}
+	\vspace{0.1cm}
+	\caption[illustration of TI competing methods schematic.]{\textbf{Trajectory inference methods schematic} STREAM first selection of informative genes from a single cell count matrix, followed by dimensionality reduction. Next, it learns and fits simultaneous tree structure by ElPiGraph. The optimal structure is selected based on the elastic energy minimization among a set of candidate structures that are constructed every time a tree node is added. The final tree is interpreted as a set of connected curves representing different trajectories. \emph{Source: ~\cite{chen2019stream}}(modified to fit thesis format and/or clarify key points)
+	}
+	\label{fig:TI_Alg_STREAM}
+\end{figure}
+
 %The Elastic principal graph:
 %\begin{equation}
 %	\begin{aligned}
@@ -708,19 +699,80 @@ Single-cell Trajectories Reconstruction, Exploration And Mapping(STREAM) takes a
 %where $X=\{X_i\}, i = 1\cdots|X|$ is a set of points, $E^{(i)}(0)$ and $E^{(i)(1)}$ denotes the two vertices of a graph edge $E^{(i)}$, and $S^{(j)(0)},\cdots S^{(j)}(k)$ denote the vertices of the a star $S^{(j)}$ in the graph. $P(i)$ is a data point partitioning function associating each data point $X_i$ to the closest vertex index that $P(i) = \arg\min_{j=1\cdots |V|}$. $phi{V_j}$ is the mapping function that $\phi: V \rightarrow R^{m}$, which defines a position of $j$th graph vertex in the multidimensional space of data. Finally, $R_0$ is the trimming radius such that points further than $R_0$ from any nodes don't contribute to the optimization of the graph, and $\lambda$ is the edge stretching elasticity modulo regularizing the total length of the graph, and $\alpha$ is a coefficient to control the complexity of the graph. $\mu$ is the star bending elasticity that controls the smoothness of the graph.
 \subsubsection{PAGA} 
 Probabilistic Approximate Graph Abstraction(PAGA) uses partition-based graph abstraction generating a topology-preserving map of single cells\citep{wolf2019paga}. High-dimensional gene expression data is represented as a kNN graph by choosing a suitable low-dimensional representation and an associated distance metric for computing neighborhood relations. The kNN graph is partitioned using the Louvain algorithm at a desired resolution where partitions represent groups of connected cells. A PAGA graph is obtained by associating a node with each partition and connecting each node by weighted edges that represent a statistical measure of connectivity between partitions. By discarding spurious edges with low weights, PAGA graphs reveal the denoised topology of the data at a chosen resolution and reveal its connected and disconnected regions. Combining high-confidence paths in the PAGA graph with a random-walk-based distance measure on the single-cell graph, PAGA orders cells within each partition according to their distance from a root cell. A PAGA path then averages all single-cell paths that pass through the corresponding groups of cells. This allows to trace gene expression changes along complex trajectories at single-cell resolution.
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.95\textwidth]{TI_Alg_PAGA/fig}
+	\vspace{0.1cm}
+	\caption[illustration of TI competing methods schematic.]{\textbf{Trajectory inference methods schematic} 
+	PAGA uses partition-based graph abstraction generating a topology-preserving map of single cells. It creates a kNN graph and partitions it using the Louvain algorithm at a desired resolution where partitions represent groups of connected cells. Next, A PAGA graph is obtained by associating a node with each partition and connecting each node by weighted edges that represent a statistical measure of connectivity between partitions. PAGA graphs reveal the denoised topology of the data at a chosen resolution by discarding low-weight edges. \emph{Source: ~\cite{wolf2019paga}}(modified to fit thesis format and/or clarify key points)
+	}
+	\label{fig:TI_Alg_PAGA}
+\end{figure}
 
 \subsubsection{Monocle3}
 Monocle3 undergoes a comprehensive five-step process in single-cell dataset analysis\citep{cao2019monocle3}. Firstly, it normalizes and pre-processes data, addressing technical variations. The second step involves reducing dimensionality by projecting cells onto the top 50 principal components, with options for further reduction using t-SNE or UMAP. In the third step, Monocle 3 clusters and partitions cells, recognizing disconnected trajectories or "supergroups" that capture diverse cellular responses. Subsequently, it learns a principal graph, utilizing methods like DDRTree, SimplePPT, or L1Graph, accommodating tree-like or looped trajectories. Finally, Monocle 3 conducts differential expression analysis and visualization, empowering users to explore gene dynamics across clusters and trajectories with sophisticated testing methods.
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.95\textwidth]{TI_Alg_Monocle3/fig}
+	\vspace{0.1cm}
+	\caption[illustration of TI competing methods schematic.]{\textbf{Trajectory inference methods schematic} Monocle3 aims to learn a principal graph by using SimplePPT, DDRTree or L1Graph, with which, each cell is projected onto the graph. By selecting the starting points on the graph, Monocle measures the distance from these points to each cell, determining a cell's pseudotime as the distance to the closest starting point on the graph. \emph{Source: ~\cite{cao2019monocle3}}(modified to fit thesis format and/or clarify key points)
+	}
+	\label{fig:TI_Alg_Monocle3}
+\end{figure}
+
 \subsubsection{Slingshot}
 Slingshot is single-cell lineage inference tool capable of handling datasets with multiple branches\citep{street2018slingshot}. The tool comprises two distinct stages: 1) Global Lineage Structure Inference. In this stage slingshot employs Minimum Spanning Tree (MST) on clustered data points to infer the overall lineage structure. By utilizing a cluster-based MST, Slingshot stably identifies essential elements such as the number of lineages and their branching points. This allows users to uncover novel lineages while also incorporating domain-specific knowledge to guide specific parts of the tree, such as terminal cellular states. 2) Pseudotime Inference for Individual Lineages. In the second stage, Slingshot introduces a novel approach known as simultaneous principal curves. This method fittingly applies smooth branching curves to the identified lineages, effectively translating the knowledge of the global lineage structure into reliable estimates of cell-level pseudotime variables for each lineage.
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.95\textwidth]{TI_Alg_slingshot/fig}
+	\vspace{0.1cm}
+	\caption[illustration of TI competing methods schematic.]{\textbf{Trajectory inference methods schematic} 
+	slingshot. \emph{Source: ~\cite{street2018slingshot}}(modified to fit thesis format and/or clarify key points)
+	}
+	\label{fig:TI_Alg_slingshot}
+\end{figure}
+
+
 \subsubsection{TSCAN}
 pseudo-Time reconstruction in Single-Cell RNA-seq ANalysis(TSCAN)\citep{ji2016tscan} first uses PCA to reduce the dimensionality. It uses the clustering algorithm Mclust to model the datasets as a mixture of normal distributions, to cluster the cells while automatically determining the number of clusters using the Bayesian information criterion. Next, It infers a trajectory by identifying the longest connected path through the Minimum Spanning Tree (MST) tree, which is created through the cluster center. Finally, all the cells are projected to the nearest point on the trajectory, creating the final ordering. TSCAN automatically determines both start and end cell clusters without prior gene dimension filtering. However, slight changes in center locations can significantly impact the identified trajectory.
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.95\textwidth]{TI_Alg_TSCAN/fig}
+	\vspace{0.1cm}
+	\caption[illustration of TI competing methods schematic.]{\textbf{Trajectory inference methods schematic} 
+	TSCAN initially constructs a cluster-based Minimum Spanning Tree(MST) with multiple paths. Next, TSCAN orders cells along each path by projecting them onto the tree edges. 
+	D) ElPiGraph creates an elastic graph by first defining the initial graph topology and embedding it into the data space. The graph structure is fit to the data using minimization of the mean square error, regularized by the elastic energy. The elastic energy includes a term reflecting the overall stretching of the graph(red) and a term reflecting the overall bending of the graph branches and the harmonicity of branching points (green). ElPiGraph next explores a large region of the structural space by exhaustively applying a set of graph rewriting rules and selecting, at each step, the leading structure to the minimum overall energy of the graph embedding. \emph{Source: ~\cite{ji2016tscan}}(modified to fit thesis format and/or clarify key points)
+	}
+	\label{fig:TI_Alg_TSCAN}
+\end{figure}
+
 %\subsubsection{Slicer}
 %Slicer is a KNN-based trajectory inference method that utilizes alpha-hull to estimate the k parameter for locally linear embedding dimensionality reduction. First, Slicer computes a KNN graph from locally linear embedding, next it finds the most “extreme” cells in the graph. The user needs to specify a starting cell from extreme cells, Slicer then find the shortest path to all other cells. Next, the geodesic entropy is used to find branches; high values indicate the existence of a branching point.
 \subsubsection{SLICE} 
 Single Cell Lineage Inference Using Cell Expression Similarity and Entropy(SLICE)\citep{guo2017slice} comprises two main functions: quantitatively assessing cell differentiation state through single-cell entropy and reconstructing single-cell lineages in silico. The calculation of single-cell entropy (scEntropy) involves computing the expected value for each cell, representing the uncertainty in cellular functions' activation based on gene expression patterns. The scEntropy is utilized to measure the differentiation state of individual cells. Stable states are identified within scRNA-seq datasets using clustering or graph-based methods, considering the scEntropy of each cell. SLICE then constructs a lineage model by inferring a directed minimum spanning tree among stable states, reflecting differentiation trajectories. The reconstruction of cell transitional paths involves either a shortest-path approach or a principal curve-based approach, revealing the dynamics of gene expression during differentiation. Lineage-dependent differentially expressed genes are identified based on smoothed expression profiles, and temporal gene expression patterns are unveiled through clustering analysis. This comprehensive approach allows for an unbiased exploration of cellular differentiation and lineage relationships in scRNA-seq data.
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.95\textwidth]{TI_Alg_SLICE/fig}
+	\vspace{0.1cm}
+	\caption[illustration of TI competing methods schematic.]{\textbf{Trajectory inference methods schematic} 
+	A)  STREAM first selection of informative genes from a single cell count matrix, followed by dimensionality reduction. Next, it learns and fits simultaneous tree structure by ElPiGraph. The optimal structure is selected based on the elastic energy minimization among a set of candidate structures that are constructed every time a tree node is added. The final tree is interpreted as a set of connected curves representing different trajectories. \emph{Source: ~\cite{guo2017slice}}(modified to fit thesis format and/or clarify key points)
+	}
+	\label{fig:TI_Alg_SLICE}
+\end{figure}
+
 \subsubsection{RaceID/StemID} 
 StemID\citep{grun2016stemid} uses RaceID\citep{grun2015raceid}, an advanced version of RaceID to perform clustering. Next, to address the challenge of determining branching points in systems with multiple cell lineages for building the lineage tree with guided topology StemID predefines the tree's structure by allowing potential differentiation trajectories between pairs of clusters. Each trajectory links the medoids of two clusters, and collectively, these inter-cluster links determine the possible lineage tree's topology. To mitigate technical noise and computational load, It initially reduces input space dimensionality, emphasizing maximal preservation of point-to-point distances. Next, it assigns each cell to its likely position on a single inter-cluster link based on the projection of the vector connecting a cluster's medoid to one of its cells onto links with other clusters' medoids. By normalizing link lengths and identifying densely populated links, StemID discerns potential differentiation trajectories. This approach, applied to intestinal data, successfully revealed a lineage tree consistent with the known structure.
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.95\textwidth]{TI_Alg_ELPiGraph/fig}
+	\vspace{0.1cm}
+	\caption[illustration of TI competing methods schematic.]{\textbf{Trajectory inference methods schematic} 
+	RaceID/StemID initially conducts clustering using RaceID2 (k-medoids clustering). Next, it infers putative differentiation trajectories by linking the medoids of two clusters, defining the possible topology of the lineage tree. It then assigns each cell to an inter-cluster link by selecting the longest projection. \emph{Source: ~\cite{albergante2020ElPiGraph}}(modified to fit thesis format and/or clarify key points)
+	}
+	\label{fig:TI_Alg_ElPiGraph}
+\end{figure}
+
 \subsubsection{ElPiGraph}
  Elastic Principal Graphs (ElPiGraphs)\citep{albergante2020ElPiGraph} serve as structured approximators for data, comprising vertices connected by edges. These vertices are embedded into the data space, minimizing mean squared distance (MSD) to data points. Notably, ElPiGraphs differ from unstructured k-means by incorporating edges to define an elastic energy term. This term, coupled with MSD, penalizes edge stretching and branch bending. ElPiGraph employs a topological grammar for optimal graph structure determination, building on a core algorithm initially introduced and tested in earlier publications\citep{gorban2007topological}. In essence, an elastic principal graph is an undirected graph in multidimensional space, optimizing data approximation and graph elastic energy. Key parameters, including trimming radius ($R_0$), edge elasticity ($\lambda$), star bending elasticity ($\mu$), and a complexity control coefficient ($\alpha$), guide the optimization process. ElPiGraph achieves efficient minimization by employing a quadratic problem-solving approach for vertex coordinates. Its innovation lies in the use of topological grammars, exploring diverse graph structures and iteratively refining configurations until specified conditions are met. Notably, ElPiGraph yields an explicit principal tree in data space, facilitating independent study or mapping data onto the tree for analysis in intrinsic coordinates. 
 \subsubsection{celltree}
@@ -729,6 +781,16 @@ StemID\citep{grun2016stemid} uses RaceID\citep{grun2015raceid}, an advanced vers
 %pCreode infer a trajactory for single-cell data through 7 steps: (i) Input single-cell expression data. (ii) Density-normalized representation after down-sampling the original dataset. Overlay shows density post down-sampling. (iii) Density-based k-nearest neighbor (d-kNN) network from down-sampled data. Overlay represents closeness centrality, a surrogate for cell state. (iv) K-means clustering identifies end-states based on low closeness values ($<$mean). The number of clusters is doubled for rare cell types. (v) Topology constructed with a hierarchical placement strategy between end-states, allowing data points along an ancestral continuum. Overlay shows original cell density. (vi) Aligned topology (red) achieved through iterative assignment and repositioning of path nodes using neighborhood cell densities. (vii) Representative topology extracted using p-Creode scoring from an ensemble of N topologies, with node size indicating the original cell density.
 
 pCreode infer a trajactory for single-cell data through 6 steps\citep{herring2018pCreode}. i) Conducts density-dependent down-sampling to normalize the representation of both rare and overrepresented cell states; 2) Constructs a density-based k-nearest neighbor (d-kNN) network using the down-sampled data; 3) Automatically distinguishes end-states from transition states by employing K-means clustering and assessing silhouette scores for cells with low closeness values (< mean); 4) Establishes topology through a hierarchical placement strategy, positioning cells on path nodes between end-states. This enables the arrangement of data points along an ancestral continuum; 5) Aligns topology with maximal consensus through an iterative process involving the assignment and repositioning of path nodes based on neighborhood cell densities; 6)Develops a scoring metric within pCreode to compare dissimilarities between topologies facilitating the selection of the most representative graph for visualization purposes.
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.95\textwidth]{TI_Alg_pCreode/fig}
+	\vspace{0.1cm}
+	\caption[illustration of TI competing methods schematic.]{\textbf{Trajectory inference methods schematic} pCreode carries out 6 steps to infer a trajectory. It creates a density-based k-nearest neighbor (d-kNN) network and constructs topology with a hierarchical placement strategy of cells on path nodes between end-state clusters. Next, it iteratively redoes the arrangement of the topology according to the neighborhood cell densities. \emph{Source: ~\cite{herring2018pCreode}}(modified to fit thesis format and/or clarify key points)
+	}
+	\label{fig:TI_Alg_pCreode}
+\end{figure}
+
 
 % table of single cell trajectory inference methods
 
