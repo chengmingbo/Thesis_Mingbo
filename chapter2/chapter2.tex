@@ -477,7 +477,7 @@ Several methods have been developed to address this task, and we will now review
 	B) scAI iteratively learns aggregated epigenomic profiles and low-dimensional representations from parallel scRNA-seq and scATAC-seq/single cell DNA methylation data. Input matrices consist of cells in rows and genes or loci in columns. The first step involves aggregating the epigenomic profile based on a randomly initiated cell-cell similarity matrix. In the second step, both transcriptomic and aggregated epigenomic data are concurrently decomposed into low-rank matrices, with gene, locus, and cell loading matrices indicating contributions for each factor. The third step computes a cell-cell similarity matrix based on the cell loading matrix. These steps iterate until a predefined stop criterion is met.
 	C) Liger Schematic representation of the matrix factorization strategy (top) and the formulation of the optimization problem (bottom). The introduction of a factor matrix $U_i$ enables the utilization of unshared features in joint matrix factorization. Each dataset ($E_i$) undergoes decomposition into shared metagenes ($W$), dataset-specific metagenes constructed from shared features ($V_i$), unshared metagenes ($U_i$), and cell factor loadings ($H_i$). The inclusion of the U matrix enables unshared features occurring in only one dataset to contribute to the resulting integration.
 	D) Seurat weighted nearest neighbor(WNN) constructs a single unified representation across multiple modalities by initially creating k-nearest neighbor (KNN) graphs for each modality based on the latent representation of each feature matrix. Subsequently, it calculates affinities using the exponential kernel between a cell and the average nearest neighbors for each modality. The latter is utilized to weigh cells in the unified representation.
-	E) Schema explores metrics learning to re-weigh modality features through maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u * x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated in other modalities.
+	E)
 	F) DIABLO is based on Projection to Latent Structures (PLS), which projects the data into the smaller dimensional subspace by maximizing the covariance. \emph{Source ~\cite{tewari2017mofa,jin2020scai,kriebel2022uinmf,hao2021seurat4,singh2021schema,singh2019diablo}}(modified to fit thesis format and/or clarify key points)
   }
 \end{figure}
@@ -500,6 +500,17 @@ To tackle multiple modalities, Schema maximizes the sum of Pearson correlation b
 	\left\{\sum_{j=2}^r \gamma_j \text{corr}(\rho^{*}(w), \rho_j)\right\} \text{ subject to corr}(\rho^{*}(w), \rho_1) \geq s 
 \end{equation}
 Where $\gamma_j$ and s are hyperparameters that determine the importance of the various metrics.
+
+
+\begin{figure}[!hb]
+	\centering
+	\includegraphics[width=0.95\textwidth]{Alg_Schema/fig}
+	\vspace{0.1cm}
+	\caption[Illustration of Schema integration competing method.]{
+	Schema explores metrics learning to re-weigh modality features through maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u * x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated in other modalities.
+}
+	\label{fig:Alg_MOFA}
+\end{figure}
 
 
 \subsubsection{Seurat WNN}
@@ -552,6 +563,16 @@ It next constructs a WNN graph, as a KNN graph constructed using the weighted si
 \end{equation}
 Where $\theta(i,j)$ denotes the affinity between cell $i$ and cell $j$ in modality $m$.
 
+\begin{figure}[!hb]
+	\centering
+	\includegraphics[width=0.95\textwidth]{Alg_scAI/fig}
+	\vspace{0.1cm}
+	\caption[Illustration of Schema integration competing method.]{
+	Schema explores metrics learning to re-weigh modality features through maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u * x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated in other modalities.
+}
+	\label{fig:Alg_MOFA}
+\end{figure}
+
 \subsubsection{scAI}
 Single-cell Aggregation and Integration(scAI) ~\citep{jin2020scai} is aimed to integrate multiple modalities with different feature types specific for scRNA $(X_1\in \mathbb{R}^{p \textbf{ genes} \times n \textbf{ cells}})$ and scATAC/DNA methylation$(X_2\in \mathbb{R}^{q \textbf{ loci}\times n \textbf{ cells}})$ modalities. It creates a matrix factorization model:
 \begin{equation}
@@ -598,6 +619,17 @@ Multi-Omics Factor Analysis+(MOFA+)~\cite{argelaguet2020mofa+} uses Bayesian gro
 Y_{gm} = ZgW_m^{T} + \varepsilon_{gm}, 
 \end{equation}
 Where $Y_{gm}$ is the the matrix of observations for the $m$th data modality and the $g$th group, $Z_g$ is the matrix of latent factors for the $g$th group, $W_m$ is the matrix of weights for the $m$th data modality, and $\varepsilon_{gm}$ is the matrix of residuals. The latent factors $Z_g$ are shared across all modalities, while the weights $W_m$ are specific to each modality. %%TODO: the decomposition algorithm
+
+
+\begin{figure}[!hb]
+	\centering
+	\includegraphics[width=0.95\textwidth]{Alg_MOFA/fig}
+	\vspace{0.1cm}
+	\caption[Illustration of MOFA integration competing method.]{
+	MOFA takes $m$ data matrices as input $Y_1, \cdots Y_m$, one or more from each data modality, with co-occurrent samples but features that are not necessarily related and that can differ in numbers. MOFA decomposes these matrices into a matrix of factors ($Z$) for each sample and $m$ weight matrices, one for each data modality ($W_1,\cdots, W_m$) where white cells in the weight matrices correspond to zeros (i.e., inactive features). The cross symbol in the data matrices represents missing values. 
+}
+	\label{fig:Alg_MOFA}
+\end{figure}
 
 
 \subsubsection{DIABLO}
