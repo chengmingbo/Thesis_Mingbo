@@ -486,8 +486,7 @@ Where $\gamma_j$ and s are hyperparameters that determine the importance of the 
 	\centering
 	\includegraphics[width=0.95\textwidth]{Alg_Schema/fig}
 	\vspace{0.1cm}
-	\caption[Illustration of Schema integration competing method.]{
-	Schema explores metrics learning to re-weigh modality features through maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u * x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated in other modalities.
+	\caption[Illustration of Schema integration competing method.]{\textbf{[Illustration of Schema integration competing method.} Schema explores metrics learning to re-weigh modality features through maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u * x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated in other modalities. \emph{Source ~\cite{singh2021schema}}(modified to fit thesis format and/or clarify key points)
 }
 	\label{fig:Alg_Schema}
 \end{figure}
@@ -547,8 +546,7 @@ Where $\theta(i,j)$ denotes the affinity between cell $i$ and cell $j$ in modali
 	\centering
 	\includegraphics[width=0.95\textwidth]{Alg_WNN/fig}
 	\vspace{0.1cm}
-	\caption[Illustration of Seurat WNN integration competing method.]{
-	Seurat weighted nearest neighbor(WNN) constructs a single unified representation across multiple modalities by initially creating k-nearest neighbor (KNN) graphs for each modality based on the latent representation of each feature matrix. Subsequently, it calculates affinities using the exponential kernel between a cell and the average nearest neighbors for each modality. The latter is utilized to weigh cells in the unified representation.
+	\caption[Illustration of Seurat WNN integration competing method.]{\textbf{Illustration of Seurat WNN integration competing method.} Seurat weighted nearest neighbor(WNN) constructs a single unified representation across multiple modalities by initially creating k-nearest neighbor (KNN) graphs for each modality based on the latent representation of each feature matrix. Subsequently, it calculates affinities using the exponential kernel between a cell and the average nearest neighbors for each modality. The latter is utilized to weigh cells in the unified representation. \emph{Source ~\cite{hao2021seurat4}}(modified to fit thesis format and/or clarify key points)
 }
 	\label{fig:Alg_WNN}
 \end{figure}
@@ -574,8 +572,7 @@ Where $W_I^{ij}, I = 1,2$ represent the entry in the ith row and jth column of $
 	\centering
 	\includegraphics[width=0.95\textwidth]{Alg_scAI/fig}
 	\vspace{0.1cm}
-	\caption[Illustration of Seurat scAI integration competing method.]{
-    scAI iteratively learns aggregated epigenomic profiles and low-dimensional representations from parallel scRNA-seq and scATAC-seq/single cell DNA methylation data. Input matrices consist of cells in rows and genes or loci in columns. The first step involves aggregating the epigenomic profile based on a randomly initiated cell-cell similarity matrix. In the second step, both transcriptomic and aggregated epigenomic data are concurrently decomposed into low-rank matrices, with gene, locus, and cell loading matrices indicating contributions for each factor. The third step computes a cell-cell similarity matrix based on the cell loading matrix. These steps iterate until a predefined stop criterion is met.
+	\caption[Illustration of Seurat scAI integration competing method.]{\textbf{Illustration of Seurat scAI integration competing method.} scAI iteratively learns aggregated epigenomic profiles and low-dimensional representations from parallel scRNA-seq and scATAC-seq/single cell DNA methylation data. Input matrices consist of cells in rows and genes or loci in columns. The first step involves aggregating the epigenomic profile based on a randomly initiated cell-cell similarity matrix. In the second step, both transcriptomic and aggregated epigenomic data are concurrently decomposed into low-rank matrices, with gene, locus, and cell loading matrices indicating contributions for each factor. The third step computes a cell-cell similarity matrix based on the cell loading matrix. These steps iterate until a predefined stop criterion is met. \emph{Source ~\cite{jin2020scaio}}(modified to fit thesis format and/or clarify key points)
 }
 	\label{fig:Alg_scAI}
 \end{figure}
@@ -608,8 +605,7 @@ Liger converges threshold is set to $\epsilon = 10^{-10}$, and the maximum numbe
 	\centering
 	\includegraphics[width=0.95\textwidth]{Alg_Liger/fig}
 	\vspace{0.1cm}
-	\caption[Illustration of Liger integration competing method.]{
-     Liger Schematic representation of the matrix factorization strategy (top) and the formulation of the optimization problem (bottom). The introduction of a factor matrix $U_i$ enables the utilization of unshared features in joint matrix factorization. Each dataset ($E_i$) undergoes decomposition into shared metagenes ($W$), dataset-specific metagenes constructed from shared features ($V_i$), unshared metagenes ($U_i$), and cell factor loadings ($H_i$). The inclusion of the U matrix enables unshared features occurring in only one dataset to contribute to the resulting integration.
+	\caption[Illustration of Liger integration competing method.]{\textbf{Illustration of Liger integration competing method.} Liger Schematic representation of the matrix factorization strategy (top) and the formulation of the optimization problem (bottom). The introduction of a factor matrix $U_i$ enables the utilization of unshared features in joint matrix factorization. Each dataset ($E_i$) undergoes decomposition into shared metagenes ($W$), dataset-specific metagenes constructed from shared features ($V_i$), unshared metagenes ($U_i$), and cell factor loadings ($H_i$). The inclusion of the U matrix enables unshared features occurring in only one dataset to contribute to the resulting integration. \emph{Source ~\cite{kriebel2022uinmf}}(modified to fit thesis format and/or clarify key points)
 }
 	\label{fig:Alg_Liger}
 \end{figure}
@@ -627,8 +623,7 @@ Where $Y_{gm}$ is the the matrix of observations for the $m$th data modality and
 	\centering
 	\includegraphics[width=0.95\textwidth]{Alg_MOFA/fig}
 	\vspace{0.1cm}
-	\caption[Illustration of MOFA integration competing method.]{
-	MOFA takes $m$ data matrices as input $Y_1, \cdots Y_m$, one or more from each data modality, with co-occurrent samples but features that are not necessarily related and that can differ in numbers. MOFA decomposes these matrices into a matrix of factors ($Z$) for each sample and $m$ weight matrices, one for each data modality ($W_1,\cdots, W_m$) where white cells in the weight matrices correspond to zeros (i.e., inactive features). The cross symbol in the data matrices represents missing values. 
+	\caption[Illustration of MOFA integration competing method.]{\textbf{Illustration of MOFA integration competing method.} MOFA takes $m$ data matrices as input $Y_1, \cdots Y_m$, one or more from each data modality, with co-occurrent samples but features that are not necessarily related and that can differ in numbers. MOFA decomposes these matrices into a matrix of factors ($Z$) for each sample and $m$ weight matrices, one for each data modality ($W_1,\cdots, W_m$) where white cells in the weight matrices correspond to zeros (i.e., inactive features). The cross symbol in the data matrices represents missing values. \emph{Source ~\cite{tewari2017mofa}}(modified to fit thesis format and/or clarify key points) 
 }
 	\label{fig:Alg_MOFA}
 \end{figure}
