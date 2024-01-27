@@ -461,26 +461,6 @@ The challenges discussed in \sref{background:sec2:challenge_integration} regardi
 
 Several methods have been developed to address this task, and we will now review the computational single-cell multimodal integration methods available in the literature. These methods can be classified into four groups based on the techniques they employ. The first group encompasses matrix factorization, which breaks down the multimodal count matrix into the product of two matrices. One matrix contains the latent factors representing the features, while the other incorporates the cells embedded in the latent factor space (e.g., MOFA, scAI, Liger). The second group endeavors to construct a weighted nearest network that captures common information across all modalities (e.g., Seurat WNN). The third group seeks to maximize the covariance or correlation between two modalities (e.g., DIABLO, Symphony). The fourth group employs metric learning to reweigh modality features by maximizing their agreement with other modalities(Schema). \tref{tab:methods_integration_overview} summarizes the characteristics of each method and \fref{fig:multimodal_integration_methods_schematic} shows the workflow of these methods.
 
-\begin{figure}[!hb]
-	\centering
-	\includegraphics[width=0.95\textwidth]{multimodal_integration_methods_schematic/fig}
-	\vspace{0.1cm}
-	\caption[Illustration of mulitmodal integration competing methods schematic.]{
-	A) MOFA takes $m$ data matrices as input $Y_1, \cdots Y_m$, one or more from each data modality, with co-occurrent samples but features that are not necessarily related and that can differ in numbers. MOFA decomposes these matrices into a matrix of factors ($Z$) for each sample and $m$ weight matrices, one for each data modality ($W_1,\cdots, W_m$) where white cells in the weight matrices correspond to zeros (i.e., inactive features). The cross symbol in the data matrices represents missing values. 
-}
-	\label{fig:multimodal_integration_methods_schematic}
-\end{figure}
-
-\addtocounter{figure}{-1}
-\begin{figure}[t!]
-  \caption[]{
-	B) scAI iteratively learns aggregated epigenomic profiles and low-dimensional representations from parallel scRNA-seq and scATAC-seq/single cell DNA methylation data. Input matrices consist of cells in rows and genes or loci in columns. The first step involves aggregating the epigenomic profile based on a randomly initiated cell-cell similarity matrix. In the second step, both transcriptomic and aggregated epigenomic data are concurrently decomposed into low-rank matrices, with gene, locus, and cell loading matrices indicating contributions for each factor. The third step computes a cell-cell similarity matrix based on the cell loading matrix. These steps iterate until a predefined stop criterion is met.
-	C) Liger Schematic representation of the matrix factorization strategy (top) and the formulation of the optimization problem (bottom). The introduction of a factor matrix $U_i$ enables the utilization of unshared features in joint matrix factorization. Each dataset ($E_i$) undergoes decomposition into shared metagenes ($W$), dataset-specific metagenes constructed from shared features ($V_i$), unshared metagenes ($U_i$), and cell factor loadings ($H_i$). The inclusion of the U matrix enables unshared features occurring in only one dataset to contribute to the resulting integration.
-	D) Seurat weighted nearest neighbor(WNN) constructs a single unified representation across multiple modalities by initially creating k-nearest neighbor (KNN) graphs for each modality based on the latent representation of each feature matrix. Subsequently, it calculates affinities using the exponential kernel between a cell and the average nearest neighbors for each modality. The latter is utilized to weigh cells in the unified representation.
-	E)
-	F) DIABLO is based on Projection to Latent Structures (PLS), which projects the data into the smaller dimensional subspace by maximizing the covariance. \emph{Source ~\cite{tewari2017mofa,jin2020scai,kriebel2022uinmf,hao2021seurat4,singh2021schema,singh2019diablo}}(modified to fit thesis format and/or clarify key points)
-  }
-\end{figure}
 % table of single cell multimodal integration methods
 \subsubsection{Schema}
 Schema~\citep{singh2021schema}  applied metrics learning to reweigh modality features by maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u *  x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated other modalities. Specifically, it assumes $N$ observations across $r$ datasets $D_j$, where $j=1,\cdots,r$ and $D_j  = \{x_i^{j}: i = 1,2,\cdots,N\}$ contains data for each observation. First, it refers $D_1$ as the primary modality and $D_2,\cdots,D_r$ as the secondary modalities. Next, it computes the pairwise distances $\rho_1,\cdots,\rho_j$ for each modality $D_j$ where $\rho_j(x_n^{j}, x_m^{(j)})$ is the distance between observation $n$ and $m$ in $D_j$. Then, it aims to find a transformation $\Omega$ with $\Omega(D)$ generating a dataset $D^{*}$ such that the Euclidean metric $\rho^{*}$ on $D^{*}$ on $D^{*}$ aligns the various metrics. $\Omega$ is limited to be a scaling transformation:
@@ -509,7 +489,7 @@ Where $\gamma_j$ and s are hyperparameters that determine the importance of the 
 	\caption[Illustration of Schema integration competing method.]{
 	Schema explores metrics learning to re-weigh modality features through maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u * x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated in other modalities.
 }
-	\label{fig:Alg_MOFA}
+	\label{fig:Alg_Schema}
 \end{figure}
 
 
@@ -565,12 +545,12 @@ Where $\theta(i,j)$ denotes the affinity between cell $i$ and cell $j$ in modali
 
 \begin{figure}[!hb]
 	\centering
-	\includegraphics[width=0.95\textwidth]{Alg_scAI/fig}
+	\includegraphics[width=0.95\textwidth]{Alg_WNN/fig}
 	\vspace{0.1cm}
-	\caption[Illustration of Schema integration competing method.]{
-	Schema explores metrics learning to re-weigh modality features through maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u * x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated in other modalities.
+	\caption[Illustration of Seurat WNN integration competing method.]{
+	Seurat weighted nearest neighbor(WNN) constructs a single unified representation across multiple modalities by initially creating k-nearest neighbor (KNN) graphs for each modality based on the latent representation of each feature matrix. Subsequently, it calculates affinities using the exponential kernel between a cell and the average nearest neighbors for each modality. The latter is utilized to weigh cells in the unified representation.
 }
-	\label{fig:Alg_MOFA}
+	\label{fig:Alg_WNN}
 \end{figure}
 
 \subsubsection{scAI}
@@ -589,6 +569,17 @@ The optimization problem is solved by a multiplicative update algorithm. The alg
 	\end{aligned}
 \end{equation}
 Where $W_I^{ij}, I = 1,2$ represent the entry in the ith row and jth column of $W_1(p\times K)$ and $W_2(q\times K)$. $H^{ij}$ and $Z^{ij}$ represent the $i$th row and the $j$th column of $H(K\times n)$ and $Z(n\times) n$. $e(K\times 1)$ represents a vector of ones. In each iteration, $H$ is scaled with the sum of each row to 1. The algorithm initialize $W_1, W_2,H$, and $Z$ using a $0-1$ uniform distribution. and $R$ is initialized using a Bernoulli distribution with a probability $s$. $\alpha$ and $\lambda$ are parameters to balance each term whereas $\gamma$ controls the sparsity of $H$.
+
+\begin{figure}[!hb]
+	\centering
+	\includegraphics[width=0.95\textwidth]{Alg_scAI/fig}
+	\vspace{0.1cm}
+	\caption[Illustration of Seurat scAI integration competing method.]{
+    scAI iteratively learns aggregated epigenomic profiles and low-dimensional representations from parallel scRNA-seq and scATAC-seq/single cell DNA methylation data. Input matrices consist of cells in rows and genes or loci in columns. The first step involves aggregating the epigenomic profile based on a randomly initiated cell-cell similarity matrix. In the second step, both transcriptomic and aggregated epigenomic data are concurrently decomposed into low-rank matrices, with gene, locus, and cell loading matrices indicating contributions for each factor. The third step computes a cell-cell similarity matrix based on the cell loading matrix. These steps iterate until a predefined stop criterion is met.
+}
+	\label{fig:Alg_scAI}
+\end{figure}
+
 
 \subsubsection{Liger}
 Linked Inference of Genomic Experimental Relationships(Liger)\citep{kriebel2022uinmf} implemented UINMF algorithm, which uses iterative Non-negative Matrix Factorization (iNMF) to learn a common latent space across multiple modalities. It allows the inclusion for both shared and unshared features across modalities to learn a common latent space. They incorporate intergenic peaks from snATAC-seq data and additional genes not measured in all datasets. For each data set $E^1, E^2, \cdots, E^n$, Liger first normalizes the data, and selects $m$ variable genes (shared across all datasets), and $z_i$ variable features, such that after scaling $E^i \in R_{+}^{(m+z_i)\times n_i}\ (i=1,\cdots,N)$. Given $K$ and $\lambda_i$, the objective function is:
@@ -612,6 +603,17 @@ is updated by fixing the other blocks. The updated rules are:
 	\end{aligned}
 \end{equation}
 Liger converges threshold is set to $\epsilon = 10^{-10}$, and the maximum number of iterations is set to 30 for each analysis.
+
+\begin{figure}[!hb]
+	\centering
+	\includegraphics[width=0.95\textwidth]{Alg_Liger/fig}
+	\vspace{0.1cm}
+	\caption[Illustration of Liger integration competing method.]{
+     Liger Schematic representation of the matrix factorization strategy (top) and the formulation of the optimization problem (bottom). The introduction of a factor matrix $U_i$ enables the utilization of unshared features in joint matrix factorization. Each dataset ($E_i$) undergoes decomposition into shared metagenes ($W$), dataset-specific metagenes constructed from shared features ($V_i$), unshared metagenes ($U_i$), and cell factor loadings ($H_i$). The inclusion of the U matrix enables unshared features occurring in only one dataset to contribute to the resulting integration.
+}
+	\label{fig:Alg_Liger}
+\end{figure}
+
 
 \subsubsection{MOFA}
 Multi-Omics Factor Analysis+(MOFA+)~\cite{argelaguet2020mofa+} uses Bayesian group factor analysis and variational inference to decompose individual modalities simultaneously by estimating a common latent factor matrix $Z$, as well as the weights for the transformation of the modalities to the latent space. MOFA+ includes a procedure to determine the optimal number of factors (dimension of the latent space) and has several hyper parameters for model regularization, detection of number of factors and learning rates. Specifically, it decomposes simultaneous multimodal of $M$ data matrics $Y^1, \cdots, Y^M$ of dimensions $N\times D_m$, where $N$ denotes the number of cells and $D_m$ denotes the number of features, $G$ is the number of sample groups, and $N_g$ is the number of samples in the $g$th group and $K$ is the number of factors. The matrix decomposition is:
