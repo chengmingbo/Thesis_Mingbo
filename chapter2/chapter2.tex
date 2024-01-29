@@ -496,7 +496,7 @@ is updated by fixing the other blocks. The updated rules are:
 \end{equation}
 Liger converges threshold is set to $\epsilon = 10^{-10}$, and the maximum number of iterations is set to 30 for each analysis.
 
-\begin{figure}[!hb]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{Alg_Liger/fig}
 	\vspace{0.1cm}
@@ -515,7 +515,7 @@ Y_{gm} = ZgW_m^{T} + \varepsilon_{gm},
 Where $Y_{gm}$ is the the matrix of observations for the $m$th data modality and the $g$th group, $Z_g$ is the matrix of latent factors for the $g$th group, $W_m$ is the matrix of weights for the $m$th data modality, and $\varepsilon_{gm}$ is the matrix of residuals. The latent factors $Z_g$ are shared across all modalities, while the weights $W_m$ are specific to each modality. %%TODO: the decomposition algorithm
 
 
-\begin{figure}[!hb]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{Alg_MOFA/fig}
 	\vspace{0.1cm}
@@ -545,7 +545,7 @@ To tackle multiple modalities, Schema maximizes the sum of Pearson correlation b
 Where $\gamma_j$ and s are hyperparameters that determine the importance of the various metrics.
 
 
-\begin{figure}[!hb]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{Alg_Schema/fig}
 	\vspace{0.1cm}
@@ -571,7 +571,7 @@ The optimization problem is solved by a multiplicative update algorithm. The alg
 \end{equation}
 Where $W_I^{ij}, I = 1,2$ represent the entry in the ith row and jth column of $W_1(p\times K)$ and $W_2(q\times K)$. $H^{ij}$ and $Z^{ij}$ represent the $i$th row and the $j$th column of $H(K\times n)$ and $Z(n\times) n$. $e(K\times 1)$ represents a vector of ones. In each iteration, $H$ is scaled with the sum of each row to 1. The algorithm initialize $W_1, W_2,H$, and $Z$ using a $0-1$ uniform distribution. and $R$ is initialized using a Bernoulli distribution with a probability $s$. $\alpha$ and $\lambda$ are parameters to balance each term whereas $\gamma$ controls the sparsity of $H$.
 
-\begin{figure}[!hb]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{Alg_scAI/fig}
 	\vspace{0.1cm}
@@ -630,7 +630,7 @@ It next constructs a WNN graph, as a KNN graph constructed using the weighted si
 \end{equation}
 Where $\theta(i,j)$ denotes the affinity between cell $i$ and cell $j$ in modality $m$.
 
-\begin{figure}[!hb]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{Alg_WNN/fig}
 	\vspace{0.1cm}
@@ -640,11 +640,10 @@ Where $\theta(i,j)$ denotes the affinity between cell $i$ and cell $j$ in modali
 \end{figure}
 
 
-
-
-
 \subsubsection{Symphony integration}
 Symphony~\cite{kang2021symphony} is a method to create single cell reference atlas for subsequent annotation of new single cell data sets. For a single case study with a multi-ome CITE-seq data, Symphony used canonical correlation analysis to find shared references. This simple procedure differs from MOJITOO in several ways: it does not use dimension reduction as input; it is not able to cope with more than 2 modalities and it uses the latent space of only one modality (RNA) as shared space.  Moreover, Symphony included the execution of batch correction with Harmony after the execution of CCA.
+
+\FloatBarrier %% step figure jump to the next subsection.
 
 % a figure of single cell multimodal integration methods theory
 \label{background:sec2:TI}
@@ -680,6 +679,16 @@ In this section, we discuss several published trajectory inference methods, All 
 
 \subsubsection{Celltree}
  To identify and utilize this group structure, Celltree\citep{duverle2016celltree} adapts a natural language processing(NLP) statistical approach known as Latent Dirichlet Allocation(LDA) to build a topic model. By comparing the different per-cell topic histograms, celltree can evaluate their similarity and infer complex hierarchical structures. By looking at the topics themselves, one can obtain useful biological insights into the gene sets characterizing the different stages of that hierarchy. Based on this lower-dimensional model, they construct a visual representation of the cell population. finally, they introduce “backbone trees” to easily visualize cells along complex differentiation paths.
+ 
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.95\textwidth]{TI_Alg_celltree/fig}
+	\vspace{0.1cm}
+	\caption[Illustration of TI method Celltree schematic.]{\textbf{Illustration of TI method Celltree schematic.} Celltree. \emph{Source: ~\cite{duverle2016celltree}}(modified to fit thesis format and/or clarify key points)
+	}
+	\label{fig:TI_Alg_celltree}
+\end{figure}
+
 
 \subsubsection{ElPiGraph}
  Elastic Principal Graphs (ElPiGraphs)\citep{albergante2020ElPiGraph} serve as structured approximators for data, comprising vertices connected by edges. These vertices are embedded into the data space, minimizing mean squared distance (MSD) to data points. Notably, ElPiGraphs differ from unstructured k-means by incorporating edges to define an elastic energy term. This term, coupled with MSD, penalizes edge stretching and branch bending. ElPiGraph employs a topological grammar for optimal graph structure determination, building on a core algorithm initially introduced and tested in earlier publications\citep{gorban2007topological}. In essence, an elastic principal graph is an undirected graph in multidimensional space, optimizing data approximation and graph elastic energy. Key parameters, including trimming radius ($R_0$), edge elasticity ($\lambda$), star bending elasticity ($\mu$), and a complexity control coefficient ($\alpha$), guide the optimization process. ElPiGraph achieves efficient minimization by employing a quadratic problem-solving approach for vertex coordinates. Its innovation lies in the use of topological grammars, exploring diverse graph structures and iteratively refining configurations until specified conditions are met. Notably, ElPiGraph yields an explicit principal tree in data space, facilitating independent study or mapping data onto the tree for analysis in intrinsic coordinates. 
