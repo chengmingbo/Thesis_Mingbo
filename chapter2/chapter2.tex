@@ -482,7 +482,7 @@ Liger uses coordinate block descent(BCD) to solve the optimization problem, whic
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.95\textwidth]{Alg_Liger/fig}
+	\includegraphics[width=0.6\textwidth]{Alg_Liger/fig}
 	\vspace{0.1cm}
 	\caption[Illustration of Liger integration competing method.]{\textbf{Illustration of Liger integration competing method.} Liger Schematic representation of the matrix factorization strategy (top) and the formulation of the optimization problem (bottom). The introduction of a factor matrix $U_i$ enables the utilization of unshared features in joint matrix factorization. Each dataset ($E_i$) undergoes decomposition into shared metagenes ($W$), dataset-specific metagenes constructed from shared features ($V_i$), unshared metagenes ($U_i$), and cell factor loadings ($H_i$). The inclusion of the U matrix enables unshared features occurring in only one dataset to contribute to the resulting integration. \emph{Source ~\cite{kriebel2022uinmf}}(modified to fit thesis format and/or clarify key points)
 }
@@ -501,7 +501,7 @@ Where $Y_{gm}$ is the the matrix of observations for the $m$th data modality and
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.95\textwidth]{Alg_MOFA/fig}
+	\includegraphics[width=0.65\textwidth]{Alg_MOFA/fig}
 	\vspace{0.1cm}
 	\caption[Illustration of MOFA integration competing method.]{\textbf{Illustration of MOFA integration competing method.} MOFA takes $m$ data matrices as input $Y_1, \cdots Y_m$, one or more from each data modality, with co-occurrent samples but features that are not necessarily related and that can differ in numbers. MOFA decomposes these matrices into a matrix of factors ($Z$) for each sample and $m$ weight matrices, one for each data modality ($W_1,\cdots, W_m$) where white cells in the weight matrices correspond to zeros (i.e., inactive features). The cross symbol in the data matrices represents missing values. \emph{Source ~\cite{tewari2017mofa}}(modified to fit thesis format and/or clarify key points) 
 }
@@ -519,7 +519,7 @@ where $w$ is the element-wise square of u. The scaling transforms u acts as a fe
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.95\textwidth]{Alg_Schema/fig}
+	\includegraphics[width=0.8\textwidth]{Alg_Schema/fig}
 	\vspace{0.1cm}
 	\caption[Illustration of Schema integration competing method.]{\textbf{Illustration of Schema integration competing method.} Schema explores metrics learning to re-weigh modality features through maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u * x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated in other modalities. \emph{Source ~\cite{singh2021schema}}(modified to fit thesis format and/or clarify key points)
 }
@@ -535,7 +535,7 @@ Where $W_1$ and $W_2$ are the gene loading and locus loading matrices with size 
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.95\textwidth]{Alg_scAI/fig}
+	\includegraphics[width=0.65\textwidth]{Alg_scAI/fig}
 	\vspace{0.1cm}
 	\caption[Illustration of Seurat scAI integration competing method.]{\textbf{Illustration of Seurat scAI integration competing method.} scAI iteratively learns aggregated epigenomic profiles and low-dimensional representations from parallel scRNA-seq and scATAC-seq/single cell DNA methylation data. Input matrices consist of cells in rows and genes or loci in columns. The first step involves aggregating the epigenomic profile based on a randomly initiated cell-cell similarity matrix. In the second step, both transcriptomic and aggregated epigenomic data are concurrently decomposed into low-rank matrices, with gene, locus, and cell loading matrices indicating contributions for each factor. The third step computes a cell-cell similarity matrix based on the cell loading matrix. These steps iterate until a predefined stop criterion is met. \emph{Source ~\cite{jin2020scaio}}(modified to fit thesis format and/or clarify key points)
 }
@@ -552,7 +552,7 @@ Where $\textbf{w}_m(i)$ is the weight of cell $i$ in modality $m$ and $\theta(i,
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.95\textwidth]{Alg_WNN/fig}
+	\includegraphics[width=0.60\textwidth]{Alg_WNN/fig}
 	\vspace{0.1cm}
 	\caption[Illustration of Seurat WNN integration competing method.]{\textbf{Illustration of Seurat WNN integration competing method.} Seurat weighted nearest neighbor(WNN) constructs a single unified representation across multiple modalities by initially creating k-nearest neighbor (KNN) graphs for each modality based on the latent representation of each feature matrix. Subsequently, it calculates affinities using the exponential kernel between a cell and the average nearest neighbors for each modality. The latter is utilized to weigh cells in the unified representation. \emph{Source ~\cite{hao2021seurat4}}(modified to fit thesis format and/or clarify key points)
 }
@@ -602,7 +602,7 @@ In this section, we discuss several published trajectory inference methods, All 
  
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.95\textwidth]{TI_Alg_celltree/fig}
+	\includegraphics[width=0.75\textwidth]{TI_Alg_celltree/fig}
 	\vspace{0.1cm}
 	\caption[Illustration of TI method Celltree schematic.]{\textbf{Illustration of TI method Celltree schematic.} Celltree. \emph{Source: ~\cite{duverle2016celltree}}(modified to fit thesis format and/or clarify key points)
 	}
@@ -615,7 +615,7 @@ In this section, we discuss several published trajectory inference methods, All 
 
  \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.95\textwidth]{TI_Alg_ElPiGraph/fig}
+	\includegraphics[width=0.85\textwidth]{TI_Alg_ElPiGraph/fig}
 	\vspace{0.1cm}
 	\caption[Illustration of TI method ElPiGraph schematic.]{\textbf{Illustration of TI method ElPiGraph schematic.} ElPiGraph. \emph{Source: ~\cite{cao2019monocle3}}(modified to fit thesis format and/or clarify key points)
 	}
@@ -628,7 +628,7 @@ In this section, we discuss several published trajectory inference methods, All 
 Monocle3 undergoes a comprehensive five-step process in single-cell dataset analysis\citep{cao2019monocle3}. Firstly, it normalizes and pre-processes data, addressing technical variations. The second step involves reducing dimensionality by projecting cells onto the top 50 principal components, with options for further reduction using t-SNE or UMAP. In the third step, Monocle 3 clusters and partitions cells, recognizing disconnected trajectories or "supergroups" that capture diverse cellular responses. Subsequently, it learns a principal graph, utilizing methods like DDRTree, SimplePPT, or L1Graph, accommodating tree-like or looped trajectories. Finally, Monocle 3 conducts differential expression analysis and visualization, empowering users to explore gene dynamics across clusters and trajectories with sophisticated testing methods.
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.95\textwidth]{TI_Alg_Monocle3/fig}
+	\includegraphics[width=0.90\textwidth]{TI_Alg_Monocle3/fig}
 	\vspace{0.1cm}
 	\caption[Illustration of TI method Monocle3 schematic.]{\textbf{Illustration of TI method Monocle3 schematic.} Monocle3 aims to learn a principal graph by using SimplePPT, DDRTree or L1Graph, with which, each cell is projected onto the graph. By selecting the starting points on the graph, Monocle measures the distance from these points to each cell, determining a cell's pseudotime as the distance to the closest starting point on the graph. \emph{Source: ~\cite{cao2019monocle3}}(modified to fit thesis format and/or clarify key points)
 	}
@@ -639,7 +639,7 @@ Monocle3 undergoes a comprehensive five-step process in single-cell dataset anal
 Probabilistic Approximate Graph Abstraction(PAGA) uses partition-based graph abstraction generating a topology-preserving map of single cells\citep{wolf2019paga}. High-dimensional gene expression data is represented as a kNN graph by choosing a suitable low-dimensional representation and an associated distance metric for computing neighborhood relations. The kNN graph is partitioned using the Louvain algorithm at a desired resolution where partitions represent groups of connected cells. A PAGA graph is obtained by associating a node with each partition and connecting each node by weighted edges that represent a statistical measure of connectivity between partitions. By discarding spurious edges with low weights, PAGA graphs reveal the denoised topology of the data at a chosen resolution and reveal its connected and disconnected regions. Combining high-confidence paths in the PAGA graph with a random-walk-based distance measure on the single-cell graph, PAGA orders cells within each partition according to their distance from a root cell. A PAGA path then averages all single-cell paths that pass through the corresponding groups of cells. This allows to trace gene expression changes along complex trajectories at single-cell resolution.
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.95\textwidth]{TI_Alg_PAGA/fig}
+	\includegraphics[width=0.85\textwidth]{TI_Alg_PAGA/fig}
 	\vspace{0.1cm}
 	\caption[Illustration of TI method PAGA schematic.]{\textbf{Illustration of TI method PAGA schematic.} 
 	PAGA uses partition-based graph abstraction generating a topology-preserving map of single cells. It creates a kNN graph and partitions it using the Louvain algorithm at a desired resolution where partitions represent groups of connected cells. Next, A PAGA graph is obtained by associating a node with each partition and connecting each node by weighted edges that represent a statistical measure of connectivity between partitions. PAGA graphs reveal the denoised topology of the data at a chosen resolution by discarding low-weight edges. \emph{Source: ~\cite{wolf2019paga}}(modified to fit thesis format and/or clarify key points)
@@ -655,7 +655,7 @@ pCreode infer a trajactory for single-cell data through 6 steps\citep{herring201
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.95\textwidth]{TI_Alg_pCreode/fig}
+	\includegraphics[width=0.65\textwidth]{TI_Alg_pCreode/fig}
 	\vspace{0.1cm}
 	\caption[Illustration of TI method pCreode schematic.]{\textbf{Illustration of TI method pCreode schematic.} pCreode carries out 6 steps to infer a trajectory. It creates a density-based k-nearest neighbor (d-kNN) network and constructs topology with a hierarchical placement strategy of cells on path nodes between end-state clusters. Next, it iteratively redoes the arrangement of the topology according to the neighborhood cell densities. \emph{Source: ~\cite{herring2018pCreode}}(modified to fit thesis format and/or clarify key points)
 	}
@@ -666,7 +666,7 @@ pCreode infer a trajactory for single-cell data through 6 steps\citep{herring201
 StemID\citep{grun2016stemid} uses RaceID\citep{grun2015raceid}, an advanced version of RaceID to perform clustering. Next, to address the challenge of determining branching points in systems with multiple cell lineages for building the lineage tree with guided topology StemID predefines the tree's structure by allowing potential differentiation trajectories between pairs of clusters. Each trajectory links the medoids of two clusters, and collectively, these inter-cluster links determine the possible lineage tree's topology. To mitigate technical noise and computational load, It initially reduces input space dimensionality, emphasizing maximal preservation of point-to-point distances. Next, it assigns each cell to its likely position on a single inter-cluster link based on the projection of the vector connecting a cluster's medoid to one of its cells onto links with other clusters' medoids. By normalizing link lengths and identifying densely populated links, StemID discerns potential differentiation trajectories. This approach, applied to intestinal data, successfully revealed a lineage tree consistent with the known structure.
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.95\textwidth]{TI_Alg_StemID/fig}
+	\includegraphics[width=0.55\textwidth]{TI_Alg_StemID/fig}
 	\vspace{0.1cm}
 	\caption[Illustration of TI method RaceID/StemID schematic.]{\textbf{Illustration of TI method RaceID/StemID schematic.} 
 	RaceID/StemID initially conducts clustering using RaceID2 (k-medoids clustering). Next, it infers putative differentiation trajectories by linking the medoids of two clusters, defining the possible topology of the lineage tree. It then assigns each cell to an inter-cluster link by selecting the longest projection. \emph{Source: ~\cite{albergante2020ElPiGraph}}(modified to fit thesis format and/or clarify key points)
@@ -678,7 +678,7 @@ StemID\citep{grun2016stemid} uses RaceID\citep{grun2015raceid}, an advanced vers
 Single Cell Lineage Inference Using Cell Expression Similarity and Entropy(SLICE)\citep{guo2017slice} comprises two main functions: quantitatively assessing cell differentiation state through single-cell entropy and reconstructing single-cell lineages in silico. The calculation of single-cell entropy (scEntropy) involves computing the expected value for each cell, representing the uncertainty in cellular functions' activation based on gene expression patterns. The scEntropy is utilized to measure the differentiation state of individual cells. Stable states are identified within scRNA-seq datasets using clustering or graph-based methods, considering the scEntropy of each cell. SLICE then constructs a lineage model by inferring a directed minimum spanning tree among stable states, reflecting differentiation trajectories. The reconstruction of cell transitional paths involves either a shortest-path approach or a principal curve-based approach, revealing the dynamics of gene expression during differentiation. Lineage-dependent differentially expressed genes are identified based on smoothed expression profiles, and temporal gene expression patterns are unveiled through clustering analysis. This comprehensive approach allows for an unbiased exploration of cellular differentiation and lineage relationships in scRNA-seq data.
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.95\textwidth]{TI_Alg_SLICE/fig}
+	\includegraphics[width=0.65\textwidth]{TI_Alg_SLICE/fig}
 	\vspace{0.1cm}
 	\caption[Illustration of TI method SLICE schematic.]{\textbf{Illustration of TI method SLICE schematic.} 
 	A)  STREAM first selection of informative genes from a single cell count matrix, followed by dimensionality reduction. Next, it learns and fits simultaneous tree structure by ElPiGraph. The optimal structure is selected based on the elastic energy minimization among a set of candidate structures that are constructed every time a tree node is added. The final tree is interpreted as a set of connected curves representing different trajectories. \emph{Source: ~\cite{guo2017slice}}(modified to fit thesis format and/or clarify key points)
@@ -691,7 +691,7 @@ Single Cell Lineage Inference Using Cell Expression Similarity and Entropy(SLICE
 Slingshot is single-cell lineage inference tool capable of handling datasets with multiple branches\citep{street2018slingshot}. The tool comprises two distinct stages: 1) Global Lineage Structure Inference. In this stage slingshot employs Minimum Spanning Tree (MST) on clustered data points to infer the overall lineage structure. By utilizing a cluster-based MST, Slingshot stably identifies essential elements such as the number of lineages and their branching points. This allows users to uncover novel lineages while also incorporating domain-specific knowledge to guide specific parts of the tree, such as terminal cellular states. 2) Pseudotime Inference for Individual Lineages. In the second stage, Slingshot introduces a novel approach known as simultaneous principal curves. This method fittingly applies smooth branching curves to the identified lineages, effectively translating the knowledge of the global lineage structure into reliable estimates of cell-level pseudotime variables for each lineage.
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.95\textwidth]{TI_Alg_slingshot/fig}
+	\includegraphics[width=0.8\textwidth]{TI_Alg_slingshot/fig}
 	\vspace{0.1cm}
 	\caption[Illustration of TI method Slingshot schematic.]{\textbf{illustration of TI method Slingshot schematic.}
 	slingshot. \emph{Source: ~\cite{street2018slingshot}}(modified to fit thesis format and/or clarify key points)
@@ -731,7 +731,7 @@ pseudo-Time reconstruction in Single-Cell RNA-seq ANalysis(TSCAN)\citep{ji2016ts
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.95\textwidth]{TI_Alg_TSCAN/fig}
+	\includegraphics[width=0.65\textwidth]{TI_Alg_TSCAN/fig}
 	\vspace{0.1cm}
 	\caption[Illustration of TI method TSCAN schematic.]{\textbf{Illustration of TI method TSCAN schematic.}
 	TSCAN initially constructs a cluster-based Minimum Spanning Tree(MST) with multiple paths. Next, TSCAN orders cells along each path by projecting them onto the tree edges. 
