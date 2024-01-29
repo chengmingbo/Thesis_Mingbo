@@ -443,14 +443,14 @@ The challenges discussed in \sref{background:sec2:challenge_integration} regardi
 	\centering
 	\begin{tabular}{llllll}
 		\toprule
-		Name & algorithm & protocol & \#modalities  & efficiency & Reference \\
+		Name & algorithm & protocol & \#modalities  & Reference \\
 		\midrule
-        DIABLO &  PLS-DA & universal &  any & slow & \cite{singh2019diablo}\\
-        Liger & NMF  &  shared-features&  2 & fast& \cite{kriebel2021nonnegative} \\
-		MOFA     &   Matrix Decomposition &  universal &  any & slow &   \cite{argelaguet2020mofa+} \\
-		Schema & Metrics learning   & universal  &  any & fast & \cite{singh2021schema} \\
-        scAI & Matrix Decomposition  &  scRNA,scATAC & 2 & slow & \cite{jin2020scai}\\
-		Seurat WNN	 &  WNN &  universal &  any & fast  & \cite{hao2021seurat4} \\
+        DIABLO &  PLS-DA & universal &  any &  \cite{singh2019diablo}\\
+        Liger & NMF  &  shared-features&  2 &  \cite{kriebel2021nonnegative} \\
+		MOFA     &   Matrix Factorization &  universal &  any &   \cite{argelaguet2020mofa+} \\
+		Schema & Metrics learning   & universal  &  any &  \cite{singh2021schema} \\
+        scAI & Matrix Factorization  &  scRNA,scATAC & 2 &  \cite{jin2020scai}\\
+		Seurat WNN	 &  WNN &  universal &  any &  \cite{hao2021seurat4} \\
 		\bottomrule
 	\end{tabular}
 	\vspace{0.1cm}
@@ -458,7 +458,7 @@ The challenges discussed in \sref{background:sec2:challenge_integration} regardi
 	\label{tab:methods_integration_overview}
 \end{table}
 
-Several methods have been developed to address this task, and we will now review the computational single-cell multimodal integration methods available in the literature. These methods can be classified into four groups based on the techniques they employ. The first group encompasses matrix factorization, which breaks down the multimodal count matrix into the product of two matrices. One matrix contains the latent factors representing the features, while the other incorporates the cells embedded in the latent factor space (e.g., MOFA, scAI, Liger). The second group endeavors to construct a weighted nearest network that captures common information across all modalities (e.g., Seurat WNN). The third group seeks to maximize the covariance or correlation between two modalities (e.g., DIABLO, Symphony). The fourth group employs metric learning to reweigh modality features by maximizing their agreement with other modalities(Schema). \tref{tab:methods_integration_overview} summarizes the characteristics of each method and \fref{fig:multimodal_integration_methods_schematic} shows the workflow of these methods.
+Several methods have been developed to address this task, and we will now review the computational single-cell multimodal integration methods available in the literature. These methods can be classified into four groups based on the techniques they employ. The first group encompasses matrix factorization, which breaks down the multimodal count matrix into the product of two matrices. One matrix contains the latent factors representing the features, while the other incorporates the cells embedded in the latent factor space (e.g., MOFA, scAI, Liger). The second group endeavors to construct a weighted nearest network that captures common information across all modalities (e.g., Seurat WNN). The third group seeks to maximize the covariance or correlation between two modalities (e.g., DIABLO, Symphony). The fourth group employs metric learning to reweigh modality features by maximizing their agreement with other modalities(Schema). \tref{tab:methods_integration_overview} summarizes the characteristics of each method and \fref{fig:Alg_Liger}, \ref{fig:Alg_MOFA}, \ref{fig:Alg_Schema}, \ref{fig:Alg_scAI}, \ref{fig:Alg_WNN} shows the workflow of these methods.
 
 
 \subsubsection{DIABLO}
@@ -474,27 +474,11 @@ Where $a_h^{(q)}$ is the variable coefficient vector for the $h$-th linear combi
 
 
 \subsubsection{Liger}
-Linked Inference of Genomic Experimental Relationships(Liger)\citep{kriebel2022uinmf} implemented UINMF algorithm, which uses iterative Non-negative Matrix Factorization (iNMF) to learn a common latent space across multiple modalities. It allows the inclusion for both shared and unshared features across modalities to learn a common latent space. They incorporate intergenic peaks from snATAC-seq data and additional genes not measured in all datasets. For each data set $E^1, E^2, \cdots, E^n$, Liger first normalizes the data, and selects $m$ variable genes (shared across all datasets), and $z_i$ variable features, such that after scaling $E^i \in R_{+}^{(m+z_i)\times n_i}\ (i=1,\cdots,N)$. Given $K$ and $\lambda_i$, the objective function is:
+Linked Inference of Genomic Experimental Relationships(Liger)\citep{kriebel2022uinmf} implemented UINMF algorithm, which uses iterative Non-negative Matrix Factorization (iNMF) to learn a common latent space across multiple modalities. It allows the inclusion of both shared and unshared features across modalities to learn a common latent space. They incorporate intergenic peaks from snATAC-seq data and additional genes not measured in all datasets. For each data set $E^1, E^2, \cdots, E^n$, Liger first normalizes the data, and selects $m$ variable genes (shared across all datasets), and $z_i$ variable features, such that after scaling $E^i \in R_{+}^{(m+z_i)\times n_i}\ (i=1,\cdots,N)$. Given $K$ and $\lambda_i$, the objective function is:
 \begin{equation}
 	\underset{H^i\geq 0,W\geq 0, V^i\geq 0, U^i \geq 0}{\arg\min} \sum_i^{d}\Big\| (E^i P^i) - H^i \big((W 0) + (V^i U^i)\big)\Big\|_{F}^2 + \lambda_i\sum_i^d\Big\|H^i(V^i U^i)\Big\|_{F}^2
 \end{equation}
-Liger uses coordinate block descent(BCD) to solve the optimization problem, which derives the parameters into blocks and finds the optimal solution for each block in an iterative manner. the iterating of sub-problems is guaranteed to converge to a local minimum. Specifically, each block of a matrix:
-
-\begin{equation} 
-	H^i \in R_+^{k\times n_i}, W \in R_+^{m\times k}, V^i \in R_+^{m\times k} and  U^i \in R_+^{z_i\times k}(i = 1,\cdots, N)
-\end{equation}
-
-is updated by fixing the other blocks. The updated rules are:
-
-\begin{equation}
-	\begin{aligned}
-	&H^i \leftarrow \arg\min_{H\geq 0} \left\| \begin{pmatrix} \begin{pmatrix} W \\ 0^{z^i \times k}\end{pmatrix} +  \begin{pmatrix} V^i \\ U^i\end{pmatrix}  \\ \sqrt{\lambda_i}\begin{pmatrix} V^i \\ U^i\end{pmatrix}\end{pmatrix} H^i \begin{pmatrix}E^i \\ 0^{(m+z^i)\times n}\end{pmatrix} \right\|_{F}^2  \\
-	&W \leftarrow \arg \min_{W\geq 0} \left\| \begin{pmatrix} {H^1}^\top \\ \vdots \\ {H^d}^\top \end{pmatrix} W^T  \begin{pmatrix} {(E^1 - V^1 H^1)}^\top \\ \vdots \\{(E^i - V^i H^i)}^\top  \end{pmatrix} \right\|_{F}^2 \\
-	&V^i \leftarrow \arg \min_{V^i\geq 0} \left\| \begin{pmatrix} {H^i}^\top \\ \sqrt{\lambda_i}{H^d}^\top \end{pmatrix} {V^i}^\top - \begin{pmatrix} {(E^i - W H^i)}^\top \\ {0^{m\times n_i}}^\top  \end{pmatrix} \right\|_{F}^2 \\
-	&U^i \leftarrow \arg \min_{U^i\geq 0} \left\| \begin{pmatrix} {H^i}^\top \\  \\ \sqrt{\lambda_i}{H^d}^\top \end{pmatrix} {U^i}^\top - \begin{pmatrix} {P^i}^\top \\ {0^{z^i\times n_i}}^\top  \end{pmatrix} \right\|_{F}^2
-	\end{aligned}
-\end{equation}
-Liger converges threshold is set to $\epsilon = 10^{-10}$, and the maximum number of iterations is set to 30 for each analysis.
+Liger uses coordinate block descent(BCD) to solve the optimization problem, which derives the parameters into blocks and finds the optimal solution for each block iteratively.
 
 \begin{figure}[!ht]
 	\centering
@@ -526,30 +510,18 @@ Where $Y_{gm}$ is the the matrix of observations for the $m$th data modality and
 
 
 \subsubsection{Schema}
-Schema~\citep{singh2021schema}  applied metrics learning to reweigh modality features by maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u *  x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated other modalities. Specifically, it assumes $N$ observations across $r$ datasets $D_j$, where $j=1,\cdots,r$ and $D_j  = \{x_i^{j}: i = 1,2,\cdots,N\}$ contains data for each observation. First, it refers $D_1$ as the primary modality and $D_2,\cdots,D_r$ as the secondary modalities. Next, it computes the pairwise distances $\rho_1,\cdots,\rho_j$ for each modality $D_j$ where $\rho_j(x_n^{j}, x_m^{(j)})$ is the distance between observation $n$ and $m$ in $D_j$. Then, it aims to find a transformation $\Omega$ with $\Omega(D)$ generating a dataset $D^{*}$ such that the Euclidean metric $\rho^{*}$ on $D^{*}$ on $D^{*}$ aligns the various metrics. $\Omega$ is limited to be a scaling transformation:
-\begin{equation}
-\Omega(D) = \{diag(u)x: x \in D\}
-\end{equation}
-where $u \in \mathbb{R}^{k}$ and  $diag(u)$ is a  $k\times k$ diagonal matrix with diagonal entries $u$. Then, the squared distance between points under the transformation is given by:
+Schema~\citep{singh2021schema}  applied metrics learning to reweigh modality features by maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u *  x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated other modalities. Specifically, it assumes $N$ observations across $r$ datasets $D_j$, where $j=1,\cdots,r$ and $D_j  = \{x_i^{j}: i = 1,2,\cdots,N\}$ contains data for each observation. First, it refers $D_1$ as the primary modality and $D_2,\cdots,D_r$ as the secondary modalities. Next, it computes the pairwise distances $\rho_1,\cdots,\rho_j$ for each modality $D_j$ where $\rho_j(x_n^{j}, x_m^{(j)})$ is the distance between observation $n$ and $m$ in $D_j$. Then, it aims to find a transformation $\Omega$ with $\Omega(D)$ generating a dataset $D^{*}$ such that the Euclidean metric $\rho^{*}$ on $D^{*}$ on $D^{*}$ aligns the various metrics. $\Omega$ is limited to be a scaling transformation $\Omega(D) = \{diag(u)x: x \in D\}$, where $u \in \mathbb{R}^{k}$ and  $diag(u)$ is a  $k\times k$ diagonal matrix with diagonal entries $u$. Then, the squared distance between points under the transformation is given by:
 \begin{equation}
 \rho^{*}(x_n, x_m) = \|diag(u)x_n - diag(u)x_m\|^2 = \|diag(w)(x_n - x_m)\|^2 
 \end{equation}
-where $w$ is the element-wise square of u. The scaling transforms u acts as a feature-weighting mechanism to choose the features of $D_1$ that align the datasets best. Schema integrates between the metrics $\rho_j$ to learn a metric $\rho^{*}$ that aligns well with all of them. The correlation between $\rho^{*}$ and $\rho_j$ is measured by the Pearson correlation coefficient:
-\begin{equation}
-	\text{corr}(\rho^{*}, \rho_j) = \frac{\text{cov}(\rho^{*}, \rho_j)}{\text{var}(\rho^{*})\text{var}(\rho_j)}
-\end{equation}
-To tackle multiple modalities, Schema maximizes the sum of Pearson correlation between $\rho^{*}$ and all other modalities pairwise distances $\rho_2,\cdots,\rho_j$:
-\begin{equation}
-	\left\{\sum_{j=2}^r \gamma_j \text{corr}(\rho^{*}(w), \rho_j)\right\} \text{ subject to corr}(\rho^{*}(w), \rho_1) \geq s 
-\end{equation}
-Where $\gamma_j$ and s are hyperparameters that determine the importance of the various metrics.
+where $w$ is the element-wise square of u. The scaling transforms u acts as a feature-weighting mechanism to choose the features of $D_1$ that align the datasets best. Schema integrates between the metrics $\rho_j$ to learn a metric $\rho^{*}$ that aligns well with all of them. The correlation between $\rho^{*}$ and $\rho_j$ is measured by the Pearson correlation coefficient. And to tackle multiple modalities, Schema maximizes the sum of Pearson correlation between $\rho^{*}$ and all other modalities pairwise distances $\rho_2,\cdots,\rho_j$.
 
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{Alg_Schema/fig}
 	\vspace{0.1cm}
-	\caption[Illustration of Schema integration competing method.]{\textbf{[Illustration of Schema integration competing method.} Schema explores metrics learning to re-weigh modality features through maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u * x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated in other modalities. \emph{Source ~\cite{singh2021schema}}(modified to fit thesis format and/or clarify key points)
+	\caption[Illustration of Schema integration competing method.]{\textbf{Illustration of Schema integration competing method.} Schema explores metrics learning to re-weigh modality features through maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u * x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated in other modalities. \emph{Source ~\cite{singh2021schema}}(modified to fit thesis format and/or clarify key points)
 }
 	\label{fig:Alg_Schema}
 \end{figure}
@@ -560,16 +532,6 @@ Single-cell Aggregation and Integration(scAI) ~\citep{jin2020scai} is aimed to i
 \min_{w_1,W_2,H,Z\geq 0} \alpha \|X_1-W_1H\|_F^2 + \|X_2(Z \circ R)-W_2H\|_F^2 + \lambda \|Z-H^\top H\|_F^2 + \gamma\sum_j \|H_{.j}\|_1^2
 \end{equation}
 Where $W_1$ and $W_2$ are the gene loading and locus loading matrices with size $p\times K$ and $q\times K$($K$ is rank), respectively. Each of the $K$ columns is considered as a factor to capture a biological process/signal relating to a specific cell type. $W_1^{ik}$ and $W_2^{ik}$ are the loading values of gene $i$ and locus $i$ in factor $k$, and the loading values represent the contributions of gene $i$ and locus $i$ in factor k. $H$ is the cell loading matrix with size $K\times n$($H_{.j}$ is the $j$th column of $H$), and the entry $H^{kj}$ is the loading value of cell $j$ when mapped onto factor $k$. $Z$ is the cell-cell similarity matrix. $R$ is a binary matrix generated by a binomial distribution with a probability $s$. $\alpha, \lambda, \gamma$ are regularization parameters, and the symbol $\circ$ represents dot multiplication.
-The optimization problem is solved by a multiplicative update algorithm. The algorithm iteratively updates $W_1, W_2, H, Z$ until convergence. 
-\begin{equation}
-	\begin{aligned}
-	&W_1^{ij} \leftarrow W_1^{ij} \frac{{(X_1 H^\top)}^{ij}}{{(W_1 H H^\top)}^{ij} } \\
-	&W_2^{ij} \leftarrow W_2^{ij} \frac{{(X_2(Z \circ R)H^\top)}^{ij}}{{(W_1 H H^\top)}^{ij}} \\
-	&H^{ij} \leftarrow H^{ij} \frac{{(\alpha W_1^\top X_1 + W_2^\top X_2 (Z\circ R) + \lambda H(Z+Z^\top))}^{ij}}{{(\alpha W_1^\top W_1 + W_2^\top W_2 + 2 \lambda H H ^\top + \lambda e e^\top )H}^{ij}} \\
-	&Z^{ij} \leftarrow Z^{ij} \frac{{((X_2^\top W_2 H)\circ R + \lambda H^\top H)}^{ij}}{{(X_2^\top X_2(Z\circ R) \circ R + \lambda Z)}^{ij}}
-	\end{aligned}
-\end{equation}
-Where $W_I^{ij}, I = 1,2$ represent the entry in the ith row and jth column of $W_1(p\times K)$ and $W_2(q\times K)$. $H^{ij}$ and $Z^{ij}$ represent the $i$th row and the $j$th column of $H(K\times n)$ and $Z(n\times) n$. $e(K\times 1)$ represents a vector of ones. In each iteration, $H$ is scaled with the sum of each row to 1. The algorithm initialize $W_1, W_2,H$, and $Z$ using a $0-1$ uniform distribution. and $R$ is initialized using a Bernoulli distribution with a probability $s$. $\alpha$ and $\lambda$ are parameters to balance each term whereas $\gamma$ controls the sparsity of $H$.
 
 \begin{figure}[!ht]
 	\centering
@@ -581,54 +543,12 @@ Where $W_I^{ij}, I = 1,2$ represent the entry in the ith row and jth column of $
 \end{figure}
 
 \subsubsection{Seurat WNN}
-Seurat Weighted nearest neighbor (WNN)~\citep{hao2021seurat4} constructs a single unified representation across multiple modalities. It takes CITE-seq~\cite{citeseq2017} with scRNA and protein modalities for example to explain the algorithm. First, it creates k-nearest neighbor graphs for each modality based on the pre-computed latent representation of each feature matrix. Where $r_i$ represents the L2-normalized latent representation of $cell_i$ in modality RNA and $p_i$ represents the L2-normalized latent representation of $cell_i$ in modality protein. $\{knn_{r,i,1}\cdots knn_{r,i,k}\}$ is the set of $k$-nearest RNA neighbors of cell $i$ and $\{knn_{p,i,1}\cdots knn_{p,i,k}\}$ is the set of $k$-nearest protein neighbors of cell $i$. Next, it predicts cell $i$ modality profile within and across modalities, the within modality prediction is:
-\begin{equation}
-	\begin{aligned}
-		&\hat{r}_{i, knn_r}=\frac{\sum_{j=1}^{k} r_{k n n_{r, i, j}}}{k} \\
-		&\hat{p}_{i, knn_p}=\frac{\sum_{j=1}^{k} p_{k n n_{p, i, j}}}{k} 
-	\end{aligned}
-\end{equation}
 
-The across modalities prediction is:
-\begin{equation}
-	\begin{aligned}
-		&\hat{r}_{i, knn_p}=\frac{\sum_{j=1}^{k} r_{k n n_{p, i, j}}}{k} \\
-		&\hat{p}_{i, knn_r}=\frac{\sum_{j=1}^{k} p_{k n n_{r, i, j}}}{k}
-	\end{aligned}
-\end{equation}
-
-Next, it calculates affinities using the exponential kernel utilized in UMAP(McInnes et al., 2018) between each cell $i$ and its KNN(of each modality) average profile, specifically, the affinities between $cell_i$ and its KNN average profile within modality RNA and modality protein are:
-\begin{equation}
-	\begin{aligned}
-		& \theta_{rna}\left(r_i,\hat{r}_{i, knn_r}\right) = \exp\left( \frac{-\max(d(r_i, \hat{r}_{i,knn_r}))-d(r_i, r_{knn_{r,i,1}}), 0)}{\sigma_{r,i} - d(r_i,r_{knn_{r,i,1}})}\right)\\
-		& \theta_{protein}\left(p_i,\hat{p}_{i, knn_p}\right) = \exp\left( \frac{-\max(d(p_i, \hat{p}_{i,knn_p}))-d(p_i, p_{knn_{p,i,1}}), 0)}{\sigma_{p,i} - d(p_i,p_{knn_{p,i,1}})}\right)\\
-	\end{aligned}
-\end{equation}
-Where $d(\cdot,\cdot)$ is the Euclidean distance, $\sigma_{r, i}$ and $\sigma_{p, i}$ is the bandwidth of RNA and protein kernels of cell $i$. The affinities between $cell_i$ and its KNN average profile across modalities are:
-\begin{equation}
-	\begin{aligned}
-		& \theta_{rna}\left(r_i, \hat{r}_{i,knn_p}\right) = \exp\left( \frac{-\max(d(r_i, \hat{r}_{i,knn_p}))-d(r_i, r_{knn_{p,i,1}}), 0)}{\sigma_{p,i} - d(r_i,r_{knn_{p,i,1}})}\right)\\
-		& \theta_{protein}\left(p_i, \hat{p}_{i,knn_r}\right) = \exp\left( \frac{-\max(d(p_i, \hat{p}_{i,knn_r}))-d(p_i, p_{knn_{r,i,1}}), 0)}{\sigma_{r,i} - d(p_i,p_{knn_{r,j,1}})}\right)\\
-	\end{aligned}
-\end{equation}
-Next, for each modality, it applies softmax transformation to the pairwise ratio of affinity based on its own KNN and the counterpart affinity on other modalities as $\textbf{w}_rna(i)$ and $\textbf{w}_protein(i)$:
-\begin{equation}
-	\begin{aligned}
-	& \textbf{w}_{rna}(i)=\frac{e^{(S_{rna}(i))}}{e^{S_{rna}(i)} + e^{S_{protein}(i)}}\\
-	& \textbf{w}_{protein}(i)=\frac{e^{(S_{protein}(i))}}{e^{S_{rna}(i)} + e^{S_{protein}(i)}}
-	\end{aligned}
-\end{equation}
-Where $S_{rna}(i) = \theta_{rna}(r_i, \hat{r}_{i,knn_r})/(\theta_{rna}(r_i, \hat{r_{i,knn_p}}) + \epsilon)$, and $S_{protein}(i) = \theta_{protein}(p_i, \hat{p}_{i,knn_p})/(\theta_{protein}(p_i, \hat{p_{i,knn_r}}) + \epsilon)$, the $\epsilon(10^{-4})$ is the small value to avoid zero division.
-
-Finally, it calculates the weighted similarity between $cell_i$ and $cell_j$ as the dot product of $\textbf{w}_{rna}(i)$ and $\textbf{w}_{protein}(i)$:
-\begin{equation}
-	\theta_{weighted}(i,j)=\textbf{w}_{rna}(i)\theta_{rna}(r_i,r_j) + \textbf{w}_{protein}(i)\theta_{protein}(p_i,pj)
-\end{equation}
-It next constructs a WNN graph, as a KNN graph constructed using the weighted similarity metric. When there are more than two modalities($m$), similarly, it calculated the weighted similarity between $cell_i$ and $cell_j$ as the dot product of $\textbf{w}_m(i)$ and $\theta(i,j)$,
+Weighted nearest neighbor (WNN)~\citep{hao2021seurat4}) constructs a single unified representation across multiple modalities. First, it creates k-nearest neighbor (KNN) graphs for each modality based on the latent representation of each feature matrix. Next, it calculates affinities using the exponential kernel between a cell and the average NN for each modality. The latter is used to weigh cells.  It finally calculated the weighted similarity between $cell_i$ and $cell_j$ as the dot product of $\textbf{w}_m(i)$ and $\theta(i,j)$,
 \begin{equation}
 	\theta_{weighted}(i,j)=\sum_{m} \textbf{w}_m(i)\theta(i,j)
 \end{equation}
-Where $\theta(i,j)$ denotes the affinity between cell $i$ and cell $j$ in modality $m$.
+Where $\textbf{w}_m(i)$ is the weight of cell $i$ in modality $m$ and $\theta(i,j)$ denotes the affinity between cell $i$ and cell $j$ in modality $m$.
 
 \begin{figure}[!ht]
 	\centering
