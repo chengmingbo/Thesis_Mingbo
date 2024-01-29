@@ -18,8 +18,7 @@ In this section, we outline the experimental framework. We begin by introducing 
 
 \subsection{Multimodal benchmarking data}
 \label{MOJITOO:exp:data}
-We utilize publicly available multimodal datasets with two or three modalities in our evaluation. The initial two datasets consist of single-cell CITE-seq data, capturing single-cell RNA and surface proteins simultaneously. The third and fourth datasets involve single-cell data measuring both single-cell RNA and single-cell ATAC simultaneously. Lastly, the last two datasets encompass single-cell data that simultaneously measure single RNA, single-cell ATAC-seq, and single-cell protein. \tref{tab:MOJITOO_DATA} summarize the detail of these data.
-
+We utilize publicly available multimodal datasets with two or three modalities in our evaluation. The initial two datasets consist of single-cell CITE-seq data, capturing single-cell RNA and surface proteins simultaneously. The third and fourth datasets involve single-cell data measuring both single-cell RNA and single-cell ATAC simultaneously. Lastly, the last two datasets encompass single-cell data that simultaneously measure single RNA, single-cell ATAC-seq, and single-cell protein. \tref{tab:MOJITOO_DATA} summarize the detail of these data. Additionally, these data are available for download as Seurat R objects from \url{https://doi.org/10.5281/zenodo.6348128}.
 \begin{table}[!ht]
 	\footnotesize
 	\centering
@@ -64,6 +63,7 @@ We utilize publicly available multimodal datasets with two or three modalities i
 \subsection{Execution of single cell multi-modal integration data}
 \label{MOJITOO:exp:run}
 % List how to install and run the competing methods
+The source code of the pre-processing and evaluation has been submitted to github: \url{https://github.com/CostaLab/MOJITOO-reproducibility}.
 
 \subsubsection{Preprocessing}
 \label{MOJITOO:exp:preprocessing}
