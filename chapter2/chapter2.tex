@@ -19,7 +19,7 @@ Deoxyribonucleic Acid, or DNA is the genetic blueprint of life, containing the i
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.95\textwidth]{central_dogma/fig}
+	\includegraphics[width=0.65\textwidth]{central_dogma/fig}
 	\vspace{0.1cm}
 	\caption[central dogma.]{Central dogma of molecular biology including DNA replication, transcription and RNA translation.} 
 	\label{fig:central_dogma}
@@ -47,13 +47,6 @@ Since Sanger sequencing~\citep{sanger1975rapid} analysis was introduced in 1975,
 
 To begin, let's establish clear definitions for Genome, Epigenome, Transcriptome, and Proteome. Genome is the complete set of DNA, which holds all the genetic information of an organism\citep{hubbard2002genome}, Epigenome is the complete set of reversible chemical changes to the DNA and histone proteins of an organism\citep{bernstein2007epigenome}, Transcriptome is the complete set of RNA molecules in a cell or a collection of cells\citep{haoudi2006proteome}, Proteome is the complete set of proteins expressed in a cell, tissue, or organism\citep{wang2009transcriptome}. The term “-omics” refer to the exploration of corresponding omic data. Genomics specifically focuses on the investigation of an organism's genome.  Likewise, Epigenomics, Transcriptomics, and Proteomics encompass the study of epigenomes, transcriptomes, and proteomes, respectively.
 
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{multimodal-single-cell/fig}
-	\vspace{0.1cm}
-	\caption[open chromatin, transcriptome, and surface protein profiling in a single celll.]{multimodal singel cell. \emph{Source: ~\citep{zhu2020single}}(modified to fit thesis format and/or clarify key points)}
-	\label{fig:multimodal_single_cell}
-\end{figure}
 
 \subsection{Transcriptomics profiling with scRNA-seq}
 \label{background:sec1:scRNA}
@@ -101,7 +94,7 @@ Protocols for single-cell ATAC-sequencing (scATAC-seq) have been devised, enabli
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.95\textwidth]{cell_differentiation/fig}
+	\includegraphics[width=0.85\textwidth]{cell_differentiation/fig}
 	\vspace{0.1cm}
 	\caption[cell differentiation]{cell differentiation. \emph{Source: ~\cite{lee2020single}} (modified to fit thesis format and/or clarify key points)}
 	\label{fig:piechart-mulitmodal-methods}
@@ -111,7 +104,7 @@ Protocols for single-cell ATAC-sequencing (scATAC-seq) have been devised, enabli
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.95\textwidth]{multi-model-methods/fig}
+	\includegraphics[width=0.50\textwidth]{multi-model-methods/fig}
 	\vspace{0.1cm}
 	\caption[multimodal methods protocols for Transcriptome, Genome, EpiGenome and Proteome]{multimodal methods protocols for Transcriptome, Genome, EpiGenome and Proteome. \emph{Source: ~\cite{lee2020single}} (modified to fit thesis format and/or clarify key points)}
 	\label{fig:piechart-mulitmodal-methods}
@@ -205,7 +198,7 @@ We here describe the computational workflow for scRNA-seq data analysis, includi
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.95\textwidth]{workflow_scRNA/fig}
+	\includegraphics[width=0.85\textwidth]{workflow_scRNA/fig}
 	\vspace{0.1cm}
 	\caption[A common computational scRNA analysis workflow]{
 		\textbf{A common computational scRNA analysis workflow}. 
@@ -231,7 +224,7 @@ We start from a count matrix where the mRNA sequence reads obtained are aligned 
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.95\textwidth]{QC_cells/fig}
+	\includegraphics[width=0.65\textwidth]{QC_cells/fig}
 	\vspace{0.1cm}
 	\caption[Droplets-based sequencing of dying cells, doublet and empty droplet .]{Droplet-based protocols for single-cell analysis require rigorous quality checks to ensure accurate downstream analysis. A) An intact droplet should ideally contain a single cell and a corresponding barcode for cell identification. B) Contamination may occur through the introduction of ambient RNA, leading to the inclusion of extraneous RNA reads not originating from the targeted cell. C) Droplets capturing dying cells typically exhibit lower levels of detected RNA reads, indicating compromised cell integrity. D) Occasionally, a droplet may capture more than one cell, posing challenges for subsequent analysis. E) Empty droplets, which capture no cells, are easily identified and can be excluded from analysis. These considerations emphasize the importance of thorough quality control measures in droplet-based single-cell protocols to ensure the reliability and accuracy of the generated data. \emph{Source: ~\cite{heumos2023best}} (modified to fit thesis format and/or clarify key points)}
 	\label{fig:QCcells}
@@ -272,7 +265,7 @@ We start from a count matrix where the mRNA sequence reads obtained are aligned 
 We here describe the computational workflow for scATAC-seq data analysis, including, feature matrix construction, preprocessing(feature definition, quality control,  feature selection), core analysis (dimensionality reduction, batch correction and clustering), and downstream analysis (differential accessibility, trajectory inference etc. ).
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.95\textwidth]{workflow_scATAC/fig}
+	\includegraphics[width=0.85\textwidth]{workflow_scATAC/fig}
 	\vspace{0.1cm}
 	\caption[A common computational scATAC analysis workflow]{
 	\textbf{workflow scATAC:}
