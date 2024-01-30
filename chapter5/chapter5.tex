@@ -20,6 +20,35 @@ The simulated data for trajectory inference. We first described the data source 
 	\label{fig:dynverse_metrics}
 \end{figure}
 \subsection{Simulated Data}
+Since there is no systematic data available for complex trajectory inference with distinct trajectories, we generate simulated data using a Diffusion-Limited Aggregation (DLA) tree to assess the capabilities of PHLOWER. DLA has previously been employed in the nature methods PHATE \citep{moon2017phate}. To ensure fairness, we choose to increase the cell number from 1440 to 3000 and the number of dimensions from xxx to 100, varying the branches from 3 to 12. As a result, we obtain 10 datasets for experimentation.
+
+Next,xxx 
+
+
+%3000, 100, br, 5.
+%3-12
+\begin{algorithm}
+\caption{DLA Tree Generation}
+\label{alg:DLA}
+\Input{$n\_samp, n\_dim, n\_branch, \sigma$}
+    \textbf{seed random number generator}\\
+    $n\_steps \gets \lfloor\frac{n\_samp}{n\_branch}\rfloor$\\
+    $M \gets \text{cumsum}(-1 + 2 \times \text{random\_numbers}(n\_steps, n\_dim)$\\
+
+    \While{$I \gets 1$ to $n\_branch$}
+    {
+         $ind \gets \text{random\_choice}(\text{range}(M.\text{rows}))$\\
+         $M2 \gets \text{cumsum}(-1 + 2 \times \text{random\_numbers}(n\_steps, n\_dim)$\\
+        $M \gets \text{concatenate}(M, \text{tile}(M[ind, :], (n\_steps, 1)) + M2)$\\
+
+     $C \gets \text{tile}(\text{range}(1, n\_branch + 1), (n\_steps, 1)).\text{transpose}().\text{flatten}()$\\
+     $M \gets M + \text{random\_normal}(0, \sigma, \text{size}=M.\text{shape})$\\
+    }
+    \Return \{$M[:n\_samp]$, $C[:n\_samp]$\}\\
+\end{algorithm}
+
+
+
 \subsection{Execution of trajectory inference}
 % List how to install and run the competing methods
 % how to set up dynverse environment
