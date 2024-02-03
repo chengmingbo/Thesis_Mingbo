@@ -15,10 +15,40 @@ The simulated data for trajectory inference. We first described the data source 
 	\centering
 	\includegraphics[width=0.95\textwidth]{dynverse_metrics/fig}
 	\vspace{0.1cm}
-	\caption[dynverse\_metrics]{
-	dynverse\_metrics.}
+	\caption[Dynverse metrics]{ \textbf{A)} dynverse metrics. Dynverse has established three significant metrics here, each evaluating the excellence of various facets of the trajectory. \textbf{B)} The HIM score gauges the resemblance between the two topologies, considering variations in edge lengths and degree distributions. \textbf{C} cor_{dist} measures the similarity in cellular positions between two trajectories by computing the correlation among pairwise geodesic distances. \textbf{D} The F1_{branches} evaluates the likeness in the allocation of cells to branches. \textbf{E} The geodesic distances were computed on a small example trajectory. This toy example consists of four milestones (W to Z) and five cells (a to e). The milestone network, milestone percentages, and regions of delayed commitment corresponding to the toy trajectory were transformed into the common trajectory model. The calculations were performed to determine pairwise geodesic distances, and a heatmap representation was generated to visually depict these distances.}
 	\label{fig:dynverse_metrics}
 \end{figure}
+
+To facilitate direct comparability between outputs from various methods, dynverse\citep{Saelens2019} designed a unified probabilistic model to represent trajectories from all potential sources\fref{fig:dynverse_metrics}A. In this model, the comprehensive topology is depicted by a network of `milestones', and cells are positioned within the space defined by each connected set of milestones. In dynverse evaluation, a trajectory is conceptualized as a model with multiple layers of abstraction. The highest-level abstraction is the topology, which encompasses information about the paths each cell can traverse from its starting point. Deeper abstractions involve the mapping of each cell to a specific branch within this network, as well as the position (or ordering) of each cell within these branches. Internally, the topology is represented by the milestone network and regions of delayed commitment, while branch assignment and cellular positions are captured by milestone percentages\fref{fig:dynverse_metrics}A.
+
+
+\subsubsection{The Hamming–Ipsen–Mikhailov metric}
+The HIM metric utilizes the two weighted adjacency matrices of the milestone networks as input, with weights assigned based on edge length. It combines the normalized Hamming distance, providing insights into differences in edge lengths, and the normalized Ipsen–Mikhailov distance, evaluating the similarity in degree distributions. The Ipsen–Mikhailov distance includes a parameter $\gamma$, set at 0.1 to ensure comparability of scores across datasets. The HIM metric is a linear combination of these components.
+
+\subsubsection{The F1 between branch assignments}
+For branch assignment comparison, dynverse employed an F1 score, a metric commonly utilized for comparing biclustering methods. To compute this score, they initially determined the similarity of all pairs of branches between the two trajectories using Jaccard similarity. Subsequently, they defined 'Recovery' (respectively 'Relevance') as the average maximal similarity of all branches in the reference dataset (respectively prediction). The $F1_{branches}$ was then established as the harmonic mean between Recovery and Relevance.
+
+\begin{equation}
+\label{eqn:corrdist}
+\begin{align}
+& \text{Jaccard}(c, c')  = \frac{c\cup c'}{c\cap c'} \\
+& \text{Recovery} = \frac{1}{|C|}\sum_{c\in C} \max_{c'\in C'} \text{Jaccard}(c, c') \\
+& \text{Relevance} = \frac{1}{|C'|}\sum_{c' \in C'} \max_{c\in C} \text{Jaccard}(c, c')
+\end{align}
+\end{equation}
+
+\subsubsection{The F1 between milestone assignments}
+Similar to $F1_{branches}$, other than mapping cells to edges, the F1 milestones, cells are mapped towards the nearest milestone, i.e. the milestone with the highest milestone percentage.
+
+
+\subsubsection{Correlation between geodesic distances}
+The cor_{dist} metric is based on the observation that when a cell's position is identical in both the reference and the prediction, its relative distances to all other cells in the trajectory should also be identical. To calculate cor_{dist}, dynverse initially sampled 100 waypoint cells in both the prediction and the reference dataset, employing stratified sampling across various milestones, edges, and regions of delayed commitment. This sampling was weighted by the number of cells in each collection. Subsequently, they computed the geodesic distances between the union of waypoint cells from both datasets and all other cells. The calculation of geodesic distance took into account the location of the two cells within the trajectory, and was weighted by the length of the edge in the milestone network. Finally, cor_{dist} was defined as the Spearman rank correlation between the distances of both datasets.
+
+
+
+
+
+
 \subsection{Simulated Data}
 Since there is no systematic data available for complex trajectory inference with distinct trajectories, we generate simulated data using a Diffusion-Limited Aggregation (DLA) tree to assess the capabilities of PHLOWER. DLA has previously been employed in the nature methods PHATE \citep{moon2017phate}. To ensure fairness, we choose to increase the cell number from 1440 to 3000 and the number of dimensions from xxx to 100, varying the branches from 3 to 12. As a result, we obtain 10 datasets for experimentation.
 
