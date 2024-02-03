@@ -40,12 +40,13 @@ Next,xxx
          $i \gets \textbf{Random}\{1,2,\cdots, n_{steps}\}$\\
          $u_2 \sim \textbf{Uniform}(0,1)\in\mathbb{R}^{n_{steps} \times n_{dims}}$\\
          $M_2 \gets \textbf{Cumsum}(-1 + 2 \times u_2)$\\
-        $M \gets \begin{bmatrix}M \\\left[\begin{array}{c} 
-                M(ind, :)\\
-                M(ind, :)\\
+        $M \gets \begin{bmatrix}M \\\\
+            M_2 +\left[\begin{array}{c} 
+                M(i, :)\\
+                M(i, :)\\
                 \vdots\\
-                M(ind, :)\\
-        \end{array}\right]_{n_{steps}\times n_{dim}} + M_2 \end{bmatrix}$\\
+                M(i, :)\\
+        \end{array}\right]_{n_{steps}\times n_{dim}} \end{bmatrix}$\\
     }
     $C \gets (\underbrace{1,1,\cdots, 1}_{n_{steps} \text{ times}}, \underbrace{2,2,\cdots, 2}_{n_{steps} \text{ times}},  \cdots\cdots, \underbrace{n_{branch},n_{branch},\cdots, n_{branch}}_{n_{steps} \text{ times}})$\\
     $\epsilon \sim \mathcal{N}(0, \sigma^2)\in\mathbb{R}^{n_{sample}\times n_{dim}}$\\
