@@ -3,7 +3,7 @@
 % Author: Mingbo Cheng
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\addbibresource{~/MEGA/MEGAsync/phd/thesis_Cheng/preamble/thesis.bib}
-%\addbibresource{/home/mingbo/MEGAsync/phd/thesis_Cheng/preamble/thesis.bib}
+\addbibresource{/home/mingbo/MEGAsync/phd/thesis_Cheng/preamble/thesis.bib}
 \chapter{Background}
 \label{cha:background}
 \graphicspath{{chapter2/figs/}}
@@ -35,13 +35,21 @@ Gene regulation refers to the mechanisms that control the expression of genes. W
 	\centering
 	\includegraphics[width=0.95\textwidth]{chromatin_organization/fig}
 	\vspace{0.1cm}
-	\caption[DNA organization] {DNA is directed, controlled, and regulated by epithatic factors which surround and sto DNA in order to orchestrate the cellular mechanisms of life. The epigenome is the collection of DNA, RNA, proteins, and their chemical modifications that alter gene expression without changing the genetic code. Epigenetic machinery modifies the accessibility of regions in DNA by adding marks to the tails of histones, creating epigenetic patterns of chromatin modifications. The addition of an acetyl group to a histone tail changes the electrochemical charge of the histone, causing it to relax and release the DNA. This makes the DNA in that region more accessible to transcription machinery and allows that gene to be expressed. Placing a methyl group on histone tails can either increase or decrease the pattern of gene expression, depending on where the mark is placed. Additionally, placing a methyl group directly onto the DNA results in the permanent shutdown of that genetic region. \emph{Source: ~\citep{heumos2023best}} (modified to fit thesis format and/or clarify key points)}
+	\caption[DNA organization] {DNA is directed, controlled, and regulated by epithatic factors which surround and scaffold DNA in order to orchestrate the cellular mechanisms of life. The epigenome is the collection of DNA, RNA, proteins, and their chemical modifications that alter gene expression without changing the genetic code. Epigenetic machinery modifies the accessibility of regions in DNA by adding marks to the tails of histones, creating epigenetic patterns of chromatin modifications. The addition of an acetyl group to a histone tail changes the electrochemical charge of the histone, causing it to relax and release the DNA. This makes the DNA in that region more accessible to transcription machinery and allows that gene to be expressed. Placing a methyl group on histone tails can either increase or decrease the pattern of gene expression, depending on where the mark is placed. Additionally, placing a methyl group directly onto the DNA results in the permanent shutdown of that genetic region. \emph{Source: ~\citep{heumos2023best}} (modified to fit thesis format and/or clarify key points)}
 	\label{fig:chromatin_organization}
 \end{figure}
 
 
 Chromatin is the complex of DNA and proteins found in the nucleus of a cell. Chromatin accessibility is a crucial molecular concept that describes the degree to which DNA is available or accessible for cellular processes, particularly gene expression. It can exist in two states: open and condensed. Open chromatin refers to the relaxed, accessible state where DNA is available for transcription and gene expression. In this state, the DNA is not tightly wound around histone proteins, allowing regulatory proteins and RNA polymerase to easily access specific DNA sequences, facilitating the transcription of genes into RNA. Open chromatin is associated with active gene expression and is influenced by various factors, including epigenetic modifications such as acetylation and methylation. Conversely, in a "closed" or condensed chromatin state, the DNA is tightly wound around histone proteins, making it less accessible. This state inhibits the binding of transcriptional machinery, leading to reduced or suppressed gene expression. Closed chromatin is associated with inactive or silenced genes(\fref{fig:chromatin_organization}).
 
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.85\textwidth]{cell_differentiation/fig}
+	\vspace{0.1cm}
+	\caption[cell differentiation]{cell differentiation. \emph{Source: ~\cite{costa2023dissecting}} (modified to fit thesis format and/or clarify key points)}
+	\label{fig:piechart-mulitmodal-methods}
+\end{figure}
 
 
 \section{Single cell sequencing technology}
@@ -93,14 +101,6 @@ Protocols for single-cell ATAC-sequencing (scATAC-seq) was introduced in 2015\ci
 
 
 
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.85\textwidth]{cell_differentiation/fig}
-	\vspace{0.1cm}
-	\caption[cell differentiation]{cell differentiation. \emph{Source: ~\cite{costa2023dissecting}} (modified to fit thesis format and/or clarify key points)}
-	\label{fig:piechart-mulitmodal-methods}
-\end{figure}
-
 
 
 \begin{figure}[!ht]
@@ -119,23 +119,16 @@ Single-cell multi-modal technologies typically analyze various types of molecule
 
 \begin{itemize}
 	\item \textbf{Transcriptome \& epigenome:}
-	Two methods account for single-cell multimodal analyses of the DNA methylome and transcriptome methods including single-cell methylome and transcriptome sequencing(scM\&T-seq) \citep{angermueller2016scmntseq}, single-cell methylome and transcriptome sequencing (scMT-seq) \citep{hu2016scmtseq}. Based on these methods single-cell chromatin accessibility sequencing methods DNase sequencing (scDNase-seq), single-cell combinatorial indexing assay for transposase-accessible chromatin with sequencing (sci-ATAC-seq) \citep{cusanovich2015multiplex}, single-cell assay for transposase-accessible chromatin using sequencing (scATAC-seq), nucleosome occupancy and methylation sequencing (NOMe-seq) \citep{kelly2012nomeseq} and single-cell micrococcal nuclease sequencing (scMNase-seq) \citep{lai2018scmnaseseq}, numerous approaches have been devised for the concurrent multimodal analysis of chromatin accessibility and transcriptomes, including single-cell combinatorial indexing chromatin accessibility and mRNA (sci-CAR) \citep{cao2018scicar}, single-nucleus chromatin accessibility and mRNA expression sequencing (SNARE-seq) \citep{chen2019SNARE}, and Single-nucleus chromatin accessibility and RNA expression sequencing (SHARE-seq) \citep{ma2020shareseq}. Single-cell nucleosome, methylation and transcription sequencing (scNMT-seq) \citep{clark2018scnmt} is capable of profiling chromatin accessibility DNA methylation and transcription in a single cell.
-
-	\begin{figure}[!ht]
-		\centering
-		\includegraphics[width=0.95\textwidth]{droplets_multiome_scRNA_scATAC/fig}
-		\vspace{0.1cm}
-		\caption[10X Droplets-based simultaneous sequencing of scRNA and scATAC.]{\textbf{Droplet based simultaneous sequencing of scRNA and scATAC} Chromium Single Cell Multiome ATAC + Gene Expression protocol starts with a single nuclei suspension. Transposition is performed in bulk using the enzyme transposase, which preferentially cuts nuclear DNA in open chromatin regions. Transposed nuclei are then partitioned into droplets, or GEMs, with a single Gel Bead that contains a unique 10x Barcode. Within the GEM, the unique barcodes are attached to available mRNA and transposed DNA fragments in a single nucleus. Following this incubation, GEMs are broken and pooled before clean-up, pre-amplification, and library construction. Two libraries are made from a single pool of GEMs, one for sequencing RNA and one for ATAC. \emph{Source: ~\cite{satpathy2019massively}} (modified to fit thesis format and/or clarify key points)}
-		\label{fig:droplets_multiome_scRNA_scATAC}
-	\end{figure}
-
+	Several sequencing methods have been devised to simultaneously profile transcriptome and epigenome, E.g., single-cell combinatorial indexing chromatin accessibility and mRNA (sci-CAR) \citep{cao2018scicar}, single-nucleus chromatin accessibility and mRNA expression sequencing (SNARE-seq) \citep{chen2019SNARE}, and single-nucleus chromatin accessibility and RNA expression sequencing (SHARE-seq) \citep{ma2020shareseq}.
+	
 
 	\item \textbf{Transcriptome \& proteome:}
-	Various methods have been developed including proximity extension assay/specific RNA target amplification (PEA/STA), proximity ligation assay for RNA (PLAYR), cellular indexing of transcriptomes and epitopes by sequencing(CITE-seq) \citep{stoeckius2017citeseq} and RNA expression and protein sequencing assay (REAP-seq) \citep{peterson2017reapseq}. CITE-seq employs DNA-barcoded antibodies to transform protein detection into a quantitative, sequenceable readout. Oligos attached to antibodies act as synthetic transcripts, captured in most large-scale oligo(dT)-based single-cell RNA sequencing (scRNA-seq) library preparation protocols, such as those used by platforms like 10x Genomics and Drop-seq. And, expanded CRISPR-compatible cellular indexing of transcriptomes and epitopes by sequencing(ECCITE-seq) \citep{mimitou2019ECCITE} is modified and extended from CITE-seq. ECCITE-seq offers diverse modalities of information, including transcriptome, protein, clonotype, and CRISPR perturbation data at a single-cell resolution. 
+	Various methods have been developed, including proximity extension assay/specific RNA target amplification (PEA/STA), proximity ligation assay for RNA (PLAYR), cellular indexing of transcriptomes and epitopes by sequencing (CITE-seq) \citep{stoeckius2017citeseq}, and RNA expression and protein sequencing assay (REAP-seq) \citep{peterson2017reapseq}. Additionally, expanded CRISPR-compatible cellular indexing of transcriptomes and epitopes by sequencing (ECCITE-seq) \citep{mimitou2019ECCITE} is a modification and extension of CITE-seq, incorporating transcriptome, protein, clonotype, and CRISPR perturbation data at a single-cell resolution.
 
 
 	\item \textbf{Transcriptome \& epigenome \& proteome:}
-	Some methods have been developed involving TEA-seq\citep{swanson2021simultaneous} is designed as a trimodal assay that simultaneously measures transcriptomics (scRNA-seq), epitopes, and chromatin accessibility (scATAC-seq) from thousands of single cells while DOGMA-seq\citep{mimitou2021scalable} can measure all features of TEA-seq and also the mtDNA mutation at the same time.
+	Methods have been developed to profile more than two modalities, including TEA-seq \citep{swanson2021simultaneous}, designed as a trimodal assay that simultaneously measures transcriptomics (scRNA-seq), epitopes, and chromatin accessibility (scATAC-seq) from thousands of single cells. Another method, DOGMA-seq \citep{mimitou2021scalable}, can measure all features of TEA-seq and also detect mtDNA mutations simultaneously.
+
 \end{itemize}
 
 see figure Table.\ref{tab:multimodal-methods}
@@ -180,18 +173,10 @@ Computational analysis of single-cell transcriptome, epigenome, and proteome is 
 
 \subsection{Alignment}
 \label{background:sec2:alignment}
-The first step in the computational analysis of ATAC-seq/RNA-seq is the alignment,  in which, raw sequencing reads(DNA for scATAC-seq, RNA for scRNA-seq) are aligned to the reference genome to ensure these reads are located in the most probable position of the reference genome. Several alignment tools have been developed to achieve the task. The most widely used aligners are Bowtie2\citep{langmead2012bowtie2}, BWA\citep{li2009BWA} and STAR\citep{dobin2013star}.  These tools are utilized in the Cell Ranger ATAC/RNA/ARC pipeline developed by 10$\times$ Genomics. See Fig. \ref{fig:alignment}
+The first step in the computational analysis of ATAC-seq/RNA-seq is the alignment,  in which, raw sequencing reads(DNA for scATAC-seq, RNA for scRNA-seq) are aligned to the reference genome to ensure these reads are located in the most probable position of the reference genome. Several alignment tools have been developed to achieve the task. The most widely used aligners are Bowtie2\citep{langmead2012bowtie2}, BWA\citep{li2009BWA} and STAR\citep{dobin2013star}.  These tools are utilized in the Cell Ranger ATAC/RNA/ARC pipeline developed by 10$\times$ Genomics.
 \subsection{Computational Analysis of Single Cell RNA-seq}
 \label{background:sec2:scRNA}
 We here describe the computational workflow for scRNA-seq data analysis, including preprocessing(quality control, normalization, feature selection), core analysis (dimensionality reduction, batch correction and clustering), and downstream analysis (cell annotation, trajectory analysis and geneset enrichment).
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{alignment/fig}
-	\vspace{0.1cm}
-	\caption[DNA fragments alignment schematic.]{ Illustration of the mapping process. The input consists of a set of reads and a reference genome. In the middle, it gives the results of mapping: the locations of the reads on the reference genome. The first read is aligned at position 100 and the alignment has two mismatches. The second read is aligned at position 114. It is a local alignment with clippings on the left and right. The third read is aligned at position 123. It consists of a 2-base insertion and a 1-base deletion. \emph{Source: ~\cite{galaxyprojectSequenceAnalysis2016alignment}} (modified to fit thesis format and/or clarify key points)}
-	\label{fig:alignment}
-\end{figure}
-
 
 \begin{figure}[!ht]
 	\centering
