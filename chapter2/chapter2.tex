@@ -3,12 +3,12 @@
 % Author: Mingbo Cheng
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\addbibresource{~/MEGA/MEGAsync/phd/thesis_Cheng/preamble/thesis.bib}
-\addbibresource{/home/mingbo/MEGAsync/phd/thesis_Cheng/preamble/thesis.bib}
+%\addbibresource{/home/mingbo/MEGAsync/phd/thesis_Cheng/preamble/thesis.bib}
 \chapter{Background}
 \label{cha:background}
 \graphicspath{{chapter2/figs/}}
 
-In this chapter, we provide a comprehensive overview of the background knowledge necessary for understanding the thesis, encompassing both biological and computational aspects. We begin by delving into molecular biology involving DNA organization, chromatin accessibility, and gene regulation(Section 2.1). Next, we explore the advancements in single-cell sequencing technologies, covering single-cell transcriptome profiling, and open chromatin measurements in single cells. This section also encompasses sequencing protocols capable of simultaneously measuring multiple types of features, known as multimodal sequencing(Section 2.2). Following that, we introduce computational approaches for analyzing various single-cell technology assays including single-cell RNA-seq analysis, single-cell ATAC-seq analysis, and single-cell surface protein analysis(Section 2.3). Subsequently, we present the computational workflow for multimodal analysis. Following that, we outline two main problems that need to be addressed in single-cell multimodal analysis. The first problem is multimodal integration. For this, we first discuss the challenges associated with the task. We then introduce the current state-of-the-art methods for multimodal integration, aligning with our objective to address the issues. The second problem is trajectory inference for multimodal data. Similarly, we first present the challenge of trajectory inference. Next, we introduce the current state-of-the-art methods for trajectory inference, aligning with our goals for solving the trajectory inference issues in our method (Section 2.4). Finally, we conclude the chapter by outlining the goals of the thesis XXX (Section 2.5).
+In this chapter, we provide a comprehensive overview of the background knowledge necessary for understanding the thesis, encompassing both biological and computational aspects. We begin by delving into molecular biology involving DNA organization, chromatin accessibility, and gene regulation(Section 2.1). Next, we explore the advancements in single-cell sequencing technologies, covering single-cell transcriptome profiling, and open chromatin measurements in single cells. This section also encompasses sequencing protocols capable of simultaneously measuring multiple types of features, known as multimodal sequencing(Section 2.2). Following that, we introduce computational approaches for analyzing various single-cell technology assays including single-cell RNA-seq analysis, single-cell ATAC-seq analysis, and single-cell surface protein analysis(Section 2.3). Subsequently, we present the computational workflow for multimodal analysis. Following that, we outline two main problems that need to be addressed in single-cell multimodal analysis. The first problem is multimodal integration. For this, we first discuss the challenges associated with the task. We then introduce the current state-of-the-art methods for multimodal integration, aligning with our objective to address the issues. The second problem is trajectory inference for multimodal data. Similarly, we first present the challenge of trajectory inference. Next, we introduce the current state-of-the-art methods for trajectory inference, aligning with our goals for solving the trajectory inference issues in our method (Section 2.4). Finally, we conclude the chapter with a final discussion on the background(Section 2.5).
 
 
 \section{DNA Organization, chromatin accessibility and gene regulation}
@@ -56,7 +56,7 @@ Chromatin is the complex of DNA and proteins found in the nucleus of a cell. Chr
 \label{background:profiling_singlecell}
 The invention of a series of rapidly evolving Next Generation Sequencing (NGS) technologies revolutionarily facilitates the study of heterogeneous biological processes with high throughput, shorter time and lower cost~\citep{svensson2018exponential}. NGS enables researchers to perform profiling of epigenomes, transcriptomes and proteomes and the development of single-cell sequencing technology further facilitates the study of heterogeneity at single-cell resolution. In this section, we will briefly introduce single-cell sequencing technology, single-cell RNA sequencing, single-cell ATAC sequencing and single-cell protein sequencing.
 
-To begin, let's establish clear definitions for Genome, Epigenome, Transcriptome, and Proteome. Genome is the complete set of DNA, which holds all the genetic information of an organism~\citep{hubbard2002genome}, Epigenome is the complete set of reversible chemical changes to the DNA and histone proteins of an organism~\citep{bernstein2007epigenome}, Transcriptome is the complete set of RNA molecules in a cell or a collection of cells~\citep{haoudi2006proteome}, Proteome is the complete set of proteins expressed in a cell, tissue, or organism~\citep{wang2009transcriptome}. The term “-omics” refer to the exploration of corresponding omic data. Genomics specifically focuses on the investigation of an organism's genome.  Likewise, Epigenomics, Transcriptomics, and Proteomics encompass the study of epigenomes, transcriptomes, and proteomes, respectively.
+To begin, let's establish clear definitions for Genome, Epigenome, Transcriptome, and Proteome. Genome is the complete set of DNA, which holds all the genetic information of an organism~\citep{hubbard2002genome}, Epigenome is the complete set of reversible chemical changes to the DNA and histone proteins of an organism~\citep{bernstein2007epigenome}, Transcriptome is the complete set of RNA molecules in a cell or a collection of cells~\citep{haoudi2006proteome}, Proteome is the complete set of proteins expressed in a cell, tissue, or organism~\citep{wang2009transcriptome}. The term “-omics” refer to the exploration of corresponding omic data. Genomics specifically focuses on the investigation of an organism's genome. Likewise, Epigenomics, Transcriptomics, and Proteomics encompass the study of epigenomes, transcriptomes, and proteomes, respectively.
 
 
 \subsection{Transcriptomics profiling with scRNA-seq}
@@ -88,7 +88,7 @@ Advancements in Next-Generation Sequencing (NGS) technology have led to the deve
 	\label{fig:ATAC-seq}
 \end{figure}
 
-Protocols for single-cell ATAC-sequencing (scATAC-seq) was introduced in 2015~\citep{Buenrostro2015,cusanovich2015multiplex}, enabling the unbiased identification of cell-type-specific regulatory elements within heterogeneous cell populations. Droplet-based scATAC-seq boasts a high throughput, capable of processing tens of thousands of cells per assay. Specifically, single nuclei are initially isolated from a single-cell suspension and subjected to bulk transposition with transposase Tn5. Following this, gel beads in emulsion (GEM) are generated, with each gel bead being barcoded. Barcoded DNA fragments in droplets are finally used to create indexed libraries for high-throughput sequencing. scATAC-seq has proven successful in elucidating the regulatory landscape of adult mouse tissues~\citep{cusanovich2018single}, as well as in studying the human and mouse brain \cite{lake2018humanbrain, sinnamon2019accessible} etc. Due to the advantages of high throughput and low costs for droplet-based single-cell ATAC-seq technology, the method is increasingly popular and has been commercialized by 10x Genomic(Chromium Next Gem Single Cell ATAC-seq Library Kit)~\citep{satpathy2019massively}.
+Protocols for single-cell ATAC-sequencing (scATAC-seq) was introduced in 2015~\citep{Buenrostro2015,cusanovich2015multiplex}, enabling the unbiased identification of cell-type-specific regulatory elements within heterogeneous cell populations. Droplet-based scATAC-seq boasts a high throughput, capable of processing tens of thousands of cells per assay. Specifically, single nuclei are initially isolated from a single-cell suspension and subjected to bulk transposition with transposase Tn5. Following this, gel beads in emulsion (GEM) are generated, with each gel bead being barcoded. Barcoded DNA fragments in droplets are finally used to create indexed libraries for high-throughput sequencing. Due to the advantages of high throughput and low costs for droplet-based single-cell ATAC-seq technology, the method is increasingly popular and has been commercialized by 10x Genomic(Chromium Next Gem Single Cell ATAC-seq Library Kit)~\citep{satpathy2019massively}.
 
 
 
@@ -115,7 +115,7 @@ Protocols for single-cell ATAC-sequencing (scATAC-seq) was introduced in 2015~\c
 
 \subsection{Simultaneous multi-modal profiling of single cell}
 \label{background:sec1:mulitmodal}
-Single-cell multi-modal technologies typically analyze various types of molecules within a single cell, providing a more profound understanding of biology compared to studying individual molecular layers from separate cells. These advanced technologies unveil cellular heterogeneity across multiple molecular levels within a cell population, offering insights into the interconnectedness or independence of variation across different modalities. The datasets produced by these techniques hold the potential to facilitate a more comprehensive comprehension of the fundamental biological processes and mechanisms that contribute to cellular heterogeneity. Furthermore, they shed light on the associations between normal development, aging, disease etiology, and the intricate links between these phenomena. A variety of single cell multi-modal profiling methods have been proposed recently, including:
+Single-cell multi-modal technologies typically analyze various types of molecules within a single cell, providing a more profound understanding of biology compared to studying individual molecular layers from separate cells. These advanced technologies unveil cellular heterogeneity across multiple molecular levels within a cell population, offering insights into the interconnectedness or independence of variation across different modalities. The datasets produced by these techniques hold the potential to facilitate a more comprehensive comprehension of the fundamental biological processes and mechanisms that contribute to cellular heterogeneity. Furthermore, they shed light on the associations between normal development, aging, disease etiology, and the intricate links between these phenomena. A variety of single cell multi-modal profiling methods have been proposed recently (\tref{tab:multimodal-methods}), including:
 
 \begin{itemize}
 	\item \textbf{Transcriptome \& epigenome:}
@@ -131,28 +131,26 @@ Single-cell multi-modal technologies typically analyze various types of molecule
 
 \end{itemize}
 
-see figure Table.\ref{tab:multimodal-methods}
-
 \begin{table}[!ht]
 	\footnotesize
 	\centering
 	\begin{tabular}{lll}%{0.1\linewidth}}
 		\toprule
-		{\textbf{Modalities}}  & {\textbf{Protocols}} & {\textbf{reference}} \\
+		{\textbf{Modalities}} & {\textbf{Protocols}} & {\textbf{reference}} \\
 		\midrule
 		\multirow{5}{*}{\shortstack[l]{\includegraphics[scale=1]{multi-model-methods/Protein_RNA.pdf}}}
-		   & PLAYR & {~\cite{frei2016playr}} \\
-		   & CITE-seq & {~\cite{stoeckius2017citeseq}} \\
-           & REAP-seq & {~\cite{peterson2017reapseq}}\\
-           & RAID & {~\cite{Gerlach2019RAID}} \\
-		   & ECCITE-seq & {~\cite{mimitou2019ECCITE}}\\
+		  & PLAYR & {~\cite{frei2016playr}} \\
+		  & CITE-seq & {~\cite{stoeckius2017citeseq}} \\
+      & REAP-seq & {~\cite{peterson2017reapseq}}\\
+      & RAID & {~\cite{Gerlach2019RAID}} \\
+		  & ECCITE-seq & {~\cite{mimitou2019ECCITE}}\\
 		\midrule
 		\multirow{5}{*}{\shortstack[l]{\includegraphics[scale=1]{multi-model-methods/RNA_ATAC.pdf}}}
-		   & sci-CAR & {~\cite{cao2018scicar}}\\
-           & SNARE-seq & {~\cite{chen2019SNARE}} \\
-           & scNMT-seq & {~\cite{clark2018scnmt}}\\
-		   & scCAT-seq & {~\cite{liu2019scCAT}} \\
-		   & SHARE-seq & {~\cite{ma2020shareseq}}\\
+		  & sci-CAR & {~\cite{cao2018scicar}}\\
+      & SNARE-seq & {~\cite{chen2019SNARE}} \\
+      & scNMT-seq & {~\cite{clark2018scnmt}}\\
+		  & scCAT-seq & {~\cite{liu2019scCAT}} \\
+		  & SHARE-seq & {~\cite{ma2020shareseq}}\\
 		\midrule
 		\multirow{5}{*}{\shortstack[l]{\includegraphics[scale=1]{multi-model-methods/3.pdf}}}
 		& TEA-seq & {~\cite{swanson2021simultaneous}}\\
@@ -170,11 +168,11 @@ see figure Table.\ref{tab:multimodal-methods}
 
 \section{Computational analysis of single cell}
 \label{background:computational_singlecell}
-Computational analysis of single-cell transcriptome, epigenome, and proteome is crucial for gaining insights from different perspectives. For scRNA-seq and scATAC-seq data, the initial step involves aligning the reads to the reference genome to identify gene expression or the location of the reads, respectively. Generally, after obtaining the feature count matrix (features by cells), the analysis includes three steps: pre-processing for quality checks and normalization, dimensional reduction and clustering to identify heterogeneous population groups, and downstream analysis based on different feature properties. In this section, we introduce these analyses by first discussing the alignments of scRNA-seq and scATAC-seq. Next, we describe the analysis of scRNA-seq, followed by the analysis of scATAC-seq data. Lastly, we briefly introduce the processing steps for surface protein data.
+After designing the experiment and conducting the sequencing, the subsequent crucial step involves performing computational analysis to extract valuable insights from the multimodal data. For scRNA-seq and scATAC-seq data, the initial step involves aligning the reads to the reference genome to identify gene expression or the location of the reads, respectively. Generally, after obtaining the feature count matrix (features by cells), the analysis includes three steps: pre-processing for quality checks and normalization, dimensional reduction and clustering to identify heterogeneous population groups, and downstream analysis based on different feature properties. In this section, we will introduce these analyses by first discussing the alignments of scRNA-seq and scATAC-seq. Next, we describe the analysis of scRNA-seq, followed by the analysis of scATAC-seq data. Lastly, we briefly introduce the processing steps for surface protein data.
 
 \subsection{Alignment}
 \label{background:sec2:alignment}
-The first step in the computational analysis of ATAC-seq/RNA-seq is the alignment,  in which, raw sequencing reads(DNA for scATAC-seq, RNA for scRNA-seq) are aligned to the reference genome to ensure these reads are located in the most probable position of the reference genome. This is typically accomplished by constructing a large index database from a reference genome and/or the set of reads, identifying potential regions for pairwise alignment~\citep{alser2021alignment}. The most widely used aligners are Bowtie2~\citep{langmead2012bowtie2}, BWA~\citep{li2009BWA} and STAR~\citep{dobin2013star}.  These tools are utilized in the Cell Ranger ATAC/RNA/ARC pipeline developed by 10$\times$ Genomics.
+The first step in the computational analysis of ATAC-seq/RNA-seq is the alignment, in which, raw sequencing reads(DNA for scATAC-seq, RNA for scRNA-seq) are aligned to the reference genome to ensure these reads are located in the most probable position of the reference genome. This is typically accomplished by constructing a large index database from a reference genome and/or the set of reads, identifying potential regions for pairwise alignment~\citep{alser2021alignment}. The most widely used aligners are Bowtie2~\citep{langmead2012bowtie2}, BWA~\citep{li2009BWA} and STAR~\citep{dobin2013star}. These tools are utilized in the Cell Ranger ATAC/RNA/ARC pipeline developed by 10$\times$ Genomics.
 
 \subsection{Computational Analysis of Single Cell RNA-seq}
 \label{background:sec2:scRNA}
@@ -196,14 +194,14 @@ We will outline the computational workflow for scRNA-seq data analysis, covering
 \subsubsection{Pre-processing}
 We start from a count matrix where the mRNA sequence reads obtained are aligned to genes and cells of origin through an alignment pipeline e.g 10$\times$ cellranger pipeline. The pipeline utilizes either cellular barcodes or unique molecular identifiers (UMIs) in conjunction with a reference genome. We eventually obtain a count matrix representing cells by genes.
 \begin{description}
-	\item[Quality control]
-	We focus on droplet-based scRNA data quality control. \fref{fig:QCcells}A shows an intact droplet, where a droplet includes a cell and barcode bead to mark the cell ID. The objective of quality control is to filter low-quality cells like \fref{fig:QCcells}B-E and correct the noise. Cells characterized by a low number of detected genes, a shallow count depth, and a high proportion of mitochondrial counts are commonly referred to as low-quality cells. This designation is often indicative of cells in a state of decline, potentially exhibiting compromised membranes associated with cell damage or death. Low-quality cells are detected and filtered either by manually setting thresholds, as suggested in a guide~\citep{luecken2019current}, or through sample-wise automatic filtering based on the number of median absolute deviations~\citep{germain2020pipecomp}. Doublets (\fref{fig:QCcells}D) or multiplets occur when more than one cell is present in a droplet. The simplest method to address this issue is to filter out cells with an excessively high total count of gene molecules (UMI). More sysmatic approach involves creating synthetic doublets by combining two cells and examining the neighborhoods of cells to detect potential doublets~\citep{mcginnis2019doubletfinder}. Ambient RNA removal typically involves using the expression profile of empty droplets to eliminate background noise from cells~\citep{janssen2023benchambient}.
+	\item[Quality Control]
+	We focus on droplet-based scRNA data quality control. \fref{fig:QCcells}A shows an intact droplet, where a droplet includes a cell and barcode bead to mark the cell ID. The objective of quality control is to filter low-quality cells (\fref{fig:QCcells}B-E) and correct the noise. Cells characterized by a low number of detected genes, a shallow count depth, and a high proportion of mitochondrial counts are commonly referred to as low-quality cells. This designation is often indicative of cells in a state of decline, potentially exhibiting compromised membranes associated with cell damage or death. Low-quality cells are detected and filtered either by manually setting thresholds, as suggested in a guide~\citep{luecken2019current}. Doublets (\fref{fig:QCcells}D) or multiplets occur when more than one cell is present in a droplet. The simplest method to address this issue is to filter out cells with an excessively high total count of gene molecules (UMI). More sysmatic approach involves creating synthetic doublets by combining two cells and examining the neighborhoods of cells to detect potential doublets~\citep{mcginnis2019doubletfinder}. Ambient RNA removal typically involves using the expression profile of empty droplets to eliminate background noise from cells~\citep{janssen2023benchambient}.
 
 
 	\item[Normalization]
 	Cells may exhibit varying numbers of gene counts due to disparities in cell size or random variations during sequencing. Count normalization is employed to ensure comparability in cellular profiles. The following variance stabilization ensures that outlier profiles have a limited impact on the overall data structure. A common normalization method involves dividing the raw UMI count by the total detected RNAs in each cell, multiplying the result by a scaling factor (typically set at 10,000), adding a pseudo-count (usually 1), and subsequently applying a log transformation to the outcome. This size-factor normalization effectively mitigates technical variations arising from sequencing depth, while the log transformation serves to alleviate the impact of expression outliers. This approach is particularly valuable in preventing high-abundance genes from disproportionately influencing downstream analyses due to their elevated technical variability. Log-normalization is the default method in the most popular single cell analysis toolkit Seurat~\citep{stuart2019seurat3} written in R and Scanpy~\citep{wolf2018scanpy} implemented in python.
 
-	\item[Feature selection]
+	\item[Feature Selection]
 	Single-cell RNA-seq datasets typically contain more than 20,000 genes. Numerous genes lack informativeness and predominantly consist of zero counts. Thus, feature selection is necessary to select the most informative features(usually 3,000~5,000 genes) and reduce the computing resources as well as alleviate issues such as model overfitting in downstream analysis~\citep{yang2021feature}. The objective is to exclude uninformative genes that may not reflect meaningful biological variation across samples. The commonly used method is implemented in Seurat, where genes are categorized based on their average expression. The gene with the highest ratio of variance to mean within each group is selected as the Highly Variable Gene (HVG) for that specific bin~\citep{stuart2019seurat3}.
 \end{description}
 
@@ -217,29 +215,29 @@ We start from a count matrix where the mRNA sequence reads obtained are aligned 
 \subsubsection{Dimensional reduction and clustering}
 \label{background:sec2:dr_n_clustering}
 \begin{description}
-	\item[Dimensional reduction]
+	\item[Dimensional Reduction]
 	Dimensional reduction serves a dual purpose: preserving distances between cells with lower dimensions and facilitating data visualization. In the context of single-cell RNA sequencing (scRNA-seq), Principal Component Analysis (PCA)~\citep{hotelling1933pca} is often employed to reduce dimensionality, transforming high-dimensional data by maximizing the residual variance captured in each potential dimension. Subsequently, Uniform Manifold Approximation and Projection (UMAP) or t-distributed Stochastic Neighbor Embedding (t-SNE) are commonly utilized for data visualization with 2 dimensions preserved. However, both methods do not accurately represent the real distances between cells and should not be used for downstream analysis~\citep{mcinnes2018umap, van2008tsne}.
 
-	\item[Batch correction]
+	\item[Batch Correction]
 	Batch effects are a common confounding factor in single-cell RNA-seq experiments. Namely, they are systematic differences in measurements between batches (e.g., technical replicates, different days of lab work, different individuals, etc.) that are not due to the biological signal of interest. Batch effects can be caused by a variety of factors, including differences in reagents, equipment, and personnel. Numerous methods have been proposed to address batch effects. Seurat employs canonical correlation analysis (CCA) to identify anchors between batches, utilizing these anchors for subsequent correction~\citep{stuart2019seurat3}. Scanpy uses batch-balanced k-nearest neighbors (BBKNN) to identify mutual nearest neighbors across batches, facilitating batch effect correction~\citep{polanski2020bbknn}. Harmony addresses batch effects by iteratively clustering similar cells from different batches at each iteration, maximizing batch diversity within clusters, and calculating correction factors for subsequent application~\citep{korsunsky2019harmony}. Comparative evaluations of batch correction methods indicate Harmony's superior performance~\citep{tran2020benchmark}.
 
 	\item[Clustering]
-	With the batch-corrected data, we can proceed to cluster cells into groups with similar expression profiles, elucidating the heterogeneity in the dataset. Various methods have been proposed for clustering, with graph-based clustering being particularly popular. For instance, Seurat utilizes the Louvain algorithm as its default clustering method~\citep{stuart2019seurat3}, while Scanpy defaults to the Leiden algorithm~\citep{traag2019louvain}. An independent benchmarking study of clustering methods~\citep{duo2018benchclustering} revealed that SC3~\citep{kiselev2017sc3} and Seurat demonstrated the overall best performance and were the only ones to accurately recover cell types in droplet-based datasets.
+	With the batch-corrected data, we can proceed to cluster cells into groups with similar expression profiles, elucidating the heterogeneity in the dataset. Various methods have been proposed for clustering, with graph-based clustering being particularly popular. For instance, Seurat utilizes the Louvain algorithm as its default clustering method~\citep{stuart2019seurat3}, while Scanpy defaults to the Leiden algorithm~\citep{traag2019louvain}. An independent benchmarking study of clustering methods revealed that SC3~\citep{kiselev2017sc3} and Seurat demonstrated the overall best performance and were the only ones to accurately recover cell types in droplet-based datasets~\citep{duo2018benchclustering}.
 
 \end{description}
 
 \subsubsection{Downstream analysis}
 \begin{description}
-	\item[Differential gene expression]
+	\item[Differential Gene Expression]
 	Differential gene expression aims to identify genes that exhibit significant expression differences between clusters or conditions. These genes contribute valuable information for annotating cell types within clusters and interpreting biological distinctions influenced by specific conditions. The Wilcoxon rank-sum test stands out as the most widely used method for identifying differentially expressed genes, with the Student's t-test occasionally employed for this purpose. Other models, such as MAST, utilize the hurdle model to identify differentially expressed genes~\citep{finak2015mast}. Popular single-cell RNA analysis toolkits like Seurat and Scanpy have incorporated various statistical methods, including the Wilcoxon rank-sum test, t-test, and linear models like logistic regression, to identify genes exhibiting differential expression.
 
-	\item[Cluster annotation]
+	\item[Cluster Annotation]
 	With the clusters and significant gene markers of each cluster, identifying the cell types of each cluster is essential, requiring domain knowledge and an understanding of the biological context. The most prevalent approach to annotating cell types involves using marker genes—genes that exhibit high expression levels in specific cell types. Biologists can curate marker genes by identifying genes significantly highly expressed through differential gene expression analysis, aiding in the annotation of heterogeneous cell groups. Cluster annotation stands as a pivotal task in single-cell analysis, playing a crucial role in identifying cell types and interpreting the biological meaning of distinct cell groups.
 
-	\item[Trajectory inference]
+	\item[Trajectory Inference]
 	Trajectory inference, also known as pseudotemporal ordering, is a computational technique employed in single-cell transcriptomics to elucidate the pattern of a dynamic process undergone by cells. Trajectory inference arranges cells based on their progression through the identified process. Note that various subtasks of trajectory inference have been addressed by researchers, with dimension reduction being a critical aspect. Exclusive dimension reduction is essential due to the potential distortion of the global structure by nonlinear visualization methods like t-SNE and UMAP. Approaches such as multidimensional scaling (MDS)~\citep{torgerson1952multidimensional} aim to reduce dimensions while preserving distance information in a 2 dimensional space, and diffusion maps~\citep{coifman2006diffusion} utilize Gaussian affinities to capture both local and global structural details. PHATE, developed by~\cite{moon2017phate}, leverages both local and global structure. Palantir employs a forced-directed layout to Gaussian affinities within a graph. Pseudotime simulation is another aspect focused on capturing the temporal order of differentiating cells. Diffusion pseudotime (DPT), introduced by~\citep{haghverdi2016dpt}, measures transitions between cells using diffusion-like random walks and has been integrated into the popular Python single-cell toolkit Scanpy~\citep{wolf2018scanpy}. Additionally, methods like slingshot~\citep{street2018slingshot} and STREAM~\citep{chen2019stream} are explored in more detail in \sref{background:sec2:TI}.
 
-	\item[Geneset enrichment]
+	\item[Gene set Enrichment]
 	Gene set enrichment analysis facilitates the summarization of numerous molecular insights into interpretable terms, such as pathways, which are defined as sets of genes known to be involved based on previous studies. Commonly used databases for this purpose include MSigDB~\citep{liberzon2011msigdb}, Gene Ontology~\citep{gene2004go}, KEGG~\citep{kanehisa2007kegg}, and Reactome~\citep{fabregat2018reactome}.
 \end{description}
 
@@ -247,7 +245,7 @@ We start from a count matrix where the mRNA sequence reads obtained are aligned 
 \label{background:sec2:scATAC}
 In many cases, single-cell ATAC-seq data analysis is similar to single-cell RNA-seq, with some distinctions due to feature differences present in scATAC. Firstly, the features, represented as a cell-by-peak matrix, are typically more sparse and have a larger feature space (\fref{fig:modalities_differences}). This necessitates different strategies for feature normalization, feature selection, and dimensional reduction. Secondly, scATAC-seq features are not gene expressions, posing a challenge for cell annotation and data interpretation. Lastly, due to these feature differences, the biological insights obtained from scATAC-seq differ from those of scRNA-seq, giving rise to different downstream analyses like linkage analysis or motif discovery.
 
-We will describe the computational workflow for scATAC-seq data analysis, including, feature matrix construction, preprocessing(feature definition, quality control,  feature selection), core analysis (dimensionality reduction, batch correction and clustering), and downstream analysis (differential accessibility, trajectory inference etc. ).
+We will describe the computational workflow for scATAC-seq data analysis, including, feature matrix construction, preprocessing(feature definition, quality control, feature selection), core analysis (dimensionality reduction, batch correction and clustering), and downstream analysis (differential accessibility, trajectory inference etc. ).
 
 \begin{figure}[!ht]
 	\centering
@@ -268,10 +266,10 @@ We will describe the computational workflow for scATAC-seq data analysis, includ
 
 \subsubsection{Feature matrix construction}
 \label{background:sec2:scATAC:matrixconstruction}
-In contrast to scRNA-seq data, which relies on clearly defined gene features, scATAC-seq data lacks a standardized feature set owing to the genome-wide nature of the data. Here we present three ways of feature matrix construction (\fref{fig:workflow_scATAC}A). Most workflows utilize a cell-by-peak or cell-by-bin matrix as a basis for analysis~\citep{heumos2023best}. And the gene score matrix can be used to approximate gene expression, facilitating the interpretation of the data.
+In contrast to scRNA-seq data, which relies on clearly defined gene features, scATAC-seq data lacks a standardized feature set owing to the genome-wide nature of the data. Here we present three ways of feature matrix construction (\fref{fig:workflow_scATAC}A). Most workflows typically utilize a cell-by-peak or cell-by-bin matrix as a foundation for analysis~\citep{heumos2023best}. However, it's important to note that the feature number in single-cell ATAC-seq is significantly larger compared to scRNA gene expression, usually reaching around 100,000 for this type of feature (\fref{fig:modalities_differences}A). Another feature matrix gene activity score matrix can also be created to approximate gene expression, facilitating the interpretation of the data. We will outline how to construct these three feature matrices:
 \begin{description}
-	\item[Peak matrix]
-	Cell-by-peak is the most prevalent features for scATAC-seq data analysis. Peaks denote variable regions of open chromatin characterized by an enrichment of Tn5 transposition events compared to background noise. Note that the identification of peaks requires an adequate number of cells. Therefore, challenges may arise when dealing with rare cell types. To improve the sensitivity of peak detection, it is beneficial to call peaks within clusters. This approach mitigates the risk of overlooking peaks in rare cell types that might otherwise be obscured by the noise from more prevalent cell types. Currently, the most frequently employed peak caller for ATAC-seq is MACS2~\citep{zhang2008macs2} which was originally developed for ChIP-seq data, MACS2 utilizes a dynamic Poisson distribution to account for local background biases in the genome, enabling effective peak detection. Another peak caller HMMRATAC~\citep{tarbell2019hmmratac} which is a Hidden Markov Model-based method for ATAC-seq, employs a ``decomposition and integration'' approach to identify open chromatin regions by learning relationships between layers of coverage signals in a single ATAC-seq dataset.  To note, 10$\times$ cellranger pipeline delivers a default cell-by-peak matrix output. R scATAC-seq analysis tool Signac~\citep{signac} and Python tool Episcanpy~\citep{Danese2021episcanpy} use cell-by-peaks features to do the analysis.
+	\item[Peak Matrix]
+	Cell-by-peak is the most prevalent features for scATAC-seq data analysis. Peaks denote variable regions of open chromatin characterized by an enrichment of Tn5 transposition events compared to background noise. Note that the identification of peaks requires an adequate number of cells. Therefore, challenges may arise when dealing with rare cell types. To improve the sensitivity of peak detection, it is beneficial to call peaks within clusters. This approach mitigates the risk of overlooking peaks in rare cell types that might otherwise be obscured by the noise from more prevalent cell types. Currently, the most frequently employed peak caller for ATAC-seq is MACS2~\citep{zhang2008macs2} which was originally developed for ChIP-seq data, MACS2 utilizes a dynamic Poisson distribution to account for local background biases in the genome, enabling effective peak detection. Another peak caller HMMRATAC~\citep{tarbell2019hmmratac} which is a Hidden Markov Model-based method for ATAC-seq, employs a ``decomposition and integration'' approach to identify open chromatin regions by learning relationships between layers of coverage signals in a single ATAC-seq dataset. To note, 10$\times$ cellranger pipeline delivers a default cell-by-peak matrix output. R scATAC-seq analysis tool Signac~\citep{signac} and Python tool Episcanpy~\citep{Danese2021episcanpy} use cell-by-peaks features to do the analysis.
 
 	\item[Bin Matrix]
 	To generate a cell-by-bin count matrix, the genome is segmented into uniform-sized bins(typically 500 bps). Single-cell ATAC-seq profiles are then represented as a cell-by-bin matrix, where each element indicates the number of sequencing fragments overlapping with a specific bin in a particular cell. This bin matrix is employed in popular ATAC-seq toolkits such as snapATAC (~\citep{fang2021snapatac}) and ArchR (~\citep{Granja2021}).
@@ -290,15 +288,15 @@ In contrast to scRNA-seq data, which relies on clearly defined gene features, sc
 	matrix by assigning greater weight to rarer peaks within the cell population. The resulting transformed data matrix tends to emphasize peaks that demonstrate higher variability, enhancing their informativeness for distinguishing between different cell types. Widely-used scATAC-seq toolkits such as Signac~\citep{signac} and ArchR~\citep{granja2019single} both utilize TF-IDF for normalizing the count matrix.
 
 
-	\item[Feature selection]
+	\item[Feature Selection]
 	Given the typically larger number of peaks compared to genes in scATAC-seq data, effective feature selection is crucial. A common approach involves selecting peaks with high variance across cells, with methods like Signac~\citep{signac} utilizing the variance of the TF-IDF transformed matrix for peak selection.
 \end{description}
 \subsubsection{Dimensional reduction and Clustering}
 \begin{description}
-	\item[Dimensional reduction]
+	\item[Dimensional Reduction]
 	Unlike the scRNA data, scATAC usually uses different strategies to reduce the dimensions. The most commonly used Latent semantic indexing(LSI) was first introduced for the analysis of scATAC-seq data by~\citep{cusanovich2015multiplex}. It combines the steps of TF-IDF followed by Singular value decomposition(SVD). Signac~\citep{signac} use LSI as the default dimension reduction method, whereas ArchR implemented Iterative Latent Semantic Indexing(iterativeLSI)~\citep{satpathy2019massively, granja2019single} which initiates by performing an initial Latent Semantic Indexing (LSI) transformation on the most accessible bins and identified lower-resolution clusters that remain unaffected by batch confounding. To note, the first component of Latent Semantic Indexing (LSI) in scATAC-seq data often captures sequencing depth. It is recommended to assess the correlation between each component and sequencing depth to exclude noise introduced for downstream analysis, as suggested by Signac~\citep{signac}. For visualization purposes, UMAP and t-SNE are considered optimal choices, similar to single-cell transcriptomics.
 
-	\item[Batch correction \& Clustering]
+	\item[Batch Correction \& Clustering]
 	Similar to scRNA, see \sref{background:sec2:dr_n_clustering}.
 
 
@@ -311,17 +309,17 @@ In contrast to scRNA-seq data, which relies on clearly defined gene features, sc
 	\item[Annotation]
 	Without gene experision features, it's a challenge to annotate the cell types of each cluster. One way is to transfer labels from previous studies to scATAC data. Typically, this is achieved by integrating scATAC with existing scRNA data. For instance, methods provided by Seurat~\citep{stuart2019seurat3} find shared nearest neighbors from different studies to transfer labels~\citep{stuart2019seurat3}. Another approach involves using multimodal data as a molecular bridge, facilitating the mapping of scATAC onto scRNA-seq references~\citep{hao2023dictionary}. Apart from label transferring, we can also use gene activity score (\sref{background:sec2:scATAC:matrixconstruction}) differentiation to identify cell types for each cluster. The Transcription Factor(TF) motif enrichment score can be also used to assit the identification of the cell types.
 
-	\item[Differential accessibility]
+	\item[Differential Accessibility]
 	To gain insights into cluster/cell type-specific biology, one can perform differential accessibility analysis, akin to scRNA differential gene expression. Various statistical methods have been employed for this task, including the aforementioned Wilcoxon test from scRNA, which is also applicable here. Additionally, binomial tests~\citep{cusanovich2018single}, and logistic regression models~\citep{hao2021seurat4} are commonly used in scATAC-seq tools. Typically, methods for differential accessibility take into account the removal of technical biases, such as unique nuclear fragments and TSS enrichment. ArchR~\citep{Granja2021} selects a set of background cells that match the known biases for each cell group and performs comparisons between each cell group and its background cells. Signac~\citep{hao2021seurat4} employs logistic regression for differential accessibility analysis and treats the total number of fragments as a latent variable to mitigate the effects of technical biases.
 
-	\item[Trajectory inference]
+	\item[Trajectory Inference]
 	Trajectory analysis has been discussed in \sref{background:sec2:scRNA}.
 
 
-	\item[Linkage analysis]
+	\item[Linkage Analysis]
 	Accessibility profiles along the linear genome in individual cells have been shown to correlate with higher-order chromosome folding~\citep{Buenrostro2015}. Consequently, scATAC-seq data enables the extraction of promoter–enhancer interactions and gene regulatory networks through linkage analysis. Two main types of linkage analysis are peak-to-peak co-accessible analysis and peak-to-gene linkage analysis. Cicero~\citep{pliner2018cicero} is an algorithm designed for establishing genome-wide connections between distal enhancers and promoters based on co-accessibility patterns in scATAC-seq data. Peak-to-peak co-accessibility analysis seeks correlations of accessibility between two peaks across cells, but it doesn't necessarily indicate a direct regulatory relationship due to frequent co-accessibility of cell type-specific peaks. To overcome this, peak-to-gene linkage analysis integrates scRNA-seq data, calculating correlations between peak accessibility and gene expression~\citep{Granja2021}. This method, compared to peak-to-peak co-accessibility analysis, more accurately reflects gene regulatory interactions~\citep{shi2022scatacoverview}.
 
-	\item[Motif discovery]
+	\item[Motif Discovery]
 	The binding of transcription factors to cis-regulatory DNA sequences controls gene expression programs and the dynamics during development or in disease. To compute transcription factor(TF) binding site enrichment scores at the single-cell level, chromVAR~\citep{schep2017chromvar} assesses the accessibility deviation across all motif-containing peaks per cell while correcting for the Tn5 transposase's insertion bias. This bias arises from the sequence binding preferences of the transposase.
 
 \end{description}
@@ -329,20 +327,22 @@ In contrast to scRNA-seq data, which relies on clearly defined gene features, sc
 %%might ignore the surface protein part
 \subsection{Computational Analysis of Single Cell Surface Protein}
 \label{background:sec2:protein}
-The surface protein analysis is simpler than scRNA and scATAC-seq, It's often profiled together with scRNA-seq e.g., CITE-seq~\citep{citeseq2017} simulatenously profiles scRNA and suface protein.
+The surface protein analysis is simpler than scRNA and scATAC-seq. However, the feature size is much smaller (around 100) compared to other modalities (\fref{fig:modalities_differences}A). Single cell surface protein is often profiled together with scRNA-seq e.g., CITE-seq~\citep{citeseq2017} simulatenously profiles scRNA and suface protein.
 
-Antibody-derived tags (ADT) data exhibit higher density compared to scRNA-seq and scATAC-seq data. For quality check, it is advisable to remove libraries with zero counts for the entire or a majority of the antibody panel~\citep{amezquita2020adtqc}. For protocols that simultaneously measure RNA and ADTs, such as CITE-seq~\citep{citeseq2017}, quality control for RNA and ADTs should be conducted separately. Since antibody efficacy can vary, batch correction of ADT data across multiple studies should also be performed~\citep{zheng2022adtqc}. Cell characteristics can introduce heterogeneous capture efficiency, leading to biases in cell composition~\citep{zheng2022adtqc}. To address this, normalization techniques such as centered log-ratio (CLR) transformation is recommended~\citep{stoeckius2017simultaneous}. The downstream analysis of ADT data follows a similar pipeline to unimodal RNA analysis, wherein annotated clusters can be tested for differential abundance.
+XXXX
+
+Surface protein profilling output antibody-derived tags (ADT) data, which exhibit higher density compared to scRNA-seq and scATAC-seq data. For quality check, it is advisable to remove libraries with zero counts for the entire or a majority of the antibody panel~\citep{amezquita2020adtqc}. For protocols that simultaneously measure RNA and ADTs, such as CITE-seq~\citep{citeseq2017}, quality control for RNA and ADTs should be conducted separately. Since antibody efficacy can vary, batch correction of ADT data across multiple studies should also be performed~\citep{zheng2022adtqc}. Cell characteristics can introduce heterogeneous capture efficiency, leading to biases in cell composition~\citep{zheng2022adtqc}. To address this, normalization techniques such as centered log-ratio (CLR) transformation is recommended~\citep{stoeckius2017simultaneous}. The downstream analysis of ADT data follows a similar pipeline to unimodal RNA analysis, wherein annotated clusters can be tested for differential abundance.
 
 
 %\section{Related works}
 %\label{background:related_works}
 \section{Computational Analysis of Single Cell Multimodal Omics}
 \label{background:multimodal}
-Computationally, multimodal single-cell omics profiling has paved the way for developing models that can capture interactions and associations among multiple modalities at single-cell resolution. . In this section, we first introduce the common workflow of single-cell multimodal analysis. Next, we discuss the computational task of integrating single-cell multimodal data, starting with an overview of the challenges in this field and then presenting the current state-of-the-art methods. Following that, we introduce a second computational challenge of trajectory inference for multiple modalities. This is also presented in two parts: first, we discuss the challenges in this field, and then we introduce the current state-of-the-art methods for this task.
+Computationally, multimodal single-cell omics profiling has paved the way for developing models that can capture interactions and associations among multiple modalities at single-cell resolution. In this section, We begin by presenting the common workflow of single-cell multimodal analysis. Following that, we delve into two crucial computational tasks: integration and trajectory inference for single-cell multimodal data. We will outline the challenges, current approaches, and our objectives to address these issues.
 
 \subsection{Common Workflow of Single Cell Multimodal Omics}
 \label{background:multimodal}
-We will outline the computational workflow for the analysis of single-cell multimodal data. While many analyses developed for unimodal datasets can be adapted for multimodal data, establishing a consistent dimension reduction approach(data integration) is advantageous for subsequent analyses. In this section, we will introduce multimodal analysis, preprocessing, data integration, and downstream analysis. As depicted in \fref{fig:workflow_multimodal}, two crucial challenges, namely data integration and trajectory inference, need to be addressed during single-cell multimodal analysis.
+We will outline the computational workflow for the analysis of single-cell multimodal data. As depicted in \fref{fig:workflow_multimodal}, two crucial challenges, namely data integration and trajectory inference, need to be addressed during single-cell multimodal analysis.
 
 \begin{figure}[!ht]
 	\centering
@@ -352,17 +352,11 @@ We will outline the computational workflow for the analysis of single-cell multi
 	\label{fig:workflow_multimodal}
 \end{figure}
 
-\begin{description}
-	\item[Preprocessing]
-	Typically, the preprocessing task in multimodal data analysis can be distributed to separate tasks for each unimodal, except for the quality check stage. In the quality check phase, methods specific to each unimodal can be employed to identify the highest quality cells for subsequent analysis. See \sref{background:sec2:scRNA}, \sref{background:sec2:scATAC} and \sref{background:sec2:protein} for details.
+	%While many analyses developed for unimodal datasets can be adapted for multimodal data, establishing a consistent dimension reduction approach(data integration) is advantageous for subsequent analyses.
 
-	\item[Data Integration]
-	In the realm of single-cell multimodal analysis, a challenge arises from the potential dimension reduction in each modality, complicating downstream analyses such as visualization and clustering. To tackle this issue, a common strategy involves integrating multimodal data into a unified dimensionality. Some methods take the original count matrix as input, exemplified by MOFA~\citep{argelaguet2020mofa+} or scAI~\citep{jin2020scai}. Alternatively, certain approaches incorporate a dimension reduction step into their model, as demonstrated by Seurat WNN~\citep{hao2021seurat4} and Schema~\citep{hao2021seurat4,singh2021schema}. However, it is essential to recognize the significance of batch correction, especially when dealing with multiple batches of data.
+	As illustrated in \fref{fig:workflow_multimodal}, following the preprocessing steps for each modality, the subsequent objective is to integrate these modalities to derive a consistent latent space. This unified latent space facilitates downstream analyses, including trajectory analysis, clustering, and visualization. It is crucial to emphasize the importance of batch correction, particularly when working with multiple batches of data, prior to integration.
 
-
-	\item[Downstream analysis]
-	Once a unified latent space is obtained, downstream analyses, including clustering and visualization, can be conducted using this consolidated space. Many tasks in single-cell multimodal analysis are similar to single-cell unimodal analysis, like differential gene expression, trajectory inference, geneset enrichment. However, single-cell multimodal analysis can enhance certain tasks performed in unimodal analysis, providing deeper insights, such as obtaining more accurate Gene Regulatory Networks (GRN). It allows for a more comprehensive exploration of gene regulation. Specifically, multimodal datasets that incorporate both epigenomic (e.g., snATAC-seq, methylation) and transcriptomic measurements are instrumental in identifying regulatory relationships. For instance, scMega~\citep{li2023scmega} utilizes scRNA-seq and scATAC-seq data to infer GRN. Additionally, the integration of scRNA-seq and proteomic data proves valuable for a detailed examination of signaling networks~\citep{heumos2023best}.
-\end{description}
+	In addition to the downstream analysis for unimodal data, the incorpoartion of multiple modalities can enhance specific tasks performed in unimodal analysis, leading to more profound insights, such as achieving more accurate Gene Regulatory Networks (GRN). For instance, scMega~\citep{li2023scmega} utilizes scRNA-seq and scATAC-seq data to infer GRN. And the integration of scRNA-seq and proteomic data proves valuable for a detailed examination of signaling networks~\citep{heumos2023best}.
 
 
 %\subsection{Challenge of single cell multi-modal integration and trajectory inference}
@@ -394,8 +388,8 @@ Single-cell multimodal profiling represents a nascent field, and the integration
 	\item \textbf{Validation}
 	Evaluating the outcomes of data integration presents a significant challenge. In practice, there is no definitive ground truth, necessitating an evaluation based on downstream analysis tasks, such as assessing clustering agreement with true labels. However, these true labels, often annotations from a study, may introduce noise or inaccuracies in cell type identification. Therefore, a thorough validation should be applied to comprehensively assess the effectiveness of a method.
 
-    \item \textbf{Execessive Presumption}
-    Most methods either assume a specific data distribution or involve fitting the model with several parameters, requiring prior knowledge that may not be universally applicable. For example, Seurat WNN requires inputting the number of neighbors and scaling factor for the neighborhood, and MOFA involves several hyperparameters for model regularization. Moreover, MOFA requires manual selection of informative components for downstream analysis after obtaining the latent components. A method is needed to automatically identify the most important shared information across different modalities.
+  \item \textbf{Execessive Presumption}
+  Most methods either assume a specific data distribution or involve fitting the model with several parameters, requiring prior knowledge that may not be universally applicable. For example, Seurat WNN requires inputting the number of neighbors and scaling factor for the neighborhood, and MOFA involves several hyperparameters for model regularization. Moreover, MOFA requires manual selection of informative components for downstream analysis after obtaining the latent components. A method is needed to automatically identify the most important shared information across different modalities.
 
 \end{itemize}
 
@@ -407,7 +401,6 @@ Single-cell multimodal profiling represents a nascent field, and the integration
 	\label{fig:modalities_differences}
 \end{figure}
 
-
 \subsubsection{Computational Methods for Single Cell Multimodal Integration}
 \label{background:sec2:integration}
 The challenges discussed in \sref{background:sec2:challenge_integration} regarding the integration of single-cell multimodal data pose difficulties in developing an efficient and effective integration method.
@@ -417,14 +410,14 @@ The challenges discussed in \sref{background:sec2:challenge_integration} regardi
 	\centering
 	\begin{tabular}{llllll}
 		\toprule
-		Name & algorithm & protocol & \#modalities  & Reference \\
+		Name & algorithm & protocol & \#modalities & Reference \\
 		\midrule
-        DIABLO &  PLS-DA & universal &  any &  \cite{singh2019diablo}\\
-        Liger & NMF  &  shared-features&  2 &  \cite{kriebel2021nonnegative} \\
-		MOFA     &   Matrix Factorization &  universal &  any &   \cite{argelaguet2020mofa+} \\
-		Schema & Metrics learning   & universal  &  any &  \cite{singh2021schema} \\
-        scAI & Matrix Factorization  &  scRNA,scATAC & 2 &  \cite{jin2020scai}\\
-		Seurat WNN	 &  WNN &  universal &  any &  \cite{hao2021seurat4} \\
+    DIABLO & PLS-DA & universal & any & \cite{singh2019diablo}\\
+    Liger & NMF & shared-features& 2 & \cite{kriebel2021nonnegative} \\
+		MOFA   &  Matrix Factorization & universal & any &  \cite{argelaguet2020mofa+} \\
+		Schema & Metrics learning  & universal & any & \cite{singh2021schema} \\
+    scAI & Matrix Factorization & scRNA,scATAC & 2 & \cite{jin2020scai}\\
+		Seurat WNN	 & WNN & universal & any & \cite{hao2021seurat4} \\
 		\bottomrule
 	\end{tabular}
 	\vspace{0.1cm}
@@ -432,109 +425,102 @@ The challenges discussed in \sref{background:sec2:challenge_integration} regardi
 	\label{tab:methods_integration_overview}
 \end{table}
 
-Several methods have been developed to address this task, and we will now review the computational single-cell multimodal integration methods available in the literature. These methods can be classified into four groups based on the techniques they employ. The first group encompasses matrix factorization, which breaks down the multimodal count matrix into the product of two matrices. One matrix contains the latent factors representing the features, while the other incorporates the cells embedded in the latent factor space (e.g., MOFA, scAI, Liger). The second group endeavors to construct a weighted nearest network that captures common information across all modalities (e.g., Seurat WNN). The third group seeks to maximize the covariance or correlation between two modalities (e.g., DIABLO, Symphony). The fourth group employs metric learning to reweigh modality features by maximizing their agreement with other modalities(Schema). \tref{tab:methods_integration_overview} summarizes the characteristics of each method and \fref{fig:Alg_Liger}, \ref{fig:Alg_MOFA}, \ref{fig:Alg_Schema}, \ref{fig:Alg_scAI}, \ref{fig:Alg_WNN} shows the workflow of these methods.
+Several methods have been developed to address this task, and we will now review the computational single-cell multimodal integration methods available in the literature. These methods can be classified into four groups based on the techniques they employ. The first group encompasses matrix factorization, which breaks down the multimodal count matrix into the product of two matrices. One matrix contains the latent factors representing the features, while the other incorporates the cells embedded in the latent factor space (e.g., MOFA, scAI, Liger). The second group endeavors to construct a weighted nearest network that captures common information across all modalities (e.g., Seurat WNN). The third group seeks to maximize the covariance or correlation between two modalities (e.g., DIABLO, Symphony). The fourth group employs metric learning to reweigh modality features by maximizing their agreement with other modalities(Schema). \tref{tab:methods_integration_overview} summarizes the characteristics of each method.
 
 \begin{description}
-    \item[DIABLO]
-    Data Integration Analysis for Biomarker discovery using Latent cOmponents(DIABLO) is a generalization of sGCCA~\citep{tenenhaus2014variable}, which is a multivariate extension of canonical correlation analysis (CCA). For $Q$ normalized and centered data matrices $X^1, \cdots, X^Q$ of dimensions $N\times D_q$, where $N$ denotes the number of cells and $D_q$ denotes the number of features. DIABLO aims to find a set of $H$ linear combinations of the $Q$ data matrices that are maximally correlated. The linear combinations are defined as:
-    \begin{equation}
-    \begin{aligned}
-    	\underset{a_h^{(1)},\cdots,a_h^{(Q)}}{\max} \sum_{i,j=1, i\neq j}^Q c_{i,j} \text{cov}(X_h^{(i)} a_h^{(i)}, X_h^{(j)} a_h^{(j)}),\\
-    	s.t. \|a_h^{(q)}\|_2 = 1, \text{ and } \|a_h^{(q)}\|_1 \leq \lambda^{(q)}, \text{for all} 1\leq q \leq Q.
-    \end{aligned}
-    \end{equation}
-    Where $a_h^{(q)}$ is the variable coefficient vector for the $h$-th linear combination of the $q$-th data matrix, and $c_{i,j}$ is the weight of the correlation between the $i$-th and $j$-th data matrices. The first constraint is to normalize the linear combination, and the second constraint is to sparsify the linear combination. DIABLO solves the optimization problem by iteratively updating the $a_h^{(q)}$ and $c_{i,j}$ until convergence.
+  \item[DIABLO]
+  Data Integration Analysis for Biomarker discovery using Latent cOmponents(DIABLO) is a generalization of sGCCA~\citep{tenenhaus2014variable}, which is a multivariate extension of canonical correlation analysis (CCA). For $Q$ normalized and centered data matrices $X^1, \cdots, X^Q$ of dimensions $N\times D_q$, where $N$ denotes the number of cells and $D_q$ denotes the number of features. DIABLO aims to find a set of $H$ linear combinations of the $Q$ data matrices that are maximally correlated. The linear combinations are defined as:
+  \begin{equation}
+  \begin{aligned}
+  	\underset{a_h^{(1)},\cdots,a_h^{(Q)}}{\max} \sum_{i,j=1, i\neq j}^Q c_{i,j} \text{cov}(X_h^{(i)} a_h^{(i)}, X_h^{(j)} a_h^{(j)}),\\
+  	s.t. \|a_h^{(q)}\|_2 = 1, \text{ and } \|a_h^{(q)}\|_1 \leq \lambda^{(q)}, \text{for all} 1\leq q \leq Q.
+  \end{aligned}
+  \end{equation}
+  Where $a_h^{(q)}$ is the variable coefficient vector for the $h$-th linear combination of the $q$-th data matrix, and $c_{i,j}$ is the weight of the correlation between the $i$-th and $j$-th data matrices. The first constraint is to normalize the linear combination, and the second constraint is to sparsify the linear combination. DIABLO solves the optimization problem by iteratively updating the $a_h^{(q)}$ and $c_{i,j}$ until convergence.
 
-    \item[Liger]
-    Linked Inference of Genomic Experimental Relationships(Liger)~\citep{kriebel2022uinmf} implemented UINMF algorithm, which uses iterative Non-negative Matrix Factorization (iNMF) to learn a common latent space across multiple modalities. It allows the inclusion of both shared and unshared features across modalities to learn a common latent space. They incorporate intergenic peaks from snATAC-seq data and additional genes not measured in all datasets. For each data set $E^1, E^2, \cdots, E^n$, Liger first normalizes the data, and selects $m$ variable genes (shared across all datasets), and $z_i$ variable features, such that after scaling $E^i \in R_{+}^{(m+z_i)\times n_i}\ (i=1,\cdots,N)$. Given $K$ and $\lambda_i$, the objective function is:
-    \begin{equation}
-	   \underset{H^i\geq 0,W\geq 0, V^i\geq 0, U^i \geq 0}{\arg\min} \sum_i^{d}\Big\| (E^i P^i) - H^i \big((W 0) + (V^i U^i)\big)\Big\|_{F}^2 + \lambda_i\sum_i^d\Big\|H^i(V^i U^i)\Big\|_{F}^2
-    \end{equation}
-    Liger uses coordinate block descent(BCD) to solve the optimization problem, which derives the parameters into blocks and finds the optimal solution for each block iteratively.
+  \item[Liger]
+  Linked Inference of Genomic Experimental Relationships(Liger)~\citep{kriebel2022uinmf} implemented UINMF algorithm, which uses iterative Non-negative Matrix Factorization (iNMF) to learn a common latent space across multiple modalities. It allows the inclusion of both shared and unshared features across modalities to learn a common latent space. They incorporate intergenic peaks from snATAC-seq data and additional genes not measured in all datasets. For each data set $E^1, E^2, \cdots, E^n$, Liger first normalizes the data, and selects $m$ variable genes (shared across all datasets), and $z_i$ variable features, such that after scaling $E^i \in R_{+}^{(m+z_i)\times n_i}\ (i=1,\cdots,N)$. Given $K$ and $\lambda_i$, the objective function is:
+  \begin{equation}
+	  \underset{H^i\geq 0,W\geq 0, V^i\geq 0, U^i \geq 0}{\arg\min} \sum_i^{d}\Big\| (E^i P^i) - H^i \big((W 0) + (V^i U^i)\big)\Big\|_{F}^2 + \lambda_i\sum_i^d\Big\|H^i(V^i U^i)\Big\|_{F}^2
+  \end{equation}
+  Liger uses coordinate block descent(BCD) to solve the optimization problem, which derives the parameters into blocks and finds the optimal solution for each block iteratively.
 
-    \begin{figure}[!ht]
-    	\centering
-    	\includegraphics[width=0.6\textwidth]{Alg_Liger/fig}
-    	\vspace{0.1cm}
-    	\caption[Illustration of Liger integration competing method.]{\textbf{Illustration of Liger integration competing method.} Liger Schematic representation of the matrix factorization strategy (top) and the formulation of the optimization problem (bottom). The introduction of a factor matrix $U_i$ enables the utilization of unshared features in joint matrix factorization. Each dataset ($E_i$) undergoes decomposition into shared metagenes ($W$), dataset-specific metagenes constructed from shared features ($V_i$), unshared metagenes ($U_i$), and cell factor loadings ($H_i$). The inclusion of the U matrix enables unshared features occurring in only one dataset to contribute to the resulting integration. \emph{Source~\cite{kriebel2022uinmf}} (modified to fit thesis format and/or clarify key points)
-    }
-    	\label{fig:Alg_Liger}
-    \end{figure}
+  \begin{figure}[!ht]
+  	\centering
+  	\includegraphics[width=0.6\textwidth]{Alg_Liger/fig}
+  	\vspace{0.1cm}
+  	\caption[Illustration of Liger integration competing method.]{\textbf{Illustration of Liger integration competing method.} Liger Schematic representation of the matrix factorization strategy (top) and the formulation of the optimization problem (bottom). The introduction of a factor matrix $U_i$ enables the utilization of unshared features in joint matrix factorization. Each dataset ($E_i$) undergoes decomposition into shared metagenes ($W$), dataset-specific metagenes constructed from shared features ($V_i$), unshared metagenes ($U_i$), and cell factor loadings ($H_i$). The inclusion of the U matrix enables unshared features occurring in only one dataset to contribute to the resulting integration. \emph{Source~\cite{kriebel2022uinmf}} (modified to fit thesis format and/or clarify key points)
+  }
+  	\label{fig:Alg_Liger}
+  \end{figure}
 
-    \item[MOFA]
-    Multi-Omics Factor Analysis+(MOFA+)~\citep{argelaguet2020mofa+} uses Bayesian group factor analysis and variational inference to decompose individual modalities simultaneously by estimating a common latent factor matrix $Z$, as well as the weights for the transformation of the modalities to the latent space. MOFA+ includes a procedure to determine the optimal number of factors (dimension of the latent space) and has several hyper parameters for model regularization, detection of number of factors and learning rates. Specifically, it decomposes simultaneous multimodal of $M$ data matrics $Y^1, \cdots, Y^M$ of dimensions $N\times D_m$, where $N$ denotes the number of cells and $D_m$ denotes the number of features, $G$ is the number of sample groups, and $N_g$ is the number of samples in the $g$th group and $K$ is the number of factors. The matrix decomposition is:
-    \begin{equation}
-    Y_{gm} = ZgW_m^{T} + \varepsilon_{gm},
-    \end{equation}
-    Where $Y_{gm}$ is the the matrix of observations for the $m$th data modality and the $g$th group, $Z_g$ is the matrix of latent factors for the $g$th group, $W_m$ is the matrix of weights for the $m$th data modality, and $\varepsilon_{gm}$ is the matrix of residuals. The latent factors $Z_g$ are shared across all modalities, while the weights $W_m$ are specific to each modality. %%TODO: the decomposition algorithm
+  \item[MOFA]
+  Multi-Omics Factor Analysis+(MOFA+)~\citep{argelaguet2020mofa+} uses Bayesian group factor analysis and variational inference to decompose individual modalities simultaneously by estimating a common latent factor matrix $Z$, as well as the weights for the transformation of the modalities to the latent space. MOFA+ includes a procedure to determine the optimal number of factors (dimension of the latent space) and has several hyper parameters for model regularization, detection of number of factors and learning rates. Specifically, it decomposes simultaneous multimodal of $M$ data matrics $Y^1, \cdots, Y^M$ of dimensions $N\times D_m$, where $N$ denotes the number of cells and $D_m$ denotes the number of features, $G$ is the number of sample groups, and $N_g$ is the number of samples in the $g$th group and $K$ is the number of factors. The matrix decomposition is:
+  \begin{equation}
+  Y_{gm} = ZgW_m^{T} + \varepsilon_{gm},
+  \end{equation}
+  Where $Y_{gm}$ is the the matrix of observations for the $m$th data modality and the $g$th group, $Z_g$ is the matrix of latent factors for the $g$th group, $W_m$ is the matrix of weights for the $m$th data modality, and $\varepsilon_{gm}$ is the matrix of residuals. The latent factors $Z_g$ are shared across all modalities, while the weights $W_m$ are specific to each modality. %%TODO: the decomposition algorithm
 
-    \begin{figure}[!ht]
-    	\centering
-    	\includegraphics[width=0.65\textwidth]{Alg_MOFA/fig}
-    	\vspace{0.1cm}
-    	\caption[Illustration of MOFA integration competing method.]{\textbf{Illustration of MOFA integration competing method.} MOFA takes $m$ data matrices as input $Y_1, \cdots Y_m$, one or more from each data modality, with co-occurrent samples but features that are not necessarily related and that can differ in numbers. MOFA decomposes these matrices into a matrix of factors ($Z$) for each sample and $m$ weight matrices, one for each data modality ($W_1,\cdots, W_m$) where white cells in the weight matrices correspond to zeros (i.e., inactive features). The cross symbol in the data matrices represents missing values. \emph{Source~\cite{tewari2017mofa}} (modified to fit thesis format and/or clarify key points)
-    }
-    	\label{fig:Alg_MOFA}
-    \end{figure}
+  \begin{figure}[!ht]
+  	\centering
+  	\includegraphics[width=0.65\textwidth]{Alg_MOFA/fig}
+  	\vspace{0.1cm}
+  	\caption[Illustration of MOFA integration competing method.]{\textbf{Illustration of MOFA integration competing method.} MOFA takes $m$ data matrices as input $Y_1, \cdots Y_m$, one or more from each data modality, with co-occurrent samples but features that are not necessarily related and that can differ in numbers. MOFA decomposes these matrices into a matrix of factors ($Z$) for each sample and $m$ weight matrices, one for each data modality ($W_1,\cdots, W_m$) where white cells in the weight matrices correspond to zeros (i.e., inactive features). The cross symbol in the data matrices represents missing values. \emph{Source~\cite{tewari2017mofa}} (modified to fit thesis format and/or clarify key points)
+  }
+  	\label{fig:Alg_MOFA}
+  \end{figure}
 
-    \item[Schema]
-    Schema~\citep{singh2021schema}  applied metrics learning to reweigh modality features by maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u *  x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated other modalities. Specifically, it assumes $N$ observations across $r$ datasets $D_j$, where $j=1,\cdots,r$ and $D_j  = \{x_i^{j}: i = 1,2,\cdots,N\}$ contains data for each observation. First, it refers $D_1$ as the primary modality and $D_2,\cdots,D_r$ as the secondary modalities. Next, it computes the pairwise distances $\rho_1,\cdots,\rho_j$ for each modality $D_j$ where $\rho_j(x_n^{j}, x_m^{(j)})$ is the distance between observation $n$ and $m$ in $D_j$. Then, it aims to find a transformation $\Omega$ with $\Omega(D)$ generating a dataset $D^{*}$ such that the Euclidean metric $\rho^{*}$ on $D^{*}$ on $D^{*}$ aligns the various metrics. $\Omega$ is limited to be a scaling transformation $\Omega(D) = \{diag(u)x: x \in D\}$, where $u \in \mathbb{R}^{k}$ and  $diag(u)$ is a  $k\times k$ diagonal matrix with diagonal entries $u$. Then, the squared distance between points under the transformation is given by:
-    \begin{equation}
-    \rho^{*}(x_n, x_m) = \|diag(u)x_n - diag(u)x_m\|^2 = \|diag(w)(x_n - x_m)\|^2
-    \end{equation}
-    where $w$ is the element-wise square of u. The scaling transforms u acts as a feature-weighting mechanism to choose the features of $D_1$ that align the datasets best. Schema integrates between the metrics $\rho_j$ to learn a metric $\rho^{*}$ that aligns well with all of them. The correlation between $\rho^{*}$ and $\rho_j$ is measured by the Pearson correlation coefficient. And to tackle multiple modalities, Schema maximizes the sum of Pearson correlation between $\rho^{*}$ and all other modalities pairwise distances $\rho_2,\cdots,\rho_j$.
-    \begin{figure}[!ht]
-    	\centering
-    	\includegraphics[width=0.8\textwidth]{Alg_Schema/fig}
-    	\vspace{0.1cm}
-    	\caption[Illustration of Schema integration competing method.]{\textbf{Illustration of Schema integration competing method.} Schema explores metrics learning to re-weigh modality features through maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u * x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated in other modalities. \emph{Source~\cite{singh2021schema}} (modified to fit thesis format and/or clarify key points)
-    }
-    	\label{fig:Alg_Schema}
-    \end{figure}
-    \item[scAI]
-    Single-cell Aggregation and Integration(scAI)~\citep{jin2020scai} is aimed to integrate multiple modalities with different feature types specific for scRNA $(X_1\in \mathbb{R}^{p \textbf{ genes} \times n \textbf{ cells}})$ and scATAC/DNA methylation$(X_2\in \mathbb{R}^{q \textbf{ loci}\times n \textbf{ cells}})$ modalities. It creates a matrix factorization model:
-    \begin{equation}
-    \min_{w_1,W_2,H,Z\geq 0} \alpha \|X_1-W_1H\|_F^2 + \|X_2(Z \circ R)-W_2H\|_F^2 + \lambda \|Z-H^\top H\|_F^2 + \gamma\sum_j \|H_{.j}\|_1^2
-    \end{equation}
-    Where $W_1$ and $W_2$ are the gene loading and locus loading matrices with size $p\times K$ and $q\times K$($K$ is rank), respectively. Each of the $K$ columns is considered as a factor to capture a biological process/signal relating to a specific cell type. $W_1^{ik}$ and $W_2^{ik}$ are the loading values of gene $i$ and locus $i$ in factor $k$, and the loading values represent the contributions of gene $i$ and locus $i$ in factor k. $H$ is the cell loading matrix with size $K\times n$($H_{.j}$ is the $j$th column of $H$), and the entry $H^{kj}$ is the loading value of cell $j$ when mapped onto factor $k$. $Z$ is the cell-cell similarity matrix. $R$ is a binary matrix generated by a binomial distribution with a probability $s$. $\alpha, \lambda, \gamma$ are regularization parameters, and the symbol $\circ$ represents dot multiplication.
+  \item[Schema]
+  Schema~\citep{singh2021schema} applied metrics learning to reweigh modality features by maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u * x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated other modalities. Specifically, it assumes $N$ observations across $r$ datasets $D_j$, where $j=1,\cdots,r$ and $D_j = \{x_i^{j}: i = 1,2,\cdots,N\}$ contains data for each observation. First, it refers $D_1$ as the primary modality and $D_2,\cdots,D_r$ as the secondary modalities. Next, it computes the pairwise distances $\rho_1,\cdots,\rho_j$ for each modality $D_j$ where $\rho_j(x_n^{j}, x_m^{(j)})$ is the distance between observation $n$ and $m$ in $D_j$. Then, it aims to find a transformation $\Omega$ with $\Omega(D)$ generating a dataset $D^{*}$ such that the Euclidean metric $\rho^{*}$ on $D^{*}$ on $D^{*}$ aligns the various metrics. $\Omega$ is limited to be a scaling transformation $\Omega(D) = \{diag(u)x: x \in D\}$, where $u \in \mathbb{R}^{k}$ and $diag(u)$ is a $k\times k$ diagonal matrix with diagonal entries $u$. Then, the squared distance between points under the transformation is given by:
+  \begin{equation}
+  \rho^{*}(x_n, x_m) = \|diag(u)x_n - diag(u)x_m\|^2 = \|diag(w)(x_n - x_m)\|^2
+  \end{equation}
+  where $w$ is the element-wise square of u. The scaling transforms u acts as a feature-weighting mechanism to choose the features of $D_1$ that align the datasets best. Schema integrates between the metrics $\rho_j$ to learn a metric $\rho^{*}$ that aligns well with all of them. The correlation between $\rho^{*}$ and $\rho_j$ is measured by the Pearson correlation coefficient. And to tackle multiple modalities, Schema maximizes the sum of Pearson correlation between $\rho^{*}$ and all other modalities pairwise distances $\rho_2,\cdots,\rho_j$.
+  \begin{figure}[!ht]
+  	\centering
+  	\includegraphics[width=0.8\textwidth]{Alg_Schema/fig}
+  	\vspace{0.1cm}
+  	\caption[Illustration of Schema integration competing method.]{\textbf{Illustration of Schema integration competing method.} Schema explores metrics learning to re-weigh modality features through maximizing the agreement with other modalities. Specifically, it utilizes quadratic programming (QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u * x_i$ (where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated in other modalities. \emph{Source~\cite{singh2021schema}} (modified to fit thesis format and/or clarify key points)
+  }
+  	\label{fig:Alg_Schema}
+  \end{figure}
+  \item[scAI]
+  Single-cell Aggregation and Integration(scAI)~\citep{jin2020scai} is aimed to integrate multiple modalities with different feature types specific for scRNA $(X_1\in \mathbb{R}^{p \textbf{ genes} \times n \textbf{ cells}})$ and scATAC/DNA methylation$(X_2\in \mathbb{R}^{q \textbf{ loci}\times n \textbf{ cells}})$ modalities. It creates a matrix factorization model:
+  \begin{equation}
+  \min_{w_1,W_2,H,Z\geq 0} \alpha \|X_1-W_1H\|_F^2 + \|X_2(Z \circ R)-W_2H\|_F^2 + \lambda \|Z-H^\top H\|_F^2 + \gamma\sum_j \|H_{.j}\|_1^2
+  \end{equation}
+  Where $W_1$ and $W_2$ are the gene loading and locus loading matrices with size $p\times K$ and $q\times K$($K$ is rank), respectively. Each of the $K$ columns is considered as a factor to capture a biological process/signal relating to a specific cell type. $W_1^{ik}$ and $W_2^{ik}$ are the loading values of gene $i$ and locus $i$ in factor $k$, and the loading values represent the contributions of gene $i$ and locus $i$ in factor k. $H$ is the cell loading matrix with size $K\times n$($H_{.j}$ is the $j$th column of $H$), and the entry $H^{kj}$ is the loading value of cell $j$ when mapped onto factor $k$. $Z$ is the cell-cell similarity matrix. $R$ is a binary matrix generated by a binomial distribution with a probability $s$. $\alpha, \lambda, \gamma$ are regularization parameters, and the symbol $\circ$ represents dot multiplication.
 
-    \begin{figure}[!ht]
-    	\centering
-    	\includegraphics[width=0.55\textwidth]{Alg_scAI/fig}
-    	\vspace{0.1cm}
-    	\caption[Illustration of Seurat scAI integration competing method.]{\textbf{Illustration of Seurat scAI integration competing method.} scAI iteratively learns aggregated epigenomic profiles and low-dimensional representations from parallel scRNA-seq and scATAC-seq/single cell DNA methylation data. Input matrices consist of cells in rows and genes or loci in columns. The first step involves aggregating the epigenomic profile based on a randomly initiated cell-cell similarity matrix. In the second step, both transcriptomic and aggregated epigenomic data are concurrently decomposed into low-rank matrices, with gene, locus, and cell loading matrices indicating contributions for each factor. The third step computes a cell-cell similarity matrix based on the cell loading matrix. These steps iterate until a predefined stop criterion is met. \emph{Source~\cite{jin2020scaio}} (modified to fit thesis format and/or clarify key points)
-    }
-    	\label{fig:Alg_scAI}
-    \end{figure}
+  \begin{figure}[!ht]
+  	\centering
+  	\includegraphics[width=0.55\textwidth]{Alg_scAI/fig}
+  	\vspace{0.1cm}
+  	\caption[Illustration of Seurat scAI integration competing method.]{\textbf{Illustration of Seurat scAI integration competing method.} scAI iteratively learns aggregated epigenomic profiles and low-dimensional representations from parallel scRNA-seq and scATAC-seq/single cell DNA methylation data. Input matrices consist of cells in rows and genes or loci in columns. The first step involves aggregating the epigenomic profile based on a randomly initiated cell-cell similarity matrix. In the second step, both transcriptomic and aggregated epigenomic data are concurrently decomposed into low-rank matrices, with gene, locus, and cell loading matrices indicating contributions for each factor. The third step computes a cell-cell similarity matrix based on the cell loading matrix. These steps iterate until a predefined stop criterion is met. \emph{Source~\cite{jin2020scaio}} (modified to fit thesis format and/or clarify key points)
+  }
+  	\label{fig:Alg_scAI}
+  \end{figure}
 
-    \item[Seurat WNN]
-    Weighted nearest neighbor (WNN)~\citep{hao2021seurat4}) constructs a single unified representation across multiple modalities. First, it creates k-nearest neighbor (KNN) graphs for each modality based on the latent representation of each feature matrix. Next, it calculates affinities using the exponential kernel between a cell and the average NN for each modality. The latter is used to weigh cells.  It finally calculated the weighted similarity between $cell_i$ and $cell_j$ as the dot product of $\textbf{w}_m(i)$ and $\theta(i,j)$,
-    \begin{equation}
-    	\theta_{weighted}(i,j)=\sum_{m} \textbf{w}_m(i)\theta(i,j)
-    \end{equation}
-    Where $\textbf{w}_m(i)$ is the weight of cell $i$ in modality $m$ and $\theta(i,j)$ denotes the affinity between cell $i$ and cell $j$ in modality $m$.
+  \item[Seurat WNN]
+  Weighted nearest neighbor (WNN)~\citep{hao2021seurat4}) constructs a single unified representation across multiple modalities. First, it creates k-nearest neighbor (KNN) graphs for each modality based on the latent representation of each feature matrix. Next, it calculates affinities using the exponential kernel between a cell and the average NN for each modality. The latter is used to weigh cells. It finally calculated the weighted similarity between $cell_i$ and $cell_j$ as the dot product of $\textbf{w}_m(i)$ and $\theta(i,j)$,
+  \begin{equation}
+  	\theta_{weighted}(i,j)=\sum_{m} \textbf{w}_m(i)\theta(i,j)
+  \end{equation}
+  Where $\textbf{w}_m(i)$ is the weight of cell $i$ in modality $m$ and $\theta(i,j)$ denotes the affinity between cell $i$ and cell $j$ in modality $m$.
 
-    \begin{figure}[!ht]
-    	\centering
-    	\includegraphics[width=0.60\textwidth]{Alg_WNN/fig}
-    	\vspace{0.1cm}
-    	\caption[Illustration of Seurat WNN integration competing method.]{\textbf{Illustration of Seurat WNN integration competing method.} Seurat weighted nearest neighbor(WNN) constructs a single unified representation across multiple modalities by initially creating k-nearest neighbor (KNN) graphs for each modality based on the latent representation of each feature matrix. Subsequently, it calculates affinities using the exponential kernel between a cell and the average nearest neighbors for each modality. The latter is utilized to weigh cells in the unified representation. \emph{Source~\cite{hao2021seurat4}} (modified to fit thesis format and/or clarify key points)
-    }
-    	\label{fig:Alg_WNN}
-    \end{figure}
+  \begin{figure}[!ht]
+  	\centering
+  	\includegraphics[width=0.60\textwidth]{Alg_WNN/fig}
+  	\vspace{0.1cm}
+  	\caption[Illustration of Seurat WNN integration competing method.]{\textbf{Illustration of Seurat WNN integration competing method.} Seurat weighted nearest neighbor(WNN) constructs a single unified representation across multiple modalities by initially creating k-nearest neighbor (KNN) graphs for each modality based on the latent representation of each feature matrix. Subsequently, it calculates affinities using the exponential kernel between a cell and the average nearest neighbors for each modality. The latter is utilized to weigh cells in the unified representation. \emph{Source~\cite{hao2021seurat4}} (modified to fit thesis format and/or clarify key points)
+  }
+  	\label{fig:Alg_WNN}
+  \end{figure}
 
-    \item \textbf{Symphony Integration}
-    Symphony~\cite{kang2021symphony} is a method to create single cell reference atlas for subsequent annotation of new single cell data sets. For a single case study with a multi-ome CITE-seq data, Symphony used canonical correlation analysis to find shared references. This simple procedure differs from MOJITOO in several ways: it does not use dimension reduction as input; it is not able to cope with more than 2 modalities and it uses the latent space of only one modality (RNA) as shared space.  Moreover, Symphony included the execution of batch correction with Harmony after the execution of CCA.
+  \item \textbf{Symphony Integration}
+  Symphony~\cite{kang2021symphony} is a method to create single cell reference atlas for subsequent annotation of new single cell data sets. For a single case study with a multi-ome CITE-seq data, Symphony used canonical correlation analysis to find shared references. This simple procedure differs from MOJITOO in several ways: it does not use dimension reduction as input; it is not able to cope with more than 2 modalities and it uses the latent space of only one modality (RNA) as shared space. Moreover, Symphony included the execution of batch correction with Harmony after the execution of CCA.
 
 \end{description}
 
-%\subsubsection{DIABLO}
-%\subsubsection{Liger}
-%\subsubsection{MOFA}
-%\subsubsection{Schema}
-%\subsubsection{scAI}
-%\subsubsection{Seurat WNN}
-%\subsubsection{Symphony integration}
 
 \subsubsection{Single Cell Multimodal Integration Objective}
 Single-cell simultaneous modalities profiling is a nascent area, offering insights into biological processes and cellular heterogeneity. However, the complexity of different modalities' features and the growing library size present challenges, necessitating tools for integration In this thesis, we investigate the aspects with the flowing goals to develop a single cell multimodal integration method:
@@ -564,6 +550,9 @@ Computational trajectory analysis, which explores non-linear embeddings in the c
 	\item \textbf{Complexity of multi-branching trajectories:}
 	For complex datasets, such as hematopoiesis, where cell differentiation leads to various immune cell types, monocytes, myeloid cells, and their subtypes, a method capable of capturing intricate differentiation processes is required. Unfortunately, many existing methods struggle to accurately capture the trajectory structure of such complex datasets.
 
+	\item \textbf{Cell Differences in Biology:}
+	xxxx the figure...........
+
 	\item \textbf{Most approaches use low number of dimensions($\geq3$) to fit trajectories:}
 	As high-dimensional data cannot be naturally visualized, trajectories of single-cell data are typically represented in 2D or 3D embeddings. However, this approach necessitates the omission of high-dimensional information. To address this limitation, there is a need for methods that directly infer cell differentiation from high-dimensional embeddings.
 
@@ -586,148 +575,148 @@ Computational trajectory analysis, which explores non-linear embeddings in the c
 	\centering
 	\begin{tabular}{llll}
 		\toprule
-		Name & Programming & Technique  & Reference \\
+		Name & Programming & Technique & Reference \\
 		\midrule
-        Celltree& R&  LDA &  \cite{duverle2016celltree}\\
-        ElPigraph& Python/R  &  ElPigraph & \cite{albergante2020ElPiGraph}\\
-        Monocle3 & R   & DDRTree/SimplePPT/L1Graph   & \cite{cao2019monocle3} \\
-        MST & R  &  MST &   \cite{book2023mclust}\\
-        PAGA	 &  Python &  kNN graph partitioning  & \cite{wolf2019paga} \\
-        pCreode & Python & d-kNN graph & \cite{herring2018pCreode} \\
-		RaceID/StemID &   R &  k-medoids clustering  &   \cite{grun2016stemid} \\
-        SLICE& R  &  MST & \cite{guo2017slice}\\
-		Slingshot & R  &  MST  & \cite{street2018slingshot}\\
-		STREAM& Python  &  ElPigraph & \cite{chen2019stream}\\
-        TSCAN &  R & MST &    \cite{ji2016tscan}\\
+    Celltree& R& LDA & \cite{duverle2016celltree}\\
+    ElPigraph& Python/R & ElPigraph & \cite{albergante2020ElPiGraph}\\
+    Monocle3 & R  & DDRTree/SimplePPT/L1Graph  & \cite{cao2019monocle3} \\
+    MST & R & MST &  \cite{book2023mclust}\\
+    PAGA	 & Python & kNN graph partitioning & \cite{wolf2019paga} \\
+    pCreode & Python & d-kNN graph & \cite{herring2018pCreode} \\
+		RaceID/StemID &  R & k-medoids clustering &  \cite{grun2016stemid} \\
+    SLICE& R & MST & \cite{guo2017slice}\\
+		Slingshot & R & MST & \cite{street2018slingshot}\\
+		STREAM& Python & ElPigraph & \cite{chen2019stream}\\
+    TSCAN & R & MST &  \cite{ji2016tscan}\\
 		\bottomrule
 	\end{tabular}
 	\vspace{0.1cm}
 	\caption[Overview of computational trajectory inference methods]{Overview of computational trajectory inference methods.}
 	\label{tab:methods_ti_overview}
 \end{table}
-In this section, we discuss several published trajectory inference methods, All of them are top methods according to the dynverse trajectory inference evaluation system~\citep{saelens2019comparison} except STREAM a new method not yet implemented in dynverse. These methods can be broadly categorized into six groups. The first group involves methods utilizing a minimum spanning tree(MST) to capture the backbone in the embeddings of a dataset (e.g., TSCAN, slingshot, MST, slice). The second group includes methods like ElPiGraph, which leverages Elastic Principal Graphs to yield an explicit principal tree in data space (ElPiGraph, STREAM). The third group employs topic model Latent Dirichlet Allocation (LDA) from the natural language processing (NLP) field for inference. The fourth group encompasses methods such as PAGA, using kNN graph partitioning, and pCreode, creating a d-kNN graph. The fifth group utilizes cluster distances for inference to derive the structure (RaceID/StemID). The last method, Monocle3, seeks to create a principal graph on dimension reductions. These methods are summarized in \tref{tab:methods_ti_overview} and \fref{fig:TI_schemtaic} illustrates the workflow of most of the methods.
+Next, we will discuss several published trajectory inference methods, All of them are top methods according to the dynverse trajectory inference evaluation system~\citep{saelens2019comparison} except STREAM a new method not yet implemented in dynverse. These methods can be broadly categorized into six groups. The first group involves methods utilizing a minimum spanning tree(MST) to capture the backbone in the embeddings of a dataset (e.g., TSCAN, slingshot, MST, slice). The second group includes methods like ElPiGraph, which leverages Elastic Principal Graphs to yield an explicit principal tree in data space (ElPiGraph, STREAM). The third group employs topic model Latent Dirichlet Allocation (LDA) from the natural language processing (NLP) field for inference. The fourth group encompasses methods such as PAGA, using kNN graph partitioning, and pCreode, creating a d-kNN graph. The fifth group utilizes cluster distances for inference to derive the structure (RaceID/StemID). The last method, Monocle3, seeks to create a principal graph on dimension reductions. These methods are summarized in \tref{tab:methods_ti_overview} illustrates the workflow of most of the methods.
 \begin{description}
-    \item[Celltree]
-    To identify and utilize this group structure, Celltree~\citep{duverle2016celltree} adapts a natural language processing(NLP) statistical approach known as Latent Dirichlet Allocation(LDA) to build a topic model. By comparing the different per-cell topic histograms, celltree can evaluate their similarity and infer complex hierarchical structures. By looking at the topics themselves, one can obtain useful biological insights into the gene sets characterizing the different stages of that hierarchy. Based on this lower-dimensional model, they construct a visual representation of the cell population. finally, they introduce “backbone trees” to easily visualize cells along complex differentiation paths.
-    \begin{figure}[ht!]
-    	\centering
-    	\includegraphics[width=0.75\textwidth]{TI_Alg_celltree/fig}
-    	\vspace{0.1cm}
-    	\caption[Illustration of TI method Celltree schematic.]{\textbf{Illustration of TI method Celltree schematic.} Celltree. \emph{Source:~\cite{duverle2016celltree}} (modified to fit thesis format and/or clarify key points)
-    	}
-    	\label{fig:TI_Alg_celltree}
-    \end{figure}
+  \item[Celltree]
+  To identify and utilize this group structure, Celltree~\citep{duverle2016celltree} adapts a natural language processing(NLP) statistical approach known as Latent Dirichlet Allocation(LDA) to build a topic model. By comparing the different per-cell topic histograms, celltree can evaluate their similarity and infer complex hierarchical structures. By looking at the topics themselves, one can obtain useful biological insights into the gene sets characterizing the different stages of that hierarchy. Based on this lower-dimensional model, they construct a visual representation of the cell population. finally, they introduce “backbone trees” to easily visualize cells along complex differentiation paths.
+  \begin{figure}[ht!]
+  	\centering
+  	\includegraphics[width=0.75\textwidth]{TI_Alg_celltree/fig}
+  	\vspace{0.1cm}
+  	\caption[Illustration of TI method Celltree schematic.]{\textbf{Illustration of TI method Celltree schematic.} Celltree. \emph{Source:~\cite{duverle2016celltree}} (modified to fit thesis format and/or clarify key points)
+  	}
+  	\label{fig:TI_Alg_celltree}
+  \end{figure}
 
-    \item[ElPiGraph]
-    Elastic Principal Graphs (ElPiGraphs)~\citep{albergante2020ElPiGraph} serve as structured approximators for data, comprising vertices connected by edges. These vertices are embedded into the data space, minimizing mean squared distance (MSD) to data points. Notably, ElPiGraphs differ from unstructured k-means by incorporating edges to define an elastic energy term. This term, coupled with MSD, penalizes edge stretching and branch bending. ElPiGraph employs a topological grammar for optimal graph structure determination, building on a core algorithm initially introduced and tested in earlier publications~\citep{gorban2007topological}. In essence, an elastic principal graph is an undirected graph in multidimensional space, optimizing data approximation and graph elastic energy. Key parameters, including trimming radius ($R_0$), edge elasticity ($\lambda$), star bending elasticity ($\mu$), and a complexity control coefficient ($\alpha$), guide the optimization process. ElPiGraph achieves efficient minimization by employing a quadratic problem-solving approach for vertex coordinates. Its innovation lies in the use of topological grammars, exploring diverse graph structures, and iteratively refining configurations until specified conditions are met. Notably, ElPiGraph yields an explicit principal tree in data space, facilitating independent study or mapping data onto the tree for analysis in intrinsic coordinates.
+  \item[ElPiGraph]
+  Elastic Principal Graphs (ElPiGraphs)~\citep{albergante2020ElPiGraph} serve as structured approximators for data, comprising vertices connected by edges. These vertices are embedded into the data space, minimizing mean squared distance (MSD) to data points. Notably, ElPiGraphs differ from unstructured k-means by incorporating edges to define an elastic energy term. This term, coupled with MSD, penalizes edge stretching and branch bending. ElPiGraph employs a topological grammar for optimal graph structure determination, building on a core algorithm initially introduced and tested in earlier publications~\citep{gorban2007topological}. In essence, an elastic principal graph is an undirected graph in multidimensional space, optimizing data approximation and graph elastic energy. Key parameters, including trimming radius ($R_0$), edge elasticity ($\lambda$), star bending elasticity ($\mu$), and a complexity control coefficient ($\alpha$), guide the optimization process. ElPiGraph achieves efficient minimization by employing a quadratic problem-solving approach for vertex coordinates. Its innovation lies in the use of topological grammars, exploring diverse graph structures, and iteratively refining configurations until specified conditions are met. Notably, ElPiGraph yields an explicit principal tree in data space, facilitating independent study or mapping data onto the tree for analysis in intrinsic coordinates.
 
-     \begin{figure}[ht!]
-    	\centering
-    	\includegraphics[width=0.85\textwidth]{TI_Alg_ElPiGraph/fig}
-    	\vspace{0.1cm}
-    	\caption[Illustration of TI method ElPiGraph schematic.]{\textbf{Illustration of TI method ElPiGraph schematic.} ElPiGraph. \emph{Source:~\cite{cao2019monocle3}} (modified to fit thesis format and/or clarify key points)
-    	}
-    	\label{fig:TI_Alg_ElPiGraph}
-    \end{figure}
+   \begin{figure}[ht!]
+  	\centering
+  	\includegraphics[width=0.85\textwidth]{TI_Alg_ElPiGraph/fig}
+  	\vspace{0.1cm}
+  	\caption[Illustration of TI method ElPiGraph schematic.]{\textbf{Illustration of TI method ElPiGraph schematic.} ElPiGraph. \emph{Source:~\cite{cao2019monocle3}} (modified to fit thesis format and/or clarify key points)
+  	}
+  	\label{fig:TI_Alg_ElPiGraph}
+  \end{figure}
 
-    \item[Monocle3]
-    Monocle3 undergoes a comprehensive five-step process in single-cell dataset analysis~\citep{cao2019monocle3}. Firstly, it normalizes and pre-processes data, addressing technical variations. The second step involves reducing dimensionality by projecting cells onto the top 50 principal components, with options for further reduction using t-SNE or UMAP. In the third step, Monocle 3 clusters and partitions cells, recognizing disconnected trajectories or "supergroups" that capture diverse cellular responses. Subsequently, it learns a principal graph, utilizing methods like DDRTree, SimplePPT, or L1Graph, accommodating tree-like or looped trajectories. Finally, Monocle 3 conducts differential expression analysis and visualization, empowering users to explore gene dynamics across clusters and trajectories with sophisticated testing methods.
-    \begin{figure}[ht!]
-    	\centering
-    	\includegraphics[width=0.90\textwidth]{TI_Alg_Monocle3/fig}
-    	\vspace{0.1cm}
-    	\caption[Illustration of TI method Monocle3 schematic.]{\textbf{Illustration of TI method Monocle3 schematic.} Monocle3 aims to learn a principal graph by using SimplePPT, DDRTree or L1Graph, with which, each cell is projected onto the graph. By selecting the starting points on the graph, Monocle measures the distance from these points to each cell, determining a cell's pseudotime as the distance to the closest starting point on the graph. \emph{Source:~\cite{cao2019monocle3}} (modified to fit thesis format and/or clarify key points)
-    	}
-    	\label{fig:TI_Alg_Monocle3}
-    \end{figure}
+  \item[Monocle3]
+  Monocle3 undergoes a comprehensive five-step process in single-cell dataset analysis~\citep{cao2019monocle3}. Firstly, it normalizes and pre-processes data, addressing technical variations. The second step involves reducing dimensionality by projecting cells onto the top 50 principal components, with options for further reduction using t-SNE or UMAP. In the third step, Monocle 3 clusters and partitions cells, recognizing disconnected trajectories or "supergroups" that capture diverse cellular responses. Subsequently, it learns a principal graph, utilizing methods like DDRTree, SimplePPT, or L1Graph, accommodating tree-like or looped trajectories. Finally, Monocle 3 conducts differential expression analysis and visualization, empowering users to explore gene dynamics across clusters and trajectories with sophisticated testing methods.
+  \begin{figure}[ht!]
+  	\centering
+  	\includegraphics[width=0.90\textwidth]{TI_Alg_Monocle3/fig}
+  	\vspace{0.1cm}
+  	\caption[Illustration of TI method Monocle3 schematic.]{\textbf{Illustration of TI method Monocle3 schematic.} Monocle3 aims to learn a principal graph by using SimplePPT, DDRTree or L1Graph, with which, each cell is projected onto the graph. By selecting the starting points on the graph, Monocle measures the distance from these points to each cell, determining a cell's pseudotime as the distance to the closest starting point on the graph. \emph{Source:~\cite{cao2019monocle3}} (modified to fit thesis format and/or clarify key points)
+  	}
+  	\label{fig:TI_Alg_Monocle3}
+  \end{figure}
 
-    \item[PAGA]
-    Probabilistic Approximate Graph Abstraction(PAGA) uses partition-based graph abstraction generating a topology-preserving map of single cells~\citep{wolf2019paga}. High-dimensional gene expression data is represented as a kNN graph by choosing a suitable low-dimensional representation and an associated distance metric for computing neighborhood relations. The kNN graph is partitioned using the Louvain algorithm at a desired resolution where partitions represent groups of connected cells. A PAGA graph is obtained by associating a node with each partition and connecting each node by weighted edges that represent a statistical measure of connectivity between partitions. By discarding spurious edges with low weights, PAGA graphs reveal the denoised topology of the data at a chosen resolution and reveal its connected and disconnected regions. Combining high-confidence paths in the PAGA graph with a random-walk-based distance measure on the single-cell graph, PAGA orders cells within each partition according to their distance from a root cell. A PAGA path then averages all single-cell paths that pass through the corresponding groups of cells. This allows to trace gene expression changes along complex trajectories at single-cell resolution.
-    \begin{figure}[ht!]
-    	\centering
-    	\includegraphics[width=0.85\textwidth]{TI_Alg_PAGA/fig}
-    	\vspace{0.1cm}
-    	\caption[Illustration of TI method PAGA schematic.]{\textbf{Illustration of TI method PAGA schematic.}
-    	PAGA uses partition-based graph abstraction generating a topology-preserving map of single cells. It creates a kNN graph and partitions it using the Louvain algorithm at a desired resolution where partitions represent groups of connected cells. Next, A PAGA graph is obtained by associating a node with each partition and connecting each node by weighted edges that represent a statistical measure of connectivity between partitions. PAGA graphs reveal the denoised topology of the data at a chosen resolution by discarding low-weight edges. \emph{Source:~\cite{wolf2019paga}} (modified to fit thesis format and/or clarify key points)
-    	}
-    	\label{fig:TI_Alg_PAGA}
-    \end{figure}
+  \item[PAGA]
+  Probabilistic Approximate Graph Abstraction(PAGA) uses partition-based graph abstraction generating a topology-preserving map of single cells~\citep{wolf2019paga}. High-dimensional gene expression data is represented as a kNN graph by choosing a suitable low-dimensional representation and an associated distance metric for computing neighborhood relations. The kNN graph is partitioned using the Louvain algorithm at a desired resolution where partitions represent groups of connected cells. A PAGA graph is obtained by associating a node with each partition and connecting each node by weighted edges that represent a statistical measure of connectivity between partitions. By discarding spurious edges with low weights, PAGA graphs reveal the denoised topology of the data at a chosen resolution and reveal its connected and disconnected regions. Combining high-confidence paths in the PAGA graph with a random-walk-based distance measure on the single-cell graph, PAGA orders cells within each partition according to their distance from a root cell. A PAGA path then averages all single-cell paths that pass through the corresponding groups of cells. This allows to trace gene expression changes along complex trajectories at single-cell resolution.
+  \begin{figure}[ht!]
+  	\centering
+  	\includegraphics[width=0.85\textwidth]{TI_Alg_PAGA/fig}
+  	\vspace{0.1cm}
+  	\caption[Illustration of TI method PAGA schematic.]{\textbf{Illustration of TI method PAGA schematic.}
+  	PAGA uses partition-based graph abstraction generating a topology-preserving map of single cells. It creates a kNN graph and partitions it using the Louvain algorithm at a desired resolution where partitions represent groups of connected cells. Next, A PAGA graph is obtained by associating a node with each partition and connecting each node by weighted edges that represent a statistical measure of connectivity between partitions. PAGA graphs reveal the denoised topology of the data at a chosen resolution by discarding low-weight edges. \emph{Source:~\cite{wolf2019paga}} (modified to fit thesis format and/or clarify key points)
+  	}
+  	\label{fig:TI_Alg_PAGA}
+  \end{figure}
 
-    \item[pCreode]
-    %pCreode infer a trajactory for single-cell data through 7 steps: (i) Input single-cell expression data. (ii) Density-normalized representation after down-sampling the original dataset. Overlay shows density post down-sampling. (iii) Density-based k-nearest neighbor (d-kNN) network from down-sampled data. Overlay represents closeness centrality, a surrogate for cell state. (iv) K-means clustering identifies end-states based on low closeness values ($<$mean). The number of clusters is doubled for rare cell types. (v) Topology constructed with a hierarchical placement strategy between end-states, allowing data points along an ancestral continuum. Overlay shows original cell density. (vi) Aligned topology (red) achieved through iterative assignment and repositioning of path nodes using neighborhood cell densities. (vii) Representative topology extracted using p-Creode scoring from an ensemble of N topologies, with node size indicating the original cell density.
+  \item[pCreode]
+  %pCreode infer a trajactory for single-cell data through 7 steps: (i) Input single-cell expression data. (ii) Density-normalized representation after down-sampling the original dataset. Overlay shows density post down-sampling. (iii) Density-based k-nearest neighbor (d-kNN) network from down-sampled data. Overlay represents closeness centrality, a surrogate for cell state. (iv) K-means clustering identifies end-states based on low closeness values ($<$mean). The number of clusters is doubled for rare cell types. (v) Topology constructed with a hierarchical placement strategy between end-states, allowing data points along an ancestral continuum. Overlay shows original cell density. (vi) Aligned topology (red) achieved through iterative assignment and repositioning of path nodes using neighborhood cell densities. (vii) Representative topology extracted using p-Creode scoring from an ensemble of N topologies, with node size indicating the original cell density.
 
-    pCreode infer a trajactory for single-cell data through 6 steps~\citep{herring2018pCreode}. i) Conducts density-dependent down-sampling to normalize the representation of both rare and overrepresented cell states; 2) Constructs a density-based k-nearest neighbor (d-kNN) network using the down-sampled data; 3) Automatically distinguishes end-states from transition states by employing K-means clustering and assessing silhouette scores for cells with low closeness values (< mean); 4) Establishes topology through a hierarchical placement strategy, positioning cells on path nodes between end-states. This enables the arrangement of data points along an ancestral continuum; 5) Aligns topology with maximal consensus through an iterative process involving the assignment and repositioning of path nodes based on neighborhood cell densities; 6)Develops a scoring metric within pCreode to compare dissimilarities between topologies facilitating the selection of the most representative graph for visualization purposes.
-    \begin{figure}[ht!]
-    	\centering
-    	\includegraphics[width=0.65\textwidth]{TI_Alg_pCreode/fig}
-    	\vspace{0.1cm}
-    	\caption[Illustration of TI method pCreode schematic.]{\textbf{Illustration of TI method pCreode schematic.} pCreode carries out 6 steps to infer a trajectory. It creates a density-based k-nearest neighbor (d-kNN) network and constructs topology with a hierarchical placement strategy of cells on path nodes between end-state clusters. Next, it iteratively redoes the arrangement of the topology according to the neighborhood cell densities. \emph{Source:~\cite{herring2018pCreode}} (modified to fit thesis format and/or clarify key points)
-    	}
-    	\label{fig:TI_Alg_pCreode}
-    \end{figure}
+  pCreode infer a trajactory for single-cell data through 6 steps~\citep{herring2018pCreode}. i) Conducts density-dependent down-sampling to normalize the representation of both rare and overrepresented cell states; 2) Constructs a density-based k-nearest neighbor (d-kNN) network using the down-sampled data; 3) Automatically distinguishes end-states from transition states by employing K-means clustering and assessing silhouette scores for cells with low closeness values (< mean); 4) Establishes topology through a hierarchical placement strategy, positioning cells on path nodes between end-states. This enables the arrangement of data points along an ancestral continuum; 5) Aligns topology with maximal consensus through an iterative process involving the assignment and repositioning of path nodes based on neighborhood cell densities; 6)Develops a scoring metric within pCreode to compare dissimilarities between topologies facilitating the selection of the most representative graph for visualization purposes.
+  \begin{figure}[ht!]
+  	\centering
+  	\includegraphics[width=0.65\textwidth]{TI_Alg_pCreode/fig}
+  	\vspace{0.1cm}
+  	\caption[Illustration of TI method pCreode schematic.]{\textbf{Illustration of TI method pCreode schematic.} pCreode carries out 6 steps to infer a trajectory. It creates a density-based k-nearest neighbor (d-kNN) network and constructs topology with a hierarchical placement strategy of cells on path nodes between end-state clusters. Next, it iteratively redoes the arrangement of the topology according to the neighborhood cell densities. \emph{Source:~\cite{herring2018pCreode}} (modified to fit thesis format and/or clarify key points)
+  	}
+  	\label{fig:TI_Alg_pCreode}
+  \end{figure}
 
-    \item[RaceID/StemID]
-    StemID~\citep{grun2016stemid} uses RaceID~\citep{grun2015raceid}, an advanced version of RaceID to perform clustering. Next, to address the challenge of determining branching points in systems with multiple cell lineages for building the lineage tree with guided topology StemID predefines the tree's structure by allowing potential differentiation trajectories between pairs of clusters. Each trajectory links the medoids of two clusters, and collectively, these inter-cluster links determine the possible lineage tree's topology. To mitigate technical noise and computational load, It initially reduces input space dimensionality, emphasizing maximal preservation of point-to-point distances. Next, it assigns each cell to its likely position on a single inter-cluster link based on the projection of the vector connecting a cluster's medoid to one of its cells onto links with other clusters' medoids. By normalizing link lengths and identifying densely populated links, StemID discerns potential differentiation trajectories. This approach, applied to intestinal data, successfully revealed a lineage tree consistent with the known structure.
-    \begin{figure}[ht!]
-    	\centering
-    	\includegraphics[width=0.55\textwidth]{TI_Alg_StemID/fig}
-    	\vspace{0.1cm}
-    	\caption[Illustration of TI method RaceID/StemID schematic.]{\textbf{Illustration of TI method RaceID/StemID schematic.}
-    	RaceID/StemID initially conducts clustering using RaceID2 (k-medoids clustering). Next, it infers putative differentiation trajectories by linking the medoids of two clusters, defining the possible topology of the lineage tree. It then assigns each cell to an inter-cluster link by selecting the longest projection. \emph{Source:~\cite{albergante2020ElPiGraph}} (modified to fit thesis format and/or clarify key points)
-    	}
-    	\label{fig:TI_Alg_StemID}
-    \end{figure}
+  \item[RaceID/StemID]
+  StemID~\citep{grun2016stemid} uses RaceID~\citep{grun2015raceid}, an advanced version of RaceID to perform clustering. Next, to address the challenge of determining branching points in systems with multiple cell lineages for building the lineage tree with guided topology StemID predefines the tree's structure by allowing potential differentiation trajectories between pairs of clusters. Each trajectory links the medoids of two clusters, and collectively, these inter-cluster links determine the possible lineage tree's topology. To mitigate technical noise and computational load, It initially reduces input space dimensionality, emphasizing maximal preservation of point-to-point distances. Next, it assigns each cell to its likely position on a single inter-cluster link based on the projection of the vector connecting a cluster's medoid to one of its cells onto links with other clusters' medoids. By normalizing link lengths and identifying densely populated links, StemID discerns potential differentiation trajectories. This approach, applied to intestinal data, successfully revealed a lineage tree consistent with the known structure.
+  \begin{figure}[ht!]
+  	\centering
+  	\includegraphics[width=0.55\textwidth]{TI_Alg_StemID/fig}
+  	\vspace{0.1cm}
+  	\caption[Illustration of TI method RaceID/StemID schematic.]{\textbf{Illustration of TI method RaceID/StemID schematic.}
+  	RaceID/StemID initially conducts clustering using RaceID2 (k-medoids clustering). Next, it infers putative differentiation trajectories by linking the medoids of two clusters, defining the possible topology of the lineage tree. It then assigns each cell to an inter-cluster link by selecting the longest projection. \emph{Source:~\cite{albergante2020ElPiGraph}} (modified to fit thesis format and/or clarify key points)
+  	}
+  	\label{fig:TI_Alg_StemID}
+  \end{figure}
 
 
-    \item[SLICE]
-    Single Cell Lineage Inference Using Cell Expression Similarity and Entropy(SLICE)~\citep{guo2017slice} comprises two main functions: quantitatively assessing cell differentiation state through single-cell entropy and reconstructing single-cell lineages in silico. The calculation of single-cell entropy (scEntropy) involves computing the expected value for each cell, representing the uncertainty in cellular functions' activation based on gene expression patterns. The scEntropy is utilized to measure the differentiation state of individual cells. Stable states are identified within scRNA-seq datasets using clustering or graph-based methods, considering the scEntropy of each cell. SLICE then constructs a lineage model by inferring a directed minimum spanning tree among stable states, reflecting differentiation trajectories. The reconstruction of cell transitional paths involves either a shortest-path approach or a principal curve-based approach, revealing the dynamics of gene expression during differentiation. Lineage-dependent differentially expressed genes are identified based on smoothed expression profiles, and temporal gene expression patterns are unveiled through clustering analysis. This comprehensive approach allows for an unbiased exploration of cellular differentiation and lineage relationships in scRNA-seq data.
-    \begin{figure}[ht!]
-    	\centering
-    	\includegraphics[width=0.65\textwidth]{TI_Alg_SLICE/fig}
-    	\vspace{0.1cm}
-    	\caption[Illustration of TI method SLICE schematic.]{\textbf{Illustration of TI method SLICE schematic.}
-    	A)  STREAM first selection of informative genes from a single cell count matrix, followed by dimensionality reduction. Next, it learns and fits simultaneous tree structure by ElPiGraph. The optimal structure is selected based on the elastic energy minimization among a set of candidate structures that are constructed every time a tree node is added. The final tree is interpreted as a set of connected curves representing different trajectories. \emph{Source:~\cite{guo2017slice}} (modified to fit thesis format and/or clarify key points)
-    	}
-    	\label{fig:TI_Alg_SLICE}
-    \end{figure}
+  \item[SLICE]
+  Single Cell Lineage Inference Using Cell Expression Similarity and Entropy(SLICE)~\citep{guo2017slice} comprises two main functions: quantitatively assessing cell differentiation state through single-cell entropy and reconstructing single-cell lineages in silico. The calculation of single-cell entropy (scEntropy) involves computing the expected value for each cell, representing the uncertainty in cellular functions' activation based on gene expression patterns. The scEntropy is utilized to measure the differentiation state of individual cells. Stable states are identified within scRNA-seq datasets using clustering or graph-based methods, considering the scEntropy of each cell. SLICE then constructs a lineage model by inferring a directed minimum spanning tree among stable states, reflecting differentiation trajectories. The reconstruction of cell transitional paths involves either a shortest-path approach or a principal curve-based approach, revealing the dynamics of gene expression during differentiation. Lineage-dependent differentially expressed genes are identified based on smoothed expression profiles, and temporal gene expression patterns are unveiled through clustering analysis. This comprehensive approach allows for an unbiased exploration of cellular differentiation and lineage relationships in scRNA-seq data.
+  \begin{figure}[ht!]
+  	\centering
+  	\includegraphics[width=0.65\textwidth]{TI_Alg_SLICE/fig}
+  	\vspace{0.1cm}
+  	\caption[Illustration of TI method SLICE schematic.]{\textbf{Illustration of TI method SLICE schematic.}
+  	A) STREAM first selection of informative genes from a single cell count matrix, followed by dimensionality reduction. Next, it learns and fits simultaneous tree structure by ElPiGraph. The optimal structure is selected based on the elastic energy minimization among a set of candidate structures that are constructed every time a tree node is added. The final tree is interpreted as a set of connected curves representing different trajectories. \emph{Source:~\cite{guo2017slice}} (modified to fit thesis format and/or clarify key points)
+  	}
+  	\label{fig:TI_Alg_SLICE}
+  \end{figure}
 
-    \item[Slingshot]
-    Slingshot is single-cell lineage inference tool capable of handling datasets with multiple branches~\citep{street2018slingshot}. The tool comprises two distinct stages: 1) Global Lineage Structure Inference. In this stage slingshot employs Minimum Spanning Tree (MST) on clustered data points to infer the overall lineage structure. By utilizing a cluster-based MST, Slingshot stably identifies essential elements such as the number of lineages and their branching points. This allows users to uncover novel lineages while also incorporating domain-specific knowledge to guide specific parts of the tree, such as terminal cellular states. 2) Pseudotime Inference for Individual Lineages. In the second stage, Slingshot introduces a novel approach known as simultaneous principal curves. This method fittingly applies smooth branching curves to the identified lineages, effectively translating the knowledge of the global lineage structure into reliable estimates of cell-level pseudotime variables for each lineage.
-    \begin{figure}[ht!]
-    	\centering
-    	\includegraphics[width=0.8\textwidth]{TI_Alg_slingshot/fig}
-    	\vspace{0.1cm}
-    	\caption[Illustration of TI method Slingshot schematic.]{\textbf{illustration of TI method Slingshot schematic.}
-    	slingshot. \emph{Source:~\cite{street2018slingshot}} (modified to fit thesis format and/or clarify key points)
-    	}
-    	\label{fig:TI_Alg_slingshot}
-    \end{figure}
+  \item[Slingshot]
+  Slingshot is single-cell lineage inference tool capable of handling datasets with multiple branches~\citep{street2018slingshot}. The tool comprises two distinct stages: 1) Global Lineage Structure Inference. In this stage slingshot employs Minimum Spanning Tree (MST) on clustered data points to infer the overall lineage structure. By utilizing a cluster-based MST, Slingshot stably identifies essential elements such as the number of lineages and their branching points. This allows users to uncover novel lineages while also incorporating domain-specific knowledge to guide specific parts of the tree, such as terminal cellular states. 2) Pseudotime Inference for Individual Lineages. In the second stage, Slingshot introduces a novel approach known as simultaneous principal curves. This method fittingly applies smooth branching curves to the identified lineages, effectively translating the knowledge of the global lineage structure into reliable estimates of cell-level pseudotime variables for each lineage.
+  \begin{figure}[ht!]
+  	\centering
+  	\includegraphics[width=0.8\textwidth]{TI_Alg_slingshot/fig}
+  	\vspace{0.1cm}
+  	\caption[Illustration of TI method Slingshot schematic.]{\textbf{illustration of TI method Slingshot schematic.}
+  	slingshot. \emph{Source:~\cite{street2018slingshot}} (modified to fit thesis format and/or clarify key points)
+  	}
+  	\label{fig:TI_Alg_slingshot}
+  \end{figure}
 
-    \item[STREAM]
-    Single-cell Trajectories Reconstruction, Exploration And Mapping(STREAM) takes a single-cell gene expression matrix as input~\citep{chen2019stream}. Next, it performs three main steps: selection of informative genes, dimensionality reduction, and simultaneous tree structure learning and fitting by ElPiGraph. The optimal structure is selected based on the elastic energy minimization among a set of candidate structures that are constructed every time a tree node is added. The final tree is interpreted as a set of connected curves representing different trajectories.
+  \item[STREAM]
+  Single-cell Trajectories Reconstruction, Exploration And Mapping(STREAM) takes a single-cell gene expression matrix as input~\citep{chen2019stream}. Next, it performs three main steps: selection of informative genes, dimensionality reduction, and simultaneous tree structure learning and fitting by ElPiGraph. The optimal structure is selected based on the elastic energy minimization among a set of candidate structures that are constructed every time a tree node is added. The final tree is interpreted as a set of connected curves representing different trajectories.
 
-    \begin{figure}[ht!]
-    	\centering
-    	\includegraphics[width=0.95\textwidth]{TI_Alg_STREAM/fig}
-    	\vspace{0.1cm}
-    	\caption[Illustration of TI method STREAM schematic.]{\textbf{Illustration of TI method STREAM schematic.} STREAM first selection of informative genes from a single cell count matrix, followed by dimensional reduction. Next, it learns and fits simultaneous tree structure by ElPiGraph. The optimal structure is selected based on the elastic energy minimization among a set of candidate structures that are constructed every time a tree node is added. The final tree is interpreted as a set of connected curves representing different trajectories. \emph{Source:~\cite{chen2019stream}} (modified to fit thesis format and/or clarify key points)
-    	}
-    	\label{fig:TI_Alg_STREAM}
-    \end{figure}
+  \begin{figure}[ht!]
+  	\centering
+  	\includegraphics[width=0.95\textwidth]{TI_Alg_STREAM/fig}
+  	\vspace{0.1cm}
+  	\caption[Illustration of TI method STREAM schematic.]{\textbf{Illustration of TI method STREAM schematic.} STREAM first selection of informative genes from a single cell count matrix, followed by dimensional reduction. Next, it learns and fits simultaneous tree structure by ElPiGraph. The optimal structure is selected based on the elastic energy minimization among a set of candidate structures that are constructed every time a tree node is added. The final tree is interpreted as a set of connected curves representing different trajectories. \emph{Source:~\cite{chen2019stream}} (modified to fit thesis format and/or clarify key points)
+  	}
+  	\label{fig:TI_Alg_STREAM}
+  \end{figure}
 
-    \item[TSCAN]
-    pseudo-Time reconstruction in Single-Cell RNA-seq ANalysis(TSCAN)~\citep{ji2016tscan} first uses PCA to reduce the dimensionality. It uses the clustering algorithm Mclust to model the datasets as a mixture of normal distributions, to cluster the cells while automatically determining the number of clusters using the Bayesian information criterion. Next, It infers a trajectory by identifying the longest connected path through the Minimum Spanning Tree (MST) tree, which is created through the cluster center. Finally, all the cells are projected to the nearest point on the trajectory, creating the final ordering. TSCAN automatically determines both start and end cell clusters without prior gene dimension filtering. However, slight changes in center locations can significantly impact the identified trajectory.
+  \item[TSCAN]
+  pseudo-Time reconstruction in Single-Cell RNA-seq ANalysis(TSCAN)~\citep{ji2016tscan} first uses PCA to reduce the dimensionality. It uses the clustering algorithm Mclust to model the datasets as a mixture of normal distributions, to cluster the cells while automatically determining the number of clusters using the Bayesian information criterion. Next, It infers a trajectory by identifying the longest connected path through the Minimum Spanning Tree (MST) tree, which is created through the cluster center. Finally, all the cells are projected to the nearest point on the trajectory, creating the final ordering. TSCAN automatically determines both start and end cell clusters without prior gene dimension filtering. However, slight changes in center locations can significantly impact the identified trajectory.
 
-    \begin{figure}[ht!]
-    	\centering
-    	\includegraphics[width=0.65\textwidth]{TI_Alg_TSCAN/fig}
-    	\vspace{0.1cm}
-    	\caption[Illustration of TI method TSCAN schematic.]{\textbf{Illustration of TI method TSCAN schematic.}
-    	TSCAN initially constructs a cluster-based Minimum Spanning Tree(MST) with multiple paths. Next, TSCAN orders cells along each path by projecting them onto the tree edges.
-    	D) ElPiGraph creates an elastic graph by first defining the initial graph topology and embedding it into the data space. The graph structure is fit to the data using minimization of the mean square error, regularized by the elastic energy. The elastic energy includes a term reflecting the overall stretching of the graph(red) and a term reflecting the overall bending of the graph branches and the harmonicity of branching points (green). ElPiGraph next explores a large region of the structural space by exhaustively applying a set of graph rewriting rules and selecting, at each step, the leading structure to the minimum overall energy of the graph embedding. \emph{Source:~\cite{ji2016tscan}} (modified to fit thesis format and/or clarify key points)
-    	}
-    	\label{fig:TI_Alg_TSCAN}
-    \end{figure}
+  \begin{figure}[ht!]
+  	\centering
+  	\includegraphics[width=0.65\textwidth]{TI_Alg_TSCAN/fig}
+  	\vspace{0.1cm}
+  	\caption[Illustration of TI method TSCAN schematic.]{\textbf{Illustration of TI method TSCAN schematic.}
+  	TSCAN initially constructs a cluster-based Minimum Spanning Tree(MST) with multiple paths. Next, TSCAN orders cells along each path by projecting them onto the tree edges.
+  	D) ElPiGraph creates an elastic graph by first defining the initial graph topology and embedding it into the data space. The graph structure is fit to the data using minimization of the mean square error, regularized by the elastic energy. The elastic energy includes a term reflecting the overall stretching of the graph(red) and a term reflecting the overall bending of the graph branches and the harmonicity of branching points (green). ElPiGraph next explores a large region of the structural space by exhaustively applying a set of graph rewriting rules and selecting, at each step, the leading structure to the minimum overall energy of the graph embedding. \emph{Source:~\cite{ji2016tscan}} (modified to fit thesis format and/or clarify key points)
+  	}
+  	\label{fig:TI_Alg_TSCAN}
+  \end{figure}
 \end{description}
 
 %\subsubsection{Celltree}
@@ -776,6 +765,4 @@ Single-cell simultaneous modalities profiling is a nascent area, offering insigh
 % a figure of single cell trajectory inference methods theory
 \section{Discussion}
 \label{background:Discussion}
-In this chapter, we initially provided an overview of DNA structure and gene regulatory processes. Subsequently, we introduced the profiling techniques for single-cell transcriptome, epigenome, and proteome, including simultaneous profiling protocols. We then delved into the computational analyses associated with these modalities. Following that, we addressed the challenges posed by two critical analyses: single-cell multimodal integration and trajectory inference. Lastly, we conducted a review of related work about these two computational analysis aspects.
-
-
+In this chapter, we initially provided an overview of DNA structure and gene regulatory processes. Subsequently, we introduced the profiling techniques for single-cell transcriptome, epigenome, and proteome, including simultaneous profiling protocols. We then delved into the computational analyses associated with these modalities. Subsequently, we directed our focus towards computational analysis methods for single-cell multimodal data. We addressed the challenges posed by two critical analyses: single-cell multimodal integration and trajectory inference. We discussed the related work and outlined our objectives for tackling these tasks.
