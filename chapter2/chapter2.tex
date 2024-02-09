@@ -43,13 +43,6 @@ Gene regulation refers to the mechanisms that control the expression of genes. W
 Chromatin is the complex of DNA and proteins found in the nucleus of a cell. Chromatin accessibility is a crucial molecular concept that describes the degree to which DNA is available or accessible for cellular processes, particularly gene expression. It can exist in two states: open and condensed. Open chromatin refers to the relaxed, accessible state where DNA is available for transcription and gene expression. In this state, the DNA is not tightly wound around histone proteins, allowing regulatory proteins and RNA polymerase to easily access specific DNA sequences, facilitating the transcription of genes into RNA. Open chromatin is associated with active gene expression and is influenced by various factors, including epigenetic modifications such as acetylation and methylation. Conversely, in a "closed" or condensed chromatin state, the DNA is tightly wound around histone proteins, making it less accessible. This state inhibits the binding of transcriptional machinery, leading to reduced or suppressed gene expression. Closed chromatin is associated with inactive or silenced genes (\fref{fig:chromatin_organization}).
 
 
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.85\textwidth]{cell_differentiation/fig}
-	\vspace{0.1cm}
-	\caption[cell differentiation]{cell differentiation. \emph{Source:~\cite{costa2023dissecting}} (modified to fit thesis format and/or clarify key points)}
-	\label{fig:piechart-mulitmodal-methods}
-\end{figure}
 
 
 \section{Single cell sequencing technology}
@@ -115,7 +108,7 @@ Protocols for single-cell ATAC-sequencing (scATAC-seq) was introduced in 2015~\c
 
 \subsection{Simultaneous multi-modal profiling of single cell}
 \label{background:sec1:mulitmodal}
-Single-cell multi-modal technologies typically analyze various types of molecules within a single cell, providing a more profound understanding of biology compared to studying individual molecular layers from separate cells. These advanced technologies unveil cellular heterogeneity across multiple molecular levels within a cell population, offering insights into the interconnectedness or independence of variation across different modalities. The datasets produced by these techniques hold the potential to facilitate a more comprehensive comprehension of the fundamental biological processes and mechanisms that contribute to cellular heterogeneity. Furthermore, they shed light on the associations between normal development, aging, disease etiology, and the intricate links between these phenomena. A variety of single cell multi-modal profiling methods have been proposed recently (\tref{tab:multimodal-methods}), including:
+Single-cell multi-modal technologies typically analyze various types of molecules within a single cell, providing a more profound understanding of biology compared to studying individual molecular layers from separate cells. These advanced technologies unveil cellular heterogeneity across multiple molecular levels within a cell population, offering insights into the interconnectedness or independence of variation across different modalities. The datasets produced by these techniques hold the potential to facilitate a more comprehensive comprehension of the fundamental biological processes and mechanisms that contribute to cellular heterogeneity. Furthermore, they shed light on the associations between normal development, aging, disease etiology, and the intricate links between these phenomena. A variety of single cell multi-modal profiling methods have been proposed recently as shown in \tref{tab:multimodal-methods} and in \fref{fig:piechart-mulitmodal-methods}. We introduce these protocols by breaking down them into 3 groups:
 
 \begin{itemize}
 	\item \textbf{Transcriptome \& epigenome:}
@@ -123,8 +116,7 @@ Single-cell multi-modal technologies typically analyze various types of molecule
 
 
 	\item \textbf{Transcriptome \& proteome:}
-	Various methods have been developed, including proximity extension assay/specific RNA target amplification (PEA/STA), proximity ligation assay for RNA (PLAYR), cellular indexing of transcriptomes and epitopes by sequencing (CITE-seq)~\citep{stoeckius2017citeseq}, and RNA expression and protein sequencing assay (REAP-seq)~\citep{peterson2017reapseq}. Additionally, expanded CRISPR-compatible cellular indexing of transcriptomes and epitopes by sequencing (ECCITE-seq)~\citep{mimitou2019ECCITE} is a modification and extension of CITE-seq, incorporating transcriptome, protein, clonotype, and CRISPR perturbation data at a single-cell resolution.
-
+	Various methods have been developed, including proximity extension assay/specific RNA target amplification (PEA/STA), proximity ligation assay for RNA (PLAYR), cellular indexing of transcriptomes and epitopes by sequencing (CITE-seq)~\citep{stoeckius2017citeseq}, and RNA expression and protein sequencing assay (REAP-seq)~\citep{peterson2017reapseq}. Additionally, expanded CRISPR-compatible cellular indexing of transcriptomes and epitopes by sequencing (ECCITE-seq)~\citep{mimitou2019ECCITE} is a modification and extension of CITE-seq, incorporating transcriptome, protein, clonotype, and CRISPR perturbation data at a single-cell resolution. To note, for the most common protocol CITE-seq, the sequencing data includes specific CITE-seq barcodes, also known as antibody-derived tags (ADT), which identify the antibodies bound to the cells and provide information about the cell-surface proteins present \citep{stoeckius2017citeseq}.
 
 	\item \textbf{Transcriptome \& epigenome \& proteome:}
 	Methods have been developed to profile more than two modalities, including TEA-seq~\citep{swanson2021simultaneous}, designed as a trimodal assay that simultaneously measures transcriptomics (scRNA-seq), epitopes, and chromatin accessibility (scATAC-seq) from thousands of single cells. Another method, DOGMA-seq~\citep{mimitou2021scalable}, can measure all features of TEA-seq and also detect mtDNA mutations simultaneously.
@@ -168,7 +160,7 @@ Single-cell multi-modal technologies typically analyze various types of molecule
 
 \section{Computational analysis of single cell}
 \label{background:computational_singlecell}
-After designing the experiment and conducting the sequencing, the subsequent crucial step involves performing computational analysis to extract valuable insights from the multimodal data. For scRNA-seq and scATAC-seq data, the initial step involves aligning the reads to the reference genome to identify gene expression or the location of the reads, respectively. Generally, after obtaining the feature count matrix (features by cells), the analysis includes three steps: pre-processing for quality checks and normalization, dimensional reduction and clustering to identify heterogeneous population groups, and downstream analysis based on different feature properties. In this section, we will introduce these analyses by first discussing the alignments of scRNA-seq and scATAC-seq. Next, we describe the analysis of scRNA-seq, followed by the analysis of scATAC-seq data. Lastly, we briefly introduce the processing steps for surface protein data.
+After designing the experiment and conducting the sequencing, the subsequent crucial step involves performing computational analysis to extract valuable insights from the single cell data. For scRNA-seq and scATAC-seq data, the initial step involves aligning the reads to the reference genome to identify gene expression or the location of the reads, respectively. Generally, after obtaining the feature count matrix (features by cells), the analysis includes three steps: pre-processing for quality checks and normalization, dimensional reduction and clustering to identify heterogeneous population groups, and downstream analysis based on different feature properties. In this section, we will introduce these analyses by first discussing the alignments of scRNA-seq and scATAC-seq. Next, we describe the computational analysis of scRNA-seq, followed by the analysis of scATAC-seq data and that of the surface protein data.
 
 \subsection{Alignment}
 \label{background:sec2:alignment}
@@ -182,8 +174,8 @@ We will outline the computational workflow for scRNA-seq data analysis, covering
 	\centering
 	\includegraphics[width=0.85\textwidth]{workflow_scRNA/fig}
 	\vspace{0.1cm}
-	\caption[A common computational scRNA analysis workflow]{
-		\textbf{A common computational scRNA analysis workflow}.
+	\caption[A common computational scRNA-seq analysis workflow]{
+		\textbf{A common computational scRNA-seq analysis workflow}.
 		\textbf{Step1:} Preprocessing starts with cell by gene count matrix, including quality control, normalization and feature selection.
 		\textbf{Step2:} core analysis, including dimensionality reduction, batch correction and clustering and reference mapping.
 		\textbf{Step3:} Downstream analysis, including differential expression, cell annotation, trajectory analysis and geneset enrichment.
@@ -192,24 +184,24 @@ We will outline the computational workflow for scRNA-seq data analysis, covering
 \end{figure}
 
 \subsubsection{Pre-processing}
-We start from a count matrix where the mRNA sequence reads obtained are aligned to genes and cells of origin through an alignment pipeline e.g 10$\times$ cellranger pipeline. The pipeline utilizes either cellular barcodes or unique molecular identifiers (UMIs) in conjunction with a reference genome. We eventually obtain a count matrix representing cells by genes.
+We start from a count matrix where the mRNA sequence reads obtained are aligned to genes and cells of origin through an alignment pipeline e.g 10$\times$ cellranger pipeline\citep{zheng2017cellranger}. The pipeline utilizes either cellular barcodes or unique molecular identifiers (UMIs) in conjunction with a reference genome. We eventually obtain a count matrix representing cells by genes.
 \begin{description}
 	\item[Quality Control]
-	We focus on droplet-based scRNA data quality control. \fref{fig:QCcells}A shows an intact droplet, where a droplet includes a cell and barcode bead to mark the cell ID. The objective of quality control is to filter low-quality cells (\fref{fig:QCcells}B-E) and correct the noise. Cells characterized by a low number of detected genes, a shallow count depth, and a high proportion of mitochondrial counts are commonly referred to as low-quality cells. This designation is often indicative of cells in a state of decline, potentially exhibiting compromised membranes associated with cell damage or death. Low-quality cells are detected and filtered either by manually setting thresholds, as suggested in a guide~\citep{luecken2019current}. Doublets (\fref{fig:QCcells}D) or multiplets occur when more than one cell is present in a droplet. The simplest method to address this issue is to filter out cells with an excessively high total count of gene molecules (UMI). More sysmatic approach involves creating synthetic doublets by combining two cells and examining the neighborhoods of cells to detect potential doublets~\citep{mcginnis2019doubletfinder}. Ambient RNA removal typically involves using the expression profile of empty droplets to eliminate background noise from cells~\citep{janssen2023benchambient}.
+	We focus on droplet-based scRNA data quality control. \fref{fig:QCcells}A shows an intact droplet, where a droplet includes a cell and barcode bead to mark the cell ID. The objective of quality control is to filter low-quality cells (\fref{fig:QCcells}B-E) and correct the noise. Cells characterized by a low number of detected genes, a shallow count depth, and a high proportion of mitochondrial counts are commonly referred to as low-quality cells. This designation is often indicative of cells in a state of decline, potentially exhibiting compromised membranes associated with cell damage or death. Low-quality cells are detected and filtered by manually setting thresholds, as suggested in a guide~\citep{luecken2019current}. Doublets or multiplets occur when more than one cell is present in a droplet (\fref{fig:QCcells}D). The simplest method to address this issue is to filter out cells with an excessively high total count of gene molecules (UMI). More sysmatic approach involves creating synthetic doublets by combining two cells and examining the neighborhoods of cells to detect potential doublets~\citep{mcginnis2019doubletfinder}. Ambient RNA removal typically involves using the expression profile of empty droplets to eliminate background noise from cells~\citep{janssen2023benchambient}.
 
 
 	\item[Normalization]
-	Cells may exhibit varying numbers of gene counts due to disparities in cell size or random variations during sequencing. Count normalization is employed to ensure comparability in cellular profiles. The following variance stabilization ensures that outlier profiles have a limited impact on the overall data structure. A common normalization method involves dividing the raw UMI count by the total detected RNAs in each cell, multiplying the result by a scaling factor (typically set at 10,000), adding a pseudo-count (usually 1), and subsequently applying a log transformation to the outcome. This size-factor normalization effectively mitigates technical variations arising from sequencing depth, while the log transformation serves to alleviate the impact of expression outliers. This approach is particularly valuable in preventing high-abundance genes from disproportionately influencing downstream analyses due to their elevated technical variability. Log-normalization is the default method in the most popular single cell analysis toolkit Seurat~\citep{stuart2019seurat3} written in R and Scanpy~\citep{wolf2018scanpy} implemented in python.
+	Cells may exhibit varying numbers of gene counts due to disparities in cell size or random variations during sequencing. Count normalization is employed to ensure comparability in cellular profiles. A common normalization method involves dividing the raw UMI count by the total detected RNAs in each cell, multiplying the result by a scaling factor (typically set at 10,000), adding a pseudo-count (usually 1), and subsequently applying a log transformation to the outcome. This size-factor normalization effectively mitigates technical variations arising from sequencing depth, while the log transformation serves to alleviate the impact of expression outliers. This approach is particularly valuable in preventing high-abundance genes from disproportionately influencing downstream analyses due to their elevated technical variability. Log-normalization is the default method in the most popular single cell analysis toolkit Seurat~\citep{stuart2019seurat3} written in R and Scanpy~\citep{wolf2018scanpy} implemented in python.
 
 	\item[Feature Selection]
-	Single-cell RNA-seq datasets typically contain more than 20,000 genes. Numerous genes lack informativeness and predominantly consist of zero counts. Thus, feature selection is necessary to select the most informative features(usually 3,000~5,000 genes) and reduce the computing resources as well as alleviate issues such as model overfitting in downstream analysis~\citep{yang2021feature}. The objective is to exclude uninformative genes that may not reflect meaningful biological variation across samples. The commonly used method is implemented in Seurat, where genes are categorized based on their average expression. The gene with the highest ratio of variance to mean within each group is selected as the Highly Variable Gene (HVG) for that specific bin~\citep{stuart2019seurat3}.
+	Single-cell RNA-seq datasets typically contain more than 20,000 genes. Numerous genes lack informativeness and predominantly consist of zero counts. Thus, feature selection is necessary to select the most informative features(usually 3,000~5,000 genes) and reduce the computing resources and data dimensions, as well as alleviate issues such as model overfitting in downstream analysis~\citep{yang2021feature}. The objective is to exclude uninformative genes that may not reflect meaningful biological variation across samples. The commonly used method is implemented in Seurat, where genes are categorized based on their average expression. The gene with the highest ratio of variance to mean within each group is selected as the Highly Variable Gene (HVG) for that specific bin~\citep{stuart2019seurat3}.
 \end{description}
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.65\textwidth]{QC_cells/fig}
 	\vspace{0.1cm}
-	\caption[Droplets-based sequencing of dying cells, doublet and empty droplet .]{Droplet-based protocols for single-cell analysis require rigorous quality checks to ensure accurate downstream analysis. A) An intact droplet should ideally contain a single cell and a corresponding barcode for cell identification. B) Contamination may occur through the introduction of ambient RNA, leading to the inclusion of extraneous RNA reads not originating from the targeted cell. C) Droplets capturing dying cells typically exhibit lower levels of detected RNA reads, indicating compromised cell integrity. D) Occasionally, a droplet may capture more than one cell, posing challenges for subsequent analysis. E) Empty droplets, which capture no cells with extremely few gene expressions, are easily identified and can be excluded from analysis. These considerations emphasize the importance of thorough quality control measures in droplet-based single-cell protocols to ensure the reliability and accuracy of the generated data. \emph{Source:~\cite{heumos2023best}} (modified to fit thesis format and/or clarify key points)}
+	\caption[Droplets-based sequencing of cells in low quality.]{\textbf{Droplets-based sequencing of cells in low quality.} Droplet-based protocols for single-cell analysis require rigorous quality checks to ensure accurate downstream analysis. \textbf{A)} An intact droplet should ideally contain a single cell and a corresponding barcode for cell identification. \textbf{B)} Contamination may occur through the introduction of ambient RNA, leading to the inclusion of extraneous RNA reads not originating from the targeted cell. \textbf{C)} Droplets capturing dying cells typically exhibit lower levels of detected RNA reads, indicating compromised cell integrity. \textbf{D)} Occasionally, a droplet may capture more than one cell, posing challenges for subsequent analysis. \textbf{E)} Empty droplets, which capture no cells with extremely few gene expressions, are easily identified and can be excluded from analysis. These considerations emphasize the importance of thorough quality control measures in droplet-based single-cell protocols to ensure the reliability and accuracy of the generated data. \emph{Source:~\cite{heumos2023best}} (modified to fit thesis format and/or clarify key points)}
 	\label{fig:QCcells}
 \end{figure}
 \subsubsection{Dimensional reduction and clustering}
@@ -251,14 +243,12 @@ We will describe the computational workflow for scATAC-seq data analysis, includ
 	\centering
 	\includegraphics[width=0.85\textwidth]{workflow_scATAC/fig}
 	\vspace{0.1cm}
-	\caption[A common computational scATAC analysis workflow]{
-	\textbf{workflow scATAC:}
+	\caption[A common computational scATAC-seq analysis workflow]{
+	\textbf{A common computational scATAC-seq analysis workflow:}
 	\textbf{Step1:} Feature matrix construction using peaks or bins.
 	\textbf{Step2:} Preprocessing including feature selection, quality control, and feature selection.
 	\textbf{Step3:} Core analysis including dimensional reduction, batch correction, clustering, label transferring, and cell type annotation.
 	\textbf{Step4:} Downstream analysis including differential accessibility, trajectory inference, linkage analysis, TF activity and Motif discovery.
-
-
 
 	\emph{Source:~\cite{heumos2023best}} (modified to fit thesis format and/or clarify key points)}
 	\label{fig:workflow_scATAC}
@@ -269,7 +259,7 @@ We will describe the computational workflow for scATAC-seq data analysis, includ
 In contrast to scRNA-seq data, which relies on clearly defined gene features, scATAC-seq data lacks a standardized feature set owing to the genome-wide nature of the data. Here we present three ways of feature matrix construction (\fref{fig:workflow_scATAC}A). Most workflows typically utilize a cell-by-peak or cell-by-bin matrix as a foundation for analysis~\citep{heumos2023best}. However, it's important to note that the feature number in single-cell ATAC-seq is significantly larger compared to scRNA gene expression, usually reaching around 100,000 for this type of feature (\fref{fig:modalities_differences}A). Another feature matrix gene activity score matrix can also be created to approximate gene expression, facilitating the interpretation of the data. We will outline how to construct these three feature matrices:
 \begin{description}
 	\item[Peak Matrix]
-	Cell-by-peak is the most prevalent features for scATAC-seq data analysis. Peaks denote variable regions of open chromatin characterized by an enrichment of Tn5 transposition events compared to background noise. Note that the identification of peaks requires an adequate number of cells. Therefore, challenges may arise when dealing with rare cell types. To improve the sensitivity of peak detection, it is beneficial to call peaks within clusters. This approach mitigates the risk of overlooking peaks in rare cell types that might otherwise be obscured by the noise from more prevalent cell types. Currently, the most frequently employed peak caller for ATAC-seq is MACS2~\citep{zhang2008macs2} which was originally developed for ChIP-seq data, MACS2 utilizes a dynamic Poisson distribution to account for local background biases in the genome, enabling effective peak detection. Another peak caller HMMRATAC~\citep{tarbell2019hmmratac} which is a Hidden Markov Model-based method for ATAC-seq, employs a ``decomposition and integration'' approach to identify open chromatin regions by learning relationships between layers of coverage signals in a single ATAC-seq dataset. To note, 10$\times$ cellranger pipeline delivers a default cell-by-peak matrix output. R scATAC-seq analysis tool Signac~\citep{signac} and Python tool Episcanpy~\citep{Danese2021episcanpy} use cell-by-peaks features to do the analysis.
+	Cell-by-peak is the most prevalent features for scATAC-seq data analysis. Peaks denote variable regions of open chromatin characterized by an enrichment of Tn5 transposition events compared to background noise. Note that the identification of peaks requires an adequate number of cells. Therefore, challenges may arise when dealing with rare cell types. To improve the sensitivity of peak detection, it is beneficial to call peaks within clusters. This approach mitigates the risk of overlooking peaks in rare cell types that might otherwise be obscured by the noise from more prevalent cell types. Currently, the most frequently employed peak caller for ATAC-seq is MACS2~\citep{zhang2008macs2} which was originally developed for ChIP-seq data, MACS2 utilizes a dynamic Poisson distribution to account for local background biases in the genome, enabling effective peak detection. Another peak caller HMMRATAC~\citep{tarbell2019hmmratac} which is a Hidden Markov Model-based method for ATAC-seq, employs a ``decomposition and integration'' approach to identify open chromatin regions by learning relationships between layers of coverage signals in a single ATAC-seq dataset. To note, 10$\times$ cellranger pipeline delivers a default cell-by-peak matrix output~\citep{satpathy2019cellrangeratac}. R scATAC-seq analysis tool Signac~\citep{signac} and Python tool Episcanpy~\citep{Danese2021episcanpy} use cell-by-peaks features to do the analysis.
 
 	\item[Bin Matrix]
 	To generate a cell-by-bin count matrix, the genome is segmented into uniform-sized bins(typically 500 bps). Single-cell ATAC-seq profiles are then represented as a cell-by-bin matrix, where each element indicates the number of sequencing fragments overlapping with a specific bin in a particular cell. This bin matrix is employed in popular ATAC-seq toolkits such as snapATAC (~\citep{fang2021snapatac}) and ArchR (~\citep{Granja2021}).
@@ -300,14 +290,13 @@ In contrast to scRNA-seq data, which relies on clearly defined gene features, sc
 	Similar to scRNA, see \sref{background:sec2:dr_n_clustering}.
 
 
-
 \end{description}
 \subsubsection{Downstream analysis}
 \label{background:sec2:atac_downstream}
 \begin{description}
 
 	\item[Annotation]
-	Without gene experision features, it's a challenge to annotate the cell types of each cluster. One way is to transfer labels from previous studies to scATAC data. Typically, this is achieved by integrating scATAC with existing scRNA data. For instance, methods provided by Seurat~\citep{stuart2019seurat3} find shared nearest neighbors from different studies to transfer labels~\citep{stuart2019seurat3}. Another approach involves using multimodal data as a molecular bridge, facilitating the mapping of scATAC onto scRNA-seq references~\citep{hao2023dictionary}. Apart from label transferring, we can also use gene activity score (\sref{background:sec2:scATAC:matrixconstruction}) differentiation to identify cell types for each cluster. The Transcription Factor(TF) motif enrichment score can be also used to assit the identification of the cell types.
+	Without gene expression features, it's a challenge to annotate the cell types of each cluster. One way is to transfer labels from previous studies to scATAC data. Typically, this is achieved by integrating scATAC with existing scRNA data. For instance, methods provided by Seurat~\citep{stuart2019seurat3} find shared nearest neighbors from different studies to transfer labels~\citep{stuart2019seurat3}. Another approach involves using multimodal data as a molecular bridge, facilitating the mapping of scATAC onto scRNA-seq references~\citep{hao2023dictionary}. Apart from label transferring, we can also use gene activity score (\sref{background:sec2:scATAC:matrixconstruction}) differentiation to identify cell types for each cluster. The Transcription Factor(TF) motif enrichment score can be also used to assit the identification of the cell types.
 
 	\item[Differential Accessibility]
 	To gain insights into cluster/cell type-specific biology, one can perform differential accessibility analysis, akin to scRNA differential gene expression. Various statistical methods have been employed for this task, including the aforementioned Wilcoxon test from scRNA, which is also applicable here. Additionally, binomial tests~\citep{cusanovich2018single}, and logistic regression models~\citep{hao2021seurat4} are commonly used in scATAC-seq tools. Typically, methods for differential accessibility take into account the removal of technical biases, such as unique nuclear fragments and TSS enrichment. ArchR~\citep{Granja2021} selects a set of background cells that match the known biases for each cell group and performs comparisons between each cell group and its background cells. Signac~\citep{hao2021seurat4} employs logistic regression for differential accessibility analysis and treats the total number of fragments as a latent variable to mitigate the effects of technical biases.
@@ -327,11 +316,9 @@ In contrast to scRNA-seq data, which relies on clearly defined gene features, sc
 %%might ignore the surface protein part
 \subsection{Computational Analysis of Single Cell Surface Protein}
 \label{background:sec2:protein}
-The surface protein analysis is simpler than scRNA and scATAC-seq. However, the feature size is much smaller (around 100) compared to other modalities (\fref{fig:modalities_differences}A). Single cell surface protein is often profiled together with scRNA-seq e.g., CITE-seq~\citep{citeseq2017} simulatenously profiles scRNA and suface protein.
+The feature size of surface protein is much smaller (around 100) compared to other modality types (\fref{fig:modalities_differences}A). It is often profiled together with scRNA-seq e.g., CITE-seq~\citep{citeseq2017} simulatenously profiles scRNA and suface protein.
 
-XXXX
-
-Surface protein profilling output antibody-derived tags (ADT) data, which exhibit higher density compared to scRNA-seq and scATAC-seq data. For quality check, it is advisable to remove libraries with zero counts for the entire or a majority of the antibody panel~\citep{amezquita2020adtqc}. For protocols that simultaneously measure RNA and ADTs, such as CITE-seq~\citep{citeseq2017}, quality control for RNA and ADTs should be conducted separately. Since antibody efficacy can vary, batch correction of ADT data across multiple studies should also be performed~\citep{zheng2022adtqc}. Cell characteristics can introduce heterogeneous capture efficiency, leading to biases in cell composition~\citep{zheng2022adtqc}. To address this, normalization techniques such as centered log-ratio (CLR) transformation is recommended~\citep{stoeckius2017simultaneous}. The downstream analysis of ADT data follows a similar pipeline to unimodal RNA analysis, wherein annotated clusters can be tested for differential abundance.
+Surface protein profilling outputs antibody-derived tags (ADT) count matrix, which exhibits higher density compared to scRNA-seq and scATAC-seq data. For quality check, it is advisable to remove libraries with zero counts for the entire or a majority of the antibody panel~\citep{amezquita2020adtqc}. For protocols that simultaneously measure RNA and ADTs, such as CITE-seq~\citep{citeseq2017}, quality control for RNA and ADTs should be conducted separately. Since antibody efficacy can vary, batch correction of ADT data across multiple studies should also be performed~\citep{zheng2022adtqc}. To address biases in cell composition, normalization techniques such as centered log-ratio (CLR) transformation is recommended~\citep{stoeckius2017citeseq}. The downstream analysis of ADT data follows a similar pipeline to unimodal RNA analysis, wherein annotated clusters can be tested for differential abundance.
 
 
 %\section{Related works}
@@ -348,7 +335,7 @@ We will outline the computational workflow for the analysis of single-cell multi
 	\centering
 	\includegraphics[width=0.95\textwidth]{workflow_multimodal/fig}
 	\vspace{0.1cm}
-	\caption[A common computational multimodal analysis workflow.]{A common workflow for single-cell multimodal dataset analysis involves several steps. Each count matrix from different modalities undergoes preprocessing, including quality checks and normalization. Subsequently, single-cell multimodal integration is performed to obtain a uniform latent space. Based on the latent space, downstream analyses can be conducted, such as clustering, trajectory inference, and visualization.}
+	\caption[A common computational multimodal analysis workflow.]{A common computational workflow for single-cell multimodal dataset analysis involves several steps. Each count matrix from different modalities undergoes preprocessing, including quality checks and normalization. Subsequently, single-cell multimodal integration is performed to obtain a uniform latent space. Based on the latent space, downstream analyses can be conducted, such as clustering, trajectory inference, and visualization. Two key problems need to be addressed: \textcircled{\raisebox{-0.9pt}{1}} How to obtain a unified latent space for downstream analysis, and \textcircled{\raisebox{-0.9pt}{2}} Are there trajectory inference methods that can cooperate with multiple modalities?}
 	\label{fig:workflow_multimodal}
 \end{figure}
 
@@ -410,7 +397,7 @@ The challenges discussed in \sref{background:sec2:challenge_integration} regardi
 	\centering
 	\begin{tabular}{llllll}
 		\toprule
-		Name & algorithm & protocol & \#modalities & Reference \\
+		Name & algorithm & modality types & \#modalities & Reference \\
 		\midrule
     DIABLO & PLS-DA & universal & any & \cite{singh2019diablo}\\
     Liger & NMF & shared-features& 2 & \cite{kriebel2021nonnegative} \\
@@ -495,7 +482,7 @@ Several methods have been developed to address this task, and we will now review
   	\centering
   	\includegraphics[width=0.55\textwidth]{Alg_scAI/fig}
   	\vspace{0.1cm}
-  	\caption[Illustration of Seurat scAI integration competing method.]{\textbf{Illustration of Seurat scAI integration competing method.} scAI iteratively learns aggregated epigenomic profiles and low-dimensional representations from parallel scRNA-seq and scATAC-seq/single cell DNA methylation data. Input matrices consist of cells in rows and genes or loci in columns. The first step involves aggregating the epigenomic profile based on a randomly initiated cell-cell similarity matrix. In the second step, both transcriptomic and aggregated epigenomic data are concurrently decomposed into low-rank matrices, with gene, locus, and cell loading matrices indicating contributions for each factor. The third step computes a cell-cell similarity matrix based on the cell loading matrix. These steps iterate until a predefined stop criterion is met. \emph{Source~\cite{jin2020scaio}} (modified to fit thesis format and/or clarify key points)
+  	\caption[Illustration of Seurat scAI integration competing method.]{\textbf{Illustration of Seurat scAI integration competing method.} scAI iteratively learns aggregated epigenomic profiles and low-dimensional representations from parallel scRNA-seq and scATAC-seq/single cell DNA methylation data. Input matrices consist of cells in rows and genes or loci in columns. The first step involves aggregating the epigenomic profile based on a randomly initiated cell-cell similarity matrix. In the second step, both transcriptomic and aggregated epigenomic data are concurrently decomposed into low-rank matrices, with gene, locus, and cell loading matrices indicating contributions for each factor. The third step computes a cell-cell similarity matrix based on the cell loading matrix. These steps iterate until a predefined stop criterion is met. \emph{Source~\cite{jin2020scai}} (modified to fit thesis format and/or clarify key points)
   }
   	\label{fig:Alg_scAI}
   \end{figure}
@@ -517,7 +504,7 @@ Several methods have been developed to address this task, and we will now review
   \end{figure}
 
   \item \textbf{Symphony Integration}
-  Symphony~\cite{kang2021symphony} is a method to create single cell reference atlas for subsequent annotation of new single cell data sets. For a single case study with a multi-ome CITE-seq data, Symphony used canonical correlation analysis to find shared references. This simple procedure differs from MOJITOO in several ways: it does not use dimension reduction as input; it is not able to cope with more than 2 modalities and it uses the latent space of only one modality (RNA) as shared space. Moreover, Symphony included the execution of batch correction with Harmony after the execution of CCA.
+  Symphony~\citep{kang2021symphony} is a method to create single cell reference atlas for subsequent annotation of new single cell data sets. For a single case study with a multi-ome CITE-seq data, Symphony used canonical correlation analysis to find shared references. This simple procedure differs from MOJITOO in several ways: it does not use dimension reduction as input; it is not able to cope with more than 2 modalities and it uses the latent space of only one modality (RNA) as shared space. Moreover, Symphony included the execution of batch correction with Harmony after the execution of CCA.
 
 \end{description}
 
@@ -529,7 +516,7 @@ Single-cell simultaneous modalities profiling is a nascent area, offering insigh
 	\item
 	The objective is to develop an innovative computational method proficient in integrating more than two modalities with efficacy. The method should adeptly handle scenarios where modalities lack shared features and effectively address batch correction issues arising from diverse data batches. Furthermore, the method must yield a cohesive latent space suitable for clustering, data visualization, and subsequent analyses. Crucially, this latent space should be interpretable, facilitating the association of a component with the original feature count matrix. This interpretability enables a nuanced understanding of components, encompassing aspects such as gene expression and TF activity.
 	\item
-	Establishing a comprehensive benchmarking framework for multimodal integration is imperative. All methods aferomentioned \sref{background:sec2:integration} will be evaluated in \sref{cha:mulitmodal_bench}. Acknowledging that ground truth labels (cell type) may not infallibly represent actual biological facts due to manual cell annotation, it is crucial to devise a sophisticated set of benchmarking metrics. Beyond employing the Adjusted Rand Index to gauge clustering arrangement alignment with true labels, the benchmarking should encompass structural similarity evaluations between the shared latent space and each modality. Additionally, it should address the evolving levels of shared latent space distances among cells originating from the original modalities.
+	Establishing a comprehensive benchmarking framework for multimodal integration is imperative. All methods aferomentioned in \sref{background:sec2:integration} will be evaluated in \sref{chapter:MOJITOO_bench}. Acknowledging that ground truth labels (cell type) may not infallibly represent actual biological facts due to manual cell annotation, it is crucial to devise a sophisticated set of benchmarking metrics. Beyond employing the Adjusted Rand Index to gauge clustering arrangement alignment with true labels, the benchmarking should encompass structural similarity evaluations between the shared latent space and each modality. Additionally, it should address the evolving levels of shared latent space distances among cells originating from the original modalities.
 
 	\item
 	We should curate diverse sets of simultaneous multimodal datasets for benchmarking, incorporating two datasets that simultaneously profile single-cell RNA sequencing (scRNA) and single-cell Assay for Transposase-Accessible Chromatin sequencing (scATAC), two datasets comprising scRNA and single-cell surface protein information, and two datasets involving all three prevalent types: scRNA, scATAC, and single cell surface protein. This comprehensive approach ensures a more equitable and robust benchmarking outcome.
@@ -544,14 +531,24 @@ We will present the computational challenge of trajectory inference for single-c
 
 \subsubsection{Challenge of Single Cell Trajectory Inference}
 \label{background:sec2:challenge_TI}
-Computational trajectory analysis, which explores non-linear embeddings in the cellular space and algorithms to find paths or trees in these spaces, is quite popular in the analysis of single cells~\citep{wolf2019paga,chen2019stream,street2018slingshot,Lynch2022}. Despite the power of these approaches~\citep{Saelens2019}. There are still some challenges that need to be addressed:
+Computational trajectory analysis, which explores non-linear embeddings in the cellular space and algorithms to find paths or trees in these spaces, is quite popular in the analysis of single cells~\citep{wolf2019paga,chen2019stream,street2018slingshot,Lynch2022}. Despite the power of these approaches~\citep{saelens2019comparison}. There are still some challenges that need to be addressed:
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{cell_differentiation/fig}
+	\vspace{0.1cm}
+	\caption[Hematopoiesis Cellular Differentiation]{\textbf{Hematopoiesis Cellular differentiation.} \textbf{A)} Hematopoiesis differentiation tree. Cell types are hematopoietic stem cell(HSC), common myeloid progenitor(CMP),  common lymphoid progenitor(CLP), megakaryocyte–erythroid progenitor cell(MEP), granulocyte-macrophage progenitor(GMP), platelet(Pla), erythrocyte(Ery), granulocyte(Gn), monocytes(Mo), macrophages(M$\phi$), T cell(T), B cell(B) and Natural killer cell(NK). \textbf{B)} GMP differentiation into two cell types (Gn and Mo). GMP cells undergo differentiation into two distinct cell types, namely, granulocytes (Gn) and monocytes (Mo). During this differentiation process, specific regions of the chromatin become open, and different transcription factors bind to these regions, ultimately influencing the gene expression patterns that characterize these two cell types. \emph{Source:~\cite{costa2023dissecting}} (modified to fit thesis format and/or clarify key points)}
+	\label{fig:cell_differentiation}
+\end{figure}
 
 \begin{itemize}
+	\item \textbf{Cell Differentiation in Biology:}
+	The cell types in a multicellular organism become different from one another, as illustrated in \fref{fig:cell_differentiation} A, which shows a hematopoiesis differentiation tree. This cellular differentiation process is controlled by transcription factors (TFs) binding to specific DNA regions called enhancers/promoters to recruit polymerases and modulate the expression of genes, eventually leading to the formation of different cell types (\fref{fig:cell_differentiation} B)~\citep{costa2023dissecting}. Multimodal data with simultaneous epigenome and transcriptome information provide a better opportunity to explore this process. However, few trajectory inference methods make use of multimodal data to inspect cellular differentiation events.
+
+
 	\item \textbf{Complexity of multi-branching trajectories:}
 	For complex datasets, such as hematopoiesis, where cell differentiation leads to various immune cell types, monocytes, myeloid cells, and their subtypes, a method capable of capturing intricate differentiation processes is required. Unfortunately, many existing methods struggle to accurately capture the trajectory structure of such complex datasets.
 
-	\item \textbf{Cell Differences in Biology:}
-	xxxx the figure...........
 
 	\item \textbf{Most approaches use low number of dimensions($\geq3$) to fit trajectories:}
 	As high-dimensional data cannot be naturally visualized, trajectories of single-cell data are typically represented in 2D or 3D embeddings. However, this approach necessitates the omission of high-dimensional information. To address this limitation, there is a need for methods that directly infer cell differentiation from high-dimensional embeddings.
@@ -602,7 +599,7 @@ Next, we will discuss several published trajectory inference methods, All of the
   	\centering
   	\includegraphics[width=0.75\textwidth]{TI_Alg_celltree/fig}
   	\vspace{0.1cm}
-  	\caption[Illustration of TI method Celltree schematic.]{\textbf{Illustration of TI method Celltree schematic.} Celltree. \emph{Source:~\cite{duverle2016celltree}} (modified to fit thesis format and/or clarify key points)
+  	\caption[Illustration of TI method Celltree schematic.]{\textbf{Illustration of TI method Celltree schematic.} Celltree use myoblast data as example. Backbone tree obtained from the dataset of differentiating myoblasts with cellTree. Larger nodes indicate backbone cells (selected representatives), whereas smaller nodes represent cells that only show slight variations from the backbone cell they are attached to. Cell nodes have been coloured according to \textbf{A} their sampling time (in hours from the start of the differentiation process) and \textbf{B} their distribution over topics. \emph{Source:~\cite{duverle2016celltree}} (modified to fit thesis format and/or clarify key points)
   	}
   	\label{fig:TI_Alg_celltree}
   \end{figure}
@@ -614,7 +611,7 @@ Next, we will discuss several published trajectory inference methods, All of the
   	\centering
   	\includegraphics[width=0.85\textwidth]{TI_Alg_ElPiGraph/fig}
   	\vspace{0.1cm}
-  	\caption[Illustration of TI method ElPiGraph schematic.]{\textbf{Illustration of TI method ElPiGraph schematic.} ElPiGraph. \emph{Source:~\cite{cao2019monocle3}} (modified to fit thesis format and/or clarify key points)
+  	\caption[Illustration of TI method ElPiGraph schematic.]{\textbf{Illustration of TI method ElPiGraph schematic.} Schematic workflow of the ElPiGraph method. On the left, the construction of the elastic graph starts by defining the initial graph topology and embedding it into the data space. The graph structure is fitted to the data, minimizing the mean square error regularized by the elastic energy. The elastic energy includes a term reflecting the overall stretching of the graph (symbolically shown as contractive red springs) and a term reflecting the overall bending of the graph branches and the harmonicity of branching points (shown as repulsive green springs). In the middle, ElPiGraph explores a large region of the structural space by exhaustively applying a set of graph rewriting rules (graph grammars) and selecting, at each step, the structure leading to the minimum overall energy of the graph embedding. \emph{Source:~\cite{cao2019monocle3}} (modified to fit thesis format and/or clarify key points)
   	}
   	\label{fig:TI_Alg_ElPiGraph}
   \end{figure}
@@ -687,7 +684,7 @@ Next, we will discuss several published trajectory inference methods, All of the
   	\includegraphics[width=0.8\textwidth]{TI_Alg_slingshot/fig}
   	\vspace{0.1cm}
   	\caption[Illustration of TI method Slingshot schematic.]{\textbf{illustration of TI method Slingshot schematic.}
-  	slingshot. \emph{Source:~\cite{street2018slingshot}} (modified to fit thesis format and/or clarify key points)
+  	Firstly, a minimum spanning tree(MST) is constructed on the clusters to determine the number and rough shape of lineages. Following that, simultaneous principal curves are employed to obtain smooth representations of each lineage. \emph{Source:~\cite{street2018slingshot}} (modified to fit thesis format and/or clarify key points)
   	}
   	\label{fig:TI_Alg_slingshot}
   \end{figure}
@@ -754,7 +751,7 @@ Single-cell simultaneous modalities profiling is a nascent area, offering insigh
 	To evaluate its efficacy, we will generate high-dimensional simulated data with varying tree branches, ranging from small to large, to assess the model's capability to capture intricate tree structures. Benchmarking will be performed using the dynverse Trajectory Inference evaluation framework, comparing our method with top-ranked methods.
 
 	\item
-	All methods aferomentioned~\sref{background:sec2:TI} will be evaluate in \sref{cha:phlower_bench} The evaluation of the methods should include an examination of the topological similarity between the inferred trajectory and the ground truth. Furthermore, it should evaluate the accuracy of cell branch allocation and scrutinize the order of cells within each branch, as well as the accuracy of branching point allocation.
+	All methods aferomentioned~\sref{background:sec2:TI} will be evaluate in \sref{chapter:PHLOWER_bench} The evaluation of the methods should include an examination of the topological similarity between the inferred trajectory and the ground truth. Furthermore, it should evaluate the accuracy of cell branch allocation and scrutinize the order of cells within each branch, as well as the accuracy of branching point allocation.
 
 	\item The application of our method to in-house single-cell multimodal data involves implementing the 10x multiome protocol on kidney organoid data at four distinct time points: day 5, day 12, day 19, and day 25. We aim to assess the capability of our method in capturing cell differentiation. Additionally, we plan to uncover insights by exploring the trajectories of our model through statistical differentiation of branches and correlation analyses between genes and transcription factor(TF) activities. To further validate our findings, we intend to conduct TF knockouts and assess their impact on preventing incorrect cell type differentiation.
 
