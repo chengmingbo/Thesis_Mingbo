@@ -399,22 +399,23 @@ Certain methodologies, such as DIABLO and Symphony, have explored the concept of
     %4. get a cell fate tree
     $min_t, max_t, max_{range} \gets (\infty, -\infty, -\infty)$\\
     \For{$i\gets1$ \KwTo $m$ \KwBy $1$}{
-        $min_t \gets \min(U_i) \textbf{if} \min(U_i)<min_t \textbf{else} min_t$\\
-        $max_t \gets \max(U_i) \textbf{if} \min(U_i)>max_t \textbf{else} max_t$\\
+        $min_t \gets \min(U_i) \textbf{ if } \min(U_i)<min_t \textbf{ else } min_t$\\
+        $max_t \gets \max(U_i) \textbf{ if } \min(U_i)>max_t \textbf{ else } max_t$\\
         $max_{range} \gets (\max({U_i})-\min({U_i})) \textbf{if} (\max({U_i})-\min({U_i}))>max_{range} \textbf{else} max_{range}$\\
     }
     $CUTs, BINs = [], []$\\
     \For{$i\gets1$ \KwTo $m$ \KwBy $1$}{
-        $n_{bin} \gets \lfloor min_{bin} \times (\max({U_i}) - \min({U_i})) / (max_t - min))\rfloor$\\
+        $n_{bin} \gets \lfloor min_{bin} \times \frac{\max({U_i}) - \min({U_i})}{(max_t - min)}\rfloor$\\
         $CUTs[i] \gets \textbf{linspace}(\max({U_i}), \min({U_i}), n_{bin}+2)[2:-1]$\\
         $BINs[i] =[U_i^{1}, U_i^{2}, \cdots U_i^{n_{bin}}]$\\
         $V_i =[V_i^{1}, V_i^{2}, \cdots V_i^{n_{bin}}]$ \Comment{split the $V_{i}$ to be $n_{bin}$}
     }
     $DIC = \{\}$\\
     \For{$i\gets1$ \KwTo $m$ \KwBy $1$}{
-        \For{$j\gets i+1$ \KwTo $m$ \KwBy $1$ \& j \neq i}{
-            $\text{Len}= min(\textbf{length}({V_i), \textbf{length}({V_j))$\\
-            \For{$k\gets Len$ \KwTo $1$ \KwBy $-1$}{
+        %
+        \For{$j\gets i+1$ \KwTo $m$ \KwBy $1$ $\& j \neq i$}{
+            $\text{Len}= min(\textbf{length}(V_i), \textbf{length}(V_j))$\\
+            \For{$k\gets \textup{Len}$ \KwTo $1$ \KwBy $-1$}{
                 $M_i, M_j \gets |\mathbf{V}^k_i|, |\mathbf{V}^k_j|$\\
                 $\overline{b^k_i} = \frac{1}{M_i}\sum_{v \in \mathbf{V}^k_i } v$\\
                 $\overline{b^k_j} = \frac{1}{M_j}\sum_{v \in \mathbf{V}^k_j } v$\\
@@ -428,11 +429,12 @@ Certain methodologies, such as DIABLO and Symphony, have explored the concept of
             }
         }
     }
-    $inv_DIC = \textbf{invert}{DIC}$ \Comment{invert dictionary: key,val to val,{key}}
+    
+    $invDIC \gets \textbf{invert}(DIC)$ \Comment{invert dictionary: key,val to val,[key]}
     $bps \gets \textbf{order}(\textbf{values}(DIC), ascend=True)$ \Comment{ordered branching points ids}
     $Tree = \emptyset$\\
     \While{$bp \textbf{ in } bps$}{
-        $Tree \gets \textbf{MergeBranch}(inv_DIC, bp)$\Comment{create tree with branching points}
+        $Tree \gets \textbf{MergeBranch}(invDIC, bp)$\Comment{create tree with branching points}
     }
     \Return $Tree$
     \caption{Tree Creating Algorithm}
