@@ -384,59 +384,55 @@ Certain methodologies, such as DIABLO and Symphony, have explored the concept of
 \end{algorithm}
 
 \begin{algorithm}
-    \Input{
-    $g = \{g_1, g_2,\cdots, g_m\},$\\
-    $V = \{V_1, V_2,\cdots, V_m\},$\\
-    $U = \{U_1, U_2,\cdots, U_m\},$\\
-    $min_{bin}=10,$\\
-    $cut_{threshold} = 1,$\\
+    \KwIn{\\
+    $V = \{V_1, V_2,\cdots, V_m\},$ \Comment{cumsum coordinates for each group}
+    $t = \{t_1, t_2,\cdots, t_m\},$ \Comment{group pseudo time}
+    $min_{bin}=10,$\Comment{shortest trajectory minimum bin size}
+    ${\theta}_{cut} = 1,$\Comment{branching point cut distance threshold}
     }
-    % g is trajectory paths group, V is the cumulative coordinates, U is the edges pseudotime
-    %
-    %1. shortest trajectory to obtain number of bins
-    %2. get bins of each trajectory group
-    %3. pairwise groups to get branching point
-    %4. get a cell fate tree
-    $min_t, max_t, max_{range} \gets (\infty, -\infty, -\infty)$\\
+    $\nonl$\\
+    $t_{min}, t_{max}, R_{max} \gets (\infty, -\infty, -\infty)$\Comment{$R_{max}$ is the maximum range}
     \For{$i\gets1$ \KwTo $m$ \KwBy $1$}{
-        $min_t \gets \min(U_i) \textbf{ if } \min(U_i)<min_t \textbf{ else } min_t$\\
-        $max_t \gets \max(U_i) \textbf{ if } \min(U_i)>max_t \textbf{ else } max_t$\\
-        $max_{range} \gets (\max({U_i})-\min({U_i})) \textbf{if} (\max({U_i})-\min({U_i}))>max_{range} \textbf{else} max_{range}$\\
-    }
-    $CUTs, BINs = [], []$\\
+        $t_{min} \gets \textbf{min}(t_i) \textbf{ if } \textbf{min}(t_i)<t_{min} \textbf{ else } t_{min}$\\
+        $t_{max} \gets \textbf{max}(t_i) \textbf{ if } \textbf{min}(t_i)>t_{max} \textbf{ else } t_{max}$\\
+        $R_{max} \gets (\textbf{max}({t_i})-\textbf{min}({t_i})) \textbf{ if } (\textbf{max}({t_i})-\textbf{min}({t_i}))>R_{max} \textbf{ else } R_{max}$\\
+     }
+
+    $\text{CUTs}, \text{BINs} = [], []$\\
     \For{$i\gets1$ \KwTo $m$ \KwBy $1$}{
-        $n_{bin} \gets \lfloor min_{bin} \times \frac{\max({U_i}) - \min({U_i})}{(max_t - min)}\rfloor$\\
-        $CUTs[i] \gets \textbf{linspace}(\max({U_i}), \min({U_i}), n_{bin}+2)[2:-1]$\\
-        $BINs[i] =[U_i^{1}, U_i^{2}, \cdots U_i^{n_{bin}}]$\\
+        $n_{bin} \gets \lfloor min_{bin} \times \frac{\textbf{max}({t_i}) - \textbf{min}({t_i})}{(t_{max} - t_{min})}\rfloor$\\
+        $\text{CUTs}[i] \gets \textbf{linspace}(\textbf{max}({t_i}), \textbf{min}({t_i}), n_{bin}+2)[2:-1]$\\
+        $\text{BINs}[i] =[t_i^{1}, t_i^{2}, \cdots t_i^{n_{bin}}]$\\
         $V_i =[V_i^{1}, V_i^{2}, \cdots V_i^{n_{bin}}]$ \Comment{split the $V_{i}$ to be $n_{bin}$}
     }
-    $DIC = \{\}$\\
+    $\text{DIC} = \{\}$\\
     \For{$i\gets1$ \KwTo $m$ \KwBy $1$}{
         %
         \For{$j\gets i+1$ \KwTo $m$ \KwBy $1$ $\& j \neq i$}{
-            $\text{Len}= min(\textbf{length}(V_i), \textbf{length}(V_j))$\\
+            $\text{Len}= \textbf{min}(\textbf{length}(V_i), \textbf{length}(V_j))$\\
             \For{$k\gets \textup{Len}$ \KwTo $1$ \KwBy $-1$}{
                 $M_i, M_j \gets |\mathbf{V}^k_i|, |\mathbf{V}^k_j|$\\
                 $\overline{b^k_i} = \frac{1}{M_i}\sum_{v \in \mathbf{V}^k_i } v$\\
                 $\overline{b^k_j} = \frac{1}{M_j}\sum_{v \in \mathbf{V}^k_j } v$\\
                 $\overline{\sigma^k_i} = \frac{1}{M_i^2} \sum_{u \in \mathbf{V}^k_i}  \sum_{v \in \mathbf{V}^k_i} \Big\|u-v\Big\|_2$\\
                 $\overline{\sigma^k_j} = \frac{1}{M_j^2} \sum_{u \in \mathbf{V}^k_j}  \sum_{v \in \mathbf{V}^k_j} \Big\|u-v\Big\|_2$\\
-                $\mathrm{d}(i,j,k) = \Bigg\| \frac{ \overline{b^k_i} }{ \overline{\sigma^k_i}} - \frac{ \overline{b^k_j} }{ \overline{\sigma^k_j}} \Bigg\|_2$\\
-                \If{$\mathrm{d}(i,j,k) < cut_{threshold}$}{
-                    $DIC(i,j) \gets k$\\
+                $\text{d}(i,j,k) = \Bigg\| \frac{ \overline{b^k_i} }{ \overline{\sigma^k_i}} - \frac{ \overline{b^k_j} }{ \overline{\sigma^k_j}} \Bigg\|_2$\\
+                \If{$\text{d}(i,j,k) < {\theta}_{cut}$}{
+                    $\text{DIC}(i,j) \gets k$\\
                     $\textbf{break}$\\ 
                 }
             }
         }
     }
     
-    $invDIC \gets \textbf{invert}(DIC)$ \Comment{invert dictionary: key,val to val,[key]}
-    $bps \gets \textbf{order}(\textbf{values}(DIC), ascend=True)$ \Comment{ordered branching points ids}
-    $Tree = \emptyset$\\
-    \While{$bp \textbf{ in } bps$}{
-        $Tree \gets \textbf{MergeBranch}(invDIC, bp)$\Comment{create tree with branching points}
+    $\text{invDIC} \gets \textbf{invert}(\text{DIC})$ \Comment{invert dictionary: key,val to val,[key]}
+    $\text{bps} \gets \textbf{order}(\textbf{values}(\text{DIC}), \text{ascend}=\text{True})$ \Comment{ordered branching points ids}
+    $\text{Tree} = \emptyset$\\
+    \While{$\text{bp} \textbf{ in } \text{bps}$}{
+        $\text{Tree} \gets \textbf{MergeBranch}(\text{invDIC}, \text{bp})$\Comment{create tree with branching points}
     }
-    \Return $Tree$
+
+    \Return $\text{Tree}$
     \caption{Tree Creating Algorithm}
     \label{alg:treecreating}
 \end{algorithm}

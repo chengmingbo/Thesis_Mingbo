@@ -34,6 +34,8 @@
 \usepackage{setspace}
 \usepackage{palatino}
 \usepackage[algoruled, linesnumbered, algochapter]{algorithm2e}
+\let\oldnl\nl% Store \nl in \oldnl
+\newcommand{\nonl}{\renewcommand{\nl}{\let\nl\oldnl}}% Remove line number for one line
 \usepackage{color}
 \usepackage{colortbl}
 \usepackage{enumerate}
