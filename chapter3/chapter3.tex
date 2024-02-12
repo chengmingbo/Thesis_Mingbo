@@ -321,10 +321,10 @@ For more information about MOJITOO implementation, source code, tutorials and ex
 \end{algorithm}
 
 \subsection{Discussion}
-In this section, we discussed our computational methods for single-cell multimodal integration. Firstly, we described the preprocessing and dimension reduction as inputs (\sref{methods:integration:pre}). Subsequently, we delved into the core algorithm of our solution, encompassing CCA theory, solving the CCA problem using SVD, obtaining the unified latent space, component selection, and multivariable solutions (\sref{methods:integration:alg}). We then provided insights into the implementation of MOJITOO (\sref{methods:integration:imp}). The algorithm overview of MOJITOO is depicted in \fref{fig:MOJITOO_schematic}, and both the workflow and details are presented in \fref{CCA_ADD} and \alref{alg:MOJITOO}, respectively. In conclusion, our computational method introduces novel concepts to address the challenges of single-cell multimodal integration:
+In this section, we discussed our computational methods for single-cell multimodal integration. Firstly, we described the preprocessing and dimension reduction as inputs (\sref{methods:integration:pre}). Subsequently, we delved into the core algorithm of our solution, encompassing CCA theory, solving the CCA problem using SVD, obtaining the unified latent space, component selection, and multivariable solutions (\sref{methods:integration:alg}). We then provided insights into the implementation of MOJITOO (\sref{methods:integration:imp}). The algorithm overview of MOJITOO is depicted in \fref{fig:MOJITOO_schematic}, and both the workflow and details are presented in \fref{fig:CCA_ADD} and Algorithm~\ref{alg:MOJITOO}, respectively. In conclusion, our computational method introduces novel concepts to address the challenges of single-cell multimodal integration:
 \begin{itemize}
 
-    \Item We highlighted the significance of dimension reduction in single-cell multimodal integration. Using dimension reduction inputs to replace the original feature count matrix not only alleviates the noise impact on the results but also reduces the running time (\fref{fig:MOFA}).
+    \item We highlighted the significance of dimension reduction in single-cell multimodal integration. Using dimension reduction inputs to replace the original feature count matrix not only alleviates the noise impact on the results but also reduces the running time (\fref{fig:MOFA}).
 
     \item We developed an integration approach through Canonical Correlation Analysis (CCA). We use the Pearson statistical test to select correlated components. Moreover, we add the correlated components not only to obtain a unified latent space but also to avoid higher dimensions, which could potentially cause the curse of dimensionality \citep{Dreyfus2003}. To integrate more than two modalities, we employ an iterative process instead of the intuitive multi-CCA method to prevent overfitting. The latent space can be used for downstream analyses such as clustering, trajectory inference, visualization, etc.
 
@@ -507,11 +507,12 @@ For more information about PHLOWER implementation, source code, tutorials and ex
 
 \subsection{Discussion}
 In this section, we discussed our computational methods for single-cell multimodal trajectory inference. We first introduce, next xxx
-Finally, we described the implementation details(\sref{})
+Finally, we described the implementation details(sref{})
 
 From a conceptual standpoint, when comparing our method of Hodge Laplacian decomposition with competing methods, it becomes evident that the latter either connect clusters to derive trajectories or identify backbones in low dimensions (2,3) to represent trajectories. However, none of these methods effectively utilizes the high dimensions of a graph for inference. In contrast, our method utilizes edges in the high-dimensional cumulative trajectory space to identify branching points. This marks the first time Hodge Laplacian decomposition is employed to create a tree structure. Such innovation can find applications not only in biology but also in areas such as traffic detection and beyond.
 
 \begin{itemize}
+
     \item We emphasized the utilization of high-level graph information, specifically the Hodge Laplacian, to capture not only relations between vertices and edges but also relations between edges and triangles. Leveraging more information allows us to derive more accurate trajectories for single-cell analysis.
 
     \item Subsequently, we developed a trajectory inference method based on the decomposition of the Hodge Laplacian. Our approach goes beyond a simple application of this theory to the single-cell trajectory inference problem. Incorporating essential elements such as hole creation and triangulation tricks, we address the nuances of the problem. Additionally, to overcome the issue of preference random walk getting stuck in local areas, we propose a two-step process. First, we perform the walk on the diffusion graph, followed by finding the shortest paths on the triangulated graph. The creation of a tree structure is also crucial, and we achieve this by calculating normalized distances for edges in the cumulative trajectory space to determine branching points
