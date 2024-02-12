@@ -15,7 +15,7 @@ The simulated data for trajectory inference. We first described the data source 
 	\centering
 	\includegraphics[width=0.95\textwidth]{dynverse_metrics/fig}
 	\vspace{0.1cm}
-	\caption[Dynverse metrics]{ \textbf{A)} dynverse metrics. Dynverse has established three significant metrics here, each evaluating the excellence of various facets of the trajectory. \textbf{B)} The HIM score gauges the resemblance between the two topologies, considering variations in edge lengths and degree distributions. \textbf{C} $cor_{dist}$ measures the similarity in cellular positions between two trajectories by computing the correlation among pairwise geodesic distances. \textbf{D} The $F1_{branches}$ evaluates the likeness in the allocation of cells to branches. \textbf{E)} The geodesic distances were computed on a small example trajectory. This toy example consists of four milestones (W to Z) and five cells (a to e). The milestone network, milestone percentages, and regions of delayed commitment corresponding to the toy trajectory were transformed into the common trajectory model. The calculations were performed to determine pairwise geodesic distances, and a heatmap representation was generated to visually depict these distances.}
+	\caption[Dynverse metrics]{ \textbf{A)} dynverse metrics. Dynverse has established three significant metrics here, each evaluating the excellence of various facets of the trajectory. \textbf{B)} The HIM score gauges the resemblance between the two topologies, considering variations in edge lengths and degree distributions. \textbf{C)} $cor_{dist}$ measures the similarity in cellular positions between two trajectories by computing the correlation among pairwise geodesic distances. \textbf{D)} The $F1_{branches}$ evaluates the likeness in the allocation of cells to branches. \textbf{E)} The geodesic distances were computed on a small example trajectory. This toy example consists of four milestones (W to Z) and five cells (a to e). The milestone network, milestone percentages, and regions of delayed commitment corresponding to the toy trajectory were transformed into the common trajectory model. The calculations were performed to determine pairwise geodesic distances, and a heatmap representation was generated to visually depict these distances.}
 	\label{fig:dynverse_metrics}
 \end{figure}
 
@@ -49,7 +49,16 @@ Similar to $F1_{branches}$, other than mapping cells to edges, the F1 milestones
 
 \subsection{Simulated Data}
 To test the power of PHLOWER in the detection of multiple branches trees, we generate 10 simulated data sets using diffusion-limited aggregation trees (DLA tree)~\citep{witten1981diffusion} as proposed in PHATE~\citep{moon2017phate}. For this, we use a Gaussian noise parameter of 5 and vary the parameter n\_branch, which controls the number of branches in the trees, from 3 to 12. This generated trees with 5 to 18 branches.  For every data, we generate 3000 points and 100 features. Of note, we use the same data as evaluated in PHATE as data with 10 branches. Next, we run PHATE to visualize the branches, with which we can future construct ground truth for dynverse benchmarking.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.45\textwidth]{DLA_example/fig}
+	\vspace{0.1cm}
+	\caption[DLA tree ground truth example]{DLA tree ground truth example embedded with PHATE.}
+	\label{fig:DLA_example}
+\end{figure}
 
+
+Next, we reformat this data to be used within the trajectory benchmarking framework dynverse~\citep{saelens2019comparison} by using dynwrap. In short, dynverse needs detailed information of the branches, branches points and association of cells within a branch.  To do so, we need to find the branching points of the DLA tree. First, we perform PHATE on the DLA high dimensional data to get embedding with 2 dimensions. We only consider embeddings, where the tree structure is preserved. Next, we find the branching points by finding 2 nearest neighbors of two branches. With these branching points, we created the branch backbones needed by dynverse. We calculate am association of each data point to a branching point (milestone percentage) by calculating the euclidean distance between the points related to each branch. See DLA tree with 10 branches example \fref{fig:DLA_example}.
 \begin{algorithm}
 \caption{Diffusion-Limited Aggregation Tree Generation}
 \label{alg:DLA}
@@ -76,15 +85,6 @@ To test the power of PHLOWER in the detection of multiple branches trees, we gen
     $M \gets M + \epsilon$\\
     \Return \{$M$, $C$\}\\
 \end{algorithm}
-
-Next, we reformat this data to be used within the trajectory benchmarking framework dynverse~\citep{saelens2019comparison} by using dynwrap. In short, dynverse needs detailed information of the branches, branches points and association of cells within a branch.  To do so, we need to find the branching points of the DLA tree. First, we perform PHATE on the DLA high dimensional data to get embedding with 2 dimensions. We only consider embeddings, where the tree structure is preserved. Next, we find the branching points by finding 2 nearest neighbors of two branches. With these branching points, we created the branch backbones needed by dynverse. We calculate am association of each data point to a branching point (milestone percentage) by calculating the euclidean distance between the points related to each branch. See DLA tree with 10 branches example \fref{fig:DLA_example}.
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.65\textwidth]{DLA_example/fig}
-	\vspace{0.1cm}
-	\caption[DLA tree ground truth example]{DLA tree ground truth example embedded with PHATE.}
-	\label{fig:DLA_example}
-\end{figure}
 
 %3000, 100, br, 5.
 %3-12
