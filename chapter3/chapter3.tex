@@ -398,7 +398,6 @@ When scrutinizing the assumptions of the competing methods, our CCA-based approa
     $min_{bin}=10,$\Comment{shortest trajectory minimum bin size}
     ${\theta}_{cut} = 1,$\Comment{branching point cut distance threshold}
     }
-    $\nonl$\\
     $t_{min}, t_{max}, R_{max} \gets (\infty, -\infty, -\infty)$\Comment{$R_{max}$ is the maximum range}
     \For{$i\gets1$ \KwTo $m$ \KwBy $1$}{
         $t_{min} \gets \textbf{min}(t_i) \textbf{ if } \textbf{min}(t_i)<t_{min} \textbf{ else } t_{min}$\\
@@ -416,7 +415,7 @@ When scrutinizing the assumptions of the competing methods, our CCA-based approa
     $\text{DIC} = \{\}$\Comment{dictionary stores the branching points of all pairs}
     \For{$i\gets1$ \KwTo $m$ \KwBy $1$}{
         %
-        \For{$j\gets i+1$ \KwTo $m$ \KwBy $1$ $\& j \neq i$}{
+        \For{$j\gets i+1$ \KwTo $m$ \KwBy $1$ $~\& j \neq i$}{
             $\text{Len}= \textbf{min}(\textbf{length}(V_i), \textbf{length}(V_j))$\\
             \For{$k\gets \textup{Len}$ \KwTo $1$ \KwBy $-1$}{
                 $M_i, M_j \gets |\mathbf{V}^k_i|, |\mathbf{V}^k_j|$\\
