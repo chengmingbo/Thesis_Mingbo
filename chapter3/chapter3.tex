@@ -57,6 +57,15 @@ Canonical Correlation analysis(CCA) was first introduced H.Hotelling\citep{hotel
 \mathbf{Y}_a\mathbf{w}_a=\mathbf{z}_a\quad\text{and}\quad \mathbf{Y}_b\mathbf{w}_b=\mathbf{ z}_b
 \end{equation}
 
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.95\textwidth]{CCA_ADD/fig}
+    \vspace{0.1cm}
+    \caption[CCA schematic showing the linear transformation.]{\textbf{CCA schematics illustrating the linear transformation.} The data is sourced from \texttt{PBMC-Multiome}. \textbf{A)} The same cells, denoted as $a$ and $b$, in the scRNA and scATAC space exhibit distinct coordinates. \textbf{B)} Following the linear transformation, cells $a$ and $b$ are projected into the same space with minimized angles. Our approach involves aggregating the two vectors for a cell, resulting in a unified coordinate within the CCA space.}
+    \label{fig:CCA_ADD}
+\end{figure}
+
 where $\mathbf{Y}_a\in \mathbb{R}^{n\times p}$, ${\mathbf w}_a\in\mathbb{R}^p$, ${\mathbf z}_a\in\mathbb{R}^n$  and $\mathbf{Y}_b\in \mathbb{R}^{n\times q}$, $\mathbf{w}_b\in\mathbb{R}^p$, ${\mathbf z}_b\in\mathbb{R}^n$. The matrices $\mathbf{Y}_a$ and $\mathbf{Y}_b$ symbolize linear transformations of positions ${\mathbf w}_a$ and ${\mathbf w}_b$ onto the images ${\mathbf z}_a$ and ${\mathbf z}_b$ within the space $\mathbb{R}^n$. The terms ``canonical weight vectors'' typically describe the positions ${\mathbf w}_a$ and ${\mathbf w}_b$, while the images ${\mathbf z}_a$ and ${\mathbf z}_b$ are often referred to as ``canonical variates''. The cosine of the angle between ${\mathbf z}_a$ and ${\mathbf z}_b$, referred to as the canonical correlation. The aim of Canonical Correlation Analysis (CCA) is to discover two positions, $\mathbf{w}_a \in \mathbb{R}^p$ and $\mathbf{w}_b \in \mathbb{R}^q$, such that, upon linear transformations $\mathbf{Y}_a \in \mathbb{R}^{n\times p}$ and $\mathbf{Y}_b \in \mathbb{R}^{n\times q}$, they are mapped in a manner that maximizes the cosine of the angle between the position vectors of their images, $\mathbf{z}_a \in \mathbb{R}^n$ and $\mathbf{z}_b \in \mathbb{R}^n$. The first canonical correlation which equals $\cos\theta_1$ corresponding the smallest angle such that:
 \begin{equation}
 \begin{aligned}
@@ -87,13 +96,6 @@ Let the maximum be attained by $z_{a}^{(1)}$ and $z_{b}^{(1)}$. The pair of imag
 
  To conclude, the essence of Canonical Correlation Analysis (CCA) lies in identifying two positions within their respective data spaces. These positions are chosen such that their images on a unit ball minimize the angle between them, consequently maximizing the canonical correlation. The linear transformations of these positions are governed by the data matrices. The determination of the number of relevant positions can be achieved by analyzing the values of canonical correlations or by applying statistical significance tests.
 
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{CCA_ADD/fig}
-	\vspace{0.1cm}
-	\caption[CCA schematic showing the linear transformation.]{\textbf{CCA schematics illustrating the linear transformation.} The data is sourced from \texttt{PBMC-Multiome}. \textbf{A)} The same cells, denoted as $a$ and $b$, in the scRNA and scATAC space exhibit distinct coordinates. \textbf{B)} Following the linear transformation, cells $a$ and $b$ are projected into the same space with minimized angles. Our approach involves aggregating the two vectors for a cell, resulting in a unified coordinate within the CCA space.}
-	\label{fig:CCA_ADD}
-\end{figure}
 
 \subsubsection{Solving the Optimization Problem}
 There are several ways to solve the CCA problem. The first approach is to apply the standard eigenvalue problem \citep{HOTELLING1936cca2,hooper1959ccaeigen}. It can also be solved by converting it into a generalized eigenvalue problem \citep{bach2002kernel,hardoon2004canonical}. The most commonly used method to solve the problem is by employing Singular Value Decomposition (SVD), first introduced by \citep{healy1957ccasvd}, and further described by \citep{ewerbring1989canonical}. Here, we only introduce the SVD solution, which is applied in our package.
