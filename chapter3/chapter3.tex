@@ -381,12 +381,13 @@ When scrutinizing the assumptions of the competing methods, our CCA-based approa
             \If{$(\textup{node}_a, \textup{node}_b) \in \mathcal{E}^{t}$}{
                 $\text{NodeList} \gets \textbf{ShortestPath}(G^{t}, \text{node}_a, \text{node}_b)$\\
                 $L_p[i] \gets \textbf{Append}(L_p[i], \text{node}_a)$\\
-                $L_p[i] \gets \textbf{Append}(L_p[i], \text{NodeList})$\\
+                $L_p[i] \gets \textbf{Extend}(L_p[i], \text{NodeList})$\\
             }\Else{
                 $L_p[i] \gets \textbf{Append}(L_p[i], \text{node}_a)$\\
             }
         }
-        $i \gets i+1$
+        $L_p[i] \gets \textbf{Append}(L_p[i], l_{temp}[\text{Len}])$\\
+        $i \gets i+1$\\
     }
     \Return $L_p$
     \caption{Random walk on triangulation graph}
