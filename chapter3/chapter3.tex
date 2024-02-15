@@ -1,10 +1,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Chapter 3 -> Methods
+% Chapter 3 -> Methods MOJITOO
 % Author: Mingbo Cheng
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\addbibresource{~/MEGA/MEGAsync/phd/thesis_Cheng/preamble/thesis.bib}
-\chapter{Methods}
-\label{chapter:methods}
+\chapter{Methods for multimodal integration}
+\label{chapter:methods_inte}
 \graphicspath{{chapter3/figs}}
 
 In the previous chapter, we introduced the concept of profiling the single-cell transcriptome, genome, epigenome, and proteome, along with simultaneous sequencing. We also outlined the common workflow for analyzing single-cell sequencing data from different protocols and that of single-cell multimodal analysis. We discussed the challenges associated with single-cell multimodal integration due to various feature distributions and types. To tackle this, our goal is to develop computational methods to effectively integrate single cells of multiple modalities. Another challenge in single-cell multimodal analysis is inferring a trajectory to capture cell fate differentiation. To address this challenge, we aim to develop a computational trajectory inference method tailored for single-cell multimodal data, particularly in complex datasets.
@@ -16,9 +16,8 @@ In \sref{methods:integration}, we first introduce the notation that is necessary
 In \sref{methods:TI}, Similarly, we first introduce the notation that is necessary to formalize our methods.
 
 
-\section{Single cell Multi-modal dimensional integration}
 \label{methods:integration}
-\subsection{Notation}
+\section{Notation}
 $\mathbf{0}_{p\times q}: $ A $p\times q$ block matrix with all zero elements.\\
 $I_p:$ a p-dimensional identity matrix.\\
 $A^{-\top}:$ the transposed inverse of $A$\\
@@ -26,17 +25,17 @@ $A^{1/2}:$ a square root of $A$\\
 $A^{-\top/2}:$ the transposed inverse of $A^{-1/2}$\\
 $<\mathbf{z}_a, \mathbf{z}_b>:$ the angel between $\mathbf{z}_a$ and $\mathbf{z}_b$
 
-\subsection{Pre-processing and Dimensional reduction}
+\section{Pre-processing and Dimensional reduction}
 \label{methods:integration:pre}
 Our method take dimensional reductions of $m$ modalities count matrices as input, the count matrices can be represented as
 \begin{equation}
     \mathcal{X}=\{X_1,X_2,\cdots,X_m\}
 \end{equation}
-where $X_{i} \in \mathbb{R}^{n\times s_{i}}$ represents the data of a particular single cell modality, $n$ represents the number of cells, and $s_{i}$ represents the number of features in modality $i$. Here, we focus on multimodal data, where the cells are the same across matrices and there is no direct relation between the features of the distinct modalities. To genereate inputs of our method, we process distinct pre-process and next obtain a dimension reduced matrix for each modality independently using a modality-specific approach: 
+where $X_{i} \in \mathbb{R}^{n\times s_{i}}$ represents the data of a particular single cell modality, $n$ represents the number of cells, and $s_{i}$ represents the number of features in modality $i$. Here, we focus on multimodal data, where the cells are the same across matrices and there is no direct relation between the features of the distinct modalities. To genereate inputs of our method, we process distinct pre-process and next obtain a dimension reduced matrix for each modality independently using a modality-specific approach:
 \begin{align}
     Y_{i}=f_{i}(X_{i})
 \end{align}
-where $Y_{i} \in \mathbb{R}^{n\times p_{i}}$ represents the low-dimensional matrix for modality $i$, $p_{i}$ represents the number of dimensions and $f_{i}$ represents the specific dimension reduction method for this modality. 
+where $Y_{i} \in \mathbb{R}^{n\times p_{i}}$ represents the low-dimensional matrix for modality $i$, $p_{i}$ represents the number of dimensions and $f_{i}$ represents the specific dimension reduction method for this modality.
 
 The pre-processing steps for transcriptome, epigenome, and proteome modalities have been detailed in \sref{background:sec2:scRNA}, \sref{background:sec2:scATAC}, and \sref{background:sec2:protein}. We employ widely used methods for pre-processing, including log normalization followed by feature selection for scRNA-seq data, retaining the top 3,000 features and scaling the data. For scATAC-seq data, we apply TF-IDF transformation to the peaks. In the case of surface protein data, a centered log ratio transformation is employed.
 
@@ -45,13 +44,13 @@ To reduce dimensions, we employ latent semantic indexing (LSI) for scATAC-seq an
 \begin{equation}
     Y_{j}' = U\Sigma V^\top
 \end{equation}
-Where $Y_{j}'\in \mathbb{R}^{n\times s_{j}}$ represents the TF-IDF transformed feature matrix, columns of left singular vector $U\in \mathbb{R}^{n\times p_j}$ is the reduced dimensions.  
+Where $Y_{j}'\in \mathbb{R}^{n\times s_{j}}$ represents the TF-IDF transformed feature matrix, columns of left singular vector $U\in \mathbb{R}^{n\times p_j}$ is the reduced dimensions.
 
-The rationale behind the use of dimension reduction is two-fold. First, low-dimensional matrices reduce the computing time of the CCA analysis without impacting accuracy for a minimum number of dimensions. Moreover, it allows to work directly on batch-corrected data, which is usually represented in a low-dimensional space~\cite{hao2021seurat4, korsunsky2019harmony}. Of note, batch correction is recommended previous to the integration, whenever the data is affected by batch effects, see \fref{fig:batch_correction}. 
+The rationale behind the use of dimension reduction is two-fold. First, low-dimensional matrices reduce the computing time of the CCA analysis without impacting accuracy for a minimum number of dimensions. Moreover, it allows to work directly on batch-corrected data, which is usually represented in a low-dimensional space~\cite{hao2021seurat4, korsunsky2019harmony}. Of note, batch correction is recommended previous to the integration, whenever the data is affected by batch effects, see \fref{fig:batch_correction}.
 
-\subsection{Integration}
+\section{Integration}
 \label{methods:integration:alg}
-\subsubsection{Canonical Correlation analysis for two modalities}
+\subsection{Canonical Correlation analysis for two modalities}
 Canonical Correlation analysis(CCA) was first introduced H.Hotelling\citep{hotelling1935cca1,HOTELLING1936cca2} as a multivariate statistical methods for the analysis of paired sets of variables. In multivariate statistical analysis, the dataset consists of several variables measured across a group of observations or individuals. In the context of Canonical Correlation Analysis (CCA), the variables for a given observation can be divided into two distinct sets, representing the two perspectives or views of the data. Let the views $a$ and $b$ be denoted by the matrices $\mathbf{Y}_a\in\mathbb{R}^{n\times p}$ and $\mathbf{Y}_b\in \mathbb{R}^{n\times q}$. The row vectors $\mathbf{y}_a^k\in \mathbb{R}^{p}$ and $\mathbf{y}_b^k$ for $k\in\{1,2,\cdots, n\}$ denotes the sets of empirical multivariate observations in $\mathbf{Y}_a$ and $\mathbf{Y}_b$. The observations are presumed to be collectively drawn from a normal multivariate distribution. And the column vectors $a_i\in \mathbb{R}^n$ for $i\in \{1,2,\cdots, p\}$ and $b_j\in \mathbb{R}^n$ for ${j\in \{1,2,\cdots, q\}}$ denote the variable vectors of the n observations respectively. The problem in CCA can be defined to derive the linear relations between the variables in $\mathbf{Y}_a$ and $\mathbf{Y}_b$ such that the linear transformation:
 \begin{equation}
 \mathbf{Y}_a\mathbf{w}_a=\mathbf{z}_a\quad\text{and}\quad \mathbf{Y}_b\mathbf{w}_b=\mathbf{ z}_b
@@ -69,7 +68,7 @@ Canonical Correlation analysis(CCA) was first introduced H.Hotelling\citep{hotel
 where $\mathbf{Y}_a\in \mathbb{R}^{n\times p}$, ${\mathbf w}_a\in\mathbb{R}^p$, ${\mathbf z}_a\in\mathbb{R}^n$  and $\mathbf{Y}_b\in \mathbb{R}^{n\times q}$, $\mathbf{w}_b\in\mathbb{R}^p$, ${\mathbf z}_b\in\mathbb{R}^n$. The matrices $\mathbf{Y}_a$ and $\mathbf{Y}_b$ symbolize linear transformations of positions ${\mathbf w}_a$ and ${\mathbf w}_b$ onto the images ${\mathbf z}_a$ and ${\mathbf z}_b$ within the space $\mathbb{R}^n$. The terms ``canonical weight vectors'' typically describe the positions ${\mathbf w}_a$ and ${\mathbf w}_b$, while the images ${\mathbf z}_a$ and ${\mathbf z}_b$ are often referred to as ``canonical variates''. The cosine of the angle between ${\mathbf z}_a$ and ${\mathbf z}_b$, referred to as the canonical correlation. The aim of Canonical Correlation Analysis (CCA) is to discover two positions, $\mathbf{w}_a \in \mathbb{R}^p$ and $\mathbf{w}_b \in \mathbb{R}^q$, such that, upon linear transformations $\mathbf{Y}_a \in \mathbb{R}^{n\times p}$ and $\mathbf{Y}_b \in \mathbb{R}^{n\times q}$, they are mapped in a manner that maximizes the cosine of the angle between the position vectors of their images, $\mathbf{z}_a \in \mathbb{R}^n$ and $\mathbf{z}_b \in \mathbb{R}^n$. The first canonical correlation which equals $\cos\theta_1$ corresponding the smallest angle such that:
 \begin{equation}
 \begin{aligned}
-&\cos \theta_1 = \underset{{\mathbf z}_a, {\mathbf z}_b \in\mathbb{R}^n}{\max}<{\mathbf z}_a, {\mathbf z}_b> 
+&\cos \theta_1 = \underset{{\mathbf z}_a, {\mathbf z}_b \in\mathbb{R}^n}{\max}<{\mathbf z}_a, {\mathbf z}_b>
 			   = \underset{{\mathbf z}_a, {\mathbf z}_b \in\mathbb{R}^n}{\max}
 			   		 \frac{\mathbf{z}_a^\top \mathbf{z}_b}{\|\mathbf{z}_a\| \|\mathbf{z}_b\|} \\
 &\text{subject to}\quad \|{\mathbf z}_a\|_2=1\quad \|{\mathbf z}_b\|_2=1
@@ -97,7 +96,7 @@ Let the maximum be attained by $z_{a}^{(1)}$ and $z_{b}^{(1)}$. The pair of imag
  To conclude, the essence of Canonical Correlation Analysis (CCA) lies in identifying two positions within their respective data spaces. These positions are chosen such that their images on a unit ball minimize the angle between them, consequently maximizing the canonical correlation. The linear transformations of these positions are governed by the data matrices. The determination of the number of relevant positions can be achieved by analyzing the values of canonical correlations or by applying statistical significance tests.
 
 
-\subsubsection{Solving the Optimization Problem}
+\subsection{Solving the Optimization Problem}
 There are several ways to solve the CCA problem. The first approach is to apply the standard eigenvalue problem \citep{HOTELLING1936cca2,hooper1959ccaeigen}. It can also be solved by converting it into a generalized eigenvalue problem \citep{bach2002kernel,hardoon2004canonical}. The most commonly used method to solve the problem is by employing Singular Value Decomposition (SVD), first introduced by \citep{healy1957ccasvd}, and further described by \citep{ewerbring1989canonical}. Here, we only introduce the SVD solution, which is applied in our package.
 %\citep{HOTELLING1936cca2} shows that we can obtain canonical correlation by solving the  eigendecomposition problem:
 %\begin{equation}
@@ -108,7 +107,7 @@ To solve the CCA problem using SVD, we first introduce the joint covariance matr
 	C = \begin{pmatrix}
 		C_{aa} & C_{ab}\\
 		C_{ba} & C_{bb}\\
-	\end{pmatrix}	
+	\end{pmatrix}
 \end{equation}
 Where  and $C_{aa} = \frac{1}{n-1} \mathbf{Y}_a^\top \mathbf{Y}_a$ is the empirical variance matrices between the variables in $\mathbf{Y}_a$, $C_{bb} = \frac{1}{n-1} \mathbf{Y}_b^\top \mathbf{Y}_b$ is the empirical variance matrices between the variables in $\mathbf{Y}_b$ and $C_{ab} = \frac{1}{n-1} \mathbf{Y}_a^\top \mathbf{Y}_b$ is the sample covariance matrix between variable column vectors in $\mathbf{Y}_a$ and $\mathbf{Y}_b$
 
@@ -150,7 +149,7 @@ we have a joint covariance matrix
     D & I_q
     \end{pmatrix}
 \end{equation}
-The diagonal elements $\gamma_i$ of D denote the canonical correlations. Thus we find the linear compounds $\mathbf{Z}_a$ and $\mathbf{Z}_b$ to maximize the cross-correlations. 
+The diagonal elements $\gamma_i$ of D denote the canonical correlations. Thus we find the linear compounds $\mathbf{Z}_a$ and $\mathbf{Z}_b$ to maximize the cross-correlations.
 
 Since both $C_{aa}$ and $C_{bb}$ are symmetric positive definite, we can perform Cholesky Decomposition on them to get:
 \begin{equation}
@@ -195,7 +194,7 @@ The matrix $C$ is thus reduced to the joint covariance matrix such that:
     \begin{pmatrix}
         U & {\mathbf 0}\\
         {\mathbf 0} & V
-    \end{pmatrix} = 
+    \end{pmatrix} =
     \begin{pmatrix}
     I_p & D\\
     D^\top & I_q
@@ -208,17 +207,17 @@ With the desired transformation $W_a$ and $W_b$:
 \end{equation}
 Where the singular values $\gamma_i$ are in descending order such that:
 \begin{equation}
-    \gamma_1 \geq \gamma_2 \geq \cdots \geq 0    
+    \gamma_1 \geq \gamma_2 \geq \cdots \geq 0
 \end{equation}
 
 The time complexity of CCA for the calculation of $C_{aa}$ and $C_{bb}$ is $O(n\times p \times p)$ and $O(n\times q \times q)$ respectively whereas the time complexity of $C_{ab}$ is $O(n\times p \times q)$. And the time complexity of the  calculation of SVD to solve the problem is $O(\min(p^2q,qp^2))$.
 
-\subsubsection{Uniform latent component}
+\subsection{Uniform latent component}
 CCA does not directly provide a unified dimension reduction for single-cell multimodal data. Combining $Z_a$ and $Z_b$ into $q\times 2$ dimensions is not advisable, as a larger dimension increases the risk of the curse of dimensionality. Moreover, correlated components are similar to each other, leading to redundant storage. Additionally, a larger dimensionality negatively impacts the efficiency of downstream analysis. Therefore, we propose a simple method to obtain a unified shared latent space without discarding information from CCA, which involves adding $Z_a$ and $Z_b$ together as follows:
 \begin{equation}
     Z = Z_a + Z_b
 \end{equation}
-Which $Z\in \mathbb{R}^{q}$ is the share latent space. 
+Which $Z\in \mathbb{R}^{q}$ is the share latent space.
 
 \begin{figure}[!ht]
 	\centering
@@ -228,14 +227,14 @@ Which $Z\in \mathbb{R}^{q}$ is the share latent space.
 	\label{fig:CC_pval_select}
 \end{figure}
 
-\subsubsection{Selecting the number of components}
+\subsection{Selecting the number of components}
 Another consideration is whether to retain all components from CCA. Although CCA can calculate as many as $\min(p, q)$ components, not all of them are useful, as the last several components are almost irrelevant, as shown in \afref{fig:CC_corrlations_last}. There are two approaches to select the top components. One method involves examining the correlation of components between two correlation variables. Another approach is to perform a correlation statistical test to exclude unrelated CC pairs, as illustrated in Fig \fref{fig:CC_pval_select}. Our method employs p-values to select correlated components by measuring Pearson correlation and using a student's $t$-test for significance. The $p$-values are then corrected using the BH (Benjamini-Hochberg) method \cite{benjamini1995controlling}, and only canonical components with adjusted p-values < 0.05 are retained.
 
-\subsubsection{Solving Problems with multivariable}
+\subsection{Solving Problems with multivariable}
 Another issue to be addressed is that conventional CCA cannot handle more than two modalities. Although Multi-CCA has been developed to simultaneously correlate more than 3 variables, it can probably lead overfitting problem. Thus, we use another way to handle the multimodalities using CCA. For the case that Y has more than two modalities, we perform the pairwise integration of modalities starting with the pair with highest dimensionality. The result of this CCA is then used for integration
-with the next modality. See \alref{alg:MOJITOO} for a brief description, which receives a set of matrices $\{Y_{1},\cdots, Y_{m}\}$ with increasing dimensions $p_{i}\geq p_{i+1}$ as input. This heuristic algorithm was adopted also to avoid the high computational costs of multiple CCA, which grow exponentially with the number of modalities. 
+with the next modality. See \alref{alg:MOJITOO} for a brief description, which receives a set of matrices $\{Y_{1},\cdots, Y_{m}\}$ with increasing dimensions $p_{i}\geq p_{i+1}$ as input. This heuristic algorithm was adopted also to avoid the high computational costs of multiple CCA, which grow exponentially with the number of modalities.
 
-\subsection{Implementation}
+\section{Implementation}
 \label{methods:integration:imp}
 We implemented our Canonical Correlation Analysis (CCA) based approach to address the integration of single-cell multimodal data as an R package. Our method is named MOJITOO (\textbf{M}ulti-m\textbf{O}dal \textbf{Joint} \textbf{I}ntegra\textbf{T}ion of c\textbf{O}mp\textbf{O}nents) and will be referred to as such throughout this thesis. The method's implementation encompasses all the steps described in this chapter. MOJITOO was initially released in January 2022. \fref{fig:MOJITOO_schematic} illustrates the workflow of MOJITOO, and \tref{tab:mojitoo_R_dependencies} summarizes the dependencies of the MOJITOO package.
 
@@ -291,7 +290,7 @@ To ensure users utilize MOJITOO correctly, we have provided separate R Markdown 
 
 We have tested MOJITOO with R 4.0-4.3 with Rcpp 1.0.7, Seurat 3.2.3,  Signac 1.0.0, reticulate 1.22, corpcor 1.6.10,  S4Vectors 0.30.2,  ramify 0.3.3,  plyr 1.8.6,  rhdf5 2.36.0,  Matrix 1.3-4,  glue 1.4.2,  dplyr 1.0.7,  reshape2 1.4.4,  pbapply 1.5-0,  ggplot2 3.3.5, ComplexHeatmap 2.11.1, patchwork 1.1.1, Gviz 1.36.2, grid 4.1.0, tidyr 1.1.4, fda 5.5.1, and assertthat 0.2.1. We have also tested Python version(3.8-3.10) with numpy 1.23.5, sklearn 1.1.2, scipy 1.10.1, statsmodels 0.14.0, scanpy 1.9.3, and anndata 0.9.2.
 
-We used a local Linux Mint 21.1 x86\_64 64-bit machine running with 12 Intel(R) Core(TM) i5-10400 CPU at 2.90GHz and 64 GB RAM. Moreover, we ran MOJITOO on a High-Performance Computing (HPC) cluster mainly based on AMD EPYC 7452 64-bit nodes at 2.35 GHz and 500 GB RAM with  Rocky Linux 8.9. 
+We used a local Linux Mint 21.1 x86\_64 64-bit machine running with 12 Intel(R) Core(TM) i5-10400 CPU at 2.90GHz and 64 GB RAM. Moreover, we ran MOJITOO on a High-Performance Computing (HPC) cluster mainly based on AMD EPYC 7452 64-bit nodes at 2.35 GHz and 500 GB RAM with  Rocky Linux 8.9.
 
 For more information about MOJITOO implementation, source code, tutorials and examples, please see:
 \begin{center}
@@ -309,20 +308,20 @@ For more information about MOJITOO implementation, source code, tutorials and ex
 	$Z_{1} \gets Y_{1}$ \\
 	\While{$i < m$}
 	{
-		$W_{1}, W_{2} \gets CCA(Z_{1}, Y_{i})$ \\ 
-		$Z_{(1)} \gets Z_{1}\times W_{1}$ \\ 
+		$W_{1}, W_{2} \gets CCA(Z_{1}, Y_{i})$ \\
+		$Z_{(1)} \gets Z_{1}\times W_{1}$ \\
 		$Z_{2} \gets Y_{i}\times W_{2}$  \\
-		$Z \gets Z_{1} + Z_{2}$ \\ 
-		$Z \gets Z[, 1:k]$\Comment{only consider significantly correlated dimension } 
+		$Z \gets Z_{1} + Z_{2}$ \\
+		$Z \gets Z[, 1:k]$\Comment{only consider significantly correlated dimension }
 		$Z_{1} \gets Z$ \\
 		$i \gets i+1$  \\
 	}
-	\Return $\mathbf{Z}$ 
+	\Return $\mathbf{Z}$
 	\caption{Multimodal MOJITOO Algorithm }
 	\label{alg:MOJITOO}
 \end{algorithm}
 
-\subsection{Discussion}
+\section{Discussion}
 In this section, we discussed our computational methods for single-cell multimodal integration. Firstly, we described the preprocessing and dimension reduction as inputs (\sref{methods:integration:pre}). Subsequently, we delved into the core algorithm of our solution, encompassing CCA theory, solving the CCA problem using SVD, obtaining the unified latent space, component selection, and multivariable solutions (\sref{methods:integration:alg}). We then provided insights into the implementation of MOJITOO (\sref{methods:integration:imp}). The algorithm overview of MOJITOO is depicted in \fref{fig:MOJITOO_schematic}, and both the workflow and details are presented in \fref{fig:CCA_ADD} and Algorithm~\ref{alg:MOJITOO}, respectively. In conclusion, our computational method introduces novel concepts to address the challenges of single-cell multimodal integration:
 \begin{itemize}
 
@@ -346,5 +345,3 @@ Certain methodologies, such as DIABLO and Symphony, have explored the concept of
 When scrutinizing the assumptions of the competing methods, our CCA-based approach stand out for their independence from presumptions that may introduce bias to the model. The method focuses on correlating modalities to extract the most relevant information from each, while preserving specific features through the addition of components. In contrast, many competing methods necessitate the setup of hypotheses through parameters. For instance, Weighted Nearest Neighbor-based methods require determining the number of neighbors, and NMF methods involve deciding on regularization parameters. Our approach, on the other hand, employs a correlation test to retain only significant components, resulting in the optimal shared latent space for the modalities.
 
 
-\section{Discussion}
-In this section, we introduced two frameworks, MOJITOO and PHLOWER, addressing two key challenges in single-cell multimodal analysis: integration analysis and trajectory inference. MOJITOO, an integration method, employs Canonical Correlation Analysis (CCA) to effectively derive a unified latent space from diverse feature matrices. On the other hand, the trajectory inference method, PHLOWER, utilizes the decomposition of the Hodge Laplacian to cluster trajectories and subsequently constructs a cell fate tree to depict the biological cell differentiation process.
