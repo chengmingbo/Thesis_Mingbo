@@ -7,13 +7,17 @@
 \label{chapter:methods_TI}
 \graphicspath{{chapter5/figs}}
 
-In the previous chapter, we introduced the concept of profiling the single-cell transcriptome, genome, epigenome, and proteome, along with simultaneous sequencing. We also outlined the common workflow for analyzing single-cell sequencing data from different protocols and that of single-cell multimodal analysis. We discussed the challenges associated with single-cell multimodal integration due to various feature distributions and types. To tackle this, our goal is to develop computational methods to effectively integrate single cells of multiple modalities. Another challenge in single-cell multimodal analysis is inferring a trajectory to capture cell fate differentiation. To address this challenge, we aim to develop a computational trajectory inference method tailored for single-cell multimodal data, particularly in complex datasets.
+In the previous two chapters, we presented the implementation of single-cell integration methods and the benchmarking to validate our MOJITOO method. With a shared latent space, we can further perform several downstream analyses, among which trajectory inference is crucial for capturing cell differentiation. Inferring trajectories is challenging since we can only capture specific time points of single cells rather than the dynamic process. Trajectory inference for single-cell multimodal data provides an opportunity to delve deeper into biological processes.
+
+This chapter exclusively introduces the formalization and implementation of our novel trajectory inference method for single-cell multimodal data. We first introduce the necessary notation for the method (\sref{TI_methods:notation}). Next, we present the implementation details of trajectory inference, specifically focusing on graph triangulation, Hodge decomposition, and tree creation (\sref{TI_methods:TI}). Following that, we describe the implementation details of our package (\sref{TI_methods:implementation}). Finally, we conclude this chapter by discussing the strengths of our method (\sref{TI_methods:discussion}).
+
 
 \section{Notation}
+\label{TI_methods:notation}
 
 %a table shows the R dependencies
 \section{Trajectory Inference}
-
+\label{TI_methods:TI}
 \begin{algorithm}
     \Input{$A, W, N, \text{pct}, G^{t}=\{\mathcal{V}^{t},\mathcal{E}^{t}\}, K=9$ \Comment{A, W are the Affinity matrix and diffusion distance matrix}
     }
@@ -153,6 +157,7 @@ In the previous chapter, we introduced the concept of profiling the single-cell 
 % check how to rotate the title text of a table, see Li's table 3.2
 
 \section{Implementation}
+\label{TI_methods:implementation}
 We developed our Graph Hodge Laplacian (HL)-based approach to address the trajectory inference (TI) of single-cell multimodal data as a Python module. Our method is named PHLOWER (\textit{gra}\textbf{P}h \textbf{H}odge \textbf{L}aplacian inferring traject\textbf{O}ry flo\textbf{W}s of c\textbf{E}ll diffe\textbf{R}entiation) and will be referred to as such throughout this thesis. The method's implementation encompasses all the steps described in this chapter. PHLOWER was initially released in September 2023. \fref{fig:PHLOWER_schematic} illustrates the workflow of PHLOWER, and \tref{tab:phlower_python_dependencies} summarizes the dependencies of the PHLOWER module.
 
 PHLOWER requires, at a minimum, dimensional reduction as input as well as a count matrix to be processed by itself. The output of PHLOWER is a STREAM tree as visualization that shows the cell differentiation tree. In addition, PHLOWER outputs a tree structure with detailed random walk paths for downstream analysis.
@@ -171,7 +176,8 @@ For more information about PHLOWER implementation, source code, tutorials and ex
 \end{center}
 
 \section{Discussion}
-In this section, we discussed our computational methods for single-cell multimodal trajectory inference. We first introduce, next xxx
+\label{TI_methods:discussion}
+In this chapter, we discussed our computational methods for single-cell multimodal trajectory inference. We first introduce, next xxx
 Finally, we described the implementation details(sref{})
 
 From a conceptual standpoint, when comparing our method of Hodge Laplacian decomposition with competing methods, it becomes evident that the latter either connect clusters to derive trajectories or identify backbones in low dimensions (2,3) to represent trajectories. However, none of these methods effectively utilizes the high dimensions of a graph for inference. In contrast, our method utilizes edges in the high-dimensional cumulative trajectory space to identify branching points. This marks the first time Hodge Laplacian decomposition is employed to create a tree structure. Such innovation can find applications not only in biology but also in areas such as traffic detection and beyond.

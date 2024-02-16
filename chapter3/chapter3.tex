@@ -7,17 +7,13 @@
 \label{chapter:methods_inte}
 \graphicspath{{chapter3/figs}}
 
-In the previous chapter, we introduced the concept of profiling the single-cell transcriptome, genome, epigenome, and proteome, along with simultaneous sequencing. We also outlined the common workflow for analyzing single-cell sequencing data from different protocols and that of single-cell multimodal analysis. We discussed the challenges associated with single-cell multimodal integration due to various feature distributions and types. To tackle this, our goal is to develop computational methods to effectively integrate single cells of multiple modalities. Another challenge in single-cell multimodal analysis is inferring a trajectory to capture cell fate differentiation. To address this challenge, we aim to develop a computational trajectory inference method tailored for single-cell multimodal data, particularly in complex datasets.
+In the previous chapter, we introduced the concept of profiling the single-cell transcriptome, genome, epigenome, and proteome, along with simultaneous sequencing. We also outlined the common workflow for analyzing single-cell sequencing data from different protocols and that of single-cell multimodal analysis. We discussed the challenges associated with single-cell multimodal integration due to various feature distributions and types. To tackle this, our goal is to develop computational methods to effectively integrate single cells of multiple modalities. 
 
-In this chapter, we exclusively present and formalize our computational solution towards the two goals. Specifically, we divide the chapter into two main parts: single-cell multimodal dimensional integration (\sref{methods:integration}) and trajectory inference \sref{methods:TI}.
-
-In \sref{methods:integration}, we first introduce the notation that is necessary to formalize our methods.
-
-In \sref{methods:TI}, Similarly, we first introduce the notation that is necessary to formalize our methods.
+In this chapter, we exclusively present and formalize our computational solution for single-cell multimodal dimensional integration. We first introduce the notation necessary to formalize our methods (\sref{inte_methods:Notation}). Next, we discuss the preprocessing of the input for our single-cell integration method, including the normalization and dimension reduction of multimodal data (\sref{inte_methods:preprocessing}). Subsequently, we introduce our method for single-cell multimodal integration using Canonical Correlation Analysis (CCA) (\sref{inte_methods:integration}). Following that, we delve into the implementation details of our method (\sref{inte_methods:implementation}). Finally, we conclude the chapter by highlighting the innovations of our methods and engaging in a conceptual comparison with competing methods (\sref{inte_methods:discussion}).
 
 
-\label{methods:integration}
 \section{Notation}
+\label{inte_methods:Notation}
 $\mathbf{0}_{p\times q}: $ A $p\times q$ block matrix with all zero elements.\\
 $I_p:$ a p-dimensional identity matrix.\\
 $A^{-\top}:$ the transposed inverse of $A$\\
@@ -26,7 +22,7 @@ $A^{-\top/2}:$ the transposed inverse of $A^{-1/2}$\\
 $<\mathbf{z}_a, \mathbf{z}_b>:$ the angel between $\mathbf{z}_a$ and $\mathbf{z}_b$
 
 \section{Pre-processing and Dimensional reduction}
-\label{methods:integration:pre}
+\label{inte_methods:preprocessing}
 Our method take dimensional reductions of $m$ modalities count matrices as input, the count matrices can be represented as
 \begin{equation}
     \mathcal{X}=\{X_1,X_2,\cdots,X_m\}
@@ -49,7 +45,7 @@ Where $Y_{j}'\in \mathbb{R}^{n\times s_{j}}$ represents the TF-IDF transformed f
 The rationale behind the use of dimension reduction is two-fold. First, low-dimensional matrices reduce the computing time of the CCA analysis without impacting accuracy for a minimum number of dimensions. Moreover, it allows to work directly on batch-corrected data, which is usually represented in a low-dimensional space~\cite{hao2021seurat4, korsunsky2019harmony}. Of note, batch correction is recommended previous to the integration, whenever the data is affected by batch effects, see \fref{fig:batch_correction}.
 
 \section{Integration}
-\label{methods:integration:alg}
+\label{inte_methods:integration}
 \subsection{Canonical Correlation analysis for two modalities}
 Canonical Correlation analysis(CCA) was first introduced H.Hotelling\citep{hotelling1935cca1,HOTELLING1936cca2} as a multivariate statistical methods for the analysis of paired sets of variables. In multivariate statistical analysis, the dataset consists of several variables measured across a group of observations or individuals. In the context of Canonical Correlation Analysis (CCA), the variables for a given observation can be divided into two distinct sets, representing the two perspectives or views of the data. Let the views $a$ and $b$ be denoted by the matrices $\mathbf{Y}_a\in\mathbb{R}^{n\times p}$ and $\mathbf{Y}_b\in \mathbb{R}^{n\times q}$. The row vectors $\mathbf{y}_a^k\in \mathbb{R}^{p}$ and $\mathbf{y}_b^k$ for $k\in\{1,2,\cdots, n\}$ denotes the sets of empirical multivariate observations in $\mathbf{Y}_a$ and $\mathbf{Y}_b$. The observations are presumed to be collectively drawn from a normal multivariate distribution. And the column vectors $a_i\in \mathbb{R}^n$ for $i\in \{1,2,\cdots, p\}$ and $b_j\in \mathbb{R}^n$ for ${j\in \{1,2,\cdots, q\}}$ denote the variable vectors of the n observations respectively. The problem in CCA can be defined to derive the linear relations between the variables in $\mathbf{Y}_a$ and $\mathbf{Y}_b$ such that the linear transformation:
 \begin{equation}
@@ -235,7 +231,7 @@ Another issue to be addressed is that conventional CCA cannot handle more than t
 with the next modality. See \alref{alg:MOJITOO} for a brief description, which receives a set of matrices $\{Y_{1},\cdots, Y_{m}\}$ with increasing dimensions $p_{i}\geq p_{i+1}$ as input. This heuristic algorithm was adopted also to avoid the high computational costs of multiple CCA, which grow exponentially with the number of modalities.
 
 \section{Implementation}
-\label{methods:integration:imp}
+\label{inte_methods:implementation}
 We implemented our Canonical Correlation Analysis (CCA) based approach to address the integration of single-cell multimodal data as an R package. Our method is named MOJITOO (\textbf{M}ulti-m\textbf{O}dal \textbf{Joint} \textbf{I}ntegra\textbf{T}ion of c\textbf{O}mp\textbf{O}nents) and will be referred to as such throughout this thesis. The method's implementation encompasses all the steps described in this chapter. MOJITOO was initially released in January 2022. \fref{fig:MOJITOO_schematic} illustrates the workflow of MOJITOO, and \tref{tab:mojitoo_R_dependencies} summarizes the dependencies of the MOJITOO package.
 
 \begin{figure}[!ht]
@@ -322,7 +318,8 @@ For more information about MOJITOO implementation, source code, tutorials and ex
 \end{algorithm}
 
 \section{Discussion}
-In this section, we discussed our computational methods for single-cell multimodal integration. Firstly, we described the preprocessing and dimension reduction as inputs (\sref{methods:integration:pre}). Subsequently, we delved into the core algorithm of our solution, encompassing CCA theory, solving the CCA problem using SVD, obtaining the unified latent space, component selection, and multivariable solutions (\sref{methods:integration:alg}). We then provided insights into the implementation of MOJITOO (\sref{methods:integration:imp}). The algorithm overview of MOJITOO is depicted in \fref{fig:MOJITOO_schematic}, and both the workflow and details are presented in \fref{fig:CCA_ADD} and Algorithm~\ref{alg:MOJITOO}, respectively. In conclusion, our computational method introduces novel concepts to address the challenges of single-cell multimodal integration:
+\label{inte_methods:discussion}
+In this chapter, we discussed our computational methods for single-cell multimodal integration. Firstly, we described the preprocessing and dimension reduction as inputs (\sref{inte_methods:integration}). Subsequently, we delved into the core algorithm of our solution, encompassing CCA theory, solving the CCA problem using SVD, obtaining the unified latent space, component selection, and multivariable solutions (\sref{inte_methods:integration}). We then provided insights into the implementation of MOJITOO (\sref{inte_methods:implementation}). The algorithm overview of MOJITOO is depicted in \fref{fig:MOJITOO_schematic}, and both the workflow and details are presented in \fref{fig:CCA_ADD} and Algorithm~\ref{alg:MOJITOO}, respectively. In conclusion, our computational method introduces novel concepts to address the challenges of single-cell multimodal integration:
 \begin{itemize}
 
     \item We highlighted the significance of dimension reduction in single-cell multimodal integration. Using dimension reduction inputs to replace the original feature count matrix not only alleviates the noise impact on the results but also reduces the running time (\fref{fig:MOFA}).
