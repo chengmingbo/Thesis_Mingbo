@@ -25,6 +25,14 @@ To facilitate direct comparability between outputs from various methods, dynvers
 \subsubsection{The Hamming–Ipsen–Mikhailov metric}
 The HIM metric utilizes the two weighted adjacency matrices of the milestone networks as input, with weights assigned based on edge length. It combines the normalized Hamming distance, providing insights into differences in edge lengths, and the normalized Ipsen–Mikhailov distance, evaluating the similarity in degree distributions. The Ipsen–Mikhailov distance includes a parameter $\gamma$, set at 0.1 to ensure comparability of scores across datasets. The HIM metric is a linear combination of these components \fref{fig:dynverse_metrics}B.
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.45\textwidth]{DLA_example/fig}
+	\vspace{0.1cm}
+	\caption[DLA tree ground truth example]{DLA tree ground truth example embedded with PHATE.}
+	\label{fig:DLA_example}
+\end{figure}
+
 \subsubsection{Correlation between geodesic distances}
 The $cor_{dist}$ metric is based on the observation that when a cell's position is identical in both the reference and the prediction, its relative distances to all other cells in the trajectory should also be identical. To calculate $cor_{dist}$, dynverse initially simples 100 waypoint cells in both the prediction and the reference dataset, employing stratified sampling across various milestones, edges, and regions of delayed commitment. This sampling is weighted by the number of cells in each collection. Subsequently, it computes the geodesic distances between the union of waypoint cells from both datasets and all other cells. The calculation of geodesic distance takes into account the location of the two cells within the trajectory and is weighted by the length of the edge in the milestone network. Finally, $cor_{dist}$ is defined as the Spearman rank correlation between the distances of both datasets \fref{fig:dynverse_metrics}C.
 
@@ -49,13 +57,6 @@ Similar to $F1_{branches}$, other than mapping cells to edges, the F1 milestones
 
 \subsection{Simulated Data}
 To test the power of PHLOWER in the detection of multiple branches trees, we generate 10 simulated data sets using diffusion-limited aggregation trees (DLA tree)~\citep{witten1981diffusion} as proposed in PHATE~\citep{moon2017phate}. For this, we use a Gaussian noise parameter of 5 and vary the parameter n\_branch, which controls the number of branches in the trees, from 3 to 12. This generated trees with 5 to 18 branches.  For every data, we generate 3000 points and 100 features. Of note, we use the same data as evaluated in PHATE as data with 10 branches. Next, we run PHATE to visualize the branches, with which we can future construct ground truth for dynverse benchmarking.
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.45\textwidth]{DLA_example/fig}
-	\vspace{0.1cm}
-	\caption[DLA tree ground truth example]{DLA tree ground truth example embedded with PHATE.}
-	\label{fig:DLA_example}
-\end{figure}
 
 
 Next, we reformat this data to be used within the trajectory benchmarking framework dynverse~\citep{saelens2019comparison} by using dynwrap. In short, dynverse needs detailed information of the branches, branches points and association of cells within a branch.  To do so, we need to find the branching points of the DLA tree. First, we perform PHATE on the DLA high dimensional data to get embedding with 2 dimensions. We only consider embeddings, where the tree structure is preserved. Next, we find the branching points by finding 2 nearest neighbors of two branches. With these branching points, we created the branch backbones needed by dynverse. We calculate am association of each data point to a branching point (milestone percentage) by calculating the euclidean distance between the points related to each branch. See DLA tree with 10 branches example \fref{fig:DLA_example}.
@@ -132,6 +133,18 @@ Next, we reformat this data to be used within the trajectory benchmarking framew
 	pCreode has been wrapped in dynmethods, we just pass the ti\_pcreode function to dynwrap function infer\_trajectory to infer the trajectory. source code is~\url{https://github.com/dynverse/ti\_pcreode}
 \end{description}
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{evaluation_PHLOWER/fig}
+	\vspace{0.1cm}
+	\caption[evaluation\_PHLOWER]{
+	evaluation\_PHLOWER.}
+	\label{fig:evaluation_PHLOWER}
+\end{figure}
+
+
+
+
 \subsection{Biological Validation}
 
 %\subsection{Single Cell Kidney Organoids}
@@ -163,34 +176,7 @@ Snap-frozen kidney organoids were thawed in PBS and crushed using a glass tube a
 
 
 
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{evaluation_PHLOWER/fig}
-	\vspace{0.1cm}
-	\caption[evaluation\_PHLOWER]{
-	evaluation\_PHLOWER.}
-	\label{fig:evaluation_PHLOWER}
-\end{figure}
 
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{HIM/fig}
-	\vspace{0.1cm}
-	\caption[Structure similarity benchmarking]{
-	\textbf{Structure similarity benchmarking}.}
-	\label{fig:HIM}
-\end{figure}
-
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{Cordist/fig}
-	\vspace{0.1cm}
-	\caption[Location of cells]{
-	\textbf{Location of cells}.}
-	\label{fig:Cordist}
-\end{figure}
 
 
 \begin{figure}[!ht]
@@ -202,6 +188,38 @@ Snap-frozen kidney organoids were thawed in PBS and crushed using a glass tube a
 	\label{fig:f1branches}
 \end{figure}
 
+
+
+
+
+
+
+\section{Results}
+\subsection{Technical Validation}
+\subsubsection{Benchmarking Topology Recovery}
+PHLOWER was the best-performing method in regard to tree topology recovery, followed by PAGA, RaceID/StemID and monocle (Fig.\ref{fig2}A). 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{HIM/fig}
+	\vspace{0.1cm}
+	\caption[Structure similarity benchmarking]{
+	\textbf{Structure similarity benchmarking}.}
+	\label{fig:HIM}
+\end{figure}
+
+
+\subsubsection{Benchmarking Location of cells}
+In the problem of allocating cells to positions in a branch, PHLOWER was also the best performer, followed by TSCAN and RaceID/StemID (Fig.\ref{fig2}B).
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{Cordist/fig}
+	\vspace{0.1cm}
+	\caption[Location of cells]{
+	\textbf{Location of cells}.}
+	\label{fig:Cordist}
+\end{figure}
+\subsubsection{Benchmarking Branches Allocation}
+In the problem of allocating cells to the correct branches, PHLOWER obtained the best performance, followed by monocle and PAGA. 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{F1milestone/fig}
@@ -210,7 +228,8 @@ Snap-frozen kidney organoids were thawed in PBS and crushed using a glass tube a
 	\textbf{Branch points allocation}.}
 	\label{fig:f1milestone}
 \end{figure}
-
+\subsubsection{Benchmarking Branch points Allocation}
+Finally, in the allocation of cells to branches, PHLOWER was the best performer, followed by RaceID/StemID, monocle, and PAGA.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{PHLOWER_STREAM_layout/fig}
@@ -220,10 +239,8 @@ Snap-frozen kidney organoids were thawed in PBS and crushed using a glass tube a
 	\label{fig:PHLOWER_STREAM}
 \end{figure}
 
+Altogether, PHLOWER was ranked as the top performer in all evaluated scenarios. A runner-up method was RaceID/StemID, which also ranked within the top four methods in all scenarios. The performance on PHLOWER and competing methods is illustrated by the visualisation of the tree backbones on a simulated data with six final branches as provided by dynverse (Supp. Fig. ~\ref{supfig:dla10-workflow}). Moreover, graphs and embedding representations, which were produced by PHLOWER with the ten branch simulated data, represent wells PHLOWER main computational tasks
 
-
-\section{Results}
-\subsection{Technical Validation}
 \subsection{Biological Validation}
 \subsubsection{Apply Trajectory inference to kidney organoid data}
 \subsubsection{Characterize the cell fate xxxx}
