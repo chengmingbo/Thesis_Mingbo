@@ -7,14 +7,12 @@
 \label{chapter:MOJITOO_bench}
 
 \graphicspath{{chapter4/figs}}
-In the previous chapter, we introduced our computational approach, MOJITOO, for the integration of single-cell multimodal data. Here, we outline the experimental framework employed in this thesis to validate our method and subsequently present the results. The framework comprises two sections: technical validation and biological validation. In technical validation (Section 4.1.1), the primary objective is to assess the performance of our approach and compare it to other methods. Moving to biological validation (Section 4.1.2), we apply MOJITOO to the \texttt{PBMC-Multiome} data generated from mouse Peripheral Blood Mononuclear Cells(PBMC). We test its capability to integrate each canonical component (CC) of the data and its effectiveness in identifying top genes and peaks associated with each CC to gain insights into the data.
-
-In Section 4.2, we present the results described in Section 4.1. Specifically, in 4.2.1, we showcase the technical validation by comparing clustering accuracy, distance accuracy, and structure preservation among competing methods. Additionally, we provide a comparison of computational resources, highlighting the efficiency of these methods. Next, we will introduce (in Section 4.2.2) the biological validation to demonstrate the effectiveness of MOJITOO in PBMC data. We conclude this chapter with a final discussion of our experimental workflow and the results in Section 4.3.
+In the previous chapter, we introduced our computational approach, MOJITOO, for the integration of single-cell multimodal data. In this chapter, we outline the experimental framework employed in this thesis to validate our method and subsequently present the results. In the experimental framework, we first present the benchmarking dataset. Following that, we introduce three evaluation metrics for measuring clustering accuracy, distance accuracy, and structure preservation among competing methods, along with the design for assessing time and memory consumption. Next, we delve into the execution of competing methods for the benchmarking process~(\sref{MOJITOO:exp}). In \sref{MOJITOO:out}, we present the results outlined in \sref{MOJITOO:exp}. Specifically, in \sref{MOJITOO:out:bench}, we showcase the validation by comparing clustering accuracy, distance accuracy, and structure preservation among competing methods. Additionally, we provide a comparison of computational resources, highlighting the efficiency of these methods. Next, we delve into the \texttt{mulitome-PBMC} dataset, aiming to gain biological insights using the outcomes of MOJITOO~(\sref{MOJITOO:out:pbmc}). We then describe the statistical methods used in this chapter~(\sref{MOJITOO:statistical}). Finally, we conclude this chapter with a comprehensive discussion of our experimental workflow and the obtained results~(\sref{MOJITOO:discussion}).
 
 
 \section{Experiments}
 \label{MOJITOO:exp}
-In this section, we outline the experimental framework. We begin by introducing the single-cell multimodal data used in the benchmarking (Section 4.1.1). Following that, we delve into the specifics of executing eight computational single-cell integration approaches (Section 4.1.2). Subsequently, we present the technical evaluation of the competing methods (Section 4.1.3). Moving on, we showcase the biological inspection (Section 4.1.4). Finally, we provide a list of the statistical methods employed (Section 4.1.5).
+In this section, we outline the experimental framework. We begin by introducing the single-cell multimodal data used in the benchmarking~(\sref{MOJITOO:exp:data}). Following that, we delve into the specifics of executing eight computational single-cell integration approaches~(\sref{MOJITOO:exp:run}). Subsequently, we introduce the evaluation metrics for the comparative analysis~(\sref{MOJITOO:exp:metrics}).
 
 \subsection{Multimodal benchmarking data}
 \label{MOJITOO:exp:data}
@@ -130,21 +128,21 @@ We employed various metrics to evaluate the single cell mulitmodal integration m
 
 
 	\item[Distance Accuracy]. 
-  silhouette to latent space to evaluate the performance of these methods. For each data point $i\in C_i$, where $C_i$ is the label of the data point, we calculate the inner cluster mean distance:
-\begin{equation}
-  a(i) = \frac{1}{|C_i| - 1} \underset{j \in c_i, i\neq j}{\sum} d(i, j)
-\end{equation}
-Next, the smallest mean out cluster distance to data point $i$ is:
-\begin{equation}
-b(i) = \underset{k\neq i}{\min}\frac{1}{|C_k|}\underset{j\in c_k}{\sum} d(i,j)
-\end{equation}
-The solhoutte index is defined as:
-\begin{equation}
-s(i)=\frac{b(i)-a(i)}{\max\{a(i), b(i)\}}, -1\leq s(i) \leq 1
-\end{equation}
-where $d(i,j)$ is the distance of two cells under some specific latent space, here we considered both euclidean distance and cosine distance.
+	 silhouette to latent space to evaluate the performance of these methods. For each data point $i\in C_i$, where $C_i$ is the label of the data point, we calculate the inner cluster mean distance:
+	\begin{equation}
+	  a(i) = \frac{1}{|C_i| - 1} \underset{j \in c_i, i\neq j}{\sum} d(i, j)
+	\end{equation}
+	Next, the smallest mean out cluster distance to data point $i$ is:
+	\begin{equation}
+	b(i) = \underset{k\neq i}{\min}\frac{1}{|C_k|}\underset{j\in c_k}{\sum} d(i,j)
+	\end{equation}
+	The solhoutte index is defined as:
+	\begin{equation}
+	s(i)=\frac{b(i)-a(i)}{\max\{a(i), b(i)\}}, -1\leq s(i) \leq 1
+	\end{equation}
+	where $d(i,j)$ is the distance of two cells under some specific latent space, here we considered both euclidean distance and cosine distance.
 
-	\item[Clustering Accuracy] Clustering Accuracy measure the clustering accuracy compared to the true labels using different integrated embeddings. In comparing the clustering outcomes with labels from benchmarking datasets, we employed the adjusted rand index (ARI)\citep{hubert1985ARI}. This index assesses the similarity between two clustering results by accounting for the likelihood of randomly grouping elements. Specifically, given a dataset $D$ with $n$ cells, two partitions $ X = \{ X_{1}, X_{2}, \cdots X_{r} \} $ and $ Y = \{ Y_{1}, Y_{2}, \cdots, Y_{s} \} $ denoting different clustering results, the number of common cells for each cluster $i$ and $j$ can be written as $n_{ij} = X_{i} \cap Y_{j} |$, where $ i \in \{1, 2, \cdots, r \} $ and $ j \in \{1, 2, \cdots, s \} $. Then Adjusted Rand Index(ARI) is denoted as follows:
+	\item[Clustering Accuracy] Clustering Accuracy measure the clustering accuracy compared to the true labels using different integrated embeddings. In comparing the clustering outcomes with labels from benchmarking datasets, we employed the adjusted rand index (ARI)\citep{hubert1985ARI}. This index assesses the similarity between two clustering results by accounting for the likelihood of randomly grouping elements. Specifically, given a dataset $D$ with $n$ cells, two partitions $ X = \{ X_{1}, X_{2}, \cdots X_{r} \} $ and $ Y = \{ Y_{1}, Y_{2}, \cdots, Y_{s} \} $ denoting different clustering results, the number of common cells for each cluster $i$ and $j$ can be written as $n_{ij} = | X_{i} \cap Y_{j} |$, where $ i \in \{1, 2, \cdots, r \} $ and $ j \in \{1, 2, \cdots, s \} $. Then Adjusted Rand Index(ARI) is denoted as follows:
 	\begin{equation}
 		ARI = \frac{\sum_{ij} {n_{ij} \choose 2} - [ \sum_{i} {a_{i} \choose 2} \sum_{j} {b_{j} \choose 2 } ] / {n \choose 2}}{\frac{1}{2} [\sum_{i} {a_{i} \choose 2 } + \sum_{j} {b_{j} \choose 2}] - [\sum_{i} {a_{i} \choose 2} \sum_{j} {b_{j} \choose 2 } ] / {n \choose 2} }
 	\end{equation}
@@ -156,15 +154,18 @@ where $d(i,j)$ is the distance of two cells under some specific latent space, he
 %\subsection{Biological Insight}
 %\label{MOJITOO:exp:bio}
 
-\label{MOJITOO:exp:statistic}
+%\label{MOJITOO:exp:statistic}
 % Nemenyi post-hoc test
 
 
 \section{Results}
 \label{MOJITOO:out}
+
 In this section, we present the results generated by the single cell multimodal integration methods described in \sref{MOJITOO:exp}.
 
 \subsection{Evaluation of multi-modal integration}
+\label{MOJITOO:out:bench}
+
 We present the benchmarking results using the data described in \sref{MOJITOO:exp:data} and the methods outlined in \sref{MOJITOO:exp:methods}. The evaluation is conducted based on the metrics outlined in \sref{MOJITOO:exp:metrics}.
 
 \begin{figure}[!ht]
@@ -200,7 +201,7 @@ Next, we make use of the cell types reported in the original manuscripts introdu
 
 
 \subsubsection{Benchmarking Clustering Accuracy}
-we perform Louvain clustering at distinct resolutions (0.1–2.0) on the shared latent space. We then measure the agreement of clustering results with labels using the Adjusted Rand Index (ARI)(\fref{fig:ari}). WNN and Symphony have the highest ARI in two datasets each, while DIABLO and MOJITOO have the highest values in one dataset each. MOJITOO has a higher rank than two in all datasets and has the highest overall rank followed by WNN and DIABLO\fref{fig:ranking}. Moreover, we also perform a sensitivity analysis on MOJITOO to inspect if the dimension of the original PCA/LSI space has an impact on its performance \afref{fig:Input_Dimensions}. We observe that if 50 or more components are used, MOJITOO obtains similar clustering and structure preservation scores \fref{fig:pbmc_multiome_umap}.
+we perform Louvain clustering at distinct resolutions (0.1-2.0) on the shared latent space. We then measure the agreement of clustering results with labels using the Adjusted Rand Index (ARI)(\fref{fig:ari}). WNN and Symphony have the highest ARI in two datasets each, while DIABLO and MOJITOO have the highest values in one dataset each. MOJITOO has a higher rank than two in all datasets and has the highest overall rank followed by WNN and DIABLO\fref{fig:ranking}. Moreover, we also perform a sensitivity analysis on MOJITOO to inspect if the dimension of the original PCA/LSI space has an impact on its performance \afref{fig:Input_Dimensions}. We observe that if 50 or more components are used, MOJITOO obtains similar clustering and structure preservation scores \fref{fig:pbmc_multiome_umap}.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.65\textwidth]{ari/fig}
@@ -228,8 +229,11 @@ We next evaluated the memory usage and running time consumption of single-cell i
 	\label{fig:time_memory}
 \end{figure}
 
+
+
 \subsection{PBMC data insight}
-We examined the integrated results of the \texttt{PBMC-multiome}, presenting low-dimensional embeddings obtained through various integration methods with the PBMC-Multiome dataset in \fref{fig:pbmc_multiome_umap}.
+\label{MOJITOO:out:pbmc}
+We examined the integrated results of the \texttt{PBMC-multiome}, presenting low-dimensional embeddings obtained through various integration methods with the PBMC-Multiome dataset in \fref{fig:pbmc_multiome_umap}. It appears that Schema encountered difficulty in clearly distinguishing between cell types, and scAI produced results without correcting for batch effects, consistent with the benchmarking results.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{pbmc_multiome_umap/fig}
@@ -237,8 +241,6 @@ We examined the integrated results of the \texttt{PBMC-multiome}, presenting low
 	\caption[UMAP of multiome PBMC comparison for different multi-modal integration methods.]{\textbf{UMAP of multiome \texttt{PBMC-multiome} comparison for different multi-modal integration methods.}UMAPs showing cell type distribution derived from integration methods on \texttt{PBMC-multiome} dataset. }
 	\label{fig:pbmc_multiome_umap}
 \end{figure}
-
-Additionally, we explore the use of the dimensions of the latent space ($Z$) as factors for interpreting the PBMC multiome data. We denote the latent features as canonical components (CC). As shown in~\fref{fig:CC_UMAP}, positive or negative values for the top CCs discern well all major cell types~(\fref{fig:CC_UMAP}). High values of CC1 are associated to myeloid cells (CD14+ and CD16+ monocytes and dendritic cells), while negative values are associated to T and NK cells~(\fref{fig:CC_UMAP}A). CC2 values discern B cell and plasmacytoid dendritic cells (pDC) from other cells, while CC3 differentiates B cells from pDCs~(\fref{fig:CC_UMAP}B-C). Further CCs capture subtle changes between major cell sub-types~(\fref{fig:CC_UMAP}D-E). CC4 and CC5 capture changes between naive T cells and active T CD8 and active T CD4 cells respectively, while CC5 captures differences between naive monocytes (CD14+) and activated monocytes (CD16+). Other smaller cell types (dendritic cells, platelets, double negative T cells and pre-B and progenitor B cells) can be characterized with further CCs~\afref{fig:Supp_CC_UMAP}. We also evaluated CCs with low correlation, which were considered as noise by MOJITOO~\afref{fig:CC_corrlations_last}. We observe that these CCs have high scores for a few cells and low concordance across modalities. This supports their low biological relevance.
 
 
 \begin{figure}[!h]
@@ -249,7 +251,7 @@ Additionally, we explore the use of the dimensions of the latent space ($Z$) as 
 	\label{fig:Zfeature}
 \end{figure}
 
-Next, we explore the $U$ matrices, which provide values associating molecular features with the latent dimensions (CCs)~\fref{fig:Zfeature}. Indeed, the expression of genes with high CC1 values includes monocyte genes such as LYN and FCN1, while negative CC1 values are associated to T cell genes BCL11B and IL7R~(\fref{fig:CC_Genes}A). Similarly, we observe that top-ranked peaks with high or low CC1 scores have monocyte or T cell-specific open chromatin. These include regions close to the T cell gene BCL11B (\fref{fig:CC_Peaks}A). High CC2 values are associated with B cell genes IGHM and BCL11A, while low CC1 genes (BCBL11B and IL32) are associated with T cells~(\fref{fig:CC_Genes}B). As before, we observe cell-specific open chromatin patterns on top-ranked ATAC-seq peaks associated with high and low CC2 values(\fref{fig:CC_Peaks}B). Altogether, these results indicate that MOJITOO CCs can be used to capture major cell types of peripheral blood cells as well as to detect modality-specific molecular features associated to these.
+Additionally, we explore the use of the dimensions of the latent space ($Z$) as factors for interpreting the PBMC multiome data. We denote the latent features as canonical components (CC). As shown in~\fref{fig:CC_UMAP}, positive or negative values for the top CCs discern well all major cell types~(\fref{fig:CC_UMAP}). High values of CC1 are associated to myeloid cells (CD14+ and CD16+ monocytes and dendritic cells), while negative values are associated to T and NK cells~(\fref{fig:CC_UMAP}A). CC2 values discern B cell and plasmacytoid dendritic cells (pDC) from other cells, while CC3 differentiates B cells from pDCs~(\fref{fig:CC_UMAP}B-C). Further CCs capture subtle changes between major cell sub-types~(\fref{fig:CC_UMAP}D-E). CC4 and CC5 capture changes between naive T cells and active T CD8 and active T CD4 cells respectively, while CC5 captures differences between naive monocytes (CD14+) and activated monocytes (CD16+). Other smaller cell types (dendritic cells, platelets, double negative T cells and pre-B and progenitor B cells) can be characterized with further CCs~\afref{fig:Supp_CC_UMAP}. We also evaluated CCs with low correlation, which were considered as noise by MOJITOO~\afref{fig:CC_corrlations_last}. We observe that these CCs have high scores for a few cells and low concordance across modalities. This supports their low biological relevance.
 
 
 \begin{figure}[!h]
@@ -261,6 +263,8 @@ Next, we explore the $U$ matrices, which provide values associating molecular fe
 \end{figure}
 
 
+Next, we explore the $U$ matrices, which provide values associating molecular features with the latent dimensions (CCs)~\fref{fig:Zfeature}. Indeed, the expression of genes with high CC1 values includes monocyte genes such as LYN and FCN1, while negative CC1 values are associated to T cell genes BCL11B and IL7R~(\fref{fig:CC_Genes}A). Similarly, we observe that top-ranked peaks with high or low CC1 scores have monocyte or T cell-specific open chromatin. These include regions close to the T cell gene BCL11B (\fref{fig:CC_Peaks}A). High CC2 values are associated with B cell genes IGHM and BCL11A, while low CC1 genes (BCBL11B and IL32) are associated with T cells~(\fref{fig:CC_Genes}B). 
+
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.95\textwidth]{CC_Genes/fig}
@@ -269,6 +273,7 @@ Next, we explore the $U$ matrices, which provide values associating molecular fe
 	\label{fig:CC_Genes}
 \end{figure}
 
+As before, we observe cell-specific open chromatin patterns on top-ranked ATAC-seq peaks associated with high and low CC2 values(\fref{fig:CC_Peaks}B). Altogether, these results indicate that MOJITOO CCs can be used to capture major cell types of peripheral blood cells as well as to detect modality-specific molecular features associated to these.
 
 \begin{figure}[!h]
 	\centering
@@ -279,13 +284,18 @@ Next, we explore the $U$ matrices, which provide values associating molecular fe
 \end{figure}
 
 \section{Statistical methods}
+\label{MOJITOO:statistical}
 For comparisons involving multiple methods and datasets, we employed the non-parametric Friedman test with the Nemenyi post-hoc test (Demšar, 2006). The Friedman test(Friedman, 1937, 1940) was utilized to compare the average ranks of the methods across all datasets. The null hypothesis assumes that all the methods are equivalent, and their ranks are equal. We utilized the friedmanTest function from the R package PMCMRplus to conduct the Friedman rank sum test. If the null hypothesis was rejected, indicating that at least one method is significantly different from the others, we proceeded with the Nemenyi post-hoc test (Nemenyi, 1963) to compare all pairs. Therefore, to compare k methods, a total of $k(k-1)/2$ hypotheses were tested, and this was accomplished using the frdAllPairsNemenyiTest function from the R package PMCMRplus.
 
 \section{Discussion}
+\label{MOJITOO:discussion}
+In this chapter, we outline the experimental framework used to assess our computational method and subsequently present the benchmarking results. We commence by introducing the experimental design aimed at validating our single-cell integration methods~(\sref{MOJITOO:exp}). Following that, we showcase the benchmarking results of MOJITOO by comparing it with seven state-of-the-art integration methods~(\sref{MOJITOO:exp}). Lastly, we detail the statistical methods employed for testing.
 
-In this chapter, we described the experimental framework to evaluate our computational method and next present the benchmarking results.
+In the experimental design section, we initially present six bi-modal and tri-modal multimodal datasets, comprehensively encompassing different combinations of scRNA-seq, scATAC-seq, and single-cell surface protein data~(\sref{MOJITOO:exp:data}). Subsequently, we describe the settings for running the competing methods, including uniform pre-processing, installation procedures, and the execution steps for each method~(\sref{MOJITOO:exp:methods}). Finally, we delve into three metrics used to compare space preservation, distance accuracy, and clustering accuracy, along with benchmarks for time and memory consumption~(\sref{MOJITOO:exp:metrics}).
 
-A comprehensive analysis with six bi-modal and tri-modal multimodal datasets indicates that MOJITOO has the best performance regarding the preservation of the structures across modalities and the recovery of clusters, while it is ranked second regarding distance representation. Moreover, MOJITOO has the lowest time and memory requirements requiring 2.5 min and 6.4 GB in the largest dataset with 30.000 cells. WNN, which is the standard method for integration in Seurat, performed well on the clustering problem (2nd after MOJITOO) and had a low computational time, but had a poor performance in the structure preservation and silhouette scores. Moreover, WNN, which outputs a distance matrix on the shared space, does not provide latent features as MOJITOO, DIABLO or MOFA. MOFA performed well on distance representation, but was ranked fourth in the clustering problem and third at structure preservation score. DIABLO, which is also based in CCA, had an good predictive performance (2nd for structure preservation and 3rd in clustering and distance preservation), but had an a poor computational performance being the 2nd slowest method.
+The benchmarking indicates that MOJITOO has the best performance regarding the preservation of the structures across modalities and the recovery of clusters, while it is ranked second regarding distance representation. Moreover, MOJITOO has the lowest time and memory requirements requiring 2.5 min and 6.4 GB in the largest dataset with 30.000 cells~(\sref{MOJITOO:out:bench}). Additionally, we explore one of the benchmarking datasets, namely \texttt{mulitome-PBMC}, utilizing the output from MOJITOO. Through this examination, we discern that MOJITOO components can be interpreted to capture cell types or subtle changes within subtypes of a particular cell type (see \ref{MOJITOO:out:pbmc}).
+
+Regarding benchmarking, it is evident that our method, MOJITOO, outperforms the competing methods. WNN, which is the standard method for integration in Seurat, performed well on the clustering problem (2nd after MOJITOO) and had a low computational time, but had a poor performance in the structure preservation and silhouette scores. Moreover, WNN, which outputs a distance matrix on the shared space, does not provide latent features as MOJITOO, DIABLO or MOFA. MOFA performed well on distance representation, but was ranked fourth in the clustering problem and third at structure preservation score. DIABLO, which is also based in CCA, had an good predictive performance (2nd for structure preservation and 3rd in clustering and distance preservation), but had an a poor computational performance being the 2nd slowest method~(\sref{MOJITOO:out}).
+
 
 An interesting result is the fact the structure preservation scores are more uniform across modalities for CCA-based methods MOJITOO and DIABLO, while runner-up methods (MOFA) obtained highest scores for the RNA modality. This is possibly rooted on the analytical frameworks of these methods. CCA analysis explicitly finds canonical vectors with high correlation across modalities, while matrix factorization methods (MOFA) do not explicitly guarantee factors are uniformly well represented across modalities. Of note, the CCA approach explored in Symphony was also biased toward structure preservation in RNA, due to the fact it only use RNA canonical vectors as a final latent representation. 
-
