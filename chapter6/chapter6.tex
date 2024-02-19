@@ -71,15 +71,15 @@ To facilitate direct comparability between outputs from various methods, dynvers
 
 
 \subsubsection{Benchmarking Structure Similarity}
-The Hamming–Ipsen–Mikhailov(HIM) metric utilizes the two weighted adjacency matrices of the milestone networks as input, with weights assigned based on edge length. It combines the normalized Hamming distance, providing insights into differences in edge lengths, and the normalized Ipsen–Mikhailov distance, evaluating the similarity in degree distributions. The Ipsen–Mikhailov distance includes a parameter $\gamma$, set at 0.1 to ensure comparability of scores across datasets. The HIM metric is a linear combination of these components \fref{fig:dynverse_metrics}B.
+The Hamming–Ipsen–Mikhailov(HIM) metric~(\fref{fig:dynverse_metrics}B) utilizes the two weighted adjacency matrices of the milestone networks as input, with weights assigned based on edge length. It combines the normalized Hamming distance, providing insights into differences in edge lengths, and the normalized Ipsen–Mikhailov distance, evaluating the similarity in degree distributions. The Ipsen–Mikhailov distance includes a parameter $\gamma$, set at 0.1 to ensure comparability of scores across datasets. The HIM metric is a linear combination of these components.
 
 
 \subsubsection{Benchmarking Location of Cells}
 
-The $cor_{dist}$ metric measure the correlation between geodesic distances, which is based on the observation that when a cell's position is identical in both the reference and the prediction, its relative distances to all other cells in the trajectory should also be identical. To calculate $cor_{dist}$, dynverse initially simples 100 waypoint cells in both the prediction and the reference dataset, employing stratified sampling across various milestones, edges, and regions of delayed commitment. This sampling is weighted by the number of cells in each collection. Subsequently, it computes the geodesic distances between the union of waypoint cells from both datasets and all other cells. The calculation of geodesic distance takes into account the location of the two cells within the trajectory and is weighted by the length of the edge in the milestone network. Finally, $cor_{dist}$ is defined as the Spearman rank correlation between the distances of both datasets \fref{fig:dynverse_metrics}C.
+The $cor_{dist}$ metric~(\fref{fig:dynverse_metrics}C) measure the correlation between geodesic distances, which is based on the observation that when a cell's position is identical in both the reference and the prediction, its relative distances to all other cells in the trajectory should also be identical. To calculate $cor_{dist}$, dynverse initially simples 100 waypoint cells in both the prediction and the reference dataset, employing stratified sampling across various milestones, edges, and regions of delayed commitment. This sampling is weighted by the number of cells in each collection. Subsequently, it computes the geodesic distances between the union of waypoint cells from both datasets and all other cells. The calculation of geodesic distance takes into account the location of the two cells within the trajectory and is weighted by the length of the edge in the milestone network. Finally, $cor_{dist}$ is defined as the Spearman rank correlation between the distances of both datasets.
 
 \subsubsection{Bechmarking Branches Allocation}
-For branch assignment comparison, measure the The F1 between branch assignments. Dynverse employs an F1 score, a metric commonly utilized for comparing biclustering methods. To compute this score, it initially determines the similarity of all pairs of branches between the two trajectories using Jaccard similarity. Subsequently, it defines 'Recovery' (respectively 'Relevance') as the average maximal similarity of all branches in the reference dataset (respectively prediction). The $F1_{branches}$ is then established as the harmonic mean between Recovery and Relevance \fref{fig:dynverse_metrics}D.
+For branch assignment comparison~(\fref{fig:dynverse_metrics}D), measure the The F1 between branch assignments. Dynverse employs an F1 score, a metric commonly utilized for comparing biclustering methods. To compute this score, it initially determines the similarity of all pairs of branches between the two trajectories using Jaccard similarity. Subsequently, it defines 'Recovery' (respectively 'Relevance') as the average maximal similarity of all branches in the reference dataset (respectively prediction). The $F1_{branches}$ is then established as the harmonic mean between Recovery and Relevance.
 
 \begin{equation}
 \label{eqn:corrdist}
@@ -178,8 +178,6 @@ To dissect nephrogenic differentiation trajectories in kidney organoids using th
 Snap-frozen kidney organoids were thawed in PBS and crushed using a glass tube and douncer (Duran Wheaton Kimble Life Sciences, Wertheim/Main, Germany). After passing the single cell suspension through a 40 $\mu$m cell strainer (Greiner bio-one), the suspension was centrifuged at 4$^\circ C$ and 300xg for 5 min. Subsequently, the supernatant was discarded and the cell pellet was resuspended in Nuc101 cell lysis buffer (Thermo Fisher), supplemented with RNase and protease inhibitors (Recombinant RNase Inhibitor and Superase RNase Inhibitor, Thermo Fisher, and Complete Protease Inhibitor, Roche), incubated for 30 seconds and centrifuged at 4$^\circ$ and 500xg for 5 min. After discarding the supernatant, the nuclei were carefully resuspended in PBS containing 1\% (v/v) Ultra-Pure BSA (Invitrogen Ambion, Thermo Fisher) and Protector RNAse inhibitor (Sigma Aldrich). Single nuclei were counted using Trypan blue (Thermo Fisher) and prepared for 10x genomics ChromiumNextGEM Multiome pipeline v1 according to the manufacturers guidelines (~\url{https://cdn.10xgenomics.com/image/upload/v1666737555/support-documents/CG000338_ChromiumNextGEM_Multiome_ATAC_GEX_User_Guide_RevF.pdf}).
 
 
-
-
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{F1branches/fig}
@@ -188,9 +186,6 @@ Snap-frozen kidney organoids were thawed in PBS and crushed using a glass tube a
 	\textbf{Branches allocation}.}
 	\label{fig:f1branches}
 \end{figure}
-
-
-
 
 
 \section{Results}
