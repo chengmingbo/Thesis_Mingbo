@@ -7,7 +7,7 @@
 \label{chapter:MOJITOO_bench}
 
 \graphicspath{{chapter4/figs}}
-In the previous chapter, we introduced our computational approach, MOJITOO, for the integration of single-cell multimodal data. In this chapter, we outline the experimental framework employed in this thesis to validate our method and subsequently present the results. In the experimental framework, we first present the benchmarking dataset. Following that, we introduce three evaluation metrics for measuring clustering accuracy, distance accuracy, and structure preservation among competing methods, along with the design for assessing time and memory consumption. Next, we delve into the execution of competing methods for the benchmarking process~(\sref{MOJITOO:exp}). In \sref{MOJITOO:out}, we present the results outlined in \sref{MOJITOO:exp}. Specifically, in \sref{MOJITOO:out:bench}, we showcase the validation by comparing clustering accuracy, distance accuracy, and structure preservation among competing methods. Additionally, we provide a comparison of computational resources, highlighting the efficiency of these methods. Next, we delve into the \texttt{mulitome-PBMC} dataset, aiming to gain biological insights using the outcomes of MOJITOO~(\sref{MOJITOO:out:pbmc}). We then describe the statistical methods used in this chapter~(\sref{MOJITOO:statistical}). Finally, we conclude this chapter with a comprehensive discussion of our experimental workflow and the obtained results~(\sref{MOJITOO:discussion}).
+In the previous chapter, we introduced our computational approach, MOJITOO, for the integration of single-cell multimodal data. In this chapter, we outline the experimental framework employed in this thesis to validate our method and subsequently present the results. In the experimental framework, we first present the benchmarking dataset. Following that, we introduce three evaluation metrics for measuring clustering accuracy, distance accuracy, and structure preservation among competing methods, along with the design for assessing time and memory consumption. Next, we delve into the execution of competing methods for the benchmarking process~(\sref{MOJITOO:exp}). In \sref{MOJITOO:out}, we present the results outlined in \sref{MOJITOO:exp}. Specifically, we first showcase the validation by comparing clustering accuracy, distance accuracy, and structure preservation among competing methods. Additionally, we provide a comparison of computational resources, highlighting the efficiency of these methods. Next, we delve into the \texttt{mulitome-PBMC} dataset, aiming to gain biological insights using the outcomes of MOJITOO. We then describe the statistical methods used in this chapter~(\sref{MOJITOO:statistical}). Finally, we conclude this chapter with a comprehensive discussion of our experimental workflow and the obtained results~(\sref{MOJITOO:discussion}).
 
 
 \section{Experiments}
@@ -24,12 +24,12 @@ We utilize publicly available multimodal datasets with two or three modalities i
 		\toprule
 		{\textbf{Dataset}} & {\textbf{Protocol}} & {\textbf{Species}}  &{\textbf{Organ}}  & {\textbf{Modalities}} &{\textbf{\#cells}}  &{\textbf{\#Cell types}}   &{\textbf{\#Features (gene/peak/protein)}} \\ 
 		\midrule
-		  BM-CITE  & CITE-seq & Human & Bone Marrow & RNA/protein & 30,672  & 27 & 17,009/-/25 \\
-		  LUNG-CITE  & CITE-seq & Human & PBMC\&Lung & RNA/protein & 10,470  & 22 & 33,514/-/52 \\
-		  PBMC-Multiome  & Multiome & Human  & PBMC & RNA/ATAC & 11,787 & 13 & 36,610/108,377/- \\ 
-		  Skin-SHARE  & SHARE-seq & Mouse & Skin & RNA/ATAC & 34,774 & 23 & 23,296/344,592/- \\ 
-		  PBMC-TEA  & TEA-seq  & Human & PBMC & RNA/ATAC/epitope & 25,517 & 12 &  36,601/128,853/47\\ 
-		  PBMC-DOGMA  & DOGMA-seq & Human & PBMC & RNA/ATAC/protein & 13,763  & 27 & 36,495/68,963/210 \\
+		  \texttt{BM-CITE}  & CITE-seq & Human & Bone Marrow & RNA/protein & 30,672  & 27 & 17,009/-/25 \\
+		  \texttt{LUNG-CITE}  & CITE-seq & Human & PBMC\&Lung & RNA/protein & 10,470  & 22 & 33,514/-/52 \\
+		  \texttt{PBMC-Multiome}  & Multiome & Human  & PBMC & RNA/ATAC & 11,787 & 13 & 36,610/108,377/- \\ 
+		  \texttt{Skin-SHARE}  & SHARE-seq & Mouse & Skin & RNA/ATAC & 34,774 & 23 & 23,296/344,592/- \\ 
+		  \texttt{PBMC-TEA}  & TEA-seq  & Human & PBMC & RNA/ATAC/epitope & 25,517 & 12 &  36,601/128,853/47\\ 
+		  \texttt{PBMC-DOGMA}  & DOGMA-seq & Human & PBMC & RNA/ATAC/protein & 13,763  & 27 & 36,495/68,963/210 \\
 		\bottomrule
 	\end{tabular}
 	\vspace{0.1cm}
@@ -147,7 +147,7 @@ We employed various metrics to evaluate the single cell mulitmodal integration m
 		ARI = \frac{\sum_{ij} {n_{ij} \choose 2} - [ \sum_{i} {a_{i} \choose 2} \sum_{j} {b_{j} \choose 2 } ] / {n \choose 2}}{\frac{1}{2} [\sum_{i} {a_{i} \choose 2 } + \sum_{j} {b_{j} \choose 2}] - [\sum_{i} {a_{i} \choose 2} \sum_{j} {b_{j} \choose 2 } ] / {n \choose 2} }
 	\end{equation}
 	where $ a_{i} = \sum_{j=1}^{s} n_{ij} $ and $ b_{j} = \sum_{i=1}^{r} n_{ij} $ respectively. The ARI ranges from a minimum value of 0, denoting random agreement between two data clusterings, to a maximum value of 1, indicating identical clustering results.  To be fair, we perform Louvain clustering with varying resolution (parameter from 0.1 to 2.0 with step=0.1) to estimate the adjusted Rand index. 
-	\item[Requirements of Memory and Running Time] We also compare the peak memory usage and running time to check the effectiveness of these methods. For this, we inspect the time and memory used in the largest datasets in our benchmark (SKIN-SHARE). To obtain curves, we down-sample the number of cells from 30,000 to 3,000.
+	\item[Requirements of Memory and Running Time] We also compare the peak memory usage and running time to check the effectiveness of these methods. For this, we inspect the time and memory used in the largest datasets in our benchmark \texttt{SKIN-SHARE}. To obtain curves, we down-sample the number of cells from 30,000 to 3,000.
 \end{description}
 
 % to validate improve the perfomance, ---> PBMC capture major cell types and subtype changings
@@ -161,7 +161,7 @@ We employed various metrics to evaluate the single cell mulitmodal integration m
 \section{Results}
 \label{MOJITOO:out}
 
-In this section, we present the results generated by the single cell multimodal integration methods described in \sref{MOJITOO:exp}.
+In this section, we first present the results generated by the single cell multimodal integration methods(\sref{MOJITOO:out:bench}). Next, we delve into one of the datasets, namely \texttt{multimodal-PBMC}, to interpret the components output from MOJITOO\sref{MOJITOO:out:pbmc}.
 
 \subsection{Evaluation of multi-modal integration}
 \label{MOJITOO:out:bench}
@@ -225,13 +225,13 @@ We next evaluated the memory usage and running time consumption of single-cell i
 	\centering
 	\includegraphics[width=0.95\textwidth]{time_memory/fig}
 	\vspace{0.1cm}
-	\caption[Evaluation of time and memory consumption for multi-modal integration methods.]{\textbf{Evaluation of time and memory consumption for multi-modal integration methods.} Time and memory consumption on the Skin-SHARE. \textbf{A)} Line plots showing elapsed time (log of seconds) for each method (y-axis). \textbf{B)} Line plots showing peak memory (Gigabytes) required by each method (y-axis). In both A–B, the x-axis shows the number of cells used (randomly sampled) from the \texttt{Skin-SHARE} data}
+	\caption[Evaluation of time and memory consumption for multi-modal integration methods.]{\textbf{Evaluation of time and memory consumption for multi-modal integration methods.} Time and memory consumption on the \texttt{Skin-SHARE}. \textbf{A)} Line plots showing elapsed time (log of seconds) for each method (y-axis). \textbf{B)} Line plots showing peak memory (Gigabytes) required by each method (y-axis). In both A–B, the x-axis shows the number of cells used (randomly sampled) from the \texttt{Skin-SHARE} data}
 	\label{fig:time_memory}
 \end{figure}
 
 
 
-\subsection{PBMC data insight}
+\subsection{MOJITOO components intepretion of PBMC data}
 \label{MOJITOO:out:pbmc}
 We examined the integrated results of the \texttt{PBMC-multiome}, presenting low-dimensional embeddings obtained through various integration methods with the PBMC-Multiome dataset in \fref{fig:pbmc_multiome_umap}. It appears that Schema encountered difficulty in clearly distinguishing between cell types, and scAI produced results without correcting for batch effects, consistent with the benchmarking results.
 \begin{figure}[!ht]
