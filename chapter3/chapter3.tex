@@ -38,11 +38,11 @@ The pre-processing steps for transcriptome, epigenome, and proteome modalities h
 
 To reduce dimensions, we employ latent semantic indexing (LSI) for scATAC-seq and principal component analysis (PCA) for other modalities, following the common practice in the literature~\cite{granja2021archr, signac, hao2021seurat4}. LSI involves applying singular value decomposition (SVD) on the feature matrix of scATAC data, such that:
 \begin{equation}
-    Y_{j}' = U\Sigma V^\top
+    Y_{i}' = U\Sigma V^\top
 \end{equation}
-Where $Y_{j}'\in \mathbb{R}^{n\times s_{j}}$ represents the TF-IDF transformed feature matrix, columns of left singular vector $U\in \mathbb{R}^{n\times p_j}$ is the reduced dimensions.
+Where $Y_{i}'\in \mathbb{R}^{n\times p_{i}}$ represents the TF-IDF transformed feature matrix, $p_{i}$ is the number of features the $i$th modality(i.e. the scATAC-seq modality), columns of left singular vector $U\in \mathbb{R}^{n\times s_i}$ is the reduced dimensions and $s_i$ represents the number of dimensions.
 
-The rationale behind the use of dimension reduction is two-fold. First, low-dimensional matrices reduce the computing time of the CCA analysis without impacting accuracy for a minimum number of dimensions. Moreover, it allows to work directly on batch-corrected data, which is usually represented in a low-dimensional space~\cite{hao2021seurat4, korsunsky2019harmony}. Of note, batch correction is recommended previous to the integration, whenever the data is affected by batch effects, see \fref{fig:batch_correction}.
+The rationale behind the use of dimension reduction is three-fold. First, low-dimensional matrices reduce the computing time of the CCA analysis without impacting accuracy for a minimum number of dimensions. Second, the dimension reduction technique effectively aids in denoising noisy data, mitigating biases for downstream analysis. Moreover, it allows to work directly on batch-corrected data, which is usually represented in a low-dimensional space~\cite{hao2021seurat4, korsunsky2019harmony}. Of note, batch correction is recommended previous to the integration, whenever the data is affected by batch effects, see \fref{fig:batch_correction}.
 
 \section{Integration}
 \label{inte_methods:integration}
@@ -51,7 +51,6 @@ Canonical Correlation analysis(CCA) was first introduced H.Hotelling\citep{hotel
 \begin{equation}
 \mathbf{Y}_a\mathbf{w}_a=\mathbf{z}_a\quad\text{and}\quad \mathbf{Y}_b\mathbf{w}_b=\mathbf{ z}_b
 \end{equation}
-
 
 \begin{figure}[!ht]
     \centering
