@@ -4,61 +4,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{PHLOWER Experiments \& Results}
 \label{chapter:PHLOWER_bench}
-
 \graphicspath{{chapter6/figs}}
 
+In the previous chapter, we introduced our computational method, PHLOWER, for trajectory inference in single-cell multimodal data. In this chapter, we outline the experimental framework~(\sref{chapter:PHLOWER_bench:exp}) utilized in this thesis to validate our methods and subsequently present the results~(\sref{chapter:PHLOWER_bench:out}). Within the experimental framework, we first introduce the synthetic benchmarking dataset. Following that, we discuss the four evaluation metrics used for measuring topology recovery, cell location, branch allocation accuracy, and branch point allocation accuracy, drawing from the comprehensive evaluation framework dynverse. Next, we introduce the biological validation dataset, specifically the kidney organoid data preparation and experiment design. Subsequently, we delve into the execution of competing methods for the benchmarking process, comparing against 11 state-of-the-art methods. In the results section, we first present the outcomes of the benchmarking evaluation. Next, we showcase the biological validation using the kidney organoid data. Following this, we present the statistical methods employed in the chapter. Finally, we conclude the chapter by discussing the strengths of PHLOWER.
+
 \section{Experiments}
-\subsection{Evaluation of trajectory inference}
-% dynverse benchmarking selected metrics description
-The simulated data for trajectory inference. We first described the data source and pre-processing for single cell multi-modal data, next we show how to simulate data for trajectory inference.
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{dynverse_metrics/fig}
-	\vspace{0.1cm}
-	\caption[Dynverse metrics]{ \textbf{A)} dynverse metrics. Dynverse has established three significant metrics here, each evaluating the excellence of various facets of the trajectory. \textbf{B)} The HIM score gauges the resemblance between the two topologies, considering variations in edge lengths and degree distributions. \textbf{C)} $cor_{dist}$ measures the similarity in cellular positions between two trajectories by computing the correlation among pairwise geodesic distances. \textbf{D)} The $F1_{branches}$ evaluates the likeness in the allocation of cells to branches. \textbf{E)} The geodesic distances were computed on a small example trajectory. This toy example consists of four milestones (W to Z) and five cells (a to e). The milestone network, milestone percentages, and regions of delayed commitment corresponding to the toy trajectory were transformed into the common trajectory model. The calculations were performed to determine pairwise geodesic distances, and a heatmap representation was generated to visually depict these distances.}
-	\label{fig:dynverse_metrics}
-\end{figure}
+\label{chapter:PHLOWER_bench:exp}
+In this section, we initially present the algorithm for creating simulated data~(\sref{chapter:PHLOWER_bench:sim}). Following that, we elaborate on four trajectory inference evaluation metrics~(\sref{chapter:PHLOWER_bench:metrics}). Subsequently, we provide detailed descriptions for the execution of each method~(\sref{chapter:PHLOWER_bench:exe}).
 
-To facilitate direct comparability between outputs from various methods, dynverse\citep{saelens2019comparison} designed a unified probabilistic model to represent trajectories from all potential sources\fref{fig:dynverse_metrics}A. In this model, the comprehensive topology is depicted by a network of `milestones', and cells are positioned within the space defined by each connected set of milestones. In dynverse evaluation, a trajectory is conceptualized as a model with multiple layers of abstraction. The highest-level abstraction is the topology, which encompasses information about the paths each cell can traverse from its starting point. Deeper abstractions involve the mapping of each cell to a specific branch within this network, as well as the position (or ordering) of each cell within these branches. Internally, the topology is represented by the milestone network and regions of delayed commitment, while branch assignment and cellular positions are captured by milestone percentages \fref{fig:dynverse_metrics}A.
+\subsection{Simulated Data}
+\label{chapter:PHLOWER_bench:sim}
+To test the power of PHLOWER in the detection of multiple branches trees, we generate 10 simulated data sets using diffusion-limited aggregation trees (DLA tree)~\citep{witten1981diffusion} as proposed in PHATE~\citep{moon2017phate}. For this, we use a Gaussian noise parameter of 5 and vary the parameter n\_branch, which controls the number of branches in the trees, from 3 to 12. This generated trees with 5 to 18 branches.  For every data, we generate 3000 points and 100 features. Of note, we use the same data as evaluated in PHATE as data with 10 branches. Next, we run PHATE to visualize the branches, with which we can future construct ground truth for dynverse benchmarking.
 
-
-\subsubsection{Benchmarking Structure Similarity}
-The Hamming–Ipsen–Mikhailov(HIM) metric utilizes the two weighted adjacency matrices of the milestone networks as input, with weights assigned based on edge length. It combines the normalized Hamming distance, providing insights into differences in edge lengths, and the normalized Ipsen–Mikhailov distance, evaluating the similarity in degree distributions. The Ipsen–Mikhailov distance includes a parameter $\gamma$, set at 0.1 to ensure comparability of scores across datasets. The HIM metric is a linear combination of these components \fref{fig:dynverse_metrics}B.
-
-\begin{figure}[!ht]
+\begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.45\textwidth]{DLA_example/fig}
 	\vspace{0.1cm}
 	\caption[DLA tree ground truth example]{DLA tree ground truth example embedded with PHATE.}
 	\label{fig:DLA_example}
 \end{figure}
-
-\subsubsection{Benchmarking Location of Cells}
-
-The $cor_{dist}$ metric measure the correlation between geodesic distances, which is based on the observation that when a cell's position is identical in both the reference and the prediction, its relative distances to all other cells in the trajectory should also be identical. To calculate $cor_{dist}$, dynverse initially simples 100 waypoint cells in both the prediction and the reference dataset, employing stratified sampling across various milestones, edges, and regions of delayed commitment. This sampling is weighted by the number of cells in each collection. Subsequently, it computes the geodesic distances between the union of waypoint cells from both datasets and all other cells. The calculation of geodesic distance takes into account the location of the two cells within the trajectory and is weighted by the length of the edge in the milestone network. Finally, $cor_{dist}$ is defined as the Spearman rank correlation between the distances of both datasets \fref{fig:dynverse_metrics}C.
-
-\subsubsection{Bechmarking Branches Allocation}
-For branch assignment comparison, measure the The F1 between branch assignments. Dynverse employs an F1 score, a metric commonly utilized for comparing biclustering methods. To compute this score, it initially determines the similarity of all pairs of branches between the two trajectories using Jaccard similarity. Subsequently, it defines 'Recovery' (respectively 'Relevance') as the average maximal similarity of all branches in the reference dataset (respectively prediction). The $F1_{branches}$ is then established as the harmonic mean between Recovery and Relevance \fref{fig:dynverse_metrics}D.
-
-\begin{equation}
-\label{eqn:corrdist}
-\begin{aligned}
-& \text{Jaccard}(c, c')  = \frac{c\cup c'}{c\cap c'} \\
-& \text{Recovery} = \frac{1}{|C|}\sum_{c\in C} \max_{c'\in C'} \text{Jaccard}(c, c') \\
-& \text{Relevance} = \frac{1}{|C'|}\sum_{c' \in C'} \max_{c\in C} \text{Jaccard}(c, c')\\
-& F1 = \frac{2}{\frac{1}{\text{Recovery}} + \frac{1}{\text{Relevance}}}
-\end{aligned}
-\end{equation}
-
-\subsubsection{Benchmarking Branch Points Allocation}
-Similar to $F1_{branches}$, other than mapping cells to edges, the $F1_{milestones}$, namely the F1 between milestone assignments, cells are mapped towards the nearest milestone, i.e. the milestone with the highest milestone percentage.
-
-
-
-
-\subsection{Simulated Data}
-To test the power of PHLOWER in the detection of multiple branches trees, we generate 10 simulated data sets using diffusion-limited aggregation trees (DLA tree)~\citep{witten1981diffusion} as proposed in PHATE~\citep{moon2017phate}. For this, we use a Gaussian noise parameter of 5 and vary the parameter n\_branch, which controls the number of branches in the trees, from 3 to 12. This generated trees with 5 to 18 branches.  For every data, we generate 3000 points and 100 features. Of note, we use the same data as evaluated in PHATE as data with 10 branches. Next, we run PHATE to visualize the branches, with which we can future construct ground truth for dynverse benchmarking.
-
 
 Next, we reformat this data to be used within the trajectory benchmarking framework dynverse~\citep{saelens2019comparison} by using dynwrap. In short, dynverse needs detailed information of the branches, branches points and association of cells within a branch.  To do so, we need to find the branching points of the DLA tree. First, we perform PHATE on the DLA high dimensional data to get embedding with 2 dimensions. We only consider embeddings, where the tree structure is preserved. Next, we find the branching points by finding 2 nearest neighbors of two branches. With these branching points, we created the branch backbones needed by dynverse. We calculate am association of each data point to a branching point (milestone percentage) by calculating the euclidean distance between the points related to each branch. See DLA tree with 10 branches example \fref{fig:DLA_example}.
 \begin{algorithm}
@@ -91,9 +55,48 @@ Next, we reformat this data to be used within the trajectory benchmarking framew
 %3000, 100, br, 5.
 %3-12
 
+\subsection{Evaluation of trajectory inference}
+\label{chapter:PHLOWER_bench:metrics}
+% dynverse benchmarking selected metrics description
+The simulated data for trajectory inference. We first described the data source and pre-processing for single cell multi-modal data, next we show how to simulate data for trajectory inference.
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.95\textwidth]{dynverse_metrics/fig}
+	\vspace{0.1cm}
+	\caption[Dynverse metrics]{ \textbf{A)} dynverse metrics. Dynverse has established three significant metrics here, each evaluating the excellence of various facets of the trajectory. \textbf{B)} The HIM score gauges the resemblance between the two topologies, considering variations in edge lengths and degree distributions. \textbf{C)} $cor_{dist}$ measures the similarity in cellular positions between two trajectories by computing the correlation among pairwise geodesic distances. \textbf{D)} The $F1_{branches}$ evaluates the likeness in the allocation of cells to branches. \textbf{E)} The geodesic distances were computed on a small example trajectory. This toy example consists of four milestones (W to Z) and five cells (a to e). The milestone network, milestone percentages, and regions of delayed commitment corresponding to the toy trajectory were transformed into the common trajectory model. The calculations were performed to determine pairwise geodesic distances, and a heatmap representation was generated to visually depict these distances.}
+	\label{fig:dynverse_metrics}
+\end{figure}
+
+To facilitate direct comparability between outputs from various methods, dynverse\citep{saelens2019comparison} designed a unified probabilistic model to represent trajectories from all potential sources\fref{fig:dynverse_metrics}A. In this model, the comprehensive topology is depicted by a network of `milestones', and cells are positioned within the space defined by each connected set of milestones. In dynverse evaluation, a trajectory is conceptualized as a model with multiple layers of abstraction. The highest-level abstraction is the topology, which encompasses information about the paths each cell can traverse from its starting point. Deeper abstractions involve the mapping of each cell to a specific branch within this network, as well as the position (or ordering) of each cell within these branches. Internally, the topology is represented by the milestone network and regions of delayed commitment, while branch assignment and cellular positions are captured by milestone percentages \fref{fig:dynverse_metrics}A.
+
+
+\subsubsection{Benchmarking Structure Similarity}
+The Hamming–Ipsen–Mikhailov(HIM) metric utilizes the two weighted adjacency matrices of the milestone networks as input, with weights assigned based on edge length. It combines the normalized Hamming distance, providing insights into differences in edge lengths, and the normalized Ipsen–Mikhailov distance, evaluating the similarity in degree distributions. The Ipsen–Mikhailov distance includes a parameter $\gamma$, set at 0.1 to ensure comparability of scores across datasets. The HIM metric is a linear combination of these components \fref{fig:dynverse_metrics}B.
+
+
+\subsubsection{Benchmarking Location of Cells}
+
+The $cor_{dist}$ metric measure the correlation between geodesic distances, which is based on the observation that when a cell's position is identical in both the reference and the prediction, its relative distances to all other cells in the trajectory should also be identical. To calculate $cor_{dist}$, dynverse initially simples 100 waypoint cells in both the prediction and the reference dataset, employing stratified sampling across various milestones, edges, and regions of delayed commitment. This sampling is weighted by the number of cells in each collection. Subsequently, it computes the geodesic distances between the union of waypoint cells from both datasets and all other cells. The calculation of geodesic distance takes into account the location of the two cells within the trajectory and is weighted by the length of the edge in the milestone network. Finally, $cor_{dist}$ is defined as the Spearman rank correlation between the distances of both datasets \fref{fig:dynverse_metrics}C.
+
+\subsubsection{Bechmarking Branches Allocation}
+For branch assignment comparison, measure the The F1 between branch assignments. Dynverse employs an F1 score, a metric commonly utilized for comparing biclustering methods. To compute this score, it initially determines the similarity of all pairs of branches between the two trajectories using Jaccard similarity. Subsequently, it defines 'Recovery' (respectively 'Relevance') as the average maximal similarity of all branches in the reference dataset (respectively prediction). The $F1_{branches}$ is then established as the harmonic mean between Recovery and Relevance \fref{fig:dynverse_metrics}D.
+
+\begin{equation}
+\label{eqn:corrdist}
+\begin{aligned}
+& \text{Jaccard}(c, c')  = \frac{c\cup c'}{c\cap c'} \\
+& \text{Recovery} = \frac{1}{|C|}\sum_{c\in C} \max_{c'\in C'} \text{Jaccard}(c, c') \\
+& \text{Relevance} = \frac{1}{|C'|}\sum_{c' \in C'} \max_{c\in C} \text{Jaccard}(c, c')\\
+& F1 = \frac{2}{\frac{1}{\text{Recovery}} + \frac{1}{\text{Relevance}}}
+\end{aligned}
+\end{equation}
+
+\subsubsection{Benchmarking Branch Points Allocation}
+Similar to $F1_{branches}$, other than mapping cells to edges, the $F1_{milestones}$, namely the F1 between milestone assignments, cells are mapped towards the nearest milestone, i.e. the milestone with the highest milestone percentage.
 
 
 \subsection{Execution of trajectory inference}
+\label{chapter:PHLOWER_bench:exe}
 % List how to install and run the competing methods
 % how to set up dynverse environment
 \subsubsection{Competing Methods}
@@ -145,7 +148,6 @@ Next, we reformat this data to be used within the trajectory benchmarking framew
 
 
 
-
 \subsection{Biological Validation}
 
 %\subsection{Single Cell Kidney Organoids}
@@ -178,8 +180,6 @@ Snap-frozen kidney organoids were thawed in PBS and crushed using a glass tube a
 
 
 
-
-
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{F1branches/fig}
@@ -193,9 +193,9 @@ Snap-frozen kidney organoids were thawed in PBS and crushed using a glass tube a
 
 
 
-
-
 \section{Results}
+\label{chapter:PHLOWER_bench:out}
+
 \subsection{Technical Validation}
 \subsubsection{Benchmarking Topology Recovery}
 PHLOWER was the best-performing method in regard to tree topology recovery, followed by PAGA, RaceID/StemID and monocle (Fig.\ref{fig2}A). 

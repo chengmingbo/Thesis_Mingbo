@@ -413,6 +413,15 @@ The challenges discussed in \sref{background:sec2:challenge_integration} regardi
 \end{table}
 
 Several methods have been developed to address this task, and we will now review the computational single-cell multimodal integration methods available in the literature. These methods can be classified into four groups based on the techniques they employ. The first group encompasses matrix factorization, which breaks down the multimodal count matrix into the product of two matrices. One matrix contains the latent factors representing the features, while the other incorporates the cells embedded in the latent factor space~(e.g., MOFA, scAI, Liger). The second group endeavors to construct a weighted nearest network that captures common information across all modalities~(e.g., Seurat WNN). The third group seeks to maximize the covariance or correlation between two modalities~(e.g., DIABLO, Symphony). The fourth group employs metric learning to reweigh modality features by maximizing their agreement with other modalities(Schema). \tref{tab:methods_integration_overview} summarizes the characteristics of each method.
+ \begin{figure}[!h]
+  	\centering
+  	\includegraphics[width=0.9\textwidth]{Alg/fig}
+  	\vspace{0.1cm}
+  	\caption[Illustration of competing integration competing method.]{\textbf{Illustration of competing integration competing method.} \emph{Source~\cite{kriebel2022uinmf}}~(modified to fit thesis format and/or clarify key points)
+  }
+  	\label{fig:Alg_Liger}
+ \end{figure}
+
 
 \begin{description}
   \item[DIABLO]
