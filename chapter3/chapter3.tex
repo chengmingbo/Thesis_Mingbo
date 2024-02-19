@@ -33,7 +33,7 @@ where $X_{i} \in \mathbb{R}^{n\times s_{i}}$ represents the data of a particular
 \end{align}
 where $Y_{i} \in \mathbb{R}^{n\times p_{i}}$ represents the low-dimensional matrix for modality $i$, $p_{i}$ represents the number of dimensions and $f_{i}$ represents the specific dimension reduction method for this modality.
 
-The pre-processing steps for transcriptome, epigenome, and proteome modalities have been detailed in \sref{background:sec2:scRNA}, \sref{background:sec2:scATAC}, and \sref{background:sec2:protein}. We employ widely used methods for pre-processing, including log normalization followed by feature selection for scRNA-seq data, retaining the top 3,000 features and scaling the data. For scATAC-seq data, we apply TF-IDF transformation to the peaks. In the case of surface protein data, a centered log ratio transformation is employed.
+The pre-processing steps for transcriptome, epigenome, and proteome modalities have been detailed in \sref{background:computational_singlecell}. We employ widely used methods for pre-processing, including log normalization followed by feature selection for scRNA-seq data, retaining the top 3,000 features and scaling the data. For scATAC-seq data, we apply TF-IDF transformation to the peaks. In the case of surface protein data, a centered log ratio transformation is employed.
 
 
 To reduce dimensions, we employ latent semantic indexing (LSI) for scATAC-seq and principal component analysis (PCA) for other modalities, following the common practice in the literature~\cite{granja2021archr, signac, hao2021seurat4}. LSI involves applying singular value decomposition (SVD) on the feature matrix of scATAC data, such that:

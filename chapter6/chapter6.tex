@@ -22,8 +22,8 @@ The simulated data for trajectory inference. We first described the data source 
 To facilitate direct comparability between outputs from various methods, dynverse\citep{saelens2019comparison} designed a unified probabilistic model to represent trajectories from all potential sources\fref{fig:dynverse_metrics}A. In this model, the comprehensive topology is depicted by a network of `milestones', and cells are positioned within the space defined by each connected set of milestones. In dynverse evaluation, a trajectory is conceptualized as a model with multiple layers of abstraction. The highest-level abstraction is the topology, which encompasses information about the paths each cell can traverse from its starting point. Deeper abstractions involve the mapping of each cell to a specific branch within this network, as well as the position (or ordering) of each cell within these branches. Internally, the topology is represented by the milestone network and regions of delayed commitment, while branch assignment and cellular positions are captured by milestone percentages \fref{fig:dynverse_metrics}A.
 
 
-\subsubsection{The Hamming–Ipsen–Mikhailov metric}
-The HIM metric utilizes the two weighted adjacency matrices of the milestone networks as input, with weights assigned based on edge length. It combines the normalized Hamming distance, providing insights into differences in edge lengths, and the normalized Ipsen–Mikhailov distance, evaluating the similarity in degree distributions. The Ipsen–Mikhailov distance includes a parameter $\gamma$, set at 0.1 to ensure comparability of scores across datasets. The HIM metric is a linear combination of these components \fref{fig:dynverse_metrics}B.
+\subsubsection{Benchmarking Structure Similarity}
+The Hamming–Ipsen–Mikhailov(HIM) metric utilizes the two weighted adjacency matrices of the milestone networks as input, with weights assigned based on edge length. It combines the normalized Hamming distance, providing insights into differences in edge lengths, and the normalized Ipsen–Mikhailov distance, evaluating the similarity in degree distributions. The Ipsen–Mikhailov distance includes a parameter $\gamma$, set at 0.1 to ensure comparability of scores across datasets. The HIM metric is a linear combination of these components \fref{fig:dynverse_metrics}B.
 
 \begin{figure}[!ht]
 	\centering
@@ -33,11 +33,12 @@ The HIM metric utilizes the two weighted adjacency matrices of the milestone net
 	\label{fig:DLA_example}
 \end{figure}
 
-\subsubsection{Correlation between geodesic distances}
-The $cor_{dist}$ metric is based on the observation that when a cell's position is identical in both the reference and the prediction, its relative distances to all other cells in the trajectory should also be identical. To calculate $cor_{dist}$, dynverse initially simples 100 waypoint cells in both the prediction and the reference dataset, employing stratified sampling across various milestones, edges, and regions of delayed commitment. This sampling is weighted by the number of cells in each collection. Subsequently, it computes the geodesic distances between the union of waypoint cells from both datasets and all other cells. The calculation of geodesic distance takes into account the location of the two cells within the trajectory and is weighted by the length of the edge in the milestone network. Finally, $cor_{dist}$ is defined as the Spearman rank correlation between the distances of both datasets \fref{fig:dynverse_metrics}C.
+\subsubsection{Benchmarking Location of Cells}
 
-\subsubsection{The F1 between branch assignments}
-For branch assignment comparison, dynverse employs an F1 score, a metric commonly utilized for comparing biclustering methods. To compute this score, it initially determines the similarity of all pairs of branches between the two trajectories using Jaccard similarity. Subsequently, it defines 'Recovery' (respectively 'Relevance') as the average maximal similarity of all branches in the reference dataset (respectively prediction). The $F1_{branches}$ is then established as the harmonic mean between Recovery and Relevance \fref{fig:dynverse_metrics}D.
+The $cor_{dist}$ metric measure the correlation between geodesic distances, which is based on the observation that when a cell's position is identical in both the reference and the prediction, its relative distances to all other cells in the trajectory should also be identical. To calculate $cor_{dist}$, dynverse initially simples 100 waypoint cells in both the prediction and the reference dataset, employing stratified sampling across various milestones, edges, and regions of delayed commitment. This sampling is weighted by the number of cells in each collection. Subsequently, it computes the geodesic distances between the union of waypoint cells from both datasets and all other cells. The calculation of geodesic distance takes into account the location of the two cells within the trajectory and is weighted by the length of the edge in the milestone network. Finally, $cor_{dist}$ is defined as the Spearman rank correlation between the distances of both datasets \fref{fig:dynverse_metrics}C.
+
+\subsubsection{Bechmarking Branches Allocation}
+For branch assignment comparison, measure the The F1 between branch assignments. Dynverse employs an F1 score, a metric commonly utilized for comparing biclustering methods. To compute this score, it initially determines the similarity of all pairs of branches between the two trajectories using Jaccard similarity. Subsequently, it defines 'Recovery' (respectively 'Relevance') as the average maximal similarity of all branches in the reference dataset (respectively prediction). The $F1_{branches}$ is then established as the harmonic mean between Recovery and Relevance \fref{fig:dynverse_metrics}D.
 
 \begin{equation}
 \label{eqn:corrdist}
@@ -49,8 +50,8 @@ For branch assignment comparison, dynverse employs an F1 score, a metric commonl
 \end{aligned}
 \end{equation}
 
-\subsubsection{The F1 between milestone assignments}
-Similar to $F1_{branches}$, other than mapping cells to edges, the F1 milestones, cells are mapped towards the nearest milestone, i.e. the milestone with the highest milestone percentage.
+\subsubsection{Benchmarking Branch Points Allocation}
+Similar to $F1_{branches}$, other than mapping cells to edges, the $F1_{milestones}$, namely the F1 between milestone assignments, cells are mapped towards the nearest milestone, i.e. the milestone with the highest milestone percentage.
 
 
 
