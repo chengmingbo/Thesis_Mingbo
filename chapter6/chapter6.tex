@@ -28,7 +28,12 @@ Next, we reformat this data to be used within the trajectory benchmarking framew
 \begin{algorithm}
 \caption{Diffusion-Limited Aggregation Tree Generation}
 \label{alg:DLA}
-\Input{$n_{sample}, n_{dim}, n_{branch}, \sigma$}
+\Input{
+	$n_{sample}$, number of samples\\
+ 	$n_{dim}$, number of dimensions\\
+ 	$n_{branch}$, number of branches\\
+ 	$\sigma$, gussian noise\\
+ }
     \textbf{seed random number generator}\\
     $n_{steps} \gets \lfloor\frac{n_{sample}}{n_{branch}}\rfloor$\\
     $u \sim \textbf{Uniform}(0,1)\in\mathbb{R}^{n_{steps} \times n_{dims}}$\\

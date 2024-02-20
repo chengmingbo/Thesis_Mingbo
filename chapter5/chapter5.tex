@@ -67,8 +67,15 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
 
 
 \begin{algorithm}
-    \Input{$A, W, N, \text{pct}, G^{t}=\{\mathcal{V}^{t},\mathcal{E}^{t}\}, K=9$ \Comment{A, W are the Affinity matrix and diffusion distance matrix}
+    \Input{
+        $A$, Affinity matrix\\
+        $W$, Diffusion distance matrix\\
+        $N$, Number of trajectories\\
+        $\text{pct}$, Percentage of starting cells\\
+        $G^{t}=\{\mathcal{V}^{t},\mathcal{E}^{t}\}$, Triangulated graph\\
+        $K=9$, KNN graph using A, W\\
     }
+
     $i \gets 1$ \\
     $G^{knn}=\{\mathcal{V}^{knn}, \mathcal{E}^{knn}\} \gets \textbf{Graph}(A,W,K)$ \\
     $\mathcal{V}_{low}^{knn} \gets \textbf{LowestPseudotime}(\mathcal{V}^{t}, \text{pct})$ \Comment{pct is percentage parameter}
