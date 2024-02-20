@@ -237,7 +237,7 @@ We start from a count matrix where the mRNA sequence reads obtained are aligned 
 \label{background:sec2:scATAC}
 In many cases, single-cell ATAC-seq data analysis is similar to single-cell RNA-seq, with some distinctions due to feature differences present in scATAC. Firstly, the features, represented as a cell-by-peak matrix, are typically more sparse and have a larger feature space~(\fref{fig:modalities_differences}). This necessitates different strategies for feature normalization, feature selection, and dimensional reduction. Secondly, scATAC-seq features are not gene expressions, posing a challenge for cell annotation and data interpretation. Lastly, due to these feature differences, the biological insights obtained from scATAC-seq differ from those of scRNA-seq, giving rise to different downstream analyses like linkage analysis or motif discovery.
 
-We will describe the computational workflow for scATAC-seq data analysis, including, feature matrix construction, preprocessing(feature definition, quality control, feature selection), core analysis~(dimensionality reduction, batch correction and clustering), and downstream analysis~(differential accessibility, trajectory inference etc. ).
+We will describe the computational workflow for scATAC-seq data analysis, including, feature matrix construction, preprocessing~(feature definition, quality control, feature selection), core analysis~(dimensionality reduction, batch correction and clustering), and downstream analysis~(differential accessibility, trajectory inference etc. ).
 
 \begin{figure}[!ht]
 	\centering
@@ -412,7 +412,7 @@ The challenges discussed in \sref{background:sec2:challenge_integration} regardi
 	\label{tab:methods_integration_overview}
 \end{table}
 
-Several methods have been developed to address this task, and we will now review the computational single-cell multimodal integration methods available in the literature. These methods can be classified into four groups based on the techniques they employ. The first group encompasses matrix factorization, which breaks down the multimodal count matrix into the product of two matrices. One matrix contains the latent factors representing the features, while the other incorporates the cells embedded in the latent factor space~(e.g., MOFA, scAI, Liger). The second group endeavors to construct a weighted nearest network that captures common information across all modalities~(e.g., Seurat WNN). The third group seeks to maximize the covariance or correlation between two modalities~(e.g., DIABLO, Symphony). The fourth group employs metric learning to reweigh modality features by maximizing their agreement with other modalities(Schema). \tref{tab:methods_integration_overview} summarizes the characteristics of each method.
+Several methods have been developed to address this task, and we will now review the computational single-cell multimodal integration methods available in the literature. These methods can be classified into four groups based on the techniques they employ. The first group encompasses matrix factorization, which breaks down the multimodal count matrix into the product of two matrices. One matrix contains the latent factors representing the features, while the other incorporates the cells embedded in the latent factor space~(e.g., MOFA, scAI, Liger). The second group endeavors to construct a weighted nearest network that captures common information across all modalities~(e.g., Seurat WNN). The third group seeks to maximize the covariance or correlation between two modalities~(e.g., DIABLO, Symphony). The fourth group employs metric learning to reweigh modality features by maximizing their agreement with other modalities~(Schema). \tref{tab:methods_integration_overview} summarizes the characteristics of each method.
  \begin{figure}[!h]
   	\centering
   	\includegraphics[width=0.9\textwidth]{Alg/fig}
@@ -445,7 +445,7 @@ Several methods have been developed to address this task, and we will now review
  \end{figure}
 
   \item[Liger]
-  Linked Inference of Genomic Experimental Relationships(Liger)~\citep{kriebel2022uinmf} implemented UINMF algorithm, which uses iterative Non-negative Matrix Factorization~(iNMF) to learn a common latent space across multiple modalities~(\fref{fig:Alg_Liger}). It allows the inclusion of both shared and unshared features across modalities to learn a common latent space. They incorporate intergenic peaks from snATAC-seq data and additional genes not measured in all datasets. For each data set $E^1, E^2, \cdots, E^n$, Liger first normalizes the data, and selects $m$ variable genes~(shared across all datasets), and $z_i$ variable features, such that after scaling $E^i \in R_{+}^{(m+z_i)\times n_i}\ (i=1,\cdots,N)$. Given $K$ and $\lambda_i$, the objective function is:
+  Linked Inference of Genomic Experimental Relationships~(Liger)~\citep{kriebel2022uinmf} implemented UINMF algorithm, which uses iterative Non-negative Matrix Factorization~(iNMF) to learn a common latent space across multiple modalities~(\fref{fig:Alg_Liger}). It allows the inclusion of both shared and unshared features across modalities to learn a common latent space. They incorporate intergenic peaks from snATAC-seq data and additional genes not measured in all datasets. For each data set $E^1, E^2, \cdots, E^n$, Liger first normalizes the data, and selects $m$ variable genes~(shared across all datasets), and $z_i$ variable features, such that after scaling $E^i \in R_{+}^{(m+z_i)\times n_i}\ (i=1,\cdots,N)$. Given $K$ and $\lambda_i$, the objective function is:
   \begin{equation}
 	  \underset{H^i\geq 0,W\geq 0, V^i\geq 0, U^i \geq 0}{\arg\min} \sum_i^{d}\Big\| (E^i P^i) - H^i \big((W 0) + (V^i U^i)\big)\Big\|_{F}^2 + \lambda_i\sum_i^d\Big\|H^i(V^i U^i)\Big\|_{F}^2
   \end{equation}
@@ -493,11 +493,11 @@ Several methods have been developed to address this task, and we will now review
 \end{figure}
 
   \item[scAI]
-  Single-cell Aggregation and Integration~(scAI)~\citep{jin2020scai} is aimed to integrate multiple modalities with different feature types specific for scRNA $(X_1\in \mathbb{R}^{p \textbf{ genes} \times n \textbf{ cells}})$ and scATAC/DNA methylation$(X_2\in \mathbb{R}^{q \textbf{ loci}\times n \textbf{ cells}})$ modalities~(\fref{fig:Alg_scAI}). It creates a matrix factorization model:
+  Single-cell Aggregation and Integration~(scAI)~\citep{jin2020scai} is aimed to integrate multiple modalities with different feature types specific for scRNA $(X_1\in \mathbb{R}^{p \textbf{ genes} \times n \textbf{ cells}})$ and scATAC/DNA methylation$~(X_2\in \mathbb{R}^{q \textbf{ loci}\times n \textbf{ cells}})$ modalities~(\fref{fig:Alg_scAI}). It creates a matrix factorization model:
   \begin{equation}
   \min_{w_1,W_2,H,Z\geq 0} \alpha \|X_1-W_1H\|_F^2 + \|X_2(Z \circ R)-W_2H\|_F^2 + \lambda \|Z-H^\top H\|_F^2 + \gamma\sum_j \|H_{.j}\|_1^2
   \end{equation}
-  Where $W_1$ and $W_2$ are the gene loading and locus loading matrices with size $p\times K$ and $q\times K$($K$ is rank), respectively. Each of the $K$ columns is considered as a factor to capture a biological process/signal relating to a specific cell type. $W_1^{ik}$ and $W_2^{ik}$ are the loading values of gene $i$ and locus $i$ in factor $k$, and the loading values represent the contributions of gene $i$ and locus $i$ in factor k. $H$ is the cell loading matrix with size $K\times n$($H_{.j}$ is the $j$th column of $H$), and the entry $H^{kj}$ is the loading value of cell $j$ when mapped onto factor $k$. $Z$ is the cell-cell similarity matrix. $R$ is a binary matrix generated by a binomial distribution with a probability $s$. $\alpha, \lambda, \gamma$ are regularization parameters, and the symbol $\circ$ represents dot multiplication.
+  Where $W_1$ and $W_2$ are the gene loading and locus loading matrices with size $p\times K$ and $q\times K$($K$ is rank), respectively. Each of the $K$ columns is considered as a factor to capture a biological process/signal relating to a specific cell type. $W_1^{ik}$ and $W_2^{ik}$ are the loading values of gene $i$ and locus $i$ in factor $k$, and the loading values represent the contributions of gene $i$ and locus $i$ in factor k. $H$ is the cell loading matrix with size $K\times n$ ($H_{.j}$ is the $j$th column of $H$), and the entry $H^{kj}$ is the loading value of cell $j$ when mapped onto factor $k$. $Z$ is the cell-cell similarity matrix. $R$ is a binary matrix generated by a binomial distribution with a probability $s$. $\alpha, \lambda, \gamma$ are regularization parameters, and the symbol $\circ$ represents dot multiplication.
 
 
 \begin{figure}[!h]
@@ -561,10 +561,10 @@ Computational trajectory analysis, which explores non-linear embeddings in the c
 
 
 	\item \textbf{Complexity of multi-branching trajectories:}
-	For complex datasets, such as hematopoiesis(~\fref{fig:cell_differentiation}A), where cell differentiation leads to various immune cell types, monocytes, myeloid cells, and their subtypes, a method capable of capturing intricate differentiation processes is required. Unfortunately, many existing methods struggle to accurately capture the trajectory structure of such complex datasets.
+	For complex datasets, such as hematopoiesis~(\fref{fig:cell_differentiation}A), where cell differentiation leads to various immune cell types, monocytes, myeloid cells, and their subtypes, a method capable of capturing intricate differentiation processes is required. Unfortunately, many existing methods struggle to accurately capture the trajectory structure of such complex datasets.
 
 
-	\item \textbf{Most approaches use low number of dimensions($\geq3$) to fit trajectories:}
+	\item \textbf{Most approaches use low number of dimensions~($\geq3$) to fit trajectories:}
 	As high-dimensional data cannot be naturally visualized, trajectories of single-cell data are typically represented in embeddings with only 2 to 3 dimensions. However, this approach necessitates the omission of high-dimensional information. To address this limitation, there is a need for methods that directly infer cell differentiation from high-dimensional embeddings.
 
 	\item \textbf{Graph-based methods only use the information of nodes:}
