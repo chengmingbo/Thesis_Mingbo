@@ -162,7 +162,7 @@ Human adult skin fibroblasts derived from a healthy volunteer were reprogrammed 
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=0.95\textwidth]{Organoid_exp/fig}
+	\includegraphics[width=0.75\textwidth]{Organoid_exp/fig}
 	\vspace{0.1cm}
 	\caption[Organoid experiment]{Organoid experiment.}
 	\label{fig:organoid_exp}
@@ -176,16 +176,6 @@ To dissect nephrogenic differentiation trajectories in kidney organoids using th
 \subsubsection{Single nuclei isolation from kidney organoids}
 
 Snap-frozen kidney organoids were thawed in PBS and crushed using a glass tube and douncer (Duran Wheaton Kimble Life Sciences, Wertheim/Main, Germany). After passing the single cell suspension through a 40 $\mu$m cell strainer (Greiner bio-one), the suspension was centrifuged at 4$^\circ C$ and 300xg for 5 min. Subsequently, the supernatant was discarded and the cell pellet was resuspended in Nuc101 cell lysis buffer (Thermo Fisher), supplemented with RNase and protease inhibitors (Recombinant RNase Inhibitor and Superase RNase Inhibitor, Thermo Fisher, and Complete Protease Inhibitor, Roche), incubated for 30 seconds and centrifuged at 4$^\circ$ and 500xg for 5 min. After discarding the supernatant, the nuclei were carefully resuspended in PBS containing 1\% (v/v) Ultra-Pure BSA (Invitrogen Ambion, Thermo Fisher) and Protector RNAse inhibitor (Sigma Aldrich). Single nuclei were counted using Trypan blue (Thermo Fisher) and prepared for 10x genomics ChromiumNextGEM Multiome pipeline v1 according to the manufacturers guidelines (~\url{https://cdn.10xgenomics.com/image/upload/v1666737555/support-documents/CG000338_ChromiumNextGEM_Multiome_ATAC_GEX_User_Guide_RevF.pdf}).
-
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.95\textwidth]{F1branches/fig}
-	\vspace{0.1cm}
-	\caption[Branches allocation]{
-	\textbf{Branches allocation}.}
-	\label{fig:f1branches}
-\end{figure}
 
 
 \section{Results}
@@ -216,6 +206,20 @@ In the problem of allocating cells to positions in a branch, PHLOWER was also th
 \end{figure}
 \subsubsection{Benchmarking Branches Allocation}
 In the problem of allocating cells to the correct branches, PHLOWER obtained the best performance, followed by monocle and PAGA~(\fref{fig:f1branches}). 
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{F1branches/fig}
+	\vspace{0.1cm}
+	\caption[Branches allocation]{
+	\textbf{Branches allocation}.}
+	\label{fig:f1branches}
+\end{figure}
+
+
+\subsubsection{Benchmarking Branch points Allocation}
+Finally, in the allocation of cells to branches, PHLOWER was the best performer, followed by RaceID/StemID, monocle, and PAGA~(\fref{fig:f1milestone}).
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.95\textwidth]{F1milestone/fig}
@@ -224,8 +228,7 @@ In the problem of allocating cells to the correct branches, PHLOWER obtained the
 	\textbf{Branch points allocation}.}
 	\label{fig:f1milestone}
 \end{figure}
-\subsubsection{Benchmarking Branch points Allocation}
-Finally, in the allocation of cells to branches, PHLOWER was the best performer, followed by RaceID/StemID, monocle, and PAGA~(\fref{fig:f1milestone}).
+
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.95\textwidth]{PHLOWER_STREAM_layout/fig}
