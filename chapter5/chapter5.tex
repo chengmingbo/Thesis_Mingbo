@@ -18,6 +18,19 @@ This chapter exclusively introduces the formalization and implementation of our 
 %a table shows the R dependencies
 \section{Trajectory Inference}
 \label{TI_methods:TI}
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.65\textwidth]{breakingpoint/fig}
+	\vspace{0.1cm}
+	\caption[Number of eigens selecting algorithm.]{Number of eigens selecting algorithm}
+	\label{fig:breakingpoint}
+\end{figure}
+
+
+
+
 \begin{algorithm}
     \Input{$A, W, N, \text{pct}, G^{t}=\{\mathcal{V}^{t},\mathcal{E}^{t}\}, K=9$ \Comment{A, W are the Affinity matrix and diffusion distance matrix}
     }
@@ -61,12 +74,52 @@ This chapter exclusively introduces the formalization and implementation of our 
     \label{alg:randomwalk}
 \end{algorithm}
 
+
+\begin{algorithm}
+	\Input{
+		$\textbf{x}$, indices of eigen values\\
+		$\textbf{y}$, eigen values\\
+	}
+	\Output{
+		$\text{index}$, the indice of the break point
+	}
+	$L_{div} \gets ()$ \Comment{division list}
+	\While{$i$ in $\textup{\textbf{x}}(2:)$}{
+		$L_{div}(i) \gets \left|\frac{\textbf{y}(i)}{\textbf{y}(i-1)}\right|$ \Comment{divided by the previous element}
+	}
+	$\text{index} \gets \arg\max_{\forall i \in \textbf{x}(2:)} L_{div}(i)$\\
+	$\text{index} \gets \text{index}-1$ \Comment{the previous index is the breaking point}
+
+	\Return{$\textup{\text{index}}$}
+	\caption{Breaking point detecting algorithm}
+	\label{alg:breaking_point}
+\end{algorithm}
+
+
+
 \begin{algorithm}
     \KwIn{\\
     $V = \{V_1, V_2,\cdots, V_m\},$ \Comment{cumsum coordinates for each group}
     $t = \{t_1, t_2,\cdots, t_m\},$ \Comment{group pseudo time}
     $min_{bin}=10,$\Comment{shortest trajectory minimum bin size}
     ${\theta}_{cut} = 1,$\Comment{branching point cut distance threshold}
+    }
+
+    \Input{
+     $x$ ,a; \\
+     $y$ ,b; \\
+     $z$ ,c; \\
+    }
+    \Parameter{
+      d; \\
+      e; \\
+      f;
+
+    }
+    \Output{
+      h;\\
+      i;\\
+      j;\\
     }
     $t_{min}, t_{max}, R_{max} \gets (\infty, -\infty, -\infty)$\Comment{$R_{max}$ is the maximum range}
     \For{$i\gets1$ \KwTo $m$ \KwBy $1$}{
