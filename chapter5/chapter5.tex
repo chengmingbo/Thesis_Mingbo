@@ -59,7 +59,7 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
 	\centering
 	\includegraphics[width=0.65\textwidth]{breakingpoint/fig}
 	\vspace{0.1cm}
-	\caption[Number of eigens selecting algorithm.]{\textbf{Number of eigens selecting algorithm.}}
+	\caption[Number of eigens selecting algorithm.]{\textbf{Number of eigens selecting algorithm.} The eigenvalues are derived from the benchmarking data, specifically from the Diffusion Limited Aggregation Tree with 10 branches.}
 	\label{fig:breakingpoint}
 \end{figure}
 
@@ -68,7 +68,7 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
     \centering
     \includegraphics[width=0.65\textwidth]{branching/fig}
     \vspace{0.1cm}
-    \caption[Branching point detecting algorithm.]{\textbf{Branching point detecting algorithm.} The eigenvalues are derived from the benchmarking data, specifically from the Diffusion Limited Aggregation Tree with 10 branches.}
+    \caption[Branching point detecting algorithm.]{\textbf{Branching point detecting algorithm.} }
     \label{fig:breakingpoint}
 \end{figure}
 
@@ -220,7 +220,8 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
 	\centering
 	\includegraphics[width=0.95\textwidth]{PHLOWER_schematic/fig}
 	\vspace{0.1cm}
-	\caption[PHLOWER\_schematic.]{PHLOWER\_schematic}
+	%\caption[Schematic overview of major steps of PHLOWER.]{xxxx}
+	\caption[Schematic overview of major steps of PHLOWER.]{\textbf{Schematic overview of major steps of PHLOWER.} PHLOWER receives as input a multimodal or unimodal single cell data. \textbf{A)} It next creates a graph representation and a graph embedding (kamada-kawai algorithm) of the cells. Our example is based on a differentiation system of mouse embryonic fibroblasts (MEF) towards neurons or myocytes~\citep{treutlein2016dissecting}. From this graph, PHLOWER uses a zero order Laplacian decomposition and random-walk to estimate pseudo-time from progenitor cells (i.e. MEF). \textbf{B)}, Next, a simplicial complex (SC) is obtained by Delaunay triangulation of the graph represented in the kamada-kawai embedding and connecting cells end state cells with progenitor cells \textbf{C)} An edge embedding is obtained via the decomposition of the Hodge-Laplacian. In the MEF data, the first two eigenvectors have zero eigen-vectors and their signals discriminate edges belonging to the two differentiation trajectories (or holes in the SC). \textbf{D)} PHLOWER performs next random walks to obtain trajectories and uses the HL decomposition to obtain a trajectory embedding and a cumulative trajectory embedding. Clustering analysis in the trajectory embedding reveals major trajectories in the data, while the cumulative embedding space is used to estimate trajectory backbones and branching points events. PHLOWER outputs stream trees representing the differentiation tree over pseudo-time and allow the detection of regulators and gene markers.} 
 	\label{fig:PHLOWER_schematic}
 \end{figure}
 
