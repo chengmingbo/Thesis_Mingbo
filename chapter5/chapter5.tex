@@ -14,12 +14,21 @@ This chapter exclusively introduces the formalization and implementation of our 
 
 \section{Notation}
 \label{TI_methods:notation}
+$\mathcal{V}: $ A set of vertices\\
+$\mathcal{S}^k = \{{v}_0,\cdots,{v}_k \}: $ A $k$-simplex\\
+$\mathcal{X}: $ A simplicial complex.\\
+$\mathcal{C}_k(\mathcal{X}): $ Vector space with coefficients in $\mathbb{R}$ whose basis is the set of oriented k-simplices of $\mathcal{X}$\\
+$\partial_k ([v_0,\cdots, v_k])$: boundary map\\
+$\mathbf{B}_k: $ A k order incidence matrix.\\
 
-%a table shows the R dependencies
 \section{Trajectory Inference}
 \label{TI_methods:TI}
 
 \subsection{Simplicial Complex}
+
+
+
+A $k$-simplex~\citep{schaub2021signal}~(\fref{fig:simplex}) $\mathcal{S}^k = \{{v}_0,\cdots,{v}_k \}$ is an unordered subset of a finite set of vertices $\mathcal{V}$ with cardinality $k + 1$, where $v_i\in \mathcal{V}$, $v_i \neq v_j$ and $i \neq j$. 
 
 \begin{figure}[!h]
     \centering
@@ -29,8 +38,7 @@ This chapter exclusively introduces the formalization and implementation of our 
     \label{fig:simplex}
 \end{figure}
 
-A $k$-simplex~\citep{schaub2021signal}~(\fref{fig:simplex}) $\mathcal{S}^k = \{{v}_0,\cdots,{v}_k \}$ is an unordered subset of a finite set of vertices $\mathcal{V}$ with cardinality $k + 1$, where $v_i\in \mathcal{V}$, $v_i \neq v_j$ and $i \neq j$. A simplicial complex(SC)~(\ref{fig:sc}) $\mathcal{X}$ is a collection of simplices, where for all $k$-simplices $\mathcal{S}^k$ in $\mathcal{X}$, any subset of $\mathcal{S}^k$ must also be in $\mathcal{X}$. The typical $0$-simplices, $1$-simplices, $2$-simplices are also respectively called vertices, edges and triadic faces. A face of a simplex $\mathcal{S}^k$ is a subset of $\mathcal{S}^k$  with cardinally $k$ in the form $\{v_0 \cdots v_{i-1}, v_{i+1}\cdots v_k\}$ for $0 \leq i \leq k$. A co-face $\mathcal{S}^{k+1}$ of a simplex $\mathcal{S}^k$ is a $(k + 1)$-simplex such that $\mathcal{S}^k$ is a subset of $\mathcal{S}^{k+1}$.  When ordering vertices of a $k$-simplex $\{{v}_0,\cdots,{v}_k \}$, it becomes an orientated $k$-simplex denoted by $[{v}_0,\cdots,{v}_k ]$, where the orientation changing corresponds to the change of sign of the coefficient, i.e. $[{v}_0,\cdots {v}_i, \cdots {v}_j\cdots,{v}_k ]$ = $-[{v}_0,\cdots {v}_j, \cdots {v}_i\cdots,{v}_k ]$. 
-
+A simplicial complex~(SC)~(\fref{fig:sc}) $\mathcal{X}$ is a collection of simplices, where for all $k$-simplices $\mathcal{S}^k$ in $\mathcal{X}$, any subset of $\mathcal{S}^k$ must also be in $\mathcal{X}$. The typical $0$-simplices, $1$-simplices, $2$-simplices are also respectively called vertices, edges and triadic faces. A face of a simplex $\mathcal{S}^k$ is a subset of $\mathcal{S}^k$  with cardinally $k$ in the form $\{v_0 \cdots v_{i-1}, v_{i+1}\cdots v_k\}$ for $0 \leq i \leq k$. A co-face $\mathcal{S}^{k+1}$ of a simplex $\mathcal{S}^k$ is a $(k + 1)$-simplex such that $\mathcal{S}^k$ is a subset of $\mathcal{S}^{k+1}$.  When ordering vertices of a $k$-simplex $\{{v}_0,\cdots,{v}_k \}$, it becomes an orientated $k$-simplex denoted by $[{v}_0,\cdots,{v}_k ]$, where the orientation changing corresponds to the change of sign of the coefficient, i.e. $[{v}_0,\cdots {v}_i, \cdots {v}_j\cdots,{v}_k ]$ = $-[{v}_0,\cdots {v}_j, \cdots {v}_i\cdots,{v}_k ]$. 
 
 \begin{figure}[!h]
     \centering
@@ -45,14 +53,13 @@ For each $k \geq 0$, $\mathcal{C}_k(\mathcal{X})$ is the vector space with coeff
 \begin{equation}
 \partial_k ([v_0,\cdots, v_k]) = \sum_{i=0}^{k} (-1)^i [v_0, \cdots, v_{i-1}, v_{i+1}, \cdots, v_k]
 \end{equation}
-$\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}(.)$ is the image of an operator. 
-
+$\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}(.)$ is the image of an operator. We can construct the matrix representation of the boundary operators $\partial_k$ by $\mathbf{B_k}$~\citep{lim2020hodge,muhammad2006control}. For example, as shown in~\fref{fig:sc}, the incidence matrices $\mathbf{B_1}$ and $\mathbf{B_2}$ of the 2-simplicial complex capture the relationships between nodes and edges, and edges and triangles, respectively.
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.65\textwidth]{breakingpoint/fig}
 	\vspace{0.1cm}
-	\caption[Number of eigens selecting algorithm.]{Number of eigens selecting algorithm}
+	\caption[Number of eigens selecting algorithm.]{\textbf{Number of eigens selecting algorithm.}}
 	\label{fig:breakingpoint}
 \end{figure}
 
@@ -61,7 +68,7 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
     \centering
     \includegraphics[width=0.65\textwidth]{branching/fig}
     \vspace{0.1cm}
-    \caption[Branching point detecting algorithm.]{Branching point detecting algorithm.}
+    \caption[Branching point detecting algorithm.]{\textbf{Branching point detecting algorithm.} The eigenvalues are derived from the benchmarking data, specifically from the Diffusion Limited Aggregation Tree with 10 branches.}
     \label{fig:breakingpoint}
 \end{figure}
 
