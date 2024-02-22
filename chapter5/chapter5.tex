@@ -44,7 +44,8 @@ A simplicial complex~(SC)~(\fref{fig:sc}) $\mathcal{X}$ is a collection of simpl
     \centering
     \includegraphics[width=0.65\textwidth]{Simplicial_Complex/fig}
     \vspace{0.1cm}
-    \caption[Simplicial complex.]{Simplicial complex.}
+    \caption[A simplicial complex example.]{Example of a ordered simplicial complex and boundary maps $\textbf{B}_1$ and $\textbf{B}_2$ representing this
+complex.}
     \label{fig:sc}
 \end{figure}
 
@@ -68,9 +69,10 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
     \centering
     \includegraphics[width=0.65\textwidth]{branching/fig}
     \vspace{0.1cm}
-    \caption[Branching point detecting algorithm.]{\textbf{Branching point detecting algorithm.} }
+    \caption[Schematic showing how to create a PHLOWER tree.]{\textbf{Schematic showing how to create a tree using edges lay in cumulative trajectory space.}  \textbf{A)}Example of three trajectory groups g1 , g2 , g3 each with a distinct color in the cumulative trajectory space. Every dot in this embedding represents a edge in the graph (or a cell differentiation event). \textbf{B)} PHLOWER takes the mean on the pseudo-time of the vertices (cells) connected by an edge and use this an the edge pseudo-time estimate. PHLOWER next bins the edges by considering their pseudo-times. \textbf{C)} It then estimate average edge locations for every bin, which serves as a backbone for the trajectories. It also estimate distance between edges in two groups but with the same bin index. \textbf{D)} Distance between bins are estimated for all groups and branchings points are detected whenever distance between edges in two groups surpasses the distances of edges within a group for a given bin In the example, bin 9 is a branching point between groups 2 and 3 and bin 5 is a branching point between groups 1 and 2 and 1 and 3. \textbf{E)} To build the final tree, PHLOWER considers the branching points with the highest values towards the lowest values to build trees in a bottom-up approach, i.e. it merges trajectory 2 and 3 at bin 9. The next branching point is 5, which connects trajectory 1 with the tree formed by 2 and 3.}
     \label{fig:branching}
 \end{figure}
+
 
 
 \begin{algorithm}
@@ -133,7 +135,7 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
 		$\text{index}$, the indice of the break point
 	}
 	$L_{div} \gets ()$ \Comment{division list}
-	\While{$i$ in $\textup{\textbf{x}}(2:)$}{
+	\While{$i \in \textup{\textbf{x}}(2:)$}{
 		$L_{div}(i) \gets \left|\frac{\textbf{y}(i)}{\textbf{y}(i-1)}\right|$ \Comment{divided by the previous element}
 	}
 	$\text{index} \gets \arg\max_{\forall i \in \textbf{x}(2:)} L_{div}(i)$\\
@@ -143,7 +145,6 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
 	\caption{Breaking point detecting algorithm}
 	\label{alg:breaking_point}
 \end{algorithm}
-
 
 
 \begin{algorithm}
