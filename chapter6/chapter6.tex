@@ -6,10 +6,15 @@
 \label{chapter:PHLOWER_bench}
 \graphicspath{{chapter6/figs}}
 
+%%TODO
+%% Order CAN BE technical experiment and result, followed by biological experiment and result.
+
 In the previous chapter, we introduced our computational method, PHLOWER, for trajectory inference in single-cell multimodal data. In this chapter, we outline the experimental framework~(\sref{chapter:PHLOWER_bench:exp}) utilized in this thesis to validate our methods and subsequently present the results~(\sref{chapter:PHLOWER_bench:out}). Within the experimental framework, we first introduce the synthetic benchmarking dataset. Following that, we discuss the four evaluation metrics used for measuring topology recovery, cell location, branch allocation accuracy, and branch point allocation accuracy, drawing from the comprehensive evaluation framework dynverse. Next, we introduce the biological validation dataset, specifically the kidney organoid data preparation and experiment design. Subsequently, we delve into the execution of competing methods for the benchmarking process, comparing against 11 state-of-the-art methods. In the results section, we first present the outcomes of the benchmarking evaluation. Next, we showcase the biological validation using the kidney organoid data. Following this, we present the statistical methods employed in the chapter. Finally, we conclude the chapter by discussing the strengths of PHLOWER.
 
-\section{Experiments}
-\label{chapter:PHLOWER_bench:exp}
+
+\section{Technical Experiments}
+\label{chapter:PHLOWER_bench:tech}
+\label{chapter:PHLOWER_bench:tech_exp}
 In this section, we initially present the algorithm for creating simulated data~(\sref{chapter:PHLOWER_bench:sim}). Following that, we elaborate on four trajectory inference evaluation metrics~(\sref{chapter:PHLOWER_bench:metrics}). Subsequently, we provide detailed descriptions for the execution of each method~(\sref{chapter:PHLOWER_bench:exe}).
 
 \subsection{Simulated Data}
@@ -88,7 +93,7 @@ Next, we reformat this data to be used within the trajectory benchmarking framew
 %3000, 100, br, 5.
 %3-12
 
-\subsection{Evaluation of trajectory inference}
+\subsection{Evaluation of Trajectory Inference}
 \label{chapter:PHLOWER_bench:metrics}
 % dynverse benchmarking selected metrics description
 The simulated data for trajectory inference. We first described the data source and pre-processing for single cell multi-modal data, next we show how to simulate data for trajectory inference.
@@ -102,38 +107,37 @@ The simulated data for trajectory inference. We first described the data source 
 
 To facilitate direct comparability between outputs from various methods, dynverse\citep{saelens2019comparison} designed a unified probabilistic model to represent trajectories from all potential sources\fref{fig:dynverse_metrics}A. In this model, the comprehensive topology is depicted by a network of `milestones', and cells are positioned within the space defined by each connected set of milestones. In dynverse evaluation, a trajectory is conceptualized as a model with multiple layers of abstraction. The highest-level abstraction is the topology, which encompasses information about the paths each cell can traverse from its starting point. Deeper abstractions involve the mapping of each cell to a specific branch within this network, as well as the position (or ordering) of each cell within these branches. Internally, the topology is represented by the milestone network and regions of delayed commitment, while branch assignment and cellular positions are captured by milestone percentages \fref{fig:dynverse_metrics}A.
 
+\begin{description}
+	\item[Benchmarking Structure Similarity]
+	The Hamming–Ipsen–Mikhailov(HIM) metric~(\fref{fig:dynverse_metrics}B) utilizes the two weighted adjacency matrices of the milestone networks as input, with weights assigned based on edge length. It combines the normalized Hamming distance, providing insights into differences in edge lengths, and the normalized Ipsen–Mikhailov distance, evaluating the similarity in degree distributions. The Ipsen–Mikhailov distance includes a parameter $\gamma$, set at 0.1 to ensure comparability of scores across datasets. The HIM metric is a linear combination of these components.	
 
-\subsubsection{Benchmarking Structure Similarity}
-The Hamming–Ipsen–Mikhailov(HIM) metric~(\fref{fig:dynverse_metrics}B) utilizes the two weighted adjacency matrices of the milestone networks as input, with weights assigned based on edge length. It combines the normalized Hamming distance, providing insights into differences in edge lengths, and the normalized Ipsen–Mikhailov distance, evaluating the similarity in degree distributions. The Ipsen–Mikhailov distance includes a parameter $\gamma$, set at 0.1 to ensure comparability of scores across datasets. The HIM metric is a linear combination of these components.
+	\item[Benchmarking Location of Cells]
+	The $cor_{dist}$ metric~(\fref{fig:dynverse_metrics}C) measure the correlation between geodesic distances, which is based on the observation that when a cell's position is identical in both the reference and the prediction, its relative distances to all other cells in the trajectory should also be identical. To calculate $cor_{dist}$, dynverse initially simples 100 waypoint cells in both the prediction and the reference dataset, employing stratified sampling across various milestones, edges, and regions of delayed commitment. This sampling is weighted by the number of cells in each collection. Subsequently, it computes the geodesic distances between the union of waypoint cells from both datasets and all other cells. The calculation of geodesic distance takes into account the location of the two cells within the trajectory and is weighted by the length of the edge in the milestone network. Finally, $cor_{dist}$ is defined as the Spearman rank correlation between the distances of both datasets.
+
+	\item[Bechmarking Branches Allocation]
+	For branch assignment comparison~(\fref{fig:dynverse_metrics}D), measure the The F1 between branch assignments. Dynverse employs an F1 score, a metric commonly utilized for comparing biclustering methods. To compute this score, it initially determines the similarity of all pairs of branches between the two trajectories using Jaccard similarity. Subsequently, it defines 'Recovery' (respectively 'Relevance') as the average maximal similarity of all branches in the reference dataset (respectively prediction). The $F1_{branches}$ is then established as the harmonic mean between Recovery and Relevance.
+
+	\begin{equation}
+	\label{eqn:corrdist}
+	\begin{aligned}
+	& \text{Jaccard}(c, c')  = \frac{c\cup c'}{c\cap c'} \\
+	& \text{Recovery} = \frac{1}{|C|}\sum_{c\in C} \max_{c'\in C'} \text{Jaccard}(c, c') \\
+	& \text{Relevance} = \frac{1}{|C'|}\sum_{c' \in C'} \max_{c\in C} \text{Jaccard}(c, c')\\
+	& F1 = \frac{2}{\frac{1}{\text{Recovery}} + \frac{1}{\text{Relevance}}}
+	\end{aligned}
+	\end{equation}
+
+	\item[Benchmarking Branch Points Allocation]
+	Similar to $F1_{branches}$, other than mapping cells to edges, the $F1_{milestones}$, namely the F1 between milestone assignments, cells are mapped towards the nearest milestone, i.e. the milestone with the highest milestone percentage.
+\end{description}
 
 
-\subsubsection{Benchmarking Location of Cells}
-
-The $cor_{dist}$ metric~(\fref{fig:dynverse_metrics}C) measure the correlation between geodesic distances, which is based on the observation that when a cell's position is identical in both the reference and the prediction, its relative distances to all other cells in the trajectory should also be identical. To calculate $cor_{dist}$, dynverse initially simples 100 waypoint cells in both the prediction and the reference dataset, employing stratified sampling across various milestones, edges, and regions of delayed commitment. This sampling is weighted by the number of cells in each collection. Subsequently, it computes the geodesic distances between the union of waypoint cells from both datasets and all other cells. The calculation of geodesic distance takes into account the location of the two cells within the trajectory and is weighted by the length of the edge in the milestone network. Finally, $cor_{dist}$ is defined as the Spearman rank correlation between the distances of both datasets.
-
-\subsubsection{Bechmarking Branches Allocation}
-For branch assignment comparison~(\fref{fig:dynverse_metrics}D), measure the The F1 between branch assignments. Dynverse employs an F1 score, a metric commonly utilized for comparing biclustering methods. To compute this score, it initially determines the similarity of all pairs of branches between the two trajectories using Jaccard similarity. Subsequently, it defines 'Recovery' (respectively 'Relevance') as the average maximal similarity of all branches in the reference dataset (respectively prediction). The $F1_{branches}$ is then established as the harmonic mean between Recovery and Relevance.
-
-\begin{equation}
-\label{eqn:corrdist}
-\begin{aligned}
-& \text{Jaccard}(c, c')  = \frac{c\cup c'}{c\cap c'} \\
-& \text{Recovery} = \frac{1}{|C|}\sum_{c\in C} \max_{c'\in C'} \text{Jaccard}(c, c') \\
-& \text{Relevance} = \frac{1}{|C'|}\sum_{c' \in C'} \max_{c\in C} \text{Jaccard}(c, c')\\
-& F1 = \frac{2}{\frac{1}{\text{Recovery}} + \frac{1}{\text{Relevance}}}
-\end{aligned}
-\end{equation}
-
-\subsubsection{Benchmarking Branch Points Allocation}
-Similar to $F1_{branches}$, other than mapping cells to edges, the $F1_{milestones}$, namely the F1 between milestone assignments, cells are mapped towards the nearest milestone, i.e. the milestone with the highest milestone percentage.
-
-
-\subsection{Execution of trajectory inference}
+\subsection{Execution of Trajectory Inference}
 \label{chapter:PHLOWER_bench:exe}
 % List how to install and run the competing methods
 % how to set up dynverse environment
-\subsubsection{Competing Methods}
-	We first, install dyno(0.1.2) which includes some competing methods of wrapping. To do this, we use devtools::install\_github(``dynverse/dyno'') which includes the dynverse packages dynwrap(1.2.3),  dynmethods(1.0.5.9000), dynplot(1.1.2) and dynfeature(1.0.0). For PHLOWER and STREAM wrapping, we followed tutorial~\url{https://dynverse.org/developers/creating-ti-method/}. For this, we clone dynclipy(0.1) code from~\url{https://github.com/dynverse/dynclipy} and use ``pip install .'' to install the package.
+We first, install dyno(0.1.2) which includes some competing methods of wrapping. To do this, we use devtools::install\_github(``dynverse/dyno'') which includes the dynverse packages dynwrap(1.2.3),  dynmethods(1.0.5.9000), dynplot(1.1.2) and dynfeature(1.0.0). For PHLOWER and STREAM wrapping, we followed tutorial~\url{https://dynverse.org/developers/creating-ti-method/}. For this, we clone dynclipy(0.1) code from~\url{https://github.com/dynverse/dynclipy} and use ``pip install .'' to install the package.
+
 \begin{description}
 	\item[PHLOWER] As PHLOWER utilizes STREAM for visualization, the wrapping to dynverse follows a similar approach to STREAM. To construct the stream tree structure, PHLOWER initially allocates each cell to the tree branches. This is achieved by considering the location of all edges associated with a vertex and using the mean value in the cumulative trajectory embedding space. Given that each edge can have multiple coordinates in the cumulative trajectory space, the median value is employed as the edge coordinate for inferring the cell coordinate. Subsequently, PHLOWER identifies the nearest branch to which a cell is close and assigns the cell to the respective branch. For cells that remain unvisited during the random walk, their k(default 5) nearest neighbors in the original space are used to approximately represent the cumsum coordinate. With this information, we can seamlessly integrate our tree into STREAM. 
 
@@ -179,42 +183,10 @@ Similar to $F1_{branches}$, other than mapping cells to edges, the $F1_{mileston
 	\label{fig:evaluation_PHLOWER}
 \end{figure}
 
+\section{Technical Results}
+\label{chapter:PHLOWER_bench:tech_out}
+\subsection{Evaluation of Trajectory Inference Methods}
 
-
-\subsection{Biological Validation}
-
-%\subsection{Single Cell Kidney Organoids}
-
-\subsubsection{Ethical statement}
-
-Human adult skin fibroblasts derived from a healthy volunteer, after giving informed consent, were used to generate iPSCs. This study was conducted in accordance with the Helsinki Declaration as revised in 2013. Permission for the creation and use of iPSCs in this study was obtained from the local ethical commission for human-related research of the Radboud University Medical Center, Nijmegen (approval numbers: 2015-1543 and 2006-048). 
-
-\subsubsection{Cell culture}
-
-Human adult skin fibroblasts derived from a healthy volunteer were reprogrammed into iPSCs using the Yamanaka factors~\citep{takahashi2006induction} by the Stem Cells Technology Center at Radboud University Medical Center (SCTC, Radboud UMC, Nijmegen, The Netherlands). The iPSCs used in the current study were generated from spare materials from a healthy donor, who did consent with the use of such material and did not suffer from kidney disease. The materials have been anonymized and were collected during a time in which no signed informed consent was required.
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=0.75\textwidth]{Organoid_exp/fig}
-	\vspace{0.1cm}
-	\caption[Organoid experiment]{Organoid experiment.}
-	\label{fig:organoid_exp}
-\end{figure}
-
-Generation of human induced pluripotent stem cell (iPSC) derived kidney organoids iPSC were seeded using a density of 18,000 cells/cm2 on Geltrex (Thermo Fisher, Breda, the Netherlands) coated 6-well plates (Greiner Bio-one, Alphen aan de Rijn, the Netherlands). The differentiation protocol was based on our previous work~\citep{jansen2022sars}. In brief, differentiation towards ureteric bud-like and metanephric mesenchyme lineage was initiated using CHIR-99021 (6 $\mu$M, R\&D systems, Abingdon, United Kingdom) in Essential 6 medium (Thermo Fisher, Breda, The Netherlands) for 3 and 5 days, respectively. Next, medium was  replaced sequentially for Essential 6 supplemented with fibroblast growth factor 9 (FGF9), 200 ng/ml, R\&D systems) and heparin (1 $\mu$g/ml, Sigma-Aldrich, Zwijndrecht, Netherlands) up to day 7. On day 7, differentiated cells were trypsinized and mixed in a ratio of one part 3 days CHIR-differentiated cells and two parts 5 days CHIR-differentiated cells to stimulate crosstalk between both lineages in order to boost segmented nephrogenesis. To generate cell pellets, 300,000 cells per 1.5 ml tube were aliquoted from the cell mix and centrifuged 3 times at 300 rcf for 3 min changing position by 180$^\circ$ per cycle. Cell pellets were plated on Costar Transwell filters (type 3450, Corning, Sigma-Aldrich), followed by a one-hour CHIR pulse (5 $\mu$M) in Essential 6 medium added to the basolateral compartment. Next, medium was replaced for Essential 6 medium supplemented with FGF9 and heparin for additional 5 days, and the entire 3D organoid culture was performed using the air-liquid interface. After 5 days of organoid culture, Essential 6 medium supplemented with human epidermal growth factor (hEGF, 10 ng/ml, Sigma-Aldrich), bone morphogenetic protein-7 (BMP7, 50 ng/ml, R\&D systems), stromal derived factor 1 beta (SDF1$\beta$, 10 ng/ml, R\&D systems), vasopressin (10 nM, Sigma-Aldrich), aldosterone (10 nM, Sigma-Aldrich) was used. Medium was replaced every other day for an additional 13 days. 
-
-Harvesting kidney organoids for 10x genomics NEXT GEM multiome pipeline
-To dissect nephrogenic differentiation trajectories in kidney organoids using the multiome pipeline, organoids were harvested at different time points during culture. The following differentiation stages were processed:  day 7 (cells harvested from the 2D cell layer, primitive streak - intermediate mesoderm stage), organoids day 7+5, day 7+12 and day 7+18. These kidney organoid stages represent nephrogenesis ranging from intermediate mesoderm (day 7+5) towards metanephric mesenchyme and ureteric bud-like lineages (day 7+12) that result into nephron-like structures embedded by a (progenitor) stromal compartment at the end of the differentiation protocol (day 7+18). Kidney organoids were harvested on the respective dates (d7+5, d7+12, and d7+18) by cutting single organoids out of the transwell filter in a sterile flow hood using a scalpel. Organoids were washed with 5 ml PBS per filter at room temperature 3 times. Afterwards, single organoids were cut from the transwell filter with the organoids still being attached to the membrane, transferred to 1.7 ml cryovials (Greiner bio-one) and subsequently snap frozen and stored at -80$^\circ$ until nuclei isolation. 
-
-\subsubsection{Single nuclei isolation from kidney organoids}
-
-Snap-frozen kidney organoids were thawed in PBS and crushed using a glass tube and douncer (Duran Wheaton Kimble Life Sciences, Wertheim/Main, Germany). After passing the single cell suspension through a 40 $\mu$m cell strainer (Greiner bio-one), the suspension was centrifuged at 4$^\circ C$ and 300xg for 5 min. Subsequently, the supernatant was discarded and the cell pellet was resuspended in Nuc101 cell lysis buffer (Thermo Fisher), supplemented with RNase and protease inhibitors (Recombinant RNase Inhibitor and Superase RNase Inhibitor, Thermo Fisher, and Complete Protease Inhibitor, Roche), incubated for 30 seconds and centrifuged at 4$^\circ$ and 500xg for 5 min. After discarding the supernatant, the nuclei were carefully resuspended in PBS containing 1\% (v/v) Ultra-Pure BSA (Invitrogen Ambion, Thermo Fisher) and Protector RNAse inhibitor (Sigma Aldrich). Single nuclei were counted using Trypan blue (Thermo Fisher) and prepared for 10x genomics ChromiumNextGEM Multiome pipeline v1 according to the manufacturers guidelines (~\url{https://cdn.10xgenomics.com/image/upload/v1666737555/support-documents/CG000338_ChromiumNextGEM_Multiome_ATAC_GEX_User_Guide_RevF.pdf}).
-
-
-\section{Results}
-\label{chapter:PHLOWER_bench:out}
-
-\subsection{Technical Validation}
 \subsubsection{Benchmarking Topology Recovery}
 PHLOWER was the best-performing method in regard to tree topology recovery, followed by PAGA, RaceID/StemID and monocle~(\fref{fig:HIM}). 
 \begin{figure}[!h]
@@ -273,7 +245,50 @@ Finally, in the allocation of cells to branches, PHLOWER was the best performer,
 
 Altogether, PHLOWER was ranked as the top performer in all evaluated scenarios. A runner-up method was RaceID/StemID, which also ranked within the top four methods in all scenarios. The performance on PHLOWER and competing methods is illustrated by the visualisation of the tree backbones on a simulated data with six final branches as provided by dynverse~(\fref{supfig:dla10-workflow}). Moreover, graphs and embedding representations, which were produced by PHLOWER with the ten branch simulated data, represent wells PHLOWER main computational tasks
 
-\subsection{Biological Validation}
+
+\section{Biological Experiments}
+%\subsection{Experiments}
+\subsection{Single Cell Kidney Organoids}
+
+\subsubsection{Ethical statement}
+
+Human adult skin fibroblasts derived from a healthy volunteer, after giving informed consent, were used to generate iPSCs. This study was conducted in accordance with the Helsinki Declaration as revised in 2013. Permission for the creation and use of iPSCs in this study was obtained from the local ethical commission for human-related research of the Radboud University Medical Center, Nijmegen (approval numbers: 2015-1543 and 2006-048). 
+
+\subsubsection{Cell culture}
+
+Human adult skin fibroblasts derived from a healthy volunteer were reprogrammed into iPSCs using the Yamanaka factors~\citep{takahashi2006induction} by the Stem Cells Technology Center at Radboud University Medical Center (SCTC, Radboud UMC, Nijmegen, The Netherlands). The iPSCs used in the current study were generated from spare materials from a healthy donor, who did consent with the use of such material and did not suffer from kidney disease. The materials have been anonymized and were collected during a time in which no signed informed consent was required.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{Organoid_exp/fig}
+	\vspace{0.1cm}
+	\caption[Organoid experiment]{Organoid experiment.}
+	\label{fig:organoid_exp}
+\end{figure}
+
+Generation of human induced pluripotent stem cell (iPSC) derived kidney organoids iPSC were seeded using a density of 18,000 cells/cm2 on Geltrex (Thermo Fisher, Breda, the Netherlands) coated 6-well plates (Greiner Bio-one, Alphen aan de Rijn, the Netherlands). The differentiation protocol was based on our previous work~\citep{jansen2022sars}. In brief, differentiation towards ureteric bud-like and metanephric mesenchyme lineage was initiated using CHIR-99021 (6 $\mu$M, R\&D systems, Abingdon, United Kingdom) in Essential 6 medium (Thermo Fisher, Breda, The Netherlands) for 3 and 5 days, respectively. Next, medium was  replaced sequentially for Essential 6 supplemented with fibroblast growth factor 9 (FGF9), 200 ng/ml, R\&D systems) and heparin (1 $\mu$g/ml, Sigma-Aldrich, Zwijndrecht, Netherlands) up to day 7. On day 7, differentiated cells were trypsinized and mixed in a ratio of one part 3 days CHIR-differentiated cells and two parts 5 days CHIR-differentiated cells to stimulate crosstalk between both lineages in order to boost segmented nephrogenesis. To generate cell pellets, 300,000 cells per 1.5 ml tube were aliquoted from the cell mix and centrifuged 3 times at 300 rcf for 3 min changing position by 180$^\circ$ per cycle. Cell pellets were plated on Costar Transwell filters (type 3450, Corning, Sigma-Aldrich), followed by a one-hour CHIR pulse (5 $\mu$M) in Essential 6 medium added to the basolateral compartment. Next, medium was replaced for Essential 6 medium supplemented with FGF9 and heparin for additional 5 days, and the entire 3D organoid culture was performed using the air-liquid interface. After 5 days of organoid culture, Essential 6 medium supplemented with human epidermal growth factor (hEGF, 10 ng/ml, Sigma-Aldrich), bone morphogenetic protein-7 (BMP7, 50 ng/ml, R\&D systems), stromal derived factor 1 beta (SDF1$\beta$, 10 ng/ml, R\&D systems), vasopressin (10 nM, Sigma-Aldrich), aldosterone (10 nM, Sigma-Aldrich) was used. Medium was replaced every other day for an additional 13 days. 
+
+Harvesting kidney organoids for 10x genomics NEXT GEM multiome pipeline
+To dissect nephrogenic differentiation trajectories in kidney organoids using the multiome pipeline, organoids were harvested at different time points during culture. The following differentiation stages were processed:  day 7 (cells harvested from the 2D cell layer, primitive streak - intermediate mesoderm stage), organoids day 7+5, day 7+12 and day 7+18. These kidney organoid stages represent nephrogenesis ranging from intermediate mesoderm (day 7+5) towards metanephric mesenchyme and ureteric bud-like lineages (day 7+12) that result into nephron-like structures embedded by a (progenitor) stromal compartment at the end of the differentiation protocol (day 7+18). Kidney organoids were harvested on the respective dates (d7+5, d7+12, and d7+18) by cutting single organoids out of the transwell filter in a sterile flow hood using a scalpel. Organoids were washed with 5 ml PBS per filter at room temperature 3 times. Afterwards, single organoids were cut from the transwell filter with the organoids still being attached to the membrane, transferred to 1.7 ml cryovials (Greiner bio-one) and subsequently snap frozen and stored at -80$^\circ$ until nuclei isolation. 
+
+\subsubsection{Single nuclei isolation from kidney organoids}
+
+Snap-frozen kidney organoids were thawed in PBS and crushed using a glass tube and douncer (Duran Wheaton Kimble Life Sciences, Wertheim/Main, Germany). After passing the single cell suspension through a 40 $\mu$m cell strainer (Greiner bio-one), the suspension was centrifuged at 4$^\circ C$ and 300xg for 5 min. Subsequently, the supernatant was discarded and the cell pellet was resuspended in Nuc101 cell lysis buffer (Thermo Fisher), supplemented with RNase and protease inhibitors (Recombinant RNase Inhibitor and Superase RNase Inhibitor, Thermo Fisher, and Complete Protease Inhibitor, Roche), incubated for 30 seconds and centrifuged at 4$^\circ$ and 500xg for 5 min. After discarding the supernatant, the nuclei were carefully resuspended in PBS containing 1\% (v/v) Ultra-Pure BSA (Invitrogen Ambion, Thermo Fisher) and Protector RNAse inhibitor (Sigma Aldrich). Single nuclei were counted using Trypan blue (Thermo Fisher) and prepared for 10x genomics ChromiumNextGEM Multiome pipeline v1 according to the manufacturers guidelines (~\url{https://cdn.10xgenomics.com/image/upload/v1666737555/support-documents/CG000338_ChromiumNextGEM_Multiome_ATAC_GEX_User_Guide_RevF.pdf}).
+
+
+\subsubsection{Computational analysis with MOJITOO and PHLOWER}
+After read mapping using the cellranger-arc tool(version 1.0.1), we filter the low-quality cells using information both from scRNA and scATAC reads. We first import scRNA to Seurat~\citep{stuart2019seurat3} to get the scRNA metrics for filtering. We next import the fragments into ArchR~\citep{granja2021archr} to get the scATAC metrics for filtering. With the information above, we retain cells with barcodes in both scRNA and scATAC count matrices. Next, we filter the cells using threshold nFeatureRNA > 200 \& nCountRNA <400,000 \&percent.mito > 5 and scATAC using thresholds in ArchR that minTSS = 6 \& minFrags = 2500 \& maxFrags = 1e+05. We next perform preprocessing to scRNA using Seurat, to do this, we first normalize the scRNA data by calling NormalizeData with the default parameters, next we find top variable features with parameter selection.method='vst'. Next, we scale the data by regressing out the cell cycle and mitochondrial effect. We next run PCA with 50 PCs. To remove the batch effects, we next run harmony~\citep{korsunsky2019harmony} to integrate the four samples. For scATAC data, we use ArchR to perform the preprocessing. We first create Arrow files using the filter threshold aforementioned by calling createArrowFiles, the tile matrices are created directly from the fragment files. Next, we add doublets score by calling addDoubletScores for each sample followed by function filterDoublets to remove doublets with default parameters. Next, we run addIterativeLSI on the tile matrices to add dimensional reductions. A batch correction is also called using Harmony~\citep{korsunsky2019harmony} with function addHarmony. To obtain a uniform dimension reduction for the downstream analysis, we next run MOJITOO to integrate the scRNA and scATAC data with default parameters. 
+
+MOJITOO embedding was used as input for PHLOWER. An important parameter is the indication of the root cells. For this, we performed a clustering analysis using Seurat~\citep{stuart2019seurat3} with resolution=2.5 on the MOJITOO embedding space. The root cells were defined by cluster predominantly present in day 7 and with the expression of mesoderm markers (TBXT, MESP1, KDR5). PHLOWER found 28 dimensions with zero eigenvalues and clustering analysis of the trajectory space detected 16 groups. We removed 4 main trajectories outliers (less than 0.5\% samples inner the cluster) and one trajectory, where cells did not further differentiated. This could be characterized by the fact that the trajectory lengths where shorter than other trajectories, i.e. trajectory length's $|skewness| > 1$. 
+% XXX - ok - lets talk about this to make it more clear. 
+Finally, some clusters had the same end time points. We therefore keep the one with the largest number of trajectories. This resulted in the 9 final trajectories found by PHLOWER.
+
+\subsubsection{Regulator and Marker Selection}
+We make use of the cumulative trajectory space and statistical tests to find markers and regulators associated to trajectories. Two compare two final branches, PHLOWER selects all cells associated within particular areas of the branches, i.e. highest 50$\%$ of the bins. Note that every cells can be visited by several edges. To consider this important information, we multiply expression count vector of each cell by the number of visits. We then perform a statistical test (default is the $t-$test from scanpy~\cite{wolf2018scanpy}). In case we are interested in comparing sub-trees with several branches, PHLOWER first merges the sub-tree as a single branch, before the selection of the bin.
+
+In the case of multimodal data (RNA and ATAC), PHLOWER also has a module to find regulators. First, we estimate a TF activity score per cells using chromVar~\cite{schep2017chromvar}. We then use the previously described test to find branch specific regulators. Since, TF activity cannot discern from TFs with similar motif, we only consider genes, which TF activity is similar to the expression pattern at the selected branch as in~\cite{li2023scmega}. We first get average expression/TF activity of cells of bins around the branch of interest. We next smooth the gene expression using convolution (numpy.convolve)). We then estimate the correlation between gene expression and TF activity and use this to sort branch specific regulators. 
+
+\section{Biological Results}
 \subsubsection{Apply Trajectory inference to kidney organoid data}
 \subsubsection{Characterize the cell fate xxxx}
 \section{Discussion}

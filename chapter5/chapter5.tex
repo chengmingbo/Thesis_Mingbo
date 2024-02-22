@@ -28,7 +28,7 @@ $\mathbf{B}_k: $ A k order incidence matrix.\\
 
 
 
-A $k$-simplex~\citep{schaub2021signal}~(\fref{fig:simplex}) $\mathcal{S}^k = \{{v}_0,\cdots,{v}_k \}$ is an unordered subset of a finite set of vertices $\mathcal{V}$ with cardinality $k + 1$, where $v_i\in \mathcal{V}$, $v_i \neq v_j$ and $i \neq j$. 
+A $k$-simplex~\citep{schaub2021signal}~(\fref{fig:simplex}) $\mathcal{S}^k = \{{v}_0,\cdots,{v}_k \}$ is an unordered subset of a finite set of vertices $\mathcal{V}$ with cardinality $k + 1$, where $v_i\in \mathcal{V}$, $v_i \neq v_j$ and $i \neq j$.
 
 \begin{figure}[!h]
     \centering
@@ -38,7 +38,7 @@ A $k$-simplex~\citep{schaub2021signal}~(\fref{fig:simplex}) $\mathcal{S}^k = \{{
     \label{fig:simplex}
 \end{figure}
 
-A simplicial complex~(SC)~(\fref{fig:sc}) $\mathcal{X}$ is a collection of simplices, where for all $k$-simplices $\mathcal{S}^k$ in $\mathcal{X}$, any subset of $\mathcal{S}^k$ must also be in $\mathcal{X}$. The typical $0$-simplices, $1$-simplices, $2$-simplices are also respectively called vertices, edges and triadic faces. A face of a simplex $\mathcal{S}^k$ is a subset of $\mathcal{S}^k$  with cardinally $k$ in the form $\{v_0 \cdots v_{i-1}, v_{i+1}\cdots v_k\}$ for $0 \leq i \leq k$. A co-face $\mathcal{S}^{k+1}$ of a simplex $\mathcal{S}^k$ is a $(k + 1)$-simplex such that $\mathcal{S}^k$ is a subset of $\mathcal{S}^{k+1}$.  When ordering vertices of a $k$-simplex $\{{v}_0,\cdots,{v}_k \}$, it becomes an orientated $k$-simplex denoted by $[{v}_0,\cdots,{v}_k ]$, where the orientation changing corresponds to the change of sign of the coefficient, i.e. $[{v}_0,\cdots {v}_i, \cdots {v}_j\cdots,{v}_k ]$ = $-[{v}_0,\cdots {v}_j, \cdots {v}_i\cdots,{v}_k ]$. 
+A simplicial complex~(SC)~(\fref{fig:sc}) $\mathcal{X}$ is a collection of simplices, where for all $k$-simplices $\mathcal{S}^k$ in $\mathcal{X}$, any subset of $\mathcal{S}^k$ must also be in $\mathcal{X}$. The typical $0$-simplices, $1$-simplices, $2$-simplices are also respectively called vertices, edges and triadic faces. A face of a simplex $\mathcal{S}^k$ is a subset of $\mathcal{S}^k$  with cardinally $k$ in the form $\{v_0 \cdots v_{i-1}, v_{i+1}\cdots v_k\}$ for $0 \leq i \leq k$. A co-face $\mathcal{S}^{k+1}$ of a simplex $\mathcal{S}^k$ is a $(k + 1)$-simplex such that $\mathcal{S}^k$ is a subset of $\mathcal{S}^{k+1}$.  When ordering vertices of a $k$-simplex $\{{v}_0,\cdots,{v}_k \}$, it becomes an orientated $k$-simplex denoted by $[{v}_0,\cdots,{v}_k ]$, where the orientation changing corresponds to the change of sign of the coefficient, i.e. $[{v}_0,\cdots {v}_i, \cdots {v}_j\cdots,{v}_k ]$ = $-[{v}_0,\cdots {v}_j, \cdots {v}_i\cdots,{v}_k ]$.
 
 \begin{figure}[!h]
     \centering
@@ -87,8 +87,8 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
 
     $i \gets 1$ \\
     $G^{knn}=\{\mathcal{V}^{knn}, \mathcal{E}^{knn}\} \gets \textbf{Graph}(A,W,K)$ \\
-    $\mathcal{V}_{low}^{knn} \gets \textbf{LowestPseudotime}(\mathcal{V}^{t}, \text{pct})$ \Comment{pct is percentage parameter}
-    $U[v] \gets \textbf{PesudoTime}(v)$ \Comment{Pseudo time of node v}
+    $\mathcal{V}_{low}^{knn} \gets \textbf{LowestPseudotime}(\mathcal{V}^{t}, \text{pct})$ \Comment*[r]{pct is percentage parameter}
+    $U[v] \gets \textbf{PesudoTime}(v)$ \Comment*[r]{Pseudo time of node v}
     $L_p \gets [[]_{1}, []_{2}, \cdots []_{N}]$\\
     \While{$i \leq N$}
     {
@@ -134,12 +134,12 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
 	\Output{
 		$\text{index}$, the indice of the break point
 	}
-	$L_{div} \gets ()$ \Comment{division list}
+	$L_{div} \gets ()$ \Comment*[r]{division list}
 	\While{$i \in \textup{\textbf{x}}(2:)$}{
-		$L_{div}(i) \gets \left|\frac{\textbf{y}(i)}{\textbf{y}(i-1)}\right|$ \Comment{divided by the previous element}
+		$L_{div}(i) \gets \left|\frac{\textbf{y}(i)}{\textbf{y}(i-1)}\right|$ \Comment*[r]{divided by the previous element}
 	}
 	$\text{index} \gets \arg\max_{\forall i \in \textbf{x}(2:)} L_{div}(i)$\\
-	$\text{index} \gets \text{index}-1$ \Comment{the previous index is the breaking point}
+	$\text{index} \gets \text{index}-1$ \Comment*[r]{the previous index is the breaking point}
 
 	\Return{$\textup{\text{index}}$}
 	\caption{Breaking point detecting algorithm}
@@ -149,10 +149,10 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
 
 \begin{algorithm}
     \KwIn{\\
-    $V = \{V_1, V_2,\cdots, V_m\},$ \Comment{cumsum coordinates for each group}
-    $t = \{t_1, t_2,\cdots, t_m\},$ \Comment{group pseudo time}
-    $min_{bin}=10,$\Comment{shortest trajectory minimum bin size}
-    ${\theta}_{cut} = 1,$\Comment{branching point cut distance threshold}
+    $V = \{V_1, V_2,\cdots, V_m\},$ \Comment*[r]{cumsum coordinates for each group}
+    $t = \{t_1, t_2,\cdots, t_m\},$ \Comment*[r]{group pseudo time}
+    $min_{bin}=10,$\Comment*[r]{shortest trajectory minimum bin size}
+    ${\theta}_{cut} = 1,$\Comment*[r]{branching point cut distance threshold}
     }
 
     \Input{
@@ -171,7 +171,7 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
       i;\\
       j;\\
     }
-    $t_{min}, t_{max}, R_{max} \gets (\infty, -\infty, -\infty)$\Comment{$R_{max}$ is the maximum range}
+    $t_{min}, t_{max}, R_{max} \gets (\infty, -\infty, -\infty)$\Comment*[r]{$R_{max}$ is the maximum range}
     \For{$i\gets1$ \KwTo $m$ \KwBy $1$}{
         $t_{min} \gets \textbf{min}(t_i) \textbf{ if } \textbf{min}(t_i)<t_{min} \textbf{ else } t_{min}$\\
         $t_{max} \gets \textbf{max}(t_i) \textbf{ if } \textbf{min}(t_i)>t_{max} \textbf{ else } t_{max}$\\
@@ -183,9 +183,9 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
         $n_{bin} \gets \lfloor min_{bin} \times \frac{\textbf{max}({t_i}) - \textbf{min}({t_i})}{(t_{max} - t_{min})}\rfloor$\\
         $\text{CUTs}[i] \gets \textbf{linspace}(\textbf{max}({t_i}), \textbf{min}({t_i}), n_{bin}+2)[2:-1]$\\
         $\text{BINs}[i] =[t_i^{1}, t_i^{2}, \cdots t_i^{n_{bin}}]$\\
-        $V_i =[V_i^{1}, V_i^{2}, \cdots V_i^{n_{bin}}]$ \Comment{split the $V_{i}$ to be $n_{bin}$}
+        $V_i =[V_i^{1}, V_i^{2}, \cdots V_i^{n_{bin}}]$ \Comment*[r]{split the $V_{i}$ to be $n_{bin}$}
     }
-    $\text{DIC} = \{\}$\Comment{dictionary stores the branching points of all pairs}
+    $\text{DIC} = \{\}$\Comment*[r]{dictionary stores the branching points of all pairs}
     \For{$i\gets1$ \KwTo $m$ \KwBy $1$}{
         %
         \For{$j\gets i+1$ \KwTo $m$ \KwBy $1$ $~\& j \neq i$}{
@@ -205,11 +205,11 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
         }
     }
 
-    $\text{invDIC} \gets \textbf{invert}(\text{DIC})$ \Comment{invert dictionary: key,val to val,[key]}
-    $\text{bps} \gets \textbf{order}(\textbf{values}(\text{DIC}), \text{ascend}=\text{True})$ \Comment{ordered branching points ids}
+    $\text{invDIC} \gets \textbf{invert}(\text{DIC})$ \Comment*[r]{invert dictionary: key,val to val,[key]}
+    $\text{bps} \gets \textbf{order}(\textbf{values}(\text{DIC}), \text{ascend}=\text{True})$ \Comment*[r]{ordered branching points ids}
     $\text{Tree} = \emptyset$\\
     \While{$\text{bp} \textbf{ in } \text{bps}$}{
-        $\text{Tree} \gets \textbf{MergeBranch}(\text{invDIC}, \text{bp})$\Comment{create tree with branching points}
+        $\text{Tree} \gets \textbf{MergeBranch}(\text{invDIC}, \text{bp})$\Comment*[r]{create tree with branching points}
     }
 
     \Return $\text{Tree}$
@@ -222,7 +222,7 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
 	\includegraphics[width=0.95\textwidth]{PHLOWER_schematic/fig}
 	\vspace{0.1cm}
 	%\caption[Schematic overview of major steps of PHLOWER.]{xxxx}
-	\caption[Schematic overview of major steps of PHLOWER.]{\textbf{Schematic overview of major steps of PHLOWER.} PHLOWER receives as input a multimodal or unimodal single cell data. \textbf{A)} It next creates a graph representation and a graph embedding (kamada-kawai algorithm) of the cells. Our example is based on a differentiation system of mouse embryonic fibroblasts (MEF) towards neurons or myocytes~\citep{treutlein2016dissecting}. From this graph, PHLOWER uses a zero order Laplacian decomposition and random-walk to estimate pseudo-time from progenitor cells (i.e. MEF). \textbf{B)}, Next, a simplicial complex (SC) is obtained by Delaunay triangulation of the graph represented in the kamada-kawai embedding and connecting cells end state cells with progenitor cells \textbf{C)} An edge embedding is obtained via the decomposition of the Hodge-Laplacian. In the MEF data, the first two eigenvectors have zero eigen-vectors and their signals discriminate edges belonging to the two differentiation trajectories (or holes in the SC). \textbf{D)} PHLOWER performs next random walks to obtain trajectories and uses the HL decomposition to obtain a trajectory embedding and a cumulative trajectory embedding. Clustering analysis in the trajectory embedding reveals major trajectories in the data, while the cumulative embedding space is used to estimate trajectory backbones and branching points events. PHLOWER outputs stream trees representing the differentiation tree over pseudo-time and allow the detection of regulators and gene markers.} 
+	\caption[Schematic overview of major steps of PHLOWER.]{\textbf{Schematic overview of major steps of PHLOWER.} PHLOWER receives as input a multimodal or unimodal single cell data. \textbf{A)} It next creates a graph representation and a graph embedding (kamada-kawai algorithm) of the cells. Our example is based on a differentiation system of mouse embryonic fibroblasts (MEF) towards neurons or myocytes~\citep{treutlein2016dissecting}. From this graph, PHLOWER uses a zero order Laplacian decomposition and random-walk to estimate pseudo-time from progenitor cells (i.e. MEF). \textbf{B)}, Next, a simplicial complex (SC) is obtained by Delaunay triangulation of the graph represented in the kamada-kawai embedding and connecting cells end state cells with progenitor cells \textbf{C)} An edge embedding is obtained via the decomposition of the Hodge-Laplacian. In the MEF data, the first two eigenvectors have zero eigen-vectors and their signals discriminate edges belonging to the two differentiation trajectories (or holes in the SC). \textbf{D)} PHLOWER performs next random walks to obtain trajectories and uses the HL decomposition to obtain a trajectory embedding and a cumulative trajectory embedding. Clustering analysis in the trajectory embedding reveals major trajectories in the data, while the cumulative embedding space is used to estimate trajectory backbones and branching points events. PHLOWER outputs stream trees representing the differentiation tree over pseudo-time and allow the detection of regulators and gene markers.}
 	\label{fig:PHLOWER_schematic}
 \end{figure}
 
