@@ -12,8 +12,7 @@ In the previous two chapters, we presented the implementation of single-cell int
 This chapter exclusively introduces the formalization and implementation of our novel trajectory inference method for single-cell multimodal data. We first introduce the necessary notation for the method (\sref{TI_methods:notation}). Next, we present the implementation details of trajectory inference, specifically focusing on graph triangulation, Hodge decomposition, and tree creation (\sref{TI_methods:TI}). Following that, we describe the implementation details of our package (\sref{TI_methods:implementation}). Finally, we conclude this chapter by discussing the strengths of our method (\sref{TI_methods:discussion}).
 
 
-\section{Notation}
-\label{TI_methods:notation}
+\section{Notation} \label{TI_methods:notation}
 $\mathcal{V}: $ A set of vertices\\
 $\mathcal{S}^k = \{{v}_0,\cdots,{v}_k \}: $ A $k$-simplex\\
 $\mathcal{X}: $ A simplicial complex.\\
@@ -79,20 +78,25 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
     \Input{
         $A$, Affinity matrix\\
         $W$, Diffusion distance matrix\\
-        $N$, Number of trajectories\\
-        $\text{pct}$, Percentage of starting cells\\
         $G^{t}=\{\mathcal{V}^{t},\mathcal{E}^{t}\}$, Triangulated graph\\
+    }
+    \Parameter{
+        $N$, Number of trajectories\\
         $K=9$, KNN graph using A, W\\
+        $\text{pct}$, Percentage of starting cells\\
+    }
+    \Output{
+        $L_p$, The list of trajectories\\
     }
 
     $i \gets 1$ \\
     $G^{knn}=\{\mathcal{V}^{knn}, \mathcal{E}^{knn}\} \gets \textbf{Graph}(A,W,K)$ \\
     $\mathcal{V}_{low}^{knn} \gets \textbf{LowestPseudotime}(\mathcal{V}^{t}, \text{pct})$ \Comment*[r]{pct is percentage parameter}
     $U[v] \gets \textbf{PesudoTime}(v)$ \Comment*[r]{Pseudo time of node v}
-    $L_p \gets [[]_{1}, []_{2}, \cdots []_{N}]$\\
+    $L_p \gets [()_{1}, ()_{2}, \cdots ()_{N}]$\\
     \While{$i \leq N$}
     {
-        $l_{temp} \gets []$ \\
+        $l_{temp} \gets ()$ \\
         $\text{node} \gets \textbf{random}(\mathcal{V}_{low}^{knn})$ \\
         $l_{temp} \gets \textbf{Append}(l_{temp}, \text{node})$ \\
         \While{$\textup{\textbf{true}}$}{
@@ -107,17 +111,17 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
         $\text{Len} \gets \textbf{Length}(l_{temp})$\\
         $k \gets 1$\\
         \While{$k < \textup{Len}$}{
-            $\text{node}_a \gets l_{temp}[k]$\\
-            $\text{node}_b \gets l_{temp}[k+1]$\\
+            $\text{node}_a \gets l_{temp}(k)$\\
+            $\text{node}_b \gets l_{temp}(k+1)$\\
             \If{$(\textup{node}_a, \textup{node}_b) \in \mathcal{E}^{t}$}{
                 $\text{NodeList} \gets \textbf{ShortestPath}(G^{t}, \text{node}_a, \text{node}_b)$\\
-                $L_p[i] \gets \textbf{Append}(L_p[i], \text{node}_a)$\\
-                $L_p[i] \gets \textbf{Extend}(L_p[i], \text{NodeList})$\\
+                $L_p(i) \gets \textbf{Append}(L_p(i), \text{node}_a)$\\
+                $L_p(i) \gets \textbf{Extend}(L_p(i), \text{NodeList})$\\
             }\Else{
-                $L_p[i] \gets \textbf{Append}(L_p[i], \text{node}_a)$\\
+                $L_p(i) \gets \textbf{Append}(L_p(i), \text{node}_a)$\\
             }
         }
-        $L_p[i] \gets \textbf{Append}(L_p[i], l_{temp}[\text{Len}])$\\
+        $L_p(i) \gets \textbf{Append}(L_p(i), l_{temp}(\text{Len}))$\\
         $i \gets i+1$\\
     }
     \Return $L_p$
@@ -148,28 +152,16 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
 
 
 \begin{algorithm}
-    \KwIn{\\
-    $V = \{V_1, V_2,\cdots, V_m\},$ \Comment*[r]{cumsum coordinates for each group}
-    $t = \{t_1, t_2,\cdots, t_m\},$ \Comment*[r]{group pseudo time}
-    $min_{bin}=10,$\Comment*[r]{shortest trajectory minimum bin size}
-    ${\theta}_{cut} = 1,$\Comment*[r]{branching point cut distance threshold}
-    }
-
     \Input{
-     $x$ ,a; \\
-     $y$ ,b; \\
-     $z$ ,c; \\
+     $V = \{V_1, V_2,\cdots, V_m\}$ ,cumsum coordinates for each group; \\
+     $t = \{t_1, t_2,\cdots, t_m\}$ ,group pseudo time; \\
     }
     \Parameter{
-      d; \\
-      e; \\
-      f;
-
+     $min_{bin}=10$ ,shortest trajectory minimum bin size; \\
+     ${\theta}_{cut} = 1$ ,branching point cut distance threshold; \\
     }
     \Output{
-      h;\\
-      i;\\
-      j;\\
+      Tree;\\
     }
     $t_{min}, t_{max}, R_{max} \gets (\infty, -\infty, -\infty)$\Comment*[r]{$R_{max}$ is the maximum range}
     \For{$i\gets1$ \KwTo $m$ \KwBy $1$}{
@@ -279,6 +271,8 @@ For more information about PHLOWER implementation, source code, tutorials and ex
 \url{https://github.com/CostaLab/phlower}
 \end{center}
 
+\section{Statistical Methods}
+xxx
 \section{Discussion}
 \label{TI_methods:discussion}
 In this chapter, we discussed our computational methods for single-cell multimodal trajectory inference. We first introduce, next xxx
