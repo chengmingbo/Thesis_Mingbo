@@ -44,7 +44,7 @@ A simplicial complex~(SC)~(\fref{fig:sc}) $\mathcal{X}$ is a collection of simpl
     \centering
     \includegraphics[width=0.65\textwidth]{Simplicial_Complex/fig}
     \vspace{0.1cm}
-    \caption[A simplicial complex example.]{Example of a ordered simplicial complex and boundary maps $\textbf{B}_1$ and $\textbf{B}_2$ representing this
+    \caption[A simplicial complex example.]{Example of a ordered simplicial complex and boundary maps $\mathbf{B}_1$ and $\mathbf{B}_2$ representing this
 complex.}
     \label{fig:sc}
 \end{figure}
@@ -54,7 +54,7 @@ For each $k \geq 0$, $\mathcal{C}_k(\mathcal{X})$ is the vector space with coeff
 \begin{equation}
 \partial_k ([v_0,\cdots, v_k]) = \sum_{i=0}^{k} (-1)^i [v_0, \cdots, v_{i-1}, v_{i+1}, \cdots, v_k]
 \end{equation}
-$\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}(.)$ is the image of an operator. We can construct the matrix representation of the boundary operators $\partial_k$ by $\mathbf{B_k}$~\citep{lim2020hodge,muhammad2006control}. For example, as shown in~\fref{fig:sc}, the incidence matrices $\mathbf{B_1}$ and $\mathbf{B_2}$ of the 2-simplicial complex capture the relationships between nodes and edges, and edges and triangles, respectively.
+$\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}(.)$ is the image of an operator. We can construct the matrix representation of the boundary operators $\partial_k$ by $\mathbf{B}_k$~\citep{lim2020hodge,muhammad2006control}. For example, as shown in~\fref{fig:sc}, the incidence matrices $\mathbf{B}_1$ and $\mathbf{B}_2$ of the 2-simplicial complex capture the relationships between nodes and edges, and edges and triangles, respectively.
 
 \begin{figure}[!ht]
 	\centering
@@ -262,7 +262,7 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
 
 \section{Implementation}
 \label{TI_methods:implementation}
-We developed our Graph Hodge Laplacian (HL)-based approach to address the trajectory inference (TI) of single-cell multimodal data as a Python module. Our method is named PHLOWER (\textit{gra}\textbf{P}h \textbf{H}odge \textbf{L}aplacian inferring traject\textbf{O}ry flo\textbf{W}s of c\textbf{E}ll diffe\textbf{R}entiation) and will be referred to as such throughout this thesis. The method's implementation encompasses all the steps described in this chapter. PHLOWER was initially released in September 2023. \fref{fig:PHLOWER_schematic} illustrates the workflow of PHLOWER, and \tref{tab:phlower_python_dependencies} summarizes the dependencies of the PHLOWER module.
+We developed our Graph Hodge Laplacian (HL)-based approach to address the trajectory inference (TI) of single-cell multimodal data as a Python module. Our method is named PHLOWER (\textit{decom}\textbf{P}osition of the \textbf{H}odge \textbf{L}aplacian for inferring traject\textbf{O}ries from flo\textbf{W}s of c\textbf{E}ll diffe\textbf{R}entiation) and will be referred to as such throughout this thesis. The method's implementation encompasses all the steps described in this chapter. PHLOWER was initially released in September 2023. \fref{fig:PHLOWER_schematic} illustrates the workflow of PHLOWER, and \tref{tab:phlower_python_dependencies} summarizes the dependencies of the PHLOWER module.
 
 PHLOWER requires, at a minimum, dimensional reduction as input as well as a count matrix to be processed by itself. The output of PHLOWER is a STREAM tree as visualization that shows the cell differentiation tree. In addition, PHLOWER outputs a tree structure with detailed random walk paths for downstream analysis.
 
