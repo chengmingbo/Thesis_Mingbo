@@ -13,7 +13,8 @@
   \centering
   \includegraphics[width=0.95\textwidth]{Fib2Neuron_PHLOWER/fig}
   \vspace{0.1cm}
-  \caption[Fibroblasts to Neurons dataset PHLOWER workflow.]{\textbf{Fibroblasts to Neurons dataset PHLOWER workflow}.}
+  \caption[Fibroblasts to Neurons dataset PHLOWER workflow.]{\textbf{Detailed steps of PHLOWER on a single cell data with mouse embryonic fibroblasts towards neurons and myocytes.} \textbf{A)} First, PHLOWER estimates a graph representation using kernels and kamada-kawai layout~\citep{gansner2004graph}.
+  Colors corresponds to clusters labels as defined in~\citep{treutlein2016dissecting}. This information (labels) is not used by PHLOWER algorithms \textbf{B)} Next, a pseudo-time is estimated using the zero-order Laplacian and using MEF cluster as root. The definition of a root is the only supervision required in PHLOWER. Edges between cells are obtained via delaunay triangulation (left).  To create holes in the simplical complex, PHLOWER performs a trick by including edges between high pseudo-time towards low pseudo time vertices (middle). If we re-run the graph layout, two holes are clearly visible in the graph. \textbf{C)} PHLOWER next perform the spectral decomposition of the Hodge Laplacian of the simplical complex. This indicates two zero eigen-values (or holes). By plotting eigenvectors values on the edges, we observe that the first eigenvector discriminates edges in the neuornal branch vs. others, while the second eigenvector discriminate the myocyte related cells from others. \textbf{D)} Next, PHLOWER generates trajectories by randon walk on the simplicial complex representation to obtain an edge-flow vectors. \textbf{E)} Finally, PHLOWER creates a trajectory embeding by a dot product of the edge flows with the harmonic decomposition. We observe two clear clusters in the trajectory map (left), which are detected by providing this embeding as input for DBSCAN~\citep{ester1996dbscan}.  We can similarly create a cumulative trajectory map by creating edge flows of trajectories by considering only the first one, two, three and so on first differentiation events. PHLOWER uses this space to delineate backbones of differentiation trajectories and to detect branching points events (in green, right panel). \textbf{F)} PHLOWER outputs a differentiation tree, pseudo-time values and an allocation of cells to positions in the branches. PHLOWER makes use of STREAM to visualise the final trajectories.}
   \label{supfig:fib2neuron-workflow}
 \end{figure}
 
@@ -22,7 +23,7 @@
   \centering
   \includegraphics[width=0.95\textwidth]{DLA10_PHLOWER/fig}
   \vspace{0.1cm}
-  \caption[Workflow for DLA simulated data.]{\textbf{Workflow for DLA simulated data}.}
+  \caption[Workflow for DLA simulated data.]{\textbf{PHLOWER workflow for the simulated tree dataset with 10 total branches} Panels \textbf{A-F} shown distinct PHLOWER estimates for the simulated data with 10 branches exactly as described in~(\afref{supfig:fib2neuron-workflow}). Note that in this complex multi-branched data, the 2 dimensional representation of the graph layout of the simplicial complex \textbf{B)} can not capture the data complexity and does not properly display all the holes. Clustering analysis in the trajectory embedding detects the six main trajectories present in the data \textbf{E)} and recovers a almost perfect differentiation tree \textbf{F)}. Of note, the number of zero-eigenvalues (10) is higher than the number of main trajectories (6).  This is potentially due to small (and noise associated) holes in the graph. This do not impact the precision of the clustering analysis to find the correct branches.}
   \label{supfig:dla10-workflow}
 \end{figure}
 
@@ -31,7 +32,7 @@
   \centering
   \includegraphics[width=0.95\textwidth]{kidney_PHLOWER//fig}
   \vspace{0.1cm}
-  \caption[Kidney organoid PHLOWER workflow.]{\textbf{Kidney organoid PHLOWER workflow}.}
+  \caption[Kidney organoid PHLOWER workflow.]{\textbf{PHLOWER workflow for the kidney organoids data} Panels \textbf{A-F} are obtained as described in~(\afref{supfig:fib2neuron-workflow}). }
   \label{supfig:kidney-workflow}
 \end{figure}
 
