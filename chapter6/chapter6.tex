@@ -24,6 +24,34 @@ To test the power of PHLOWER in the detection of multiple branches trees, we gen
 	\label{fig:DLA_example}
 \end{figure}
 
+
+\begin{table}[!ht]
+	\footnotesize
+	\centering
+	\begin{tabular}{cccc|ccp{0.15\linewidth}}
+		\toprule
+		\multicolumn{4}{c}{Paramters} & \multicolumn{2}{c}{Output}\\
+    {\textbf{nbranches}} & {\textbf{npoints}} & \textbf{ndimension} & {\textbf{noise $\sigma$}}  &{\textbf{\#branches}}  & {\textbf{\#branching point}}\\
+		\midrule
+      \textbf{{3}}   & 3,000 & 100 & 5 & 5  & 2 \\
+      \textbf{{4}}   & 3,000 & 100 & 5 & 7  & 3 \\
+		  \textbf{{5}}   & 3,000 & 100 & 5 & 5  & 2 \\
+		  \textbf{{6}}   & 3,000 & 100 & 5 & 9  & 4 \\
+		  \textbf{{7}}   & 3,000 & 100 & 5 & 11 & 5 \\
+		  \textbf{{8}}   & 3,000 & 100 & 5 & 13 & 5 \\
+		  \textbf{{9}}   & 3,000 & 100 & 5 & 14 & 6 \\
+		  \textbf{{10}}  & 1,440 & 60  & 5 & 10 & 4 \\
+		  \textbf{{11}}  & 3,000 & 100 & 5 & 18 & 9 \\
+		  \textbf{{12}}  & 3,000 & 100 & 5 & 16 & 8 \\
+		\bottomrule
+	\end{tabular}
+	\vspace{0.1cm}
+	\caption[TI DLA trees synthetic data.]{TI DLA trees synthetic data.}
+	\label{tab:DLA_trees}
+\end{table}
+
+
+
 Next, we reformat this data to be used within the trajectory benchmarking framework dynverse~\citep{saelens2019comparison} by using dynwrap. In short, dynverse needs detailed information of the branches, branches points and association of cells within a branch.  To do so, we need to find the branching points of the DLA tree. First, we perform PHATE on the DLA high dimensional data to get embedding with 2 dimensions. We only consider embeddings, where the tree structure is preserved. Next, we find the branching points by finding 2 nearest neighbors of two branches. With these branching points, we created the branch backbones needed by dynverse. We calculate am association of each data point to a branching point (milestone percentage) by calculating the euclidean distance between the points related to each branch. See DLA tree with 10 branches example \fref{fig:DLA_example}.
 \begin{algorithm}
 \caption{Diffusion-Limited Aggregation Tree Generation}
