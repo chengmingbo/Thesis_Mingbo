@@ -66,7 +66,7 @@ Next, we reformat this data to be used within the trajectory benchmarking framew
 	$n_{sample}$, number of samples\\
  	$n_{dim}$, number of dimensions\\
  	$n_{branch}$, number of branches\\
- 	$\sigma$, gussian noise\\
+ 	$\sigma$, gussian noise standard deviation parameter\\
  }
     \textbf{seed random number generator}\\
     $n_{steps} \gets \lfloor\frac{n_{sample}}{n_{branch}}\rfloor$\\
@@ -291,6 +291,14 @@ In the case of multimodal data (RNA and ATAC), PHLOWER also has a module to find
 
 \section{Biological Results}
 \subsubsection{Apply Trajectory inference to kidney organoid data}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{kidney_main/fig}
+	\vspace{0.1cm}
+	\caption[Annotation of Kidney Orgnoid Data]{\textbf{Annotation of Kidney Orgnoid Data}. \textbf{A)} Differentiation tree on the kidney organoid data as estimated by PHLOWER. \textbf{B-C)} Day of experiments and pseudo-time estimates of cells in the differentiation trees. \textbf{D)} Violin plot with marker of end branches}
+	\label{fig:kidney_organoid}
+\end{figure}
+
 \subsubsection{Characterize the cell fate xxxx}
 \section{Discussion}
 
