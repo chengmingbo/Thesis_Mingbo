@@ -291,18 +291,7 @@ In the case of multimodal data (RNA and ATAC), PHLOWER also has a module to find
 \section{Biological Results}
 \subsubsection{Apply Trajectory inference to kidney organoid data}
 
-We initiated the assessment of PHLOWER's capability to infer trajectories within a single-cell multimodal dataset. To achieve this, we created a single-cell multiome kidney organoid at four distinct time points: day \num{7}, day \num{12}, day \num{19}, and day \num{25}. Following meticulous data preprocessing and quality control procedures, we successfully identified a total of \num{13,752} cells, each exhibiting an average of \num{111,111} fragments per cell.
-
-%average of \num{13,933} fragments per cell, a fraction of reads in promoter of 0.46, and high reproducibility between biological duplicates~(\afref{fig:Quality control of UUO data}). We next performed peak calling and detected \num{150,593} peaks. These peaks were used as features to construct a raw scATAC-seq count matrix with high dimensionality and sparsity~(4.2$\%$ of non-zeros).
-
-Subsequently, we applied the Harmony algorithm~\citep{Korsunsky2019harmony} for data correction to eliminate batch effects. Following that, we employed MOJITOO to integrate the scRNA-seq and scATAC-seq data. Subsequent to the integration, we conducted Louvain clustering in the MOJITOO space, resulting in a total of \num{2222,222} clusters.
-
-
-With which, we can apply PHLOWER xxxx
-
-
-
-
+We initiated the assessment of PHLOWER's capability to infer trajectories within a single-cell multimodal dataset. To achieve this, we created a single-cell multiome kidney organoid at four distinct time points: day \num{7}, day \num{12}, day \num{19}, and day \num{25}. Following meticulous data preprocessing and quality control procedures, we successfully identified a total of 13,751 cells, each exhibiting an average of \num{19,263} fragments per cell, an average of \num{3,766} detected genes, and an average of \num{10,378} RNA molecules per cell.
 
 \begin{figure}[!ht]
 	\centering
@@ -311,6 +300,21 @@ With which, we can apply PHLOWER xxxx
 	\caption[Annotation of Kidney Orgnoid Data]{\textbf{Annotation of Kidney Orgnoid Data}. \textbf{A)} Differentiation tree on the kidney organoid data as estimated by PHLOWER. \textbf{B-C)} Day of experiments and pseudo-time estimates of cells in the differentiation trees. \textbf{D)} Violin plot with marker of end branches}
 	\label{fig:kidney_organoid}
 \end{figure}
+
+Next, after performing dimension reduction on scRNA-seq using Seurat and scATAC-seq using ArchR, we obtained 50 PCs for scRNA and 30 iterativeLSI dimensions for scATAC-seq. Subsequently, we applied the Harmony algorithm~\citep{Korsunsky2019harmony} for data correction to eliminate batch effects for both scRNA and scATAC. Following that, we employed MOJITOO to integrate the scRNA-seq and scATAC-seq data and obtained a uniform latent space with 30 dimensions. Subsequent to the integration, we conducted Louvain clustering with resolution=2.5 in the MOJITOO space, resulting in a total of \num{31} clusters.
+
+
+Next, we performed PHLOWER to inference trajectories resulting in 9 lineages(\fref{fig:kidney_organoid}A). Next, we use phlower to perform branches differentiation to find significant markers, with which we were able to annotate the cell type of each branches(\fref{fig:kidney_organoid}D). Next, we applied chromVar~\citep{schep2017chromvar} to infer Transcription Factors(TF) activity of the data. Next we were able to perform branches TFs differentiation to detect significant TF activity markers and correlated the TF activities and Genes expression along the branch to find identify significant transcription factors that regulating the abnormal neuron cell types\fref{fig:Neuron_TF_diff}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{Neuron_TF_diff/fig}
+	\vspace{0.1cm}
+	\caption[Neuron branches TF differentiation]{\textbf{Neuron branches TF differentiation}. \textbf{A)} vocano. \textbf{B)}rank. \textbf{C)} correlated heatmap}
+	\label{fig:Neuron_TF_diff}
+\end{figure}
+
+
 
 \subsubsection{Characterize the cell fate xxxx}
 \section{Discussion}
