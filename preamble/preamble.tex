@@ -61,7 +61,11 @@
 \usepackage{makecell}
 \usepackage{tikz}
 %\usepackage[decimalsymbol=comma]{siunitx}
-\usepackage[quantity-product = {,}]{siunitx}
+%\usepackage[group-separator={,}]{siunitx}
+\usepackage[quantity-product={,}]{siunitx}
+\sisetup{group-separator = {,}}
+%\usepackage[group-separator={,}]{siunitx}
+
 \usepackage{supertabular}
 \usepackage{scrhack}
 
@@ -228,7 +232,7 @@
 %\setlength{\abovecaptionskip}{0.2cm}
 
 \hypersetup{
-	pdftitle={Computational Method for Single-cell ATAC-seq Imputation and Dimensionality Reduction},
+	pdftitle={Computational Integration and Trajectory Inference of Single Cell Multi-Modal Data},
 	pdfauthor={Mingbo Cheng},
 	pdfpagemode=UseOutlines,
 	pdfdisplaydoctitle=true,
@@ -241,6 +245,7 @@
 	pdfstartview={Fit},
 	pdfpagelayout=SinglePage
 }
+
 
 \pagestyle{fancy}
 \fancyhf{}
