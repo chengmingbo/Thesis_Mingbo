@@ -21,7 +21,7 @@ In this section, we initially present the algorithm for creating simulated data~
 
 \subsection{Simulated Data}
 \label{PHLOWER_bench:sim}
-To test the power of PHLOWER in the detection of multiple branches trees, we generate 10 simulated data sets using diffusion-limited aggregation trees (DLA tree)~\citep{witten1981diffusion} as proposed in PHATE~\citep{moon2017phate}. For this, we use a Gaussian noise parameter of 5 and vary the parameter n\_branch, which controls the number of branches in the trees, from 3 to 12. This generated trees with 5 to 18 branches.  For every data, we generate 3000 points and 100 features. Of note, we use the same data as evaluated in PHATE as data with 10 branches. Next, we run PHATE to visualize the branches, with which we can future construct ground truth for dynverse benchmarking.
+To test the power of PHLOWER in the detection of multiple branches trees, we generate 10 simulated data sets using diffusion-limited aggregation trees (DLA tree)~\citep{witten1981diffusion} as proposed in PHATE~\citep{moon2017phate}. For this, we use a Gaussian noise parameter of 5 and vary the parameter n\_branch, which controls the number of branches in the trees, from 3 to 12. This generated trees with 5 to 18 branches.  For every data, we generate \num{3000} points and \num{100} features. Of note, we use the same data as evaluated in PHATE as data with 10 branches. Next, we run PHATE to visualize the branches, with which we can future construct ground truth for dynverse benchmarking.
 
 \begin{figure}[!h]
 	\centering
@@ -40,16 +40,16 @@ To test the power of PHLOWER in the detection of multiple branches trees, we gen
 		\multicolumn{4}{c}{Paramters} & \multicolumn{2}{c}{Output}\\
     {\textbf{nbranches}} & {\textbf{npoints}} & \textbf{ndimension} & {\textbf{noise $\sigma$}}  &{\textbf{\#branches}}  & {\textbf{\#branching point}}\\
 		\midrule
-      \textbf{{3}}   & 3,000 & 100 & 5 & 5  & 2 \\
-      \textbf{{4}}   & 3,000 & 100 & 5 & 7  & 3 \\
-		  \textbf{{5}}   & 3,000 & 100 & 5 & 5  & 2 \\
-		  \textbf{{6}}   & 3,000 & 100 & 5 & 9  & 4 \\
-		  \textbf{{7}}   & 3,000 & 100 & 5 & 11 & 5 \\
-		  \textbf{{8}}   & 3,000 & 100 & 5 & 13 & 5 \\
-		  \textbf{{9}}   & 3,000 & 100 & 5 & 14 & 6 \\
-		  \textbf{{10}}  & 1,440 & 60  & 5 & 10 & 4 \\
-		  \textbf{{11}}  & 3,000 & 100 & 5 & 18 & 9 \\
-		  \textbf{{12}}  & 3,000 & 100 & 5 & 16 & 8 \\
+    \textbf{{3}}   & \num{3000} & \num{100} & 5 & \num{5}  & \num{2} \\
+    \textbf{{4}}   & \num{3000} & \num{100} & 5 & \num{7}  & \num{3} \\
+    \textbf{{5}}   & \num{3000} & \num{100} & 5 & \num{5}  & \num{2} \\
+    \textbf{{6}}   & \num{3000} & \num{100} & 5 & \num{9}  & \num{4} \\
+    \textbf{{7}}   & \num{3000} & \num{100} & 5 & \num{11} & \num{5} \\
+    \textbf{{8}}   & \num{3000} & \num{100} & 5 & \num{13} & \num{5} \\
+		\textbf{{9}}   & \num{3000} & \num{100} & 5 & \num{14} & \num{6} \\
+    \textbf{{10}}  & \num{1440} & \num{60}  & 5 & \num{10} & \num{4} \\
+		\textbf{{11}}  & \num{3000} & \num{100} & 5 & \num{18} & \num{9} \\
+		\textbf{{12}}  & \num{3000} & \num{100} & 5 & \num{16} & \num{8} \\
 		\bottomrule
 	\end{tabular}
 	\vspace{0.1cm}
@@ -92,7 +92,7 @@ Next, we reformat this data to be used within the trajectory benchmarking framew
     \Return \{$M$, $C$\}\\
 \end{algorithm}
 
-%3000, 100, br, 5.
+%3000, \num{100}, br, 5.
 %3-12
 
 \subsection{Evaluation of Trajectory Inference}
@@ -114,7 +114,7 @@ To facilitate direct comparability between outputs from various methods, dynvers
 	The Hamming–Ipsen–Mikhailov(HIM) metric~(\fref{fig:dynverse_metrics}B) utilizes the two weighted adjacency matrices of the milestone networks as input, with weights assigned based on edge length. It combines the normalized Hamming distance, providing insights into differences in edge lengths, and the normalized Ipsen–Mikhailov distance, evaluating the similarity in degree distributions. The Ipsen–Mikhailov distance includes a parameter $\gamma$, set at 0.1 to ensure comparability of scores across datasets. The HIM metric is a linear combination of these components.
 
 	\item[Benchmarking Location of Cells]
-	The $cor_{dist}$ metric~(\fref{fig:dynverse_metrics}C) measure the correlation between geodesic distances, which is based on the observation that when a cell's position is identical in both the reference and the prediction, its relative distances to all other cells in the trajectory should also be identical. To calculate $cor_{dist}$, dynverse initially simples 100 waypoint cells in both the prediction and the reference dataset, employing stratified sampling across various milestones, edges, and regions of delayed commitment. This sampling is weighted by the number of cells in each collection. Subsequently, it computes the geodesic distances between the union of waypoint cells from both datasets and all other cells. The calculation of geodesic distance takes into account the location of the two cells within the trajectory and is weighted by the length of the edge in the milestone network. Finally, $cor_{dist}$ is defined as the Spearman rank correlation between the distances of both datasets.
+	The $cor_{dist}$ metric~(\fref{fig:dynverse_metrics}C) measure the correlation between geodesic distances, which is based on the observation that when a cell's position is identical in both the reference and the prediction, its relative distances to all other cells in the trajectory should also be identical. To calculate $cor_{dist}$, dynverse initially simples \num{100} waypoint cells in both the prediction and the reference dataset, employing stratified sampling across various milestones, edges, and regions of delayed commitment. This sampling is weighted by the number of cells in each collection. Subsequently, it computes the geodesic distances between the union of waypoint cells from both datasets and all other cells. The calculation of geodesic distance takes into account the location of the two cells within the trajectory and is weighted by the length of the edge in the milestone network. Finally, $cor_{dist}$ is defined as the Spearman rank correlation between the distances of both datasets.
 
 	\item[Bechmarking Branches Allocation]
 	For branch assignment comparison~(\fref{fig:dynverse_metrics}D), measure the The F1 between branch assignments. Dynverse employs an F1 score, a metric commonly utilized for comparing biclustering methods. To compute this score, it initially determines the similarity of all pairs of branches between the two trajectories using Jaccard similarity. Subsequently, it defines 'Recovery' (respectively 'Relevance') as the average maximal similarity of all branches in the reference dataset (respectively prediction). The $F1_{branches}$ is then established as the harmonic mean between Recovery and Relevance.
@@ -288,9 +288,9 @@ Finally, some clusters had the same end time points. We therefore keep the one w
 
 
 \subsubsection{Regulator and Marker Selection}
-We make use of the cumulative trajectory space and statistical tests to find markers and regulators associated to trajectories. Two compare two final branches, PHLOWER selects all cells associated within particular areas of the branches, i.e. highest \num{50}$\%$ of the bins. Note that every cells can be visited by several edges. To consider this important information, we multiply expression count vector of each cell by the number of visits. We then perform a statistical test (default is the $t-$test from scanpy~\cite{wolf2018scanpy}). In case we are interested in comparing sub-trees with several branches, PHLOWER first merges the sub-tree as a single branch, before the selection of the bin.
+We make use of the cumulative trajectory space and statistical tests to find markers and regulators associated to trajectories. Two compare two final branches, PHLOWER selects all cells associated within particular areas of the branches, i.e. highest \num{50}$\%$ of the bins. Note that every cells can be visited by several edges. To consider this important information, we multiply expression count vector of each cell by the number of visits. We then perform a statistical test (default is the $t-$test from scanpy~\citep{wolf2018scanpy}). In case we are interested in comparing sub-trees with several branches, PHLOWER first merges the sub-tree as a single branch, before the selection of the bin.
 
-In the case of multimodal data (RNA and ATAC), PHLOWER also has a module to find regulators. First, we estimate a TF activity score per cells using chromVar~\cite{schep2017chromvar}. We then use the previously described test to find branch specific regulators. Since, TF activity cannot discern from TFs with similar motif, we only consider genes, which TF activity is similar to the expression pattern at the selected branch as in~\cite{li2023scmega}. We first get average expression/TF activity of cells of bins around the branch of interest. We next smooth the gene expression using convolution (numpy.convolve)). We then estimate the correlation between gene expression and TF activity and use this to sort branch specific regulators.
+In the case of multimodal data (RNA and ATAC), PHLOWER also has a module to find regulators. First, we estimate a TF activity score per cells using chromVar~\citep{schep2017chromvar}. We then use the previously described test to find branch specific regulators. Since, TF activity cannot discern from TFs with similar motif, we only consider genes, which TF activity is similar to the expression pattern at the selected branch as in~\citep{li2023scmega}. We first get average expression/TF activity of cells of bins around the branch of interest. We next smooth the gene expression using convolution (numpy.convolve)). We then estimate the correlation between gene expression and TF activity and use this to sort branch specific regulators.
 
 \section{Biological Results}
 \label{PHLOWER_bench:bio_out}
