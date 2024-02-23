@@ -29,6 +29,16 @@
 
 \begin{figure}[!ht]
   \centering
+  \includegraphics[width=0.95\textwidth]{DLA10/fig}
+  \vspace{0.1cm}
+  \caption[Differentiation tree backbones in the simulated data with 10 branches.]{\textbf{Differentiation tree backbones in the simulated data with 10 branches.} We present embeddings and trees for the ground truth and 12 evaluated algorithms for a dataset with 10 branches. This dataset has a root branch, three intermediary branches, and six end branches. The colors of cells represent the true labels of branches. Embeddings represent the default output as provided by each algorithm. As this information is not provided by celltree, elpigraph, mst, preode, and slingshot, we used the embedding produced by PHATE29. The same embedding was used to display the ground truth.}
+  \label{supfig:dla10}
+\end{figure}
+
+
+
+\begin{figure}[!ht]
+  \centering
   \includegraphics[width=0.75\textwidth]{kidney_QC//fig}
   \vspace{0.1cm}
   \caption[Kidney organoid quality check.]{\textbf{Quality check for kidney organoids single cell data}. We show violin plots with quality check information after filtering and cell detection. These are: \textbf{A)} number of features (genes) in RNA, \textbf{B)} number of counts (transcripts) in RNA, \textbf{C)} proportion of mitochondrial genes (RNA), \textbf{D)} fragment sizes distribution (ATAC), \textbf{E)} number of fragments (ATAC) and \textbf{F)} transcription start site enrichment. All libraries had similar values across days of sampling. }
