@@ -154,7 +154,7 @@ $\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}
 \subsubsection{Simplicial Complex}
 For a given triangulated graph $G^{(t)}$, a next task is to obtain a second order simplicial complex (SC). A simplicial complex is a set composed of vertices ($0$-simplices), edges ($1$-simplices) and triangles ($2$-simplices) and their $k$-dimensional counterparts. These can be represented by the estimation of incidence matrices, or boundary operations $\mathbf{B}_k$ which maps $k-1$ simplices to $k$ simplices. For example, $\mathbf{B}_1$ captures the relation between vertices (0-simplices) and edges (1-simplices) and $\mathbf{B}_2$ captures the relation between edges (1-simplices) and triangles (2-simplices)~\citep{schaub2021signal}.
 
-The boundary matrix on 1-simplices $\mathbf{B}_1$ is defined as in Eq.~\ref{eqn:incidencematrix}. An entry in $\mathbf{B}_2$ capturing the relationship between an directed edge $e_i \in \mathcal{E}$ and a directed triangle $\bigtriangleup_{q} \in \mathcal{T}$ can be defined as:
+The boundary matrix on 1-simplices $\mathbf{B}_1$ is defined as in \eref{eqn:incidencematrix}. An entry in $\mathbf{B}_2$ capturing the relationship between an directed edge $e_i \in \mathcal{E}$ and a directed triangle $\bigtriangleup_{q} \in \mathcal{T}$ can be defined as:
 \begin{equation}
 \label{eqn:incidencematrix}
 \mathbf{B}_2[i,q] = \begin{cases}
@@ -164,7 +164,7 @@ The boundary matrix on 1-simplices $\mathbf{B}_1$ is defined as in Eq.~\ref{eqn:
 \end{cases}
 \end{equation}
 
-Check figure \ref{fig:sc} for an example of a simplicial complex and its corresponding $\mathbf{B}_1$ and $\mathbf{B}_2$ matrices. There we can find several edges ($[1,2]$, $[2,3]$, $[2,4]$, $[2,5]$, $[3,4]$, $[4,5]$, $[4,6]$, $[4,7]$, $[6,7]$, $[7,8]$) and  3 triangles ($[2,3,4]$, $[2,4,5]$ and $[4,6,7]$). Entry $B_1 [1,1]$ has value -1, as the first edge $e_1=(1,2)$ leaves vertex $1$, while $B_1[2,1]$ has value 1, as the first edge $[1,2]$ enters the vertex $2$. Regarding $\mathbf{B}_2$, all entries related to the first edge  $e_1=(1,2)$ are zero, as there is no triangle associated to it. $B_2[2,1]$ is equal to one as the direction of  $e_2=(2,3)$ fits the direction of the first triangle ($\bigtriangleup_1=(2,3,4)$). $B_2[3,1]$ is equal to -1 as the third edge ($e_3=(2,4)$) has opposite direction to $\bigtriangleup_1=(2,3,4)$. We refer the reader to~\citep{Schaub2020} for a in depth characterization of simplicial complexes.
+Check figure \ref{fig:sc} for an example of a simplicial complex and its corresponding $\mathbf{B}_1$ and $\mathbf{B}_2$ matrices. There we can find several edges ($[1,2]$, $[2,3]$, $[2,4]$, $[2,5]$, $[3,4]$, $[4,5]$, $[4,6]$, $[4,7]$, $[6,7]$, $[7,8]$) and  3 triangles ($[2,3,4]$, $[2,4,5]$ and $[4,6,7]$). Entry $B_1 [1,1]$ has value -1, as the first edge $e_1=(1,2)$ leaves vertex $1$, while $\mathbf{B}_1[2,1]$ has value 1, as the first edge $[1,2]$ enters the vertex $2$. Regarding $\mathbf{B}_2$, all entries related to the first edge  $e_1=(1,2)$ are zero, as there is no triangle associated to it. $\mathbf{B}_2[2,1]$ is equal to one as the direction of  $e_2=(2,3)$ fits the direction of the first triangle ($\bigtriangleup_1=(2,3,4)$). $\mathbf{B}_2[3,1]$ is equal to -1 as the third edge ($e_3=(2,4)$) has opposite direction to $\bigtriangleup_1=(2,3,4)$. We refer the reader to~\citep{Schaub2020} for a in depth characterization of simplicial complexes.
 
 Here, we are only interested in the direction of edges (flows) and the direction of triangles are only used for book keeping, i.e. their directions follow the index of the vertices in increasing order. Note also that the boundary operation requires less memory than adjacency matrices for sparse graphs, i.e. $\mathbf{B}_1$ is smaller than a graph incidence matrix if the number of edges is smaller than the number of vertices. A similar rational follows for $\mathbf{B}_2$.
 
@@ -177,7 +177,7 @@ Hodge Laplacian is a higher order generalized form of graph Laplacian, for a gra
 \end{equation}
 where $\mathbf{B}_k$ is the incidence matrix.
 
-For $k=0$, ${L}_0$ is the same as the zero order graph Laplacian introduced in Eq.~\ref{eqn:graphLaplacian}..
+For $k=0$, ${L}_0$ is the same as the zero order graph Laplacian introduced in \eref{eqn:graphLaplacian}..
 \begin{equation}
 \label{eqn:graphLaplacian}
 {L}_0 =  \mathbf{0}^\top  \mathbf{0} + \mathbf{B}_{1} \mathbf{B}_{1}^\top =  \mathbf{D}_1 - \mathbf{A},
@@ -233,7 +233,7 @@ Random walk is repeated $n$ times. This provides us with a path matrix $\mathbf{
 
 \subsubsection{Trajectory embedding and clustering}
 
-We next project these paths $\mathbf{F}^{(t)}$ onto harmonic space to estimate a trajectory embedding. Let's recapitulate the decomposition of the normalized Hodge 1-Laplacian (Eq.\ref{eqn:l1decomposition}):
+We next project these paths $\mathbf{F}^{(t)}$ onto harmonic space to estimate a trajectory embedding. Let's recapitulate the decomposition of the normalized Hodge 1-Laplacian~\erefp{eqn:l1decomposition}:
 \begin{equation}
 \mathcal{L}_1 = \mathbf{U}\Lambda \mathbf{U}^{-1},
 \end{equation}
@@ -243,12 +243,12 @@ Denote $\mathbf{H}:=(\mathbf{u}_1,\cdots, \mathbf{u}_{k})$ to be the matrix cont
 \begin{equation}
 \mathbf{H}^{(t)} = \mathbf{H}^\top \mathbf{F}^{(t)}
 \end{equation}
-where $\mathbf{H}^{(t)}\in \mathbb{R}^{k\times n}$ embed each trajectory into k dimensions. PHLOWER next performs clustering on $\mathbf{H}^{(t)}$ with DBSCAN~\citep{ester1996dbscan} to group the paths into major differentiation trajectories. For the mouse embryonic cell data, we observe that the trajectory embedding (or trajectory map) reveals two clusters~\ref{supfig:fib2neuron-workflow}E (left) associated with the neuronal and myocyte differentiation.
+where $\mathbf{H}^{(t)}\in \mathbb{R}^{k\times n}$ embed each trajectory into k dimensions. PHLOWER next performs clustering on $\mathbf{H}^{(t)}$ with DBSCAN~\citep{ester1996dbscan} to group the paths into major differentiation trajectories. For the mouse embryonic cell data, we observe that the trajectory embedding (or trajectory map) reveals two clusters~(\afref{supfig:fib2neuron-workflow}E) (left) associated with the neuronal and myocyte differentiation.
 
 
 \subsubsection{Cumulative trajectory embedding and tree inference}
 
-The path representation presented in Eq.~\ref{eq:edgeflow} do not keep the time step of a edge visit.  Thus we also define a traversed edge flow (transversed path) matrix $\hat{\mathbf{f}}\in \mathbb{R}^{{\|\mathcal{E}^{(t)}\|}\times S}$ to record both the time step associated with every edge visit, i.e.:
+The path representation presented in \eref{eq:edgeflow} do not keep the time step of a edge visit.  Thus we also define a traversed edge flow (transversed path) matrix $\hat{\mathbf{f}}\in \mathbb{R}^{{\|\mathcal{E}^{(t)}\|}\times S}$ to record both the time step associated with every edge visit, i.e.:
 \begin{equation}
     \hat{\mathbf{f}}[i,j, s] = \begin{cases}
         1\quad & \text{if edge }(i,j) \text{ is traversed in step } s\\
@@ -426,6 +426,15 @@ This is repeated for all pairs of groups. The tree is finally built in a bottom 
 	\label{fig:PHLOWER_schematic}
 \end{figure}
 
+\section{Implementation}
+\label{TI_methods:implementation}
+We developed our Graph Hodge Laplacian (HL)-based approach to address the trajectory inference (TI) of single-cell multimodal data as a Python module. Our method is named PHLOWER (\textit{decom}\textbf{P}osition of the \textbf{H}odge \textbf{L}aplacian for inferring traject\textbf{O}ries from flo\textbf{W}s of c\textbf{E}ll diffe\textbf{R}entiation) and will be referred to as such throughout this thesis. The method's implementation encompasses all the steps described in this chapter. PHLOWER was initially released in September 2023.~\fref{fig:PHLOWER_schematic} illustrates the workflow of PHLOWER, and \tref{tab:phlower_python_dependencies} summarizes the dependencies of the PHLOWER module.
+
+PHLOWER requires, at a minimum, dimensional reduction as input as well as a count matrix to be processed by itself. The output of PHLOWER is a STREAM tree as visualization that shows the cell differentiation tree. In addition, PHLOWER outputs a tree structure with detailed random walk paths for downstream analysis.
+
+By default, PHLOWER is designed to work seamlessly with Scanpy and Episcanpy. It also offers a range of analysis methods for cell differentiation downstream. For example, `phlower.tl.tree\_mbranch\_markers' is used to find significant markers for each branch against the rest of the branches. Moreover, for multimodal data, such as single-cell transcriptome and open chromatin, one can call `phlower.tl.branch\_TF\_gene\_correlation' to correlate two features along tree branches. With this, one can create a heatmap matrix using the function `phlower.tl.branch\_heatmap\_matrix' to show the features along the trajectories.
+
+
 % python package dependencies
 \begin{table}[!ht]
 	\centering
@@ -459,14 +468,6 @@ This is repeated for all pairs of groups. The tree is finally built in a bottom 
 \end{table}
 % a table shows the python dependencies
 % check how to rotate the title text of a table, see Li's table 3.2
-
-\section{Implementation}
-\label{TI_methods:implementation}
-We developed our Graph Hodge Laplacian (HL)-based approach to address the trajectory inference (TI) of single-cell multimodal data as a Python module. Our method is named PHLOWER (\textit{decom}\textbf{P}osition of the \textbf{H}odge \textbf{L}aplacian for inferring traject\textbf{O}ries from flo\textbf{W}s of c\textbf{E}ll diffe\textbf{R}entiation) and will be referred to as such throughout this thesis. The method's implementation encompasses all the steps described in this chapter. PHLOWER was initially released in September 2023.~\fref{fig:PHLOWER_schematic} illustrates the workflow of PHLOWER, and \tref{tab:phlower_python_dependencies} summarizes the dependencies of the PHLOWER module.
-
-PHLOWER requires, at a minimum, dimensional reduction as input as well as a count matrix to be processed by itself. The output of PHLOWER is a STREAM tree as visualization that shows the cell differentiation tree. In addition, PHLOWER outputs a tree structure with detailed random walk paths for downstream analysis.
-
-By default, PHLOWER is designed to work seamlessly with Scanpy and Episcanpy. It also offers a range of analysis methods for cell differentiation downstream. For example, `phlower.tl.tree\_mbranch\_markers' is used to find significant markers for each branch against the rest of the branches. Moreover, for multimodal data, such as single-cell transcriptome and open chromatin, one can call `phlower.tl.branch\_TF\_gene\_correlation' to correlate two features along tree branches. With this, one can create a heatmap matrix using the function `phlower.tl.branch\_heatmap\_matrix' to show the features along the trajectories.
 
 To ensure users utilize PHLOWER correctly, we have deployed PHLOWER documents to \url{https://phlower.readthedocs.io/en/latest/}, where one can easily check the vignette for using PHLOWER, as well as the API.
 
