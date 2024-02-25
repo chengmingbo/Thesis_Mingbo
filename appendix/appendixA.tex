@@ -14,38 +14,40 @@
 \begin{table*}[ht]
 \centering
 \caption[Feature characteristics of 6 mulitmodal data]{Number of features, zero features, and different non-zero features statistic of 6 single cell mulitmodal data.}
-\begin{tabular}{llrr} 
+\begin{tabular}{llrrrr}
   \toprule & 
   \rotatebox{0}{Modality} & 
   \rotatebox{0}{\#features} & 
-  \rotatebox{0}{feature =0 $(\%)$} \\
+  \rotatebox{0}{feature =0 $(\%)$} &
+  \rotatebox{0}{mean}  &
+  \rotatebox{0}{standard deviation} \\
  dataset & & &\\
 \midrule
 \multirow{3}{*}{\shortstack[l]{tea}}
- & RNA & 36,601 & 97.05 \\ 
- & ATAC & 128,853 & 98.02 \\ 
- & ADT & 47 & 18.54 \\
+        & RNA & 36,601 & 97.05 & 0.059 & 0.95\\
+        & ATAC & 128,853 & 98.02 & 0.037 & 0.29\\
+        & ADT & 47 & 18.54 & 38.52 & 146.66 \\
 \midrule
 \multirow{3}{*}{\shortstack[l]{dogma}}
-& RNA & 36,495 & 94.01 \\
-& ATAC & 68,963 & 92.48\\
-& ADT & 210 & 45.61\\
+        & RNA & 36,495 & 94.01 & 0.13 & 1.07 \\
+        & ATAC & 68,963 & 92.48 & 0.21 & 0.91\\
+        & ADT & 210 & 45.61 & 8.13 & 72.06\\
 \midrule
 \multirow{2}{*}{\shortstack[l]{skin}}
-& RNA & 23,296 & 97.24 \\
-& ATAC & 344,592 & 98.83\\
+        & RNA & 23,296 & 97.24 & 0.12& 1.76\\
+        & ATAC & 344,592 & 98.83 & 0.19 & 0.87\\
 \midrule
 \multirow{2}{*}{\shortstack[l]{pbmc}}
-& RNA & 36,601 & 94.56\\
-& ATAC & 108,377 & 93.35\\
+        & RNA & 36,601 & 94.56 & 0.054& 1.67\\
+        & ATAC & 108,377 & 93.35 & 0.012 & 0.12\\
 \midrule
 \multirow{2}{*}{\shortstack[l]{cite\_bm}}
-& RNA & 17,009 & 94.79\\
-& ADT & 25 & 0.48\\
+        & RNA & 17,009 & 94.79 & 0.17 & 4.45\\
+        & ADT & 25 & 0.48 &184.13 & 481.07\\
 \midrule
 \multirow{2}{*}{\shortstack[l]{cite\_lung}}
-& RNA & 33,514 & 98.32\\
-& ADT & 52 & 17.19\\
+        & RNA & 33,514 & 98.32 &0.042 & 5.23\\
+        & ADT & 52 & 17.19 &6.95 &30.24\\
 \bottomrule \end{tabular}
 \label{tab:multimodal_feature_statistic}
 \end{table*}
