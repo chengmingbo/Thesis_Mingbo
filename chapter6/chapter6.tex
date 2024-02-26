@@ -32,6 +32,8 @@ To test the power of PHLOWER in the detection of multiple branches trees, we gen
 \end{figure}
 
 
+Next, we reformat this data to be used within the trajectory benchmarking framework dynverse~\citep{saelens2019comparison} by using dynwrap. In short, dynverse needs detailed information of the branches, branches points and association of cells within a branch.  To do so, we need to find the branching points of the DLA tree. First, we perform PHATE on the DLA high dimensional data to get embedding with 2 dimensions. We only consider embeddings, where the tree structure is preserved. Next, we find the branching points by finding 2 nearest neighbors of two branches. With these branching points, we created the branch backbones needed by dynverse. We calculate am association of each data point to a branching point (milestone percentage) by calculating the euclidean distance between the points related to each branch. See DLA tree with 10 branches example \fref{fig:DLA_example}.
+
 \begin{table}[!ht]
 	\footnotesize
 	\centering
@@ -58,8 +60,6 @@ To test the power of PHLOWER in the detection of multiple branches trees, we gen
 \end{table}
 
 
-
-Next, we reformat this data to be used within the trajectory benchmarking framework dynverse~\citep{saelens2019comparison} by using dynwrap. In short, dynverse needs detailed information of the branches, branches points and association of cells within a branch.  To do so, we need to find the branching points of the DLA tree. First, we perform PHATE on the DLA high dimensional data to get embedding with 2 dimensions. We only consider embeddings, where the tree structure is preserved. Next, we find the branching points by finding 2 nearest neighbors of two branches. With these branching points, we created the branch backbones needed by dynverse. We calculate am association of each data point to a branching point (milestone percentage) by calculating the euclidean distance between the points related to each branch. See DLA tree with 10 branches example \fref{fig:DLA_example}.
 \begin{algorithm}
 \caption{Diffusion-Limited Aggregation Tree Generation}
 \label{alg:DLA}
