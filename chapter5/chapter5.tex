@@ -391,18 +391,18 @@ This is repeated for all pairs of groups. The tree is finally built in a bottom 
         }
      }
 
-    $\text{CUTs}, \text{BINs} = (), ()$\\
+    $\text{CUTs}, \text{BINs} \gets (), ()$\\
     \For{$i\gets1$ \KwTo $m$ \KwBy $1$}{
         $n_{bin} \gets \lfloor min_{bin} \times \frac{\textbf{max}({t_i}) - \textbf{min}({t_i})}{(t_{max} - t_{min})}\rfloor$\\
         $\text{CUTs}(i) \gets \textbf{linspace}(\textbf{max}({t_i}), \textbf{min}({t_i}), n_{bin}+2)(2:-1)$\\
-        $\text{BINs}(i) =(t_i^{1}, t_i^{2}, \cdots t_i^{n_{bin}})$\\
-        $V_i =(V_i^{1}, V_i^{2}, \cdots V_i^{n_{bin}})$ \Comment*[r]{split the $V_{i}$ to be $n_{bin}$}
+        $\text{BINs}(i) \gets (t_i^{1}, t_i^{2}, \cdots t_i^{n_{bin}})$\\
+        $V_i \gets (V_i^{1}, V_i^{2}, \cdots V_i^{n_{bin}})$ \Comment*[r]{split the $V_{i}$ to be $n_{bin}$}
     }
-    $\text{DIC} = \{\}$\Comment*[r]{dictionary stores the branching points of all pairs}
+    $\text{DIC} \gets \{\}$\Comment*[r]{dictionary stores the branching points of all pairs}
     \For{$i\gets1$ \KwTo $m$ \KwBy $1$}{
         %
         \For{$j\gets i+1$ \KwTo $m$ \KwBy $1$ $~\& j \neq i$}{
-            $\text{Len}= \textbf{min}(\textbf{length}(V_i), \textbf{length}(V_j))$\\
+            $\text{Len}\gets \textbf{min}(\textbf{length}(V_i), \textbf{length}(V_j))$\\
             \For{$k\gets \textup{Len}$ \KwTo $1$ \KwBy $-1$}{
                 calculate $\text{d}(i,j,k)$ using \eref{eqn:dijk}\\
                 \If{$\textup{\text{d}}(i,j,k) < {\theta}_{cut}$}{
@@ -414,8 +414,8 @@ This is repeated for all pairs of groups. The tree is finally built in a bottom 
     }
 
     $\text{invDIC} \gets \textbf{invert}(\text{DIC})$ \Comment*[r]{invert dictionary: key,val to val,[key]}
-    $\text{bps} \gets \textbf{order}(\textbf{values}(\text{DIC}), \text{ascend}=\text{True})$ \Comment*[r]{ordered branching points ids}
-    $\text{Tree} = \emptyset$\\
+    $\text{bps} \gets \textbf{order}(\textbf{values}(\text{DIC}), \text{ascend}=\text{False})$ \Comment*[r]{ordered branching points ids}
+    $\text{Tree} \gets \emptyset$\\
     \While{$\text{bp} \textbf{ in } \text{bps}$}{
         $\text{Tree} \gets \textbf{MergeBranch}(\text{invDIC}, \text{bp})$\Comment*[r]{create tree with branching points}
     }
