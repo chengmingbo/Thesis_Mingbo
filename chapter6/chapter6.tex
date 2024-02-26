@@ -64,19 +64,19 @@ Next, we reformat this data to be used within the trajectory benchmarking framew
 \caption{Diffusion-Limited Aggregation Tree Generation}
 \label{alg:DLA}
 \Input{
-	$n_{sample}$, number of samples\\
- 	$n_{dim}$, number of dimensions\\
- 	$n_{branch}$, number of branches\\
+	$n$, number of samples\\
+ 	$d$, number of dimensions\\
+ 	$b$, number of branches\\
  	$\sigma$, gussian noise standard deviation parameter\\
  }
     \textbf{seed random number generator}\\
-    $n_{steps} \gets \lfloor\frac{n_{sample}}{n_{branch}}\rfloor$\\
-    $u \sim \textbf{Uniform}(0,1)\in\mathbb{R}^{n_{steps} \times n_{dims}}$\\
+    $s \gets \lfloor\frac{n}{b}\rfloor$\Comment*[r]{Number of steps}
+    $u \sim \textbf{Uniform}(0,1)\in\mathbb{R}^{s \times d}$\\
     $M \gets \textbf{Cumsum}(-1 + 2 \times u)$\\
-    \While{$I \gets 1$ to $n_{branch}$}
+    \While{$I \gets 1$ to $b$}
     {
-         $i \gets \textbf{Random}\{1,2,\cdots, n_{steps}\}$\\
-         $u_2 \sim \textbf{Uniform}(0,1)\in\mathbb{R}^{n_{steps} \times n_{dims}}$\\
+         $i \gets \textbf{Random}\{1,2,\cdots, s\}$\\
+         $u_2 \sim \textbf{Uniform}(0,1)\in\mathbb{R}^{s \times d}$\\
          $M_2 \gets \textbf{Cumsum}(-1 + 2 \times u_2)$\\
         $M \gets \begin{bmatrix}M \\\\
             M_2 +\left[\begin{array}{c}
@@ -84,10 +84,10 @@ Next, we reformat this data to be used within the trajectory benchmarking framew
                 M(i, :)\\
                 \vdots\\
                 M(i, :)\\
-        \end{array}\right]_{n_{steps}\times n_{dim}} \end{bmatrix}$\\
+        \end{array}\right]_{s\times d} \end{bmatrix}$\\
     }
-    $C \gets (\underbrace{1,1,\cdots, 1}_{n_{steps} \text{ times}}, \underbrace{2,2,\cdots, 2}_{n_{steps} \text{ times}},  \cdots\cdots, \underbrace{n_{branch},n_{branch},\cdots, n_{branch}}_{n_{steps} \text{ times}})$\\
-    $\epsilon \sim \mathcal{N}(0, \sigma^2)\in\mathbb{R}^{n_{sample}\times n_{dim}}$\\
+    $C \gets (\underbrace{1,1,\cdots, 1}_{s \text{ times}}, \underbrace{2,2,\cdots, 2}_{s \text{ times}},  \cdots\cdots, \underbrace{b,b,\cdots, b}_{s \text{ times}})$\\
+    $\epsilon \sim \mathcal{N}(0, \sigma^2)\in\mathbb{R}^{n\times d}$\\
     $M \gets M + \epsilon$\\
     \Return \{$M$, $C$\}\\
 \end{algorithm}
