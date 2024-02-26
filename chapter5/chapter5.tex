@@ -15,7 +15,7 @@ This chapter exclusively introduces the formalization and implementation of our 
 \section{Notation} \label{TI_methods:notation}
 
 $D: $ Diagonal matrix of a graph\\
-$W: $ Kernel matrix \\
+$W: $ Kernel(Affinity) matrix \\
 $M: $ Transition matrix \\
 $\mathcal{V}: $ A set of vertices\\
 $\mathcal{S}^k = \{{v}_0,\cdots,{v}_k \}: $ A $k$-simplex\\
@@ -255,7 +255,7 @@ Random walk is repeated $n$ times. This provides us with a path matrix $\mathbf{
 
 \begin{algorithm}
     \Input{
-        $A$, Affinity matrix\\
+        $A$, Adjacency matrix\\
         $W$, Diffusion distance matrix\\
         $G^{t}=\{\mathcal{V}^{t},\mathcal{E}^{t}\}$, Triangulated graph\\
     }
