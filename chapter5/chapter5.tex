@@ -26,7 +26,7 @@ $\mathbf{B}_k: $ A k order incidence matrix.\\
 $L_0: $ Zero-order Graph Laplacian\\
 $L_1: $ Hodge 1-Laplacian\\
 $\mathcal{L}_1: $ Normalized Hodge 1-Laplacian\\
-$\mathcal{L}_1^S: $ Symmetrized Normalized Hodge 1-Laplacian\\
+$\mathcal{L}_1^s: $ Symmetrized Normalized Hodge 1-Laplacian\\
 \section{Trajectory Inference}
 \label{TI_methods:TI}
 
@@ -138,7 +138,7 @@ For each $k \geq 0$, $\mathcal{C}_k(\mathcal{X})$ is the vector space with coeff
 \begin{equation}
 \partial_k ([v_0,\cdots, v_k]) = \sum_{i=0}^{k} (-1)^i [v_0, \cdots, v_{i-1}, v_{i+1}, \cdots, v_k]
 \end{equation}
-$\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}(.)$ is the image of an operator. We can construct the matrix representation of the boundary operators $\partial_k$ by $\mathbf{B}_k$~\citep{lim2020hodge,muhammad2006control}. 
+$\mathrm{im}(\partial_k)$ is the space of $(k-1)$-boundaries, where $\mathrm{im}(.)$ is the image of an operator. We can construct the matrix representation of the boundary operators $\partial_k$ by $\mathbf{B}_k$~\citep{lim2020hodge,muhammad2006control}.
 
 %For example, as shown in~\fref{fig:sc}, the incidence matrices $\mathbf{B}_1$ and $\mathbf{B}_2$ of the 2-simplicial complex capture the relationships between nodes and edges, and edges and triangles, respectively.
 
@@ -208,7 +208,7 @@ For example, for the embryonic mouse data, we observe that the Harmonic decompos
 %~(\afref{supfig:L0-L1}).
 
 \subsubsection{Determining the number of harmonic functions}
-In practice, the harmonic functions corresponding to eigenvalues are not exactly zero. Therefore, it's better to determine the number of harmonics automatically. We developed a simple algorithm for this purpose. The idea is straightforward: since the eigenvalues are already ordered, we can check the division of each eigenvalue with the previous one. It's easy to detect a jump, which indicates that the current eigenvalue is significantly larger than the previous one. In \fref{fig:breakingpoint}, we can see that the division values range from 0 to 3 in all cases except for the 11 eigenvalues, where the division is \num{3.05e+12}. Thus, we detect the top 10 eigenvectors as the harmonic functions. For details on the implementation of the detection algorithm, refer to \alref{alg:breaking_point}.
+In practice, the harmonic functions corresponding to eigenvalues are not exactly zero. Therefore, it's better to determine the number of harmonics automatically. We developed a simple algorithm for this purpose. The idea is straightforward: since the eigenvalues are already ordered, we can check the division of each eigenvalue with the previous one. It's easy to detect a jump, which indicates that the current eigenvalue is significantly larger than the previous one. In \fref{fig:breakingpoint}, we can see that the division values range from 0 to 3 in all cases except for the 11th eigenvalues, where the division is \num{3.05e+12}. Thus, we detect the top 10 eigenvectors as the harmonic functions. For details on the implementation of the detection algorithm, refer to \alref{alg:breaking_point}.
 
 \begin{figure}[!ht]
     \centering
@@ -251,7 +251,7 @@ To generate trajectories, we sample paths (or edge flows) in the graph by follow
     \end{cases}
 \label{eq:edgeflow}
 \end{equation}
-Random walk is repeated $n$ times. This provides us with a path matrix $\mathbf{F}^{(t)}\in \mathbb{R}^{\|\mathcal{E}^{(t)}\| \times n}$, where $\|\mathcal{E}^{(t)}\|$ is number of edges in graph $G^{(t)}$. See~\afref{supfig:fib2neuron-workflow}D for examples of sampled trajectories or edge flows. For details on the implementation of the random walk, refer to \alref{alg:randomwalk}. 
+Random walk is repeated $n$ times. This provides us with a path matrix $\mathbf{F}^{(t)}\in \mathbb{R}^{\|\mathcal{E}^{(t)}\| \times n}$, where $\|\mathcal{E}^{(t)}\|$ is number of edges in graph $G^{(t)}$. See~\afref{supfig:fib2neuron-workflow}D for examples of sampled trajectories or edge flows. For details on the implementation of the random walk, refer to \alref{alg:randomwalk}.
 
 \begin{algorithm}
     \Input{
@@ -262,7 +262,7 @@ Random walk is repeated $n$ times. This provides us with a path matrix $\mathbf{
     \Parameter{
         $N$, Number of trajectories\\
         $K=9$, KNN graph using A, W\\
-        $\text{pct}$, Percentage of starting cells\\
+        $\theta$, Percentage of starting cells\\
     }
     \Output{
         $L_p$, The list of trajectories\\
@@ -270,7 +270,7 @@ Random walk is repeated $n$ times. This provides us with a path matrix $\mathbf{
 
     $i \gets 1$ \\
     $G^{knn}=\{\mathcal{V}^{knn}, \mathcal{E}^{knn}\} \gets \textbf{Graph}(A,W,K)$ \\
-    $\mathcal{V}_{low}^{knn} \gets \textbf{LowestPseudotime}(\mathcal{V}^{t}, \text{pct})$ \Comment*[r]{pct is percentage parameter}
+    $\mathcal{V}_{low}^{knn} \gets \textbf{LowestPseudotime}(\mathcal{V}^{t}, \theta)$ \\
     $U[v] \gets \textbf{PesudoTime}(v)$ \Comment*[r]{Pseudo time of node v}
     $L_p \gets (()_{1}, ()_{2}, \cdots ()_{N})$\Comment*[r]{List of list}
     \While{$i \leq N$}
