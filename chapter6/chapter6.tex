@@ -143,37 +143,38 @@ We first, install dyno(0.1.2) which includes some competing methods of wrapping.
 \begin{description}
 	\item[PHLOWER] As PHLOWER utilizes STREAM for visualization, the wrapping to dynverse follows a similar approach to STREAM. To construct the stream tree structure, PHLOWER initially allocates each cell to the tree branches. This is achieved by considering the location of all edges associated with a vertex and using the mean value in the cumulative trajectory embedding space. Given that each edge can have multiple coordinates in the cumulative trajectory space, the median value is employed as the edge coordinate for inferring the cell coordinate. Subsequently, PHLOWER identifies the nearest branch to which a cell is close and assigns the cell to the respective branch. For cells that remain unvisited during the random walk, their k(default 5) nearest neighbors in the original space are used to approximately represent the cumsum coordinate. With this information, we can seamlessly integrate our tree into STREAM.
 
-	\item[TSCAN]
-	TSCAN has been wrapped in dynmethods, we just pass the ti\_tscan function to dynwrap function infer\_trajectory to infer the trajectory. source code is~\url{https://github.com/dynverse/ti\_tscan}
-
-	\item[STREAM] We utilize dynclipy to encapsulate STREAM. This process involves traversing the STREAM tree initially to gather all branches and subsequently creating a milestone network for dynverse. For each cell, we assess the distance to the milestones in STREAM, specifically the $i$th milestone in `Si\_pseudotime', identifying the top shortest distance milestone. Subsequently, we calculate the percentage of distances to these two milestone ends. Following this, we invoke `add\_trajectory' with the milestone network and milestone percentage as input parameters. Additionally, we incorporate root, dimension reduction, and timing to the object.
-
-	\item[PAGA]
-	PAGA has been wrapped in dynmethods, we just pass ti\_paga\_tree function to dynwrap function infer\_trajectory to infer the trajectory. source code is~\url{https://github.com/dynverse/ti\_paga\_tree}
-
-	\item[Monocle3]
-	Monocle3 has been wrapped in dynmethods, we just pass the ti\_monocle3 function to dynwrap function infer\_trajectory to infer the trajectory. source code is~\url{https://github.com/dynverse/ti\_monocle3}
-
-	\item[Slingshot]
-	Slingshot has been wrapped in dynwmethods, we just pass ti\_slingshot function to dynwrap function infer\_trajectory to infer the trajectory. source code is~\url{https://github.com/dynverse/ti\_slingshot}
-
-	\item[slice]
-	Slice has been wrapped in dynmethods in~\url{https://github.com/dynverse/ti\_slice}. However, the simulated data need not log transformation, we adjust ti\_slice code to exclude the transformation part i.e. set ``expression <- exp(expression) - 1'' to be a new wrapper method\_slice. And pass method\_slice function to dynwrap function infer\_trajectory to infer the trajectory.
-
-	\item[RaceID/StemID]
-	RaceID/StemID has been wrapped in dynmethods in~\url{https://github.com/dynverse/ti\_raceid\_stemid}. However, it needs positive input, we adjust ti\_raceid\_stemid code to scale the input data to 0-10 to be a new wrapper method\_raceid\_stemid. And pass method\_raceid\_stemid function to dynwrap function infer\_trajectory to infer the trajectory.
-
-	\item[MST]
-	Minimum spanning tree(MST) is implemented in R package mclust, which is also wrapped in dynmethods. We pass ti\_MST function to dynwrap function infer\_trajectory to infer the trajectory. Source code is~\url{https://github.com/dynverse/ti\_mst}.
+	\item[Celltree]
+	celltree has been wrapped in dynmethods in~\url{https://github.com/dynverse/ti\_celltree\_vem}. However, the cellTree source code normalization function ``.normalise.data'' would not work with negative values. We check out cellTree(1.27.0) source code from~\url{https://git.bioconductor.org/packages/cellTree} and adjust the ``.normalise.data'' function to use 0-1 normalization as the data output for the downstream inference process and recompile cellTree package as the input of dynmethods wrapper. We re-wrap ti\_celltree\_vem code to use the call new cellTree package to be a new wrapper method\_celltree\_vem. And pass method\_celltree\_vem function to dynwrap function infer\_trajectory to infer the trajectory.
 
 	\item[ElPiGraph]
 	ElPigraph has been wrapped in dynmethods, we just pass the ti\_elpigraph function to dynwrap function infer\_trajectory to infer the trajectory. source code is~\url{https://github.com/dynverse/ti_elpigraph}
 
-	\item[celltree]
-	celltree has been wrapped in dynmethods in~\url{https://github.com/dynverse/ti\_celltree\_vem}. However, the cellTree source code normalization function ``.normalise.data'' would not work with negative values. We check out cellTree(1.27.0) source code from~\url{https://git.bioconductor.org/packages/cellTree} and adjust the ``.normalise.data'' function to use 0-1 normalization as the data output for the downstream inference process and recompile cellTree package as the input of dynmethods wrapper. We re-wrap ti\_celltree\_vem code to use the call new cellTree package to be a new wrapper method\_celltree\_vem. And pass method\_celltree\_vem function to dynwrap function infer\_trajectory to infer the trajectory.
+	\item[Monocle3]
+	Monocle3 has been wrapped in dynmethods, we just pass the ti\_monocle3 function to dynwrap function infer\_trajectory to infer the trajectory. source code is~\url{https://github.com/dynverse/ti\_monocle3}
+
+	\item[MST]
+	Minimum spanning tree(MST) is implemented in R package mclust, which is also wrapped in dynmethods. We pass ti\_MST function to dynwrap function infer\_trajectory to infer the trajectory. Source code is~\url{https://github.com/dynverse/ti\_mst}.
+
+
+	\item[PAGA]
+	PAGA has been wrapped in dynmethods, we just pass ti\_paga\_tree function to dynwrap function infer\_trajectory to infer the trajectory. source code is~\url{https://github.com/dynverse/ti\_paga\_tree}
 
 	\item[pCreode]
 	pCreode has been wrapped in dynmethods, we just pass the ti\_pcreode function to dynwrap function infer\_trajectory to infer the trajectory. source code is~\url{https://github.com/dynverse/ti\_pcreode}
+
+	\item[RaceID/StemID]
+	RaceID/StemID has been wrapped in dynmethods in~\url{https://github.com/dynverse/ti\_raceid\_stemid}. However, it needs positive input, we adjust ti\_raceid\_stemid code to scale the input data to 0-10 to be a new wrapper method\_raceid\_stemid. And pass method\_raceid\_stemid function to dynwrap function infer\_trajectory to infer the trajectory.
+
+	\item[slice]
+	Slice has been wrapped in dynmethods in~\url{https://github.com/dynverse/ti\_slice}. However, the simulated data need not log transformation, we adjust ti\_slice code to exclude the transformation part i.e. set ``expression <- exp(expression) - 1'' to be a new wrapper method\_slice. And pass method\_slice function to dynwrap function infer\_trajectory to infer the trajectory.
+
+	\item[Slingshot]
+	Slingshot has been wrapped in dynwmethods, we just pass ti\_slingshot function to dynwrap function infer\_trajectory to infer the trajectory. source code is~\url{https://github.com/dynverse/ti\_slingshot}
+
+	\item[STREAM] We utilize dynclipy to encapsulate STREAM. This process involves traversing the STREAM tree initially to gather all branches and subsequently creating a milestone network for dynverse. For each cell, we assess the distance to the milestones in STREAM, specifically the $i$th milestone in `Si\_pseudotime', identifying the top shortest distance milestone. Subsequently, we calculate the percentage of distances to these two milestone ends. Following this, we invoke `add\_trajectory' with the milestone network and milestone percentage as input parameters. Additionally, we incorporate root, dimension reduction, and timing to the object.
+
+	\item[TSCAN]
+	TSCAN has been wrapped in dynmethods, we just pass the ti\_tscan function to dynwrap function infer\_trajectory to infer the trajectory. source code is~\url{https://github.com/dynverse/ti\_tscan}
 \end{description}
 
 \begin{figure}[!ht]
