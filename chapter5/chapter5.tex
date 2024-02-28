@@ -27,6 +27,11 @@ $L_0: $ Zero-order Graph Laplacian\\
 $L_1: $ Hodge 1-Laplacian\\
 $\mathcal{L}_1: $ Normalized Hodge 1-Laplacian\\
 $\mathcal{L}_1^s: $ Symmetrized Normalized Hodge 1-Laplacian\\
+$G^{(knn)} = (\mathcal{V}, \mathcal{E}): $ Diffusion knn graph with vertics~($\mathcal{V}$) and edges~($\mathcal{E}$) \\
+$G^{(t)} = (\mathcal{V}^{(t)} , \mathcal{E}^{(t)} , \mathcal{T}^{(t)}): $ triangulated graph with vertics~($\mathcal{V}^{(t)}$) , edges~($\mathcal{E}^{(t)}$) and triangles~($\mathcal{T}^{(t)}$)\\
+$\mathbf{f}: $ A path on a graph\\
+$\mathbf{F}^(t): $ Path matrix of graph $G^{(t)}$ \\
+$\bigtriangleup_{q}: $ Triangle $q$ of a graph\\
 \section{Trajectory Inference}
 \label{TI_methods:TI}
 
@@ -216,7 +221,7 @@ In practice, the harmonic functions corresponding to eigenvalues are not exactly
     \centering
     \includegraphics[width=0.65\textwidth]{breakingpoint/fig}
     \vspace{0.1cm}
-    \caption[Number of eigens selecting algorithm.]{\textbf{Number of eigens selecting algorithm.} The eigenvalues are derived from the benchmarking data, specifically from the Diffusion Limited Aggregation Tree with 10 branches.}
+    \caption[Number of eigens selecting algorithm.]{\textbf{Number of eigens selecting algorithm.} The eigenvalues are derived from the benchmarking data, specifically from the Diffusion Limited Aggregation Tree with 10 branches~\trefp{tab:DLA_trees}.}
     \label{fig:breakingpoint}
 \end{figure}
 
