@@ -5,6 +5,64 @@
 \chapter{Discussion and Conclusion}
 \label{chapter:discussion}
 
+\section{MOJITOO}
+\subsection{Discussion}
+The computational integration of feature matrices with distinct statistical properties in single-cell multimodal data presents a significant challenge to the computation community due to the need for both effectiveness and efficiency. This work addresses the issue by developing MOJITOO, a computational method designed to find a uniform latent space for multiple matrices with various feature distributions. MOJITOO, a linear model facilitating the integration of single-cell multimodal data via Canonical Correlation Analysis (CCA), achieves this by selecting two-dimensional reductions with the top features from each modality. These reductions undergo CCA to transform two spaces into a uniform CCA space, maximizing correlation. Despite initial separation, the spaces are unified by adding the two-dimensional reductions. Subsequent correlation tests eliminate uncorrelated components, retaining only the significant ones. The iterative addition of new dimensional reductions ensures coverage of all modalities.
 
-\section{Discussion}
-\section{Conclusion and Future Work}
+\subsubsection{Comprehensive Evaluation of Computational Methods for Single Cell Multimodal Integration}
+We conducted a comprehensive evaluation to benchmark various methods for single-cell multimodal integration. In \sref{MOJITOO:out}, we demonstrated that MOJITOO outperforms other methods in preserving the structures of modalities in six benchmarking datasets (achieving the best performance in 4 out of 6). It also ranked highest in terms of clustering accuracy. Regarding distance accuracy, MOJITOO secured the second position, just after MOFA. Overall, it is the most effective method compared to other computational methods\citep{argelaguet2020mofa+,singh2021schema,kriebel2021nonnegative, kang2021symphony,jin2020scai,hao2021seurat4}. MOJITOO also exhibited excellent scalability with the lowest memory requirements and computational time on the largest downsampling dataset. We highlighted the interpretability of MOJITOO, where components are associated with major cell types or capture differentiations within major cell type subtypes. Additionally, we mapped MOJITOO components back to the original features, revealing the capability of components to detect top features associated with cell types.
+
+
+
+\subsection{Conclusion and Future Work}
+
+\subsubsection{Apply MOJITOO to Other Fields}
+In other biological areas, the concept of MOJITOO is also applicable. For instance, in bulk RNA samples where different protocols yield samples with various features, similar to single-cell multimodal data, the idea of MOJITOO can be employed. The need for a uniform latent space is not exclusive to single-cell multimodal data. In recommender systems, where matrix factorization is a prevalent method (e.g., Netflix), user behaviors can be highly distinct. Dealing with unbalanced feature distribution is a significant challenge, and Canonical Correlation Analysis (CCA) could serve as a solution by pre-processing to obtain a unified feature space. In supervised machine learning, there are situations where a specific feature dominates the signal, especially when noise affects predictions. CCA might be useful for correlating features to denoise them by removing highly unrelated components.
+
+
+\subsubsection{Create network detect connection between two modalities}
+Since we can identify components from different modalities, we can obtain a feature-by-components matrix for each modality. Subsequently, we can create a network, utilizing random walk to identify connections between two features from two modalities. For instance, in multi-omics protocols that simultaneously measure open chromatin and gene expression, one task is to find links between peaks and genes to detect regulatory events. With the correlated components, we can facilitate gaining insights into these events. Additionally, linking transcription factors to gene expressions becomes possible. MOJITOO provides a method to quantify the feature relations from different modalities.
+
+\subsubsection{Use CCA components to capture cell lineage}
+When examining a cell fate lineage, we observed that open chromatin signals often precede gene expression. This suggests that chromatin opening events occurring before gene expression events can be caputers by the latent components using CCA. We believe it is worthwhile to investigate the components to determine if the residuals of these components can aid in trajectory inference tasks.
+
+
+\section{PHLOWER}
+\subsection{Discussion}
+The backbone identification in high-dimensional space poses a significant challenge, particularly in single-cell analysis where trajectory inference requires ordering cells to establish a backbone for tracing cell differentiation. To address this challenge, we developed PHLOWER, a computational method designed to construct a cell differentiation tree capturing cell fate differentiation by creating a backbone in the point cloud.
+
+The method begins by employing diffusion map techniques to infer pseudo-time and smoothes the signals similar to ddHodge. Delaunay triangulation is then performed on the Kamada-Kawaii layout to build a simplicial complex (SC). Using pseudo-time, lower and higher score cells are connected to create holes, enabling Hodge Laplacian (HL) decomposition. An algorithm is developed to automatically detect harmonic functions (i.e., eigen vectors corresponding to eigenvalues close to zero).
+
+Subsequently, trajectory sampling is conducted to generate sufficient paths randomly walking from small pseudo-time to higher values. These paths are projected into the trajectory space (i.e., the harmonic function space). The trajectory space facilitates the grouping of trajectory paths by applying clustering algorithms. This allows us to identify trajectories leading to different endpoints.
+
+To find branching points, each trajectory path is projected onto the cumulative trajectory space, where each step of trajectory sampling is recorded. Detection of branching points is achieved by examining the distance changes between two trajectory groups. With branching points identified, a cell differentiation tree is created, capturing cell fates elegantly.
+
+
+The Hodge Laplacian (HL) method, a state-of-the-art technique, has been applied in few areas, and its full potential remains untapped in high-dimensional scenarios with more than 20,000 dimensions. While researchers have explored the use of HL for outlier detection and clustering \citep{}(XXX), its application to high-dimensional spaces has not been thoroughly investigated. In practice, HL decomposition requires the presence of holes, corresponding to the number of harmonic functions detected by the decomposition. However, in the realm of single-cell analysis, holes do not naturally exist.
+
+To address this challenge, we devised a method to create holes by connecting the start and end points of cell fate lineages. However, a fundamental obstacle arises because HL's strength lies in clustering paths, and without pre-grouped paths, its potential remains untapped. To bridge this gap, we developed a preference random walk algorithm, initiating random walks from lower to higher pseudo-time values. Yet, random walks on a triangulated graph are hindered by sparse edges, leading to localized exploration. To overcome this limitation, we employed a diffusion graph as an agent to facilitate preference random walks and determined the shortest paths in the triangulated graph where no direct edge exists.
+
+This approach allowed us to obtain statistically sufficient trajectory paths for grouping. We utilized the harmonic function space for path clustering, a crucial step in trajectory inference. However, the ultimate goal of trajectory inference is to construct a differentiation tree. The remaining task is to identify branching points. To achieve this, we binned each trajectory group based on their pseudo-time values and calculated the distances between pseudo-time bins in the cumulative trajectory space. Normalizing these distances facilitated threshold setting to determine branching bin positions. Finally, we created a tree with branching points by iteratively merging them. For visualization, we employed STREAM, a powerful tool capturing dynamic processes along a trajectory tree.
+
+\subsubsection{Comprehensive Evaluation of Computational Methods for Trajectory Inference}
+We conducted a comprehensive evaluation to benchmark various computational methods for trajectory inference. In \sref{PHLOWER_bench:tech_out}, we demonstrated that PHLOWER excels in topology recovery capability, outperforming PAGA, RaceID/StemID, and monocle. Regarding the accuracy of cell location, PHLOWER also proved to be the top performer, followed by TSCAN and RaceID/StemID. When considering branches allocation accuracy and branch points allocation accuracy, PHLOWER again demonstrated superior performance, surpassing PAGA.
+
+Additionally, we showcased that PHLOWER provides valuable insights into single-cell multimodal data by correlating transcription factors and gene expression in \srefp{PHLOWER_bench:bio_out}.
+
+
+\subsubsection{Gaining Novel Biological Insights with PHLOWER}
+
+\subsection{Conclusion and Future Work}
+
+\subsubsection{Apply the methods to other fields}
+traffic flow
+
+\subsubsection{Improving Scalability}
+When running our algorithm, we observed that the pseudo-time inference algorithm from ddHodge takes too much time when the number of points exceeds 20,000 cells, making it impossible to obtain results in a reasonable time frame. To address this, one approach is to merge cells with their neighbors to reduce the number of points. Another option is to run ddHodge on a subset of cells and project neighbors to the inferred cells. Additionally, developing entirely new methods to replace the ddHodge pseudo-time algorithm is a consideration.
+
+\subsubsection{Improving Embedding Layouts}
+Another aspect to address is improving the layout for triangulation. Currently, we use the kamada-kawaii layout method for this task. The HL decomposition algorithm prefers a continuous layout without outliers. Thus, UMAP or t-SNE is not favored due to their island layout properties. Our implementation uses `Graphviz' accounting for the layout algorithm, where `dot', `fdp', `sfdp', `twopi', and `circo' are also possible layout algorithms. However, after testing, we find that kamada-kawaii performs the best in most cases, so we use it as the default layout algorithm. In the future, exploring different layout algorithms using distance methods other than diffusion distances is a potential avenue.
+
+\subsubsection{Improving the Tree Creating Algorithm}
+Currently, we heavily rely on pseudotime to trace trajectory group paths. In practice, we observed that the trajectory group travel direction does not fully agree with the pseudotime bin, which can sometimes result in incorrect tree structures. The tree backbone and the branching points algorithm should be improved further. For this, we plan to investigate the trajectory travel direction by utilizing more information from the cumulative trajectory space.
+

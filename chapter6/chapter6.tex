@@ -21,7 +21,7 @@ In this section, we initially present the algorithm for creating simulated data~
 
 \subsection{Simulated Data}
 \label{PHLOWER_bench:sim}
-To test the power of PHLOWER in the detection of multiple branches trees, we generate 10 simulated data sets using diffusion-limited aggregation trees (DLA tree)~\citep{witten1981diffusion} as proposed in PHATE~\citep{moon2017phate}. For this, we use a Gaussian noise parameter of 5 and vary the parameter n\_branch, which controls the number of branches in the trees, from 3 to 12. This generated trees with 5 to 18 branches.  For every data, we generate \num{3000} points and \num{100} features. Of note, we use the same data as evaluated in PHATE as data with 10 branches. Next, we run PHATE to visualize the branches, with which we can future construct ground truth for dynverse benchmarking.
+To test the power of PHLOWER in the detection of multiple branches trees, we generate 10 simulated data sets using diffusion-limited aggregation trees (DLA tree)~\citep{witten1981diffusion} as proposed in PHATE~\citep{moon2017phate}. For this, we use a Gaussian noise parameter of 5 and vary the parameter n\_branch, which controls the number of branches in the trees, from 3 to 12. This generated trees with 5 to 18 branches.  For every data, we generate \num{3000} points and \num{100} features. Of note, we use the same data as evaluated in PHATE as data with 10 branches. Next, we run PHATE to visualize the branches, with which we can future construct ground truth for dynverse benchmarking~\alref{alg:DLA}~\trefp{tab:DLA_trees}.
 
 \begin{figure}[!h]
 	\centering
