@@ -79,7 +79,7 @@ u = (1/m, 1/m,\cdots, 1/m, 0,0,\cdots,0)M^{s}
 To improve the pseudotime estimates, we use a procedure similar to~\cite{maehara2019ddhodge}, which smooths pseudo-time estimates by considering the graph connectivity. For this, we define initial edges weights as gradient values of the fully connected graph, e.g. $w^{F}_{ij}=u_j - u_i$. Next, we prune this fully-connected graph by considering only the $k$ nearest-neighbors. This provides a graph $G^{(knn)}=(\mathcal{V}, \mathcal{E})$, where $\mathcal{V}$ is the set of vertices and $\mathcal{E}$ is the set of edges.
 We represent this graph as an incidence matrix $\mathbf{B_1}$. For an edge $e_i \in \mathcal{E}$ and vertex $v_j \in \mathcal{V}$, we have:
 \begin{equation}
-\label{eqn:incidencematrix}
+\label{eqn:incidencematrix1}
 \mathbf{B}_1[i,j] = \begin{cases}
 -1 &\text{if edge } e_i \text{ leaves  vertex }v_j \\
 1 &\text{if edge } e_i \text{ enters  vertex }v_j \\
@@ -89,15 +89,17 @@ We represent this graph as an incidence matrix $\mathbf{B_1}$. For an edge $e_i 
 This is used to define the incidence matrix for full graph and pruned $k$-nn graph respectively $\mathbf{B_1}^F$ and $\mathbf{B_1}^P$.
 \noindent We want to estimate pseudo-times of the pruned $k$-nn graph by using the pseudo-time estimates of the full graph. For this, we get a first estimate of the gradients of the truncated graph ($w^P$) by minimizing:
 \begin{equation}
-\label{eqn:transitionmatrix}
+\label{eqn:ddhodge1}
     \min_{w}\frac{1}{2}\|\mathbf{B_1}^F w^F - \mathbf{B_1}^P w^P\|^2 + \frac{\lambda}{2}\|w^P\|^2,
 \end{equation}
 \noindent where $\lambda$ is the regularization parameter. Next, we update the potential of the vertices
 \begin{equation}
+\label{eqn:ddhodge2}
   u' = \arg\underset{u'}{\min}\|(\mathbf{B_1}^P)^\top u' - w^P\|^2.
 \end{equation}
 \noindent This allows us to estimate an updated gradients $w^s=\mathbf{B_1}^\top u'$. Next, we use these gradients to estimate the final pseudotime $u^s$ of the vertices as:
 \begin{equation}
+\label{eqn:ddhodge3}
     u^s = \arg\underset{u^s}{\min} \| \mathbf{B_1}^\top u^s - w^s\|^2.
 \end{equation}
 \noindent With the graph $G^{(knn)}$ with edge weights $w^s$ and pseudotime estimates $u^s$, we estimate a diffusion embedding with the kamada-kawai layout algorithm~\citep{gansner2004graph, ortmann2016sparse}. Examples of the graph layouts and pseudo-time estimates can be seen in~\afref{supfig:fib2neuron-workflow}A.
@@ -147,7 +149,7 @@ Specifically, for a given triangulated graph $G^{(t)}$, a next task is to obtain
 
 The boundary matrix on 1-simplices $\mathbf{B}_1$ is defined as in \eref{eqn:incidencematrix}. An entry in $\mathbf{B}_2$ capturing the relationship between an directed edge $e_i \in \mathcal{E}$ and a directed triangle $\bigtriangleup_{q} \in \mathcal{T}$ can be defined as:
 \begin{equation}
-\label{eqn:incidencematrix}
+\label{eqn:incidencematrix2}
 \mathbf{B}_2[i,q] = \begin{cases}
 -1 &\text{if }e_i \in \bigtriangleup_{q} \text{ and } e_i \text{ has same direction as the triangle}\bigtriangleup_{q}  \\
 1 &\text{if }e_i \in \bigtriangleup_{q} \text{ and } e_i \text{ has opposite direction than the} \bigtriangleup_{q} \\
@@ -178,7 +180,7 @@ For $k=0$, ${L}_0$ is the same as the zero order graph Laplacian introduced in \
 
 Here, we are interested in the first order Hodge Laplacian, i.e.:
 \begin{equation}
-\label{eqn:hodgeLaplacian}
+\label{eqn:hodgeLaplacian2}
 {L}_1 = \mathbf{B}_{1}^\top \mathbf{B}_{1} + \mathbf{B}_{2} \mathbf{B}_{2}^\top.
 \end{equation}
 As in diffusion maps~\citep{witten1981diffusion}, it is preferable to work with the normalized form of the Hodge Laplacian, as this provides a random walk process on the simplex~\citep{Schaub2020}:
