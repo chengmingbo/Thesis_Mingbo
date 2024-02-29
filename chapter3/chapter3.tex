@@ -14,12 +14,20 @@ In this chapter, we exclusively present and formalize our computational solution
 
 \section{Notation}
 \label{inte_methods:Notation}
+$\mathcal{X}: $ multiple single cell count matrices shared the same rows\\
+$Y_{i} \in \mathbb{R}^{n\times p_{i}}: $ the low-dimensional matrix for modality $i$, $p_{i}$ represents the number of dimensions \\
+$\mathbf{Y}_a\in \mathbb{R}^{n\times p}: $ matrix $a$ with dimension $n\times p$ \\
+${\mathbf w}_a\in\mathbb{R}^p: $ CCA transformation weight \\  
 $\mathbf{0}_{p\times q}: $ A $p\times q$ block matrix with all zero elements.\\
+${\mathbf z}_a: $ canonical variates of $\mathbf{Y}_a$ \\
+$<\mathbf{z}_a, \mathbf{z}_b>:$ the angel between $\mathbf{z}_a$ and $\mathbf{z}_b$ \\
 $I_p:$ a p-dimensional identity matrix.\\
 $A^{-\top}:$ the transposed inverse of $A$\\
 $A^{1/2}:$ a square root of $A$\\
 $A^{-\top/2}:$ the transposed inverse of $A^{-1/2}$\\
-$<\mathbf{z}_a, \mathbf{z}_b>:$ the angel between $\mathbf{z}_a$ and $\mathbf{z}_b$
+${\mathbf Z}_a :$ canonical variable of $\mathbf{Y}_a$ \\
+${\mathbf Z}: $ shared latent space \\
+
 
 \section{Pre-processing and Dimensional reduction}
 \label{inte_methods:preprocessing}
@@ -210,7 +218,7 @@ The time complexity of CCA for the calculation of $C_{aa}$ and $C_{bb}$ is $O(n\
 \subsection{Uniform latent component}
 CCA does not directly provide a unified dimension reduction for single-cell multimodal data. Combining $Z_a$ and $Z_b$ into $q\times 2$ dimensions is not advisable, as a larger dimension increases the risk of the curse of dimensionality. Moreover, correlated components are similar to each other, leading to redundant storage. Additionally, a larger dimensionality negatively impacts the efficiency of downstream analysis. Therefore, we propose a simple method to obtain a unified shared latent space without discarding information from CCA, which involves adding $Z_a$ and $Z_b$ together as follows:
 \begin{equation}
-    Z = Z_a + Z_b
+    \mathbf{Z} = \mathbf{Z}_a + \mathbf{Z}_b
 \end{equation}
 Which $Z\in \mathbb{R}^{q}$ is the share latent space.
 
@@ -296,19 +304,19 @@ For more information about MOJITOO implementation, source code, tutorials and ex
 
 \begin{algorithm}
 	\Input{
-	$Y_{1},...,Y_{m}$
+	$\mathbf{Y}_{1},...,\mathbf{Y}_{m}$
 	}
 
 	$i \gets 2$ \\
-	$Z_{1} \gets Y_{1}$ \\
+	$\mathbf{Z}_{1} \gets \mathbf{Y}_{1}$ \\
 	\While{$i < m$}
 	{
-		$W_{1}, W_{2} \gets CCA(Z_{1}, Y_{i})$ \\
-		$Z_{(1)} \gets Z_{1}\times W_{1}$ \\
-		$Z_{2} \gets Y_{i}\times W_{2}$  \\
-		$Z \gets Z_{1} + Z_{2}$ \\
-		$Z \gets Z[, 1:k]$\Comment{only consider significantly correlated dimension }
-		$Z_{1} \gets Z$ \\
+		$\mathbf{W}_{1}, \mathbf{W}_{2} \gets CCA(\mathbf{Z}_{1}, \mathbf{Y}_{i})$ \\
+		$\mathbf{Z}_{(1)} \gets \mathbf{Z}_{1}\times \mathbf{W}_{1}$ \\
+		$\mathbf{Z}_{2} \gets \mathbf{Y}_{i}\times \mathbf{W}_{2}$  \\
+		$\mathbf{Z} \gets \mathbf{Z}_{1} + \mathbf{Z}_{2}$ \\
+		$\mathbf{Z} \gets \mathbf{Z}[, 1:k]$\Comment{only consider significantly correlated dimension }
+		$\mathbf{Z}_{1} \gets \mathbf{Z}$ \\
 		$i \gets i+1$  \\
 	}
 	\Return $\mathbf{Z}$
