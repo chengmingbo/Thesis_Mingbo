@@ -19,6 +19,7 @@ $Y_{i} \in \mathbb{R}^{n\times p_{i}}: $ the low-dimensional matrix for modality
 $\mathbf{Y}_a\in \mathbb{R}^{n\times p}: $ matrix $a$ with dimension $n\times p$ \\
 ${\mathbf w}_a\in\mathbb{R}^p: $ CCA transformation weight \\  
 $\mathbf{0}_{p\times q}: $ A $p\times q$ block matrix with all zero elements.\\
+${\mathbf w}_a: $ canonical weight vectors of $\mathbf{Y}_a$ \\
 ${\mathbf z}_a: $ canonical variates of $\mathbf{Y}_a$ \\
 $<\mathbf{z}_a, \mathbf{z}_b>:$ the angel between $\mathbf{z}_a$ and $\mathbf{z}_b$ \\
 $I_p:$ a p-dimensional identity matrix.\\
@@ -77,7 +78,7 @@ where $\mathbf{Y}_a\in \mathbb{R}^{n\times p}$, ${\mathbf w}_a\in\mathbb{R}^p$, 
 &\text{subject to}\quad \|{\mathbf z}_a\|_2=1\quad \|{\mathbf z}_b\|_2=1
 \end{aligned}
 \end{equation}
-Let the maximum be attained by $z_{a}^{(1)}$ and $z_{b}^{(1)}$. The pair of images $z_{a}^{(2)}$ and $z_{b}^{(2)}$, which has the second smallest enclosing angle $\theta_2$, is located in the orthogonal complements of $z_{a}^{(1)}$ and $z_{b}^{(1)}$. The procedure continues until no more pairs are found. Therefore, the $r$ angles $\theta_r \in [0, \frac{\pi}{2}]$ for $r = (1,2,\cdots,q)$ when $p > q$ that can be found are recursively defined by:
+Let the maximum be attained by $\mathbf{z}_{a}^{(1)}$ and $\mathbf{z}_{b}^{(1)}$. The pair of images $\mathbf{z}_{a}^{(2)}$ and $\mathbf{z}_{b}^{(2)}$, which has the second smallest enclosing angle $\theta_2$, is located in the orthogonal complements of $\mathbf{z}_{a}^{(1)}$ and $\mathbf{z}_{b}^{(1)}$. The procedure continues until no more pairs are found. Therefore, the $r$ angles $\theta_r \in [0, \frac{\pi}{2}]$ for $r = (1,2,\cdots,q)$ when $p > q$ that can be found are recursively defined by:
 
 \begin{figure}[!ht]
 	\centering
@@ -216,7 +217,7 @@ Where the singular values $\gamma_i$ are in descending order such that:
 The time complexity of CCA for the calculation of $C_{aa}$ and $C_{bb}$ is $O(n\times p \times p)$ and $O(n\times q \times q)$ respectively whereas the time complexity of $C_{ab}$ is $O(n\times p \times q)$. And the time complexity of the  calculation of SVD to solve the problem is $O(\min(p^2q,qp^2))$.
 
 \subsection{Uniform latent component}
-CCA does not directly provide a unified dimension reduction for single-cell multimodal data. Combining $Z_a$ and $Z_b$ into $q\times 2$ dimensions is not advisable, as a larger dimension increases the risk of the curse of dimensionality. Moreover, correlated components are similar to each other, leading to redundant storage. Additionally, a larger dimensionality negatively impacts the efficiency of downstream analysis. Therefore, we propose a simple method to obtain a unified shared latent space without discarding information from CCA, which involves adding $Z_a$ and $Z_b$ together as follows:
+CCA does not directly provide a unified dimension reduction for single-cell multimodal data. Combining $\mathbf{Z}_a$ and $\mathbf{Z}_b$ into $q\times 2$ dimensions is not advisable, as a larger dimension increases the risk of the curse of dimensionality. Moreover, correlated components are similar to each other, leading to redundant storage. Additionally, a larger dimensionality negatively impacts the efficiency of downstream analysis. Therefore, we propose a simple method to obtain a unified shared latent space without discarding information from CCA, which involves adding $\mathbf{Z}_a$ and $\mathbf{Z}_b$ together as follows:
 \begin{equation}
     \mathbf{Z} = \mathbf{Z}_a + \mathbf{Z}_b
 \end{equation}
