@@ -36,7 +36,7 @@ Single-cell multimodal profiling represents a nascent field, and the integration
 	Interpretation of each component of the latent space is essential to understand the information it captured in the latent space, some methods like Seurat WNN~\citep{hao2021seurat4} only delivered a network for the integration. When associating molecular features with the latent space, it's better if the method is capable of interpreting each component using features from specific modalities, and most methods lack this ability.
 
 
-    \item \textbf{Execessive Presumption}
+    \item \textbf{Number of Free Parameters}
     Most methods either assume a specific data distribution or involve fitting the model with several parameters, requiring prior knowledge that may not be universally applicable. For example, Seurat WNN requires inputting the number of neighbors and scaling factor for the neighborhood, and MOFA involves several hyperparameters for model regularization, detection of number of factors and learning rates. Moreover, MOFA requires manual selection of informative components for downstream analysis after obtaining the latent components. A method is needed to automatically identify the most important shared information across different modalities.
 
 \end{itemize}
@@ -86,7 +86,7 @@ Several methods have been developed to address this task, and we will now review
 
 \begin{description}
   \item[DIABLO]
-  Data Integration Analysis for Biomarker discovery using Latent cOmponents~(DIABLO) is a generalization of sGCCA~\citep{tenenhaus2014variable}, which is a multivariate extension of canonical correlation analysis~(CCA). For $Q$ normalized and centered data matrices $X^1, \cdots, X^Q$ of dimensions $N\times D_q$, where $N$ denotes the number of cells and $D_q$ denotes the number of features. DIABLO aims to find a set of $H$ linear combinations of the $Q$ data matrices that are maximally correlated. The linear combinations are defined as:
+  Data Integration Analysis for Biomarker discovery using Latent cOmponents~(DIABLO) is a multivariate extension of canonical correlation analysis~(CCA). For $Q$ normalized and centered data matrices $X^1, \cdots, X^Q$ of dimensions $N\times D_q$, where $N$ denotes the number of cells and $D_q$ denotes the number of features. DIABLO aims to find a set of $H$ linear combinations of the $Q$ data matrices that are maximally correlated. The linear combinations are defined as:
   \begin{equation}
   \begin{aligned}
   	\underset{a_h^{(1)},\cdots,a_h^{(Q)}}{\max} \sum_{i,j=1, i\neq j}^Q c_{i,j} \text{cov}(X_h^{(i)} a_h^{(i)}, X_h^{(j)} a_h^{(j)}),\\
