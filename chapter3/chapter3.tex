@@ -35,14 +35,9 @@ Single-cell multimodal profiling represents a nascent field, and the integration
 	\item \textbf{Interpretability:}
 	Interpretation of each component of the latent space is essential to understand the information it captured in the latent space, some methods like Seurat WNN~\citep{hao2021seurat4} only delivered a network for the integration. When associating molecular features with the latent space, it's better if the method is capable of interpreting each component using features from specific modalities, and most methods lack this ability.
 
-	\item \textbf{Removal of batch effects}:
-	In single-cell multimodal integration, addressing heterogeneous features across different modalities is crucial, and the challenge extends to mitigating batch effects arising from both biological and technical sources. Certain methods, such as scAI~\citep{jin2020scai}, might be limited in their ability to incorporate external batch correction techniques, potentially leading to confounding results from combined batches and biological variations.
 
-	\item \textbf{Validation}
-	Evaluating the outcomes of data integration presents a significant challenge. In practice, there is no definitive ground truth, necessitating an evaluation based on downstream analysis tasks, such as assessing clustering agreement with true labels. However, these true labels, often annotations from a study, may introduce noise or inaccuracies in cell type identification. Therefore, a thorough validation should be applied to comprehensively assess the effectiveness of a method.
-
-  \item \textbf{Execessive Presumption}
-  Most methods either assume a specific data distribution or involve fitting the model with several parameters, requiring prior knowledge that may not be universally applicable. For example, Seurat WNN requires inputting the number of neighbors and scaling factor for the neighborhood, and MOFA involves several hyperparameters for model regularization, detection of number of factors and learning rates. Moreover, MOFA requires manual selection of informative components for downstream analysis after obtaining the latent components. A method is needed to automatically identify the most important shared information across different modalities.
+    \item \textbf{Execessive Presumption}
+    Most methods either assume a specific data distribution or involve fitting the model with several parameters, requiring prior knowledge that may not be universally applicable. For example, Seurat WNN requires inputting the number of neighbors and scaling factor for the neighborhood, and MOFA involves several hyperparameters for model regularization, detection of number of factors and learning rates. Moreover, MOFA requires manual selection of informative components for downstream analysis after obtaining the latent components. A method is needed to automatically identify the most important shared information across different modalities.
 
 \end{itemize}
 
