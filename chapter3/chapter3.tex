@@ -14,11 +14,11 @@ In this chapter, we provide a comprehensive overview of the background knowledge
 %XXXX should something describe the definition...
 
 
-\subsection{Single Cell Multimodal Integration}
+\section{Single Cell Multimodal Integration}
 We will discuss the computational challenge of integrating single-cell multimodal data, provide an overview of current methods for the task, and outline our objectives for addressing the limitations present in existing computational approaches to single-cell multimodal integration.
 
-\subsubsection{Challenge of Single Cell Multimodal Integration}
-\label{background:sec2:challenge_integration}
+\section{Challenge of Single Cell Multimodal Integration}
+\label{bgInte:challenge_integration}
 Single-cell multimodal profiling represents a nascent field, and the integration of single-cell multimodal data, while several tools have been developed for this purpose, still poses challenges:
 
 \begin{itemize}
@@ -49,9 +49,9 @@ Single-cell multimodal profiling represents a nascent field, and the integration
 	\label{fig:modalities_differences}
 \end{figure}
 
-\subsubsection{Computational Methods for Single Cell Multimodal Integration}
+\section{Computational Methods for Single Cell Multimodal Integration}
 \label{bgInte:integration}
-The challenges discussed in \sref{background:sec2:challenge_integration} regarding the integration of single-cell multimodal data pose difficulties in developing an efficient and effective integration method.
+The challenges discussed in \sref{bgInte:challenge_integration} regarding the integration of single-cell multimodal data pose difficulties in developing an efficient and effective integration method.
 
 \begin{table}[!ht]
 	\small
@@ -74,15 +74,6 @@ The challenges discussed in \sref{background:sec2:challenge_integration} regardi
 \end{table}
 
 Several methods have been developed to address this task, and we will now review the computational single-cell multimodal integration methods available in the literature. These methods can be classified into four groups based on the techniques they employ. The first group encompasses matrix factorization, which breaks down the multimodal count matrix into the product of two matrices. One matrix contains the latent factors representing the features, while the other incorporates the cells embedded in the latent factor space~(e.g., MOFA, scAI, Liger). The second group endeavors to construct a weighted nearest network that captures common information across all modalities~(e.g., Seurat WNN). The third group seeks to maximize the covariance or correlation between two modalities~(e.g., DIABLO, Symphony). The fourth group employs metric learning to reweigh modality features by maximizing their agreement with other modalities~(Schema). \tref{tab:methods_integration_overview} summarizes the characteristics of each method.
- \begin{figure}[!h]
-  	\centering
-  	\includegraphics[width=0.9\textwidth]{Alg/fig}
-  	\vspace{0.1cm}
-  	\caption[Illustration of competing integration competing method.]{\textbf{Illustration of competing integration competing method.} \emph{Source~\cite{kriebel2022uinmf}}~(modified to fit thesis format and/or clarify key points)
-  }
-  	\label{fig:Alg}
- \end{figure}
-
 
 \begin{description}
   \item[DIABLO]
@@ -184,14 +175,14 @@ Several methods have been developed to address this task, and we will now review
 \end{description}
 
 
-\subsubsection{Single Cell Multimodal Integration Objective}
+\section{Single Cell Multimodal Integration Resume}
 Single-cell simultaneous modalities profiling is a nascent area, offering insights into biological processes and cellular heterogeneity. However, the complexity of different modalities' features and the growing library size present challenges, necessitating tools for integration In this thesis, we investigate the aspects with the flowing goals to develop a single cell multimodal integration method:
 
 \begin{itemize}
 	\item
 	The objective is to develop an innovative computational method proficient in integrating more than two modalities with efficacy. The method should adeptly handle scenarios where modalities lack shared features and effectively address batch correction issues arising from diverse data batches. Furthermore, the method must yield a cohesive latent space suitable for clustering, data visualization, and subsequent analyses. Crucially, this latent space should be interpretable, facilitating the association of a component with the original feature count matrix. This interpretability enables a nuanced understanding of components, encompassing aspects such as gene expression and TF activity. Lastly, the methods should be computationally efficient to handle the increasingly larger single-cell library sizes.
 	\item
-	Establishing a comprehensive benchmarking framework for multimodal integration is imperative. All methods aferomentioned in \sref{background:sec2:integration} will be evaluated in \sref{chapter:MOJITOO_bench}. Acknowledging that ground truth labels~(cell type) may not infallibly represent actual biological facts due to manual cell annotation, it is crucial to devise a sophisticated set of benchmarking metrics. Beyond the clustering arrangement alignment with true labels, the benchmarking should encompass structural similarity evaluations between the shared latent space and each modality. Additionally, it should address the evolving levels of shared latent space distances among cells originating from the original modalities.
+	Establishing a comprehensive benchmarking framework for multimodal integration is imperative. All methods aferomentioned in \sref{bgInte:integration} will be evaluated in \cref{chapter:MOJITOO_bench}. Acknowledging that ground truth labels~(cell type) may not infallibly represent actual biological facts due to manual cell annotation, it is crucial to devise a sophisticated set of benchmarking metrics. Beyond the clustering arrangement alignment with true labels, the benchmarking should encompass structural similarity evaluations between the shared latent space and each modality. Additionally, it should address the evolving levels of shared latent space distances among cells originating from the original modalities.
 
 	\item
 	We should curate diverse sets of simultaneous multimodal datasets for benchmarking, incorporating two datasets that simultaneously profile single-cell RNA sequencing~(scRNA) and single-cell Assay for Transposase-Accessible Chromatin sequencing~(scATAC), two datasets comprising scRNA and single-cell surface protein information, and two datasets involving all three prevalent types: scRNA, scATAC, and single cell surface protein. This comprehensive approach ensures a more equitable and robust benchmarking outcome.

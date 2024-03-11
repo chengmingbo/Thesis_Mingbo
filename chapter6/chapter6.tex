@@ -13,10 +13,13 @@ In this chapter, we provide a comprehensive overview of the background knowledge
 
 
 
-\subsection{Single Cell Multimodal Trajectory Inference}
+\section{Single Cell Multimodal Trajectory Inference}
+Trajectory inference, also known as pseudotemporal ordering, is a computational technique employed in single-cell transcriptomics to elucidate the pattern of a dynamic process undergone by cells. Trajectory inference arranges cells based on their progression through the identified process. Note that various subtasks of trajectory inference have been addressed by researchers, with dimension reduction being a critical aspect. Exclusive dimension reduction is essential due to the potential distortion of the global structure by nonlinear visualization methods like t-SNE and UMAP. Approaches such as multidimensional scaling~(MDS)~\citep{torgerson1952multidimensional} aim to reduce dimensions while preserving distance information in a 2 dimensional space, and diffusion maps~\citep{coifman2006diffusion} utilize Gaussian affinities to capture both local and global structural details. PHATE, developed by~\cite{moon2017phate}, leverages both local and global structure. Palantir employs a forced-directed layout to Gaussian affinities within a graph. Pseudotime simulation is another aspect focused on capturing the temporal order of differentiating cells. Diffusion pseudotime~(DPT), introduced by~\citep{haghverdi2016dpt}, measures transitions between cells using diffusion-like random walks and has been integrated into the popular Python single-cell toolkit Scanpy~\citep{wolf2018scanpy}. Additionally, methods like slingshot~\citep{street2018slingshot} and STREAM~\citep{chen2019stream} are explored in more detail in \sref{background:sec2:TI}.
+
+
 We will present the computational challenge of trajectory inference for single-cell multimodal data, provide an overview of current methods developed in this field, and outline our goals to develop a method that addresses these challenges.
 
-\subsubsection{Challenge of Single Cell Trajectory Inference}
+\section{Challenge of Single Cell Trajectory Inference}
 \label{background:sec2:challenge_TI}
 Computational trajectory analysis, which explores non-linear embeddings in the cellular space and algorithms to find paths or trees in these spaces, is quite popular in the analysis of single cells~\citep{wolf2019paga,chen2019stream,street2018slingshot,Lynch2022}. Despite the power of these approaches~\citep{saelens2019comparison}. There are still some challenges that need to be addressed:
 
@@ -244,7 +247,7 @@ Next, we will discuss several published trajectory inference methods, All of the
 %\subsubsection{Slicer}
 %Slicer is a KNN-based trajectory inference method that utilizes alpha-hull to estimate the k parameter for locally linear embedding dimensionality reduction. First, Slicer computes a KNN graph from locally linear embedding, next it finds the most “extreme” cells in the graph. The user needs to specify a starting cell from extreme cells, Slicer then find the shortest path to all other cells. Next, the geodesic entropy is used to find branches; high values indicate the existence of a branching point.
 
-\subsubsection{Single Cell Multimodal Trajectory Inference Objective}
+\section{Single Cell Multimodal Trajectory Inference Resume}
 Single-cell simultaneous modalities profiling is a nascent area, offering insights into biological processes and cellular heterogeneity. necessitating tools for trajectory inference. In this thesis, we also investigate the aspect of developing a trajectory inference method for single cell multimodal data:
 \begin{itemize}
 	\item
