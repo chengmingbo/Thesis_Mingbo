@@ -8,7 +8,7 @@
 \label{chapter:problem_inte}
 \graphicspath{{chapter3/figs/}}
 
-In this chapter, we provide a comprehensive overview of the background knowledge necessary for single cell multimodal analysis. We begin by discussing the challenges associated with the task. We then introduce the current state-of-the-art methods for multimodal integration, aligning with our objective to address the issues. Finally, we conclude the chapter with a final discussion on the background~(\sref{background:Discussion}).
+In this chapter, we provide a comprehensive overview of the background knowledge necessary for single cell multimodal analysis. We begin by discussing the challenges associated with the task. We then introduce the current state-of-the-art methods for multimodal integration, aligning with our objective to address the issues. Finally, we conclude the chapter with a final discussion on the background~(\sref{bgInte:Discussion}).
 
 
 %XXXX should something describe the definition...
@@ -130,7 +130,7 @@ Several methods have been developed to address this task, and we will now review
   \item[MOFA]
   Multi-Omics Factor Analysis+~(MOFA+)~\citep{argelaguet2020mofa+} uses Bayesian group factor analysis and variational inference to decompose individual modalities simultaneously by estimating a common latent factor matrix $Z$, as well as the weights for the transformation of the modalities to the latent space~(\fref{fig:Alg_MOFA}). MOFA+ includes a procedure to determine the optimal number of factors~(dimension of the latent space) and has several hyper parameters for model regularization, detection of number of factors and learning rates. Specifically, it decomposes simultaneous multimodal of $M$ data matrics $Y^1, \cdots, Y^M$ of dimensions $N\times D_m$, where $N$ denotes the number of cells and $D_m$ denotes the number of features, $G$ is the number of sample groups, and $N_g$ is the number of samples in the $g$th group and $K$ is the number of factors. The matrix decomposition is:
   \begin{equation}
-  Y_{gm} = ZgW_m^{T} + \varepsilon_{gm},
+  Y_{gm} = Z_gW_m^{T} + \varepsilon_{gm},
   \end{equation}
   Where $Y_{gm}$ is the the matrix of observations for the $m$th data modality and the $g$th group, $Z_g$ is the matrix of latent factors for the $g$th group, $W_m$ is the matrix of weights for the $m$th data modality, and $\varepsilon_{gm}$ is the matrix of residuals. The latent factors $Z_g$ are shared across all modalities, while the weights $W_m$ are specific to each modality. %%TODO: the decomposition algorithm
 

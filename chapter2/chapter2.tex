@@ -55,7 +55,7 @@ To begin, let's establish clear definitions for genome, epigenome, transcriptome
 \subsection{Transcriptomics profiling with scRNA-seq}
 \label{background:sec1:scRNA}
 
-Single-cell RNA sequencing~(scRNA-seq)~\citep{singlecellsequencing2014, singlecellsequencing2015} has emerged as a powerful tool that allows the study of gene expression at the individual cell level, providing insights into the heterogeneity and dynamics of cellular responses in various biological contexts. In contrast to traditional bulk RNA-seq, which averages gene expression across millions of cells, scRNA-seq enables the investigation of transcriptomic profiles within specific cell types, offering a more detailed understanding of cellular behaviors during development or in response to perturbations.
+Single-cell RNA sequencing~(scRNA-seq)~\citep{singlecellsequencing2014, singlecellsequencing2015} has emerged as a powerful tool that allows the study of gene expression at the individual cell level, providing insights into the heterogeneity and dynamics of cellular responses in various biological contexts. In contrast to traditional bulk RNA-seq, which averages gene expression across millions of cells, scRNA-seq enables the investigation of transcriptomic profiles within single cell and their cell types, offering a more detailed understanding of cellular behaviors during development or in response to perturbations.
 
 \begin{figure}[!ht]
 	\centering
@@ -66,17 +66,12 @@ Single-cell RNA sequencing~(scRNA-seq)~\citep{singlecellsequencing2014, singlece
 \end{figure}
 
 
-Cells will be encapsulated into Gel Beads-in-emulsion (GEMs) forming a droplet where gel beads include barcode and UMI to identify the single cells and gene moleculars
-
-
-
-
 Single-cell RNA sequencing~(scRNA-seq) was introduced in 2009~\citep{tang2009mrna}. In general, scRNA-seq protocols can be classified into droplet-based and plate-based methods. Droplet-based methods use droplet microfluidics technology~\citep{dropletcompare2019, droplet2019practice} to capture cells in each droplet whereas plate-based methods employ passive cell separation into discrete wells on a plate. The droplet device is designed to generate aqueous droplets within mineral oil. Its arrangement strategically allows the simultaneous capture of cells and primed beads within a droplet, leading to the creation of an individual cDNA library for each cell. Each library is uniquely tagged with the barcode sequence present on the bead~(\fref{fig:scRNA_to_count_matrix} A-C). Droplet-based capture technologies offer the advantage of capturing a significantly larger number of cells simultaneously, reaching up to tens of thousands. Additionally, these approaches exhibit reduced selectivity regarding cell size and generate fewer doublets. Thus, droplet-based techniques are currently the most commonly used cell capture technologies in single-cell RNA fields. We only focus on the droplet-based methods in this thesis.
 
 \subsection{Chromatin accessibility profiling with scATAC-seq}
 \label{background:sec1:scATAC}
 
-Advancements in Next-Generation Sequencing~(NGS) technology have led to the development of various methods for comprehensive genome-wide profiling of chromatin accessibility through sequencing. ATAC-seq~(assay for transposase-accessible chromatin using sequencing)~\citep{buenrostro2013atacseq} use Tn5 transposase to insert sequencing adapters into accessible regions of the genome~(\fref{fig:scATAC-seq}). Due to the employment of a hyperactive Tn5 transposase, which tags and fragments DNA sequences in open chromatin regions simultaneously, ATAC-seq requires shorter sample preparation times and a lower number of cells for high-quality profiling of chromatin accessibility compared to other methods, ATAC-seq has gained prominence as the most extensively utilized~\citep{minnoye2021chromatin}.
+Advancements in Next-Generation Sequencing~(NGS) technology have led to the development of various methods for comprehensive genome-wide profiling of chromatin accessibility through sequencing. ATAC-seq~(assay for transposase-accessible chromatin using sequencing)~\citep{buenrostro2013atacseq} use Tn5 transposase to insert sequencing adapters into accessible regions of the genome. Due to the employment of a hyperactive Tn5 transposase, which tags and fragments DNA sequences in open chromatin regions simultaneously, ATAC-seq requires shorter sample preparation times and a lower number of cells for high-quality profiling of chromatin accessibility compared to other methods, ATAC-seq has gained prominence as the most extensively utilized~\citep{minnoye2021chromatin}.
 
 \begin{figure}[!ht]
 	\centering
@@ -86,7 +81,7 @@ Advancements in Next-Generation Sequencing~(NGS) technology have led to the deve
 	\label{fig:scATAC-seq}
 \end{figure}
 
-Protocols for single-cell ATAC-sequencing~(scATAC-seq) was introduced in 2015~\citep{Buenrostro2015,cusanovich2015multiplex}, enabling the unbiased identification of cell-type-specific regulatory elements within heterogeneous cell populations. Droplet-based scATAC-seq boasts a high throughput, capable of processing tens of thousands of cells per assay. Specifically, single nuclei are initially isolated from a single-cell suspension and subjected to bulk transposition with transposase Tn5. Following this, gel beads in emulsion~(GEM) are generated, with each gel bead being barcoded. Barcoded DNA fragments in droplets are finally used to create indexed libraries for high-throughput sequencing. Due to the advantages of high throughput and low costs for droplet-based single-cell ATAC-seq technology, the method is increasingly popular and has been commercialized by 10$\times$ Genomic~(Chromium Next Gem Single Cell ATAC-seq Library Kit)~\citep{satpathy2019massively}.
+Protocols for single-cell ATAC-sequencing~(scATAC-seq) was introduced in 2015~\citep{Buenrostro2015,cusanovich2015multiplex}, enabling the unbiased identification of cell-type-specific regulatory elements within heterogeneous cell populations. Droplet-based scATAC-seq boasts a high throughput, capable of processing tens of thousands of cells per assay. Specifically, single nuclei are initially isolated from a single-cell suspension and subjected to bulk transposition with transposase Tn5. Following this, gel beads in emulsion~(GEM) are generated, with each gel bead being barcoded. Barcoded DNA fragments in droplets are finally used to create indexed libraries for high-throughput sequencing~(\fref{fig:scATAC-seq}). Due to the advantages of high throughput and low costs for droplet-based single-cell ATAC-seq technology, the method is increasingly popular and has been commercialized by 10$\times$ Genomic~(Chromium Next Gem Single Cell ATAC-seq Library Kit)~\citep{satpathy2019massively}.
 
 
 
@@ -169,7 +164,9 @@ After designing the experiment and conducting the sequencing, the subsequent cru
 
 \subsection{Alignment}
 \label{background:sec2:alignment}
-The first step in the computational analysis of ATAC-seq/RNA-seq is the alignment, in which, raw sequencing reads~(DNA for scATAC-seq, RNA for scRNA-seq) are aligned to the reference genome to ensure these reads are located in the most probable position of the reference genome. This is typically accomplished by constructing a large index database from a reference genome and/or the set of reads, identifying potential regions for pairwise alignment~\citep{alser2021alignment}. The most widely used aligners are Bowtie2~\citep{langmead2012bowtie2}, BWA~\citep{li2009BWA} and STAR~\citep{dobin2013star}. These tools are utilized in the Cell Ranger ATAC/RNA/ARC pipeline developed by 10$\times$ Genomics.
+The first step in the computational analysis of ATAC-seq/RNA-seq is the alignment, in which, raw sequencing reads~(DNA for scATAC-seq, RNA for scRNA-seq) are aligned to the reference genome to ensure these reads are located in the most probable position of the reference genome. This is typically accomplished by constructing a large index database from a reference genome and/or the set of reads, identifying potential regions for pairwise alignment~\citep{alser2021alignment}. In the context of single-cell RNA analysis, each barcode uniquely identifies an individual cell, while the Unique Molecular Identifier (UMI) uniquely marks the RNA molecules within that cell. During the alignment, barcodes and UMIs are employed to generate gene expression counts for individual cells. Regarding single-cell ATAC-seq data, the cell barcodes associated with the fragments act as identifiers for individual cells, ultimately constructing fragments within each single cell. The most widely used aligners are Bowtie2~\citep{langmead2012bowtie2}, BWA~\citep{li2009BWA} and STAR~\citep{dobin2013star}. These tools are utilized in the Cell Ranger ATAC/RNA/ARC pipeline developed by 10$\times$ Genomics.
+
+
 
 \subsection{Computational Analysis of Single Cell RNA-seq}
 \label{background:sec2:scRNA}
