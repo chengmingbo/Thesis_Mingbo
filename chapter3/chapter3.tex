@@ -15,6 +15,16 @@ In this chapter, we provide a comprehensive overview of the background knowledge
 
 
 \section{Single Cell Multimodal Integration}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.95\textwidth]{integration_scheme/fig}
+    \vspace{0.1cm}
+    \caption[Illustration of task of single cell multimodal integration.]{\textbf{Illustration of task of single cell multimodal integration.} The task of single-cell multimodal integration, exemplified here, involves inputting three or more matrices: $\mathbf{X}_a \in \mathbb{R}^{s \times n}$, $\mathbf{X}_b \in \mathbb{R}^{r \times n}$, and $\mathbf{X}_c \in \mathbb{R}^{t \times n}$. The objective is to find a latent space $\mathbf{Z} \in \mathbb{R}^{p \times n}$ that extracts as much important information from the inputs as possible. }
+    \label{fig:integration_scheme}
+ \end{figure}
+
+
 We will discuss the computational challenge of integrating single-cell multimodal data, provide an overview of current methods for the task, and outline our objectives for addressing the limitations present in existing computational approaches to single-cell multimodal integration.
 
 \section{Challenge of Single Cell Multimodal Integration}
@@ -54,18 +64,19 @@ Single-cell multimodal profiling represents a nascent field, and the integration
 The challenges discussed in \sref{bgInte:challenge_integration} regarding the integration of single-cell multimodal data pose difficulties in developing an efficient and effective integration method.
 
 \begin{table}[!ht]
-	\small
+	%\footnotesize
+    \scriptsize
 	\centering
-	\begin{tabular}{llllll}
+	\begin{tabular}{llllllll}
 		\toprule
-		Name & algorithm & modality types & \#modalities & Reference \\
+		Name & algorithm & modality types & \#modalities & \#parameters & interpretability & Reference \\
 		\midrule
-    DIABLO & PLS-DA & universal & any & \cite{singh2019diablo}\\
-    Liger & NMF & shared-features& 2 & \cite{kriebel2021nonnegative} \\
-		MOFA   &  Matrix Factorization & universal & any &  \cite{argelaguet2020mofa+} \\
-		Schema & Metrics learning  & universal & any & \cite{singh2021schema} \\
-    scAI & Matrix Factorization & scRNA,scATAC & 2 & \cite{jin2020scai}\\
-		Seurat WNN	 & WNN & universal & any & \cite{hao2021seurat4} \\
+        DIABLO & PLS-DA & universal & any & 2 & yes & \cite{singh2019diablo}\\
+        Liger & NMF & shared-features& 2 & 2 & yes & \cite{kriebel2021nonnegative} \\
+        MOFA   &  Matrix Factorization & universal & any & 10+ & yes &  \cite{argelaguet2020mofa+} \\
+        Schema & Metrics learning  & universal & any & 2 & no & \cite{singh2021schema} \\
+        scAI & Matrix Factorization & scRNA,scATAC & 2 & 3 & yes & \cite{jin2020scai}\\
+        Seurat WNN   & WNN & universal & any & 2 & no & \cite{hao2021seurat4} \\
 		\bottomrule
 	\end{tabular}
 	\vspace{0.1cm}
@@ -73,18 +84,35 @@ The challenges discussed in \sref{bgInte:challenge_integration} regarding the in
 	\label{tab:methods_integration_overview}
 \end{table}
 
-Several methods have been developed to address this task, and we will now review the computational single-cell multimodal integration methods available in the literature. These methods can be classified into four groups based on the techniques they employ. The first group encompasses matrix factorization, which breaks down the multimodal count matrix into the product of two matrices. One matrix contains the latent factors representing the features, while the other incorporates the cells embedded in the latent factor space~(e.g., MOFA, scAI, Liger). The second group endeavors to construct a weighted nearest network that captures common information across all modalities~(e.g., Seurat WNN). The third group seeks to maximize the covariance or correlation between two modalities~(e.g., DIABLO, Symphony). The fourth group employs metric learning to reweigh modality features by maximizing their agreement with other modalities~(Schema). \tref{tab:methods_integration_overview} summarizes the characteristics of each method.
+Several methods have been developed to address this task, and we will now review the computational single-cell multimodal integration methods available in the literature. These methods can be classified into four groups based on the techniques they employ. The first group encompasses matrix factorization, which breaks down the multimodal count matrix into the product of two matrices. One matrix contains the latent factors representing the features, while the other incorporates the cells embedded in the latent factor space, i.e. these methods seek to find fit $\begin{pmatrix}
+\mathbf{X}_a\\
+\mathbf{X}_b\\
+\mathbf{X}_c\\
+\end{pmatrix} \approx \begin{pmatrix}
+\mathbf{w}_a\\
+\mathbf{w}_b\\
+\mathbf{w}_c\\
+\end{pmatrix} \times \mathbf{Z}$~(e.g., MOFA, scAI, Liger). The second group endeavors to construct a weighted nearest network that captures common information across all modalities~(e.g., Seurat WNN). The third group seeks to maximize the covariance or correlation between two modalities, i.e. $\underset{\mathbf{w}_a, \mathbf{w}_b, \mathbf{w}_c}{\arg\max}\sum_{i,j \in\{a,b,c\}, i\neq j} \mathbf{w}_i^\top \mathbf{X}_i^\top \mathbf{X}_j \mathbf{w}_j$ subject to $\|w_n\|^2 \leq 1$ ~(e.g., DIABLO, Symphony). The fourth group employs metric learning to reweigh modality features by maximizing their agreement with other modalities~(e.g., Schema).
+
+
+Regarding the modality types that these methods can handle, DIABLO, MOFA, Schema, and Seurat WNN are capable of dealing with any kinds of modality types, such as modalities with gene expression, chromatin peaks, and proteins. Additionally, these methods allow any number of modalities as inputs. However, methods like Liger and scAI have limitations for the types of modalities they can handle. Liger allows only modalities with shared features, and scAI is designed specifically for scRNA and scATAC integration. Moreover, these two methods only allow two modalities as inputs. When it comes to the number of parameters, which indicate the necessity of tuning the parameters, all the methods listed require at least 2 parameters to achieve the best fit. Interpretability is also another important aspect, as knowing which features a component captured allows for downstream analysis. Seurat WNN only outputs a weighted nearest network, making interpretation impossible. Although Schema outputs components, these components are not interpretable.
+
+
+
+
+ \tref{tab:methods_integration_overview} summarizes the characteristics of each method.
 
 \begin{description}
   \item[DIABLO]
-  Data Integration Analysis for Biomarker discovery using Latent cOmponents~(DIABLO) is a multivariate extension of canonical correlation analysis~(CCA). For $Q$ normalized and centered data matrices $X^1, \cdots, X^Q$ of dimensions $N\times D_q$, where $N$ denotes the number of cells and $D_q$ denotes the number of features. DIABLO aims to find a set of $H$ linear combinations of the $Q$ data matrices that are maximally correlated. The linear combinations are defined as:
+  Data Integration Analysis for Biomarker discovery using Latent cOmponents~(DIABLO) is a multivariate extension of canonical correlation analysis~(CCA). It maximizes the covariance between linear combinations of variables and projects the data into the smaller dimensional subspace spanned by the components. Specifically, for $Q$ normalized and centered data matrices $X^{(1)}(N\times P_1), \cdots, X^{(Q)}(N\times P_Q)$ measuring the expresion levels of $P_1,\cdots P_Q$'omics variables on the same $N$ samples'. The optimization for each dimension $h=1,\cdots, H$ is as follows:
   \begin{equation}
   \begin{aligned}
   	\underset{a_h^{(1)},\cdots,a_h^{(Q)}}{\max} \sum_{i,j=1, i\neq j}^Q c_{i,j} \text{cov}(X_h^{(i)} a_h^{(i)}, X_h^{(j)} a_h^{(j)}),\\
-  	s.t. \|a_h^{(q)}\|_2 = 1, \text{ and } \|a_h^{(q)}\|_1 \leq \lambda^{(q)}, \text{for all} 1\leq q \leq Q.
+  	s.t. \|a_h^{(q)}\|_2 = 1, \text{ and } \|a_h^{(q)}\|_1 \leq \lambda^{(q)}, \text{for all} 1\leq q \leq Q
   \end{aligned}
+  \label{eqn:sGCCA}
   \end{equation}
-  where $a_h^{(q)}$ is the variable coefficient vector for the $h$-th linear combination of the $q$-th data matrix, and $c_{i,j}$ is the weight of the correlation between the $i$-th and $j$-th data matrices. The first constraint is to normalize the linear combination, and the second constraint is to sparsify the linear combination. DIABLO solves the optimization problem by iteratively updating the $a_h^{(q)}$ and $c_{i,j}$ until convergence.
+  where $a_h^{(q)}$ is the variable coefficient vector on dimension $h$ associated to the residual matrix $X_q^{(h)}$ of the data matrix $X^{(q)}$, and C=$\{c_{i,j}\}_{i,j}$ is a $Q\times Q$ design matrix to specify whether datasets should be connected. Elements in $C$ can be set to zeros when datasets are not connected and ones where datasets are fully connected. $\lambda(q)$ is a non-negative parameter that controls the amount of shrinkage and thus the number of non-zero coefficients in $a_h^{(q)}$. DIABLO extended the framework to a classification or supervised framework, it substituted one omics dataset $X^{(q)}$ in \eref{eqn:sGCCA} with a dummy indicator matrix $Y\ (N\times G)$ to indicate the class membership of each sample, where $G$ is the number of phenotype groups. DIABLO has two major parameters, apart from the aforementioned $\lambda(q)$: the other is the number of components to retain. 
 
 
  \begin{figure}[!h]
@@ -116,7 +144,7 @@ Several methods have been developed to address this task, and we will now review
   \item[MOFA]
   Multi-Omics Factor Analysis+~(MOFA+)~\citep{argelaguet2020mofa+} uses Bayesian group factor analysis and variational inference to decompose individual modalities simultaneously by estimating a common latent factor matrix $Z$, as well as the weights for the transformation of the modalities to the latent space~(\fref{fig:Alg_MOFA}). MOFA+ includes a procedure to determine the optimal number of factors~(dimension of the latent space) and has several hyper parameters for model regularization, detection of number of factors and learning rates. Specifically, it decomposes simultaneous multimodal of $M$ data matrics $Y^1, \cdots, Y^M$ of dimensions $N\times D_m$, where $N$ denotes the number of cells and $D_m$ denotes the number of features, $G$ is the number of sample groups, and $N_g$ is the number of samples in the $g$th group and $K$ is the number of factors. The matrix decomposition is:
   \begin{equation}
-  Y_{gm} = Z_gW_m^{T} + \varepsilon_{gm},
+  Y_{gm} = Z_gW_m^{T} + \varepsilon_{gm}
   \end{equation}
   where $Y_{gm}$ is the the matrix of observations for the $m$th data modality and the $g$th group, $Z_g$ is the matrix of latent factors for the $g$th group, $W_m$ is the matrix of weights for the $m$th data modality, and $\varepsilon_{gm}$ is the matrix of residuals. The latent factors $Z_g$ are shared across all modalities, while the weights $W_m$ are specific to each modality. %%TODO: the decomposition algorithm
 
