@@ -68,26 +68,31 @@ The challenges discussed in \sref{bgInte:challenge_integration} regarding the in
 
 \begin{table}[!ht]
 	%\footnotesize
-    \scriptsize
+    %\scriptsize
+    \tiny
 	\centering
 	\begin{tabular}{llllllll}
+    %\begin{Ttabular}{cccccc}
 		\toprule
-		Name & algorithm & modality types & \#modalities & \#parameters & interpretability & Reference \\
+	 \bfseries	Name & problem &algorithm & modality types & \#modalities & \#parameters & interpretability \\
 		\midrule
-        DIABLO & PLS-DA & universal & any & 2 & yes & \cite{singh2019diablo}\\
-        Liger & NMF & shared-features& 2 & 2 & yes & \cite{kriebel2021nonnegative} \\
-        MOFA   &  Matrix Factorization & universal & any & 10+ & yes &  \cite{argelaguet2020mofa+} \\
-        Schema & Metrics learning  & universal & any & 2 & no & \cite{singh2021schema} \\
-        scAI & Matrix Factorization & scRNA,scATAC & 2 & 3 & yes & \cite{jin2020scai}\\
-        Seurat WNN   & WNN & universal & any & 2 & no & \cite{hao2021seurat4} \\
+     \bfseries    DIABLO &PLS-DA& eigen decomposition & universal & any & 2 & yes \\
+      \bfseries   Liger &Matrix Factorization&alternating nonnegative least squares & shared-features& 2 & 2 & yes \\
+       \bfseries  MOFA   &Matrix Factorization& stochastic variational inference & universal & any & 10+ & yes \\
+      \bfseries   Schema &Metrics learning& quadratic programming  & universal & any & 2 & no\\
+      \bfseries   scAI &Matrix Factorization& multiplicative update algorithm & scRNA,scATAC & 2 & 3 & yes &\\
+      \bfseries   Seurat WNN  & WNN & xxx & universal & any & 2 & no &\\
 		\bottomrule
 	\end{tabular}
+    %\end{Ttabular}
 	\vspace{0.1cm}
 	\caption[Overview of computational integration methods]{Overview of computational integration methods.}
 	\label{tab:methods_integration_overview}
 \end{table}
 
-Several methods have been developed to address this task, and we will now review the computational single-cell multimodal integration methods available in the literature. These methods can be classified into four groups based on the techniques they employ. The first group encompasses matrix factorization, which breaks down the multimodal count matrix into the product of two matrices. One matrix contains the latent factors representing the features, while the other incorporates the cells embedded in the latent factor space, i.e. these methods seek to find fit $\begin{pmatrix}
+Several methods have been developed to address this task, and we will now review the computational single-cell multimodal integration methods available in the literature. These methods can be classified into four groups based on the techniques they employ. The first group encompasses matrix factorization, which breaks down the multimodal count matrix into the product of two matrices. One matrix contains the latent factors representing the features, while the other incorporates the cells embedded in the latent factor space, i.e. these methods seek to find fit 
+\begin{equation}
+\begin{pmatrix}
 \mathbf{X}_a\\
 \mathbf{X}_b\\
 \mathbf{X}_c\\
@@ -95,7 +100,9 @@ Several methods have been developed to address this task, and we will now review
 \mathbf{w}_a\\
 \mathbf{w}_b\\
 \mathbf{w}_c\\
-\end{pmatrix} \times \mathbf{Z}$~(e.g., MOFA, scAI, Liger). The second group endeavors to construct a weighted nearest network that captures common information across all modalities~(e.g., Seurat WNN). The third group seeks to maximize the covariance or correlation between two modalities, i.e. $\underset{\mathbf{w}_a, \mathbf{w}_b, \mathbf{w}_c}{\arg\max}\sum_{i,j \in\{a,b,c\}, i\neq j} \mathbf{w}_i^\top \mathbf{X}_i^\top \mathbf{X}_j \mathbf{w}_j$ subject to $\|w_n\|^2 \leq 1$ ~(e.g., DIABLO, Symphony). The fourth group employs metric learning to reweigh modality features by maximizing their agreement with other modalities~(e.g., Schema).
+\end{pmatrix} \times \mathbf{Z}
+\end{equation}
+(e.g., MOFA, scAI, Liger). The second group endeavors to construct a weighted nearest network that captures common information across all modalities~(e.g., Seurat WNN). The third group seeks to maximize the covariance or correlation between two modalities, i.e. $\underset{\mathbf{w}_a, \mathbf{w}_b, \mathbf{w}_c}{\arg\max}\sum_{i,j \in\{a,b,c\}, i\neq j} \mathbf{w}_i^\top \mathbf{X}_i^\top \mathbf{X}_j \mathbf{w}_j$ subject to $\|w_n\|^2 \leq 1$ ~(e.g., DIABLO, Symphony). The fourth group employs metric learning to reweigh modality features by maximizing their agreement with other modalities~(e.g., Schema).
 
 
 Regarding the modality types that these methods can handle, DIABLO, MOFA, Schema, and Seurat WNN are capable of dealing with any kinds of modality types, such as modalities with gene expression, chromatin peaks, and proteins. Additionally, these methods allow any number of modalities as inputs. However, methods like Liger and scAI have limitations for the types of modalities they can handle. Liger allows only modalities with shared features, and scAI is designed specifically for scRNA and scATAC integration. Moreover, these two methods only allow two modalities as inputs. When it comes to the number of parameters, which indicate the necessity of tuning the parameters, all the methods listed require at least 2 parameters to achieve the best fit. Interpretability is also another important aspect, as knowing which features a component captured allows for downstream analysis. Seurat WNN only outputs a weighted nearest network, making interpretation impossible. Although Schema outputs components, these components are not interpretable.
