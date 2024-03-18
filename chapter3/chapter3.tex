@@ -8,24 +8,25 @@
 \label{chapter:problem_inte}
 \graphicspath{{chapter3/figs/}}
 
-In this chapter, we provide a comprehensive overview of the background knowledge necessary for single cell multimodal analysis. We begin by discussing the challenges associated with the task. We then introduce the current state-of-the-art methods for multimodal integration, aligning with our objective to address the issues. Finally, we conclude the chapter with a final discussion on the background~(\sref{bgInte:Discussion}).
+
+In this chapter, we offer a comprehensive overview of single cell multimodal integration analysis. Initially, we establish the computational framework for such analysis~\srefp{bgInte:introduction}, followed by an exploration of the inherent challenges~\srefp{bgInte:challenge_integration}. Subsequently, we present cutting-edge methods that currently lead the field, aligning with our aim to tackle these challenges effectively~\srefp{bgInte:integration}. Finally, we conclude with a discussion, further delving into the background and implications of our findings~\srefp{bgInte:Discussion}.
 
 
 %XXXX should something describe the definition...
 
 
 \section{Single Cell Multimodal Integration}
+\label{bgInte:introduction}
+The computational integration of single-cell multimodal data can be conceptualized as the process of inputting $m$ matrices $\mathbf{X}_1, \mathbf{X}_2,\cdots, \mathbf{X}_m$, where $\mathbf{X}_i\in \mathbb{R}^{n\times s_i}$ represents the data of a particular single cell modality. $n$ represents the number of observations, and $s_i$ denote the number of features for the $i$th modality. The primary objective of this integration is to discover a shared latent space $\mathbf{Z}\in\mathbb{R}^{n\times p}$ capable of encapsulating most of the information from the input matrices while preserving input-specific details across all input matrices. In this context, $p$ signifies the dimensions of the latent space~\frefp{fig:integration_scheme}.
 
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.95\textwidth]{integration_scheme/fig}
     \vspace{0.1cm}
-    \caption[Illustration of task of single cell multimodal integration.]{\textbf{Illustration of task of single cell multimodal integration.} The task of single-cell multimodal integration, exemplified here, involves inputting three or more matrices: $\mathbf{X}_a \in \mathbb{R}^{s \times n}$, $\mathbf{X}_b \in \mathbb{R}^{r \times n}$, and $\mathbf{X}_c \in \mathbb{R}^{t \times n}$. The objective is to find a latent space $\mathbf{Z} \in \mathbb{R}^{p \times n}$ that extracts as much important information from the inputs as possible. }
+    \caption[Illustration of task of single cell multimodal integration.]{\textbf{Illustration of task of single cell multimodal integration.} The task of single-cell multimodal integration, exemplified here, involves inputting three or more matrices: $\mathbf{X}_a \in \mathbb{R}^{n \times s}$, $\mathbf{X}_b \in \mathbb{R}^{n \times r}$, and $\mathbf{X}_c \in \mathbb{R}^{n \times t}$. The objective is to find a latent space $\mathbf{Z} \in \mathbb{R}^{n \times p}$ that extracts as much important information from the inputs as possible. }
     \label{fig:integration_scheme}
  \end{figure}
 
-
-We will discuss the computational challenge of integrating single-cell multimodal data, provide an overview of current methods for the task, and outline our objectives for addressing the limitations present in existing computational approaches to single-cell multimodal integration.
 
 \section{Challenge of Single Cell Multimodal Integration}
 \label{bgInte:challenge_integration}
@@ -55,9 +56,11 @@ Single-cell multimodal profiling represents a nascent field, and the integration
 	\centering
 	\includegraphics[width=0.95\textwidth]{feature_statistic/fig}
 	\vspace{0.1cm}
-	\caption[features characteristics comparison showing the challenge of multimodal integration.]{Illustration of six single-cell multimodal data. A) Number of features in scRNA, scATAC and scADT modalities. B) Percentage of zero entries in the three modalities, C) Element counts percentages in different modalities for the six single cell multimodal data.}
+	\caption[features characteristics comparison showing the challenge of multimodal integration.]{Illustration of six single-cell multimodal data. \textbf{A)} Number of features in scRNA, scATAC and scADT modalities. \textbf{B)} Percentage of zero entries in the three modalities, \textbf{C)} The Empirical Cumulative Distribution Function plots illustrate the cumulative distribution of scRNA, scATAC, and scADT data on a log10 scale. The Kolmogorow-Smirnov Test (KS test) indicates significant differences among the three modalities~(DOGMA data).}
 	\label{fig:modalities_differences}
 \end{figure}
+
+
 
 \section{Computational Methods for Single Cell Multimodal Integration}
 \label{bgInte:integration}
@@ -129,7 +132,7 @@ Regarding the modality types that these methods can handle, DIABLO, MOFA, Schema
   \begin{equation}
 	  \underset{H^i\geq 0,W\geq 0, V^i\geq 0, U^i \geq 0}{\arg\min} \sum_i^{d}\Big\| (E^i P^i) - H^i \big((W 0) + (V^i U^i)\big)\Big\|_{F}^2 + \lambda_i\sum_i^d\Big\|H^i(V^i U^i)\Big\|_{F}^2
   \end{equation}
-  Liger uses coordinate block descent~(BCD) to solve the optimization problem, which derives the parameters into blocks and finds the optimal solution for each block iteratively.
+  Liger uses coordinate block descent~(BCD) to solve the optimization problem, which derives the parameters into blocks and finds the optimal solution for each block iteratively. LIGER has two major parameters: a regularization term and the number of factors (dimensions of the latent space).
 
 
 \begin{figure}[!h]
@@ -146,7 +149,8 @@ Regarding the modality types that these methods can handle, DIABLO, MOFA, Schema
   \begin{equation}
   Y_{gm} = Z_gW_m^{T} + \varepsilon_{gm}
   \end{equation}
-  where $Y_{gm}$ is the the matrix of observations for the $m$th data modality and the $g$th group, $Z_g$ is the matrix of latent factors for the $g$th group, $W_m$ is the matrix of weights for the $m$th data modality, and $\varepsilon_{gm}$ is the matrix of residuals. The latent factors $Z_g$ are shared across all modalities, while the weights $W_m$ are specific to each modality. %%TODO: the decomposition algorithm
+  where $Y_{gm}$ is the the matrix of observations for the $m$th data modality and the $g$th group, $Z_g$ is the matrix of latent factors for the $g$th group, $W_m$ is the matrix of weights for the $m$th data modality, and $\varepsilon_{gm}$ is the matrix of residuals. The latent factors $Z_g$ are shared across all modalities, while the weights $W_m$ are specific to each modality. MOFA involves 6 parameters for the model options and 8 parameters for the training options. %%TODO: the decomposition algorithm
+
 
 \begin{figure}[!h]
   	\centering
@@ -162,7 +166,7 @@ Regarding the modality types that these methods can handle, DIABLO, MOFA, Schema
   \begin{equation}
   \rho^{*}(x_n, x_m) = \|diag(u)x_n - diag(u)x_m\|^2 = \|diag(w)(x_n - x_m)\|^2
   \end{equation}
-  where $w$ is the element-wise square of u. The scaling transforms u acts as a feature-weighting mechanism to choose the features of $D_1$ that align the datasets best. Schema integrates between the metrics $\rho_j$ to learn a metric $\rho^{*}$ that aligns well with all of them. The correlation between $\rho^{*}$ and $\rho_j$ is measured by the Pearson correlation coefficient. And to tackle multiple modalities, Schema maximizes the sum of Pearson correlation between $\rho^{*}$ and all other modalities pairwise distances $\rho_2,\cdots,\rho_j$.
+  where $w$ is the element-wise square of u. The scaling transforms u acts as a feature-weighting mechanism to choose the features of $D_1$ that align the datasets best. Schema integrates between the metrics $\rho_j$ to learn a metric $\rho^{*}$ that aligns well with all of them. The correlation between $\rho^{*}$ and $\rho_j$ is measured by the Pearson correlation coefficient. And to tackle multiple modalities, Schema maximizes the sum of Pearson correlation between $\rho^{*}$ and all other modalities pairwise distances $\rho_2,\cdots,\rho_j$. Schema has two main parameters: minimum desired correlation and number of random pairs.
 \begin{figure}[!h]
   	\centering
   	\includegraphics[width=0.55\textwidth]{Alg_scAI/fig}
@@ -177,7 +181,7 @@ Regarding the modality types that these methods can handle, DIABLO, MOFA, Schema
   \begin{equation}
   \min_{w_1,W_2,H,Z\geq 0} \alpha \|X_1-W_1H\|_F^2 + \|X_2(Z \circ R)-W_2H\|_F^2 + \lambda \|Z-H^\top H\|_F^2 + \gamma\sum_j \|H_{.j}\|_1^2
   \end{equation}
-  where $W_1$ and $W_2$ are the gene loading and locus loading matrices with size $p\times K$ and $q\times K$($K$ is rank), respectively. Each of the $K$ columns is considered as a factor to capture a biological process/signal relating to a specific cell type. $W_1^{ik}$ and $W_2^{ik}$ are the loading values of gene $i$ and locus $i$ in factor $k$, and the loading values represent the contributions of gene $i$ and locus $i$ in factor k. $H$ is the cell loading matrix with size $K\times n$ ($H_{.j}$ is the $j$th column of $H$), and the entry $H^{kj}$ is the loading value of cell $j$ when mapped onto factor $k$. $Z$ is the cell-cell similarity matrix. $R$ is a binary matrix generated by a binomial distribution with a probability $s$. $\alpha, \lambda, \gamma$ are regularization parameters, and the symbol $\circ$ represents dot multiplication.
+  where $W_1$ and $W_2$ are the gene loading and locus loading matrices with size $p\times K$ and $q\times K$($K$ is rank), respectively. Each of the $K$ columns is considered as a factor to capture a biological process/signal relating to a specific cell type. $W_1^{ik}$ and $W_2^{ik}$ are the loading values of gene $i$ and locus $i$ in factor $k$, and the loading values represent the contributions of gene $i$ and locus $i$ in factor k. $H$ is the cell loading matrix with size $K\times n$ ($H_{.j}$ is the $j$th column of $H$), and the entry $H^{kj}$ is the loading value of cell $j$ when mapped onto factor $k$. $Z$ is the cell-cell similarity matrix. $R$ is a binary matrix generated by a binomial distribution with a probability $s$. $\alpha, \lambda, \gamma$ are regularization parameters, and the symbol $\circ$ represents dot multiplication. scAI has three main free parameters used for model regularization.
 
 
 \begin{figure}[!h]
@@ -194,12 +198,11 @@ Regarding the modality types that these methods can handle, DIABLO, MOFA, Schema
   \begin{equation}
   	\theta_{weighted}(i,j)=\sum_{m} \textbf{w}_m(i)\theta(i,j)
   \end{equation}
-  where $\textbf{w}_m(i)$ is the weight of cell $i$ in modality $m$ and $\theta(i,j)$ denotes the affinity between cell $i$ and cell $j$ in modality $m$~(\fref{fig:Alg_WNN}).
+  where $\textbf{w}_m(i)$ is the weight of cell $i$ in modality $m$ and $\theta(i,j)$ denotes the affinity between cell $i$ and cell $j$ in modality $m$~(\fref{fig:Alg_WNN}). WNN has two major free parameters: the number of neighbors and scaling factor of the neighborhood kernel.
 
 
   \item \textbf{Symphony Integration}
-  Symphony~\citep{kang2021symphony} is a method to create single cell reference atlas for subsequent annotation of new single cell data sets. For a single case study with a multi-ome CITE-seq data, Symphony used canonical correlation analysis to find shared references. This simple procedure differs from MOJITOO in several ways: it does not use dimension reduction as input; it is not able to cope with more than 2 modalities and it uses the latent space of only one modality~(RNA) as shared space. Moreover, Symphony included the execution of batch correction with Harmony after the execution of CCA.
-
+  Symphony~\citep{kang2021symphony} is a method to create single cell reference atlas for subsequent annotation of new single cell data sets. For a single case study with a multi-ome CITE-seq data, Symphony used canonical correlation analysis to find shared references. This simple procedure differs from MOJITOO in several ways: it does not use dimension reduction as input; it is not able to cope with more than 2 modalities and it uses the latent space of only one modality~(RNA) as shared space and brutely retatins the top 20 dimensions. Moreover, Symphony included the execution of batch correction with Harmony after the execution of CCA.
 \end{description}
 
 

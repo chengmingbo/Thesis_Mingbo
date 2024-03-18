@@ -328,12 +328,13 @@ Surface protein profilling outputs antibody-derived tags~(ADT) count matrix, whi
 %\label{background:related_works}
 \section{Computational Analysis of Single Cell Multimodal Omics}
 \label{background:multimodal}
-Computationally, multimodal single-cell omics profiling has paved the way for developing models that can capture interactions and associations among multiple modalities at single-cell resolution. In this section, We begin by presenting the common workflow of single-cell multimodal analysis. Following that, we delve into two crucial computational tasks: integration and trajectory inference for single-cell multimodal data. We will outline the challenges, current approaches, and our objectives to address these issues.
+%Computationally, multimodal single-cell omics profiling has paved the way for developing models that can capture interactions and associations among multiple modalities at single-cell resolution. In this section, We begin by presenting the common workflow of single-cell multimodal analysis. Following that, we delve into two crucial computational tasks: integration and trajectory inference for single-cell multimodal data. We will outline the challenges, current approaches, and our objectives to address these issues.
 
-\subsection{Common Workflow of Single Cell Multimodal Omics}
-\label{background:multimodal:workflow}
-We will outline the computational workflow for the analysis of single-cell multimodal data. As depicted in \fref{fig:workflow_multimodal}, two crucial challenges, namely data integration and trajectory inference, need to be addressed during single-cell multimodal analysis.
+Most computational analysis methods designed for single-cell uni-modal data can still be applied to multimodal analysis. For instance, preprocessing methods can generally be adapted for multimodal data. However, there are notable differences in the analysis of single-cell multimodal data. Firstly, because of the presence of multiple feature matrices, obtaining a uniform latent space for dimensional reduction in downstream analysis poses a challenge. Effective methods are required to integrate feature matrices and obtain the latent space. Secondly, in downstream analysis such as trajectory inference, it's necessary to consider information from different modalities. The analysis should be capable of leveraging the multimodal information to gain deeper insights.As depicted in \fref{fig:workflow_multimodal}, two crucial challenges, namely data integration and trajectory inference, need to be addressed during single-cell multimodal analysis.
 
+%\subsection{Common Workflow of Single Cell Multimodal Omics}
+%\label{background:multimodal:workflow}
+ 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.95\textwidth]{workflow_multimodal/fig}
@@ -347,9 +348,9 @@ We will outline the computational workflow for the analysis of single-cell multi
 
 	%While many analyses developed for unimodal datasets can be adapted for multimodal data, establishing a consistent dimension reduction approach~(data integration) is advantageous for subsequent analyses.
 
-	As illustrated in \fref{fig:workflow_multimodal}, following the preprocessing steps for each modality, the subsequent objective is to integrate these modalities to derive a consistent latent space. This unified latent space facilitates downstream analyses, including trajectory analysis, clustering, and visualization. It is crucial to emphasize the importance of batch correction, particularly when working with multiple batches of data, prior to integration.
+As illustrated in \fref{fig:workflow_multimodal}, following the preprocessing steps for each modality, the subsequent objective is to integrate these modalities to derive a consistent latent space. This unified latent space facilitates downstream analyses, including trajectory analysis, clustering, and visualization. It is crucial to emphasize the importance of batch correction, particularly when working with multiple batches of data, prior to integration.
 
-	In addition to the downstream analysis for unimodal data, the incorpoartion of multiple modalities can enhance specific tasks performed in unimodal analysis, leading to more profound insights, such as achieving more accurate Gene Regulatory Networks~(GRN). For instance, scMega~\citep{li2023scmega} utilizes scRNA-seq and scATAC-seq data to infer GRN. And the integration of scRNA-seq and proteomic data proves valuable for a detailed examination of signaling networks~\citep{heumos2023best}.
+In addition to the downstream analysis for unimodal data, the incorpoartion of multiple modalities can enhance specific tasks performed in unimodal analysis, leading to more profound insights, such as achieving more accurate Gene Regulatory Networks~(GRN). For instance, scMega~\citep{li2023scmega} utilizes scRNA-seq and scATAC-seq data to infer GRN. And the integration of scRNA-seq and proteomic data proves valuable for a detailed examination of signaling networks~\citep{heumos2023best}.
 
 
 
