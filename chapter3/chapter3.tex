@@ -56,7 +56,7 @@ Single-cell multimodal profiling represents a nascent field, and the integration
 	\centering
 	\includegraphics[width=0.95\textwidth]{feature_statistic/fig}
 	\vspace{0.1cm}
-	\caption[features characteristics comparison showing the challenge of multimodal integration.]{Illustration of six single-cell multimodal data. \textbf{A)} Number of features in scRNA, scATAC and scADT modalities. \textbf{B)} Percentage of zero entries in the three modalities, \textbf{C)} The Empirical Cumulative Distribution Function plots illustrate the cumulative distribution of scRNA, scATAC, and scADT data on a log10 scale. The Kolmogorow-Smirnov Test (KS test) indicates significant differences among the three modalities~(DOGMA data).}
+	\caption[features characteristics comparison showing the challenge of multimodal integration.]{Illustration of six single-cell multimodal data. \textbf{A)} Number of features in scRNA, scATAC and scADT modalities. \textbf{B)} Percentage of zero entries in the three modalities, \textbf{C)} The Empirical Cumulative Distribution Function plots illustrate the cumulative distribution of scRNA, scATAC, and scADT data on a log10 scale~(DOGMA data).}
 	\label{fig:modalities_differences}
 \end{figure}
 
@@ -71,17 +71,17 @@ The challenges discussed in \sref{bgInte:challenge_integration} regarding the in
     %\scriptsize
     \tiny
 	\centering
-	\begin{tabular}{llllllll}
+	\begin{tabular}{llllllllll}
     %\begin{Ttabular}{cccccc}
 		\toprule
-	 \bfseries	Name & problem &algorithm & modality types & \#modalities & \#parameters & interpretability \\
+	   Name & problem &algorithm & time complexity & modality types & \#modalities & \#parameters & interpretability \\
 		\midrule
-     \bfseries    DIABLO &PLS-DA& eigen decomposition & universal & any & 2 & yes \\
-      \bfseries   Liger &Matrix Factorization&alternating nonnegative least squares & shared-features& 2 & 2 & yes \\
-       \bfseries  MOFA   &Matrix Factorization& stochastic variational inference & universal & any & 10+ & yes \\
-      \bfseries   Schema &Metrics learning& quadratic programming  & universal & any & 2 & no\\
-      \bfseries   scAI &Matrix Factorization& multiplicative update algorithm & scRNA,scATAC & 2 & 3 & yes &\\
-      \bfseries   Seurat WNN  & WNN & xxx & universal & any & 2 & no &\\
+        DIABLO &PLS-DA& monotonically convergent algorithm & xx& universal & any & 2 & yes \\
+        Liger &Matrix Factorization&alternating nonnegative least squares &xxx& shared-features& 2 & 2 & yes \\
+        MOFA   &Matrix Factorization& stochastic variational inference &xxx& universal & any & 10+ & yes \\
+        Schema &Metrics learning& quadratic programming  & universal &xxx& any & 2 & no\\
+        scAI &Matrix Factorization& multiplicative update algorithm &xxx& scRNA,scATAC & 2 & 3 & yes &\\
+        Seurat WNN  & WNN & xxx &xxx&universal & any & 2 & no &\\
 		\bottomrule
 	\end{tabular}
     %\end{Ttabular}
