@@ -74,14 +74,14 @@ The challenges discussed in \sref{bgInte:challenge_integration} regarding the in
 	\begin{tabular}{llllllllll}
     %\begin{Ttabular}{cccccc}
 		\toprule
-	   Name & problem &algorithm & time complexity & modality types & \#modalities & \#parameters & interpretability \\
+	   Name & problem &algorithm & linearity & modality types & \#modalities & \#parameters & interpretability \\
 		\midrule
-        DIABLO &PLS-DA& monotonically convergent algorithm & xx& universal & any & 2 & yes \\
-        Liger &Matrix Factorization& coordinate block descent &xxx& shared-features& 2 & 2 & yes \\
-        MOFA   &Matrix Factorization& stochastic variational Bayes &xxx& universal & any & 10+ & yes \\
-        Schema &Metrics learning& quadratic programming  &  polynomial & universal& any & 2 & no\\
-        scAI &Matrix Factorization& multiplicative update algorithm &xxx& scRNA,scATAC & 2 & 3 & yes &\\
-        Seurat WNN  & WNN & xxx &xxx&universal & any & 2 & no &\\
+        DIABLO &PLS-DA& monotonically convergent algorithm & linear& universal & any & 2 & yes \\
+        Liger &Matrix Factorization& coordinate block descent &linear& shared-features& 2 & 2 & yes \\
+        MOFA   &Matrix Factorization& stochastic variational Bayes &linear& universal & any & 10+ & yes \\
+        Schema &Metrics learning& quadratic programming  &  non-linear & universal& any & 2 & no\\
+        scAI &Matrix Factorization& multiplicative update algorithm &linear& scRNA,scATAC & 2 & 3 & yes &\\
+        Seurat WNN  & WNN & xxx &non-linear&universal & any & 2 & no &\\
 		\bottomrule
 	\end{tabular}
     %\end{Ttabular}
@@ -91,6 +91,44 @@ The challenges discussed in \sref{bgInte:challenge_integration} regarding the in
 \end{table}
 %liger algorithm(O(nmk)): https://stanford.edu/~rezab/classes/cme323/S15/notes/lec14.pdf
 %
+
+
+%\begin{table}[!ht]
+%    \tiny
+%  \centering
+%  \begin{tabular}{llllllllll}
+%    %\begin{Ttabular}{cccccc}
+%    \toprule
+%      & DIABLO & Liger & MOFA & Schema & scAI & Seurat WNN  \\
+%      \midrule
+%     problem & PLS-DA & Matrix Factorization & Matrix Factorization & Metrics learning & Matrix Factorization & WNN\\
+%     algorithm  & monotonically convergent & coordinate block descent & stochastic variational Bayes & quadratic programming & multiplicative update algorithm & WNN\\
+%     time complexity & xx & xx & xx & xx & xx & xx  \\
+%     modality types & universal & shared-features & universal & universal & scRNA, scATAC & universal\\
+%     \#modalities & any & 2 & any & any & 2 & any \\
+%     \#parameters & 2 & 2 & 10+ & 2 & 3 & 2\\
+%     inmerpretability yes & yes & yes & no & yes & no\\
+%    \bottomrule
+%  \end{tabular}
+%    %\end{Ttabular}
+%  \vspace{0.1cm}
+%  \caption[Overview of computational integration methods]{Overview of computational integration methods.}
+%  \label{tab:methods_integration_overview}
+%\end{table}
+%
+
+%liger algorithm(O(nmk)): https://stanford.edu/~rezab/classes/cme323/S15/notes/lec14.pdf
+%
+
+
+
+
+
+
+
+
+
+
 
 Several methods have been developed to address this task, and we will now review the computational single-cell multimodal integration methods available in the literature. These methods can be classified into four groups based on the techniques they employ. The first group encompasses matrix factorization, which breaks down the multimodal count matrix into the product of two matrices. One matrix contains the latent factors representing the features, while the other incorporates the cells embedded in the latent factor space, i.e. these methods seek to find fit 
 \begin{equation}
