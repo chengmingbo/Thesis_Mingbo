@@ -34,7 +34,7 @@ ${\mathbf Z}: $ shared latent space \\
 \label{inte_methods:preprocessing}
 Our method take dimensional reductions of $m$ modalities count matrices as input, the count matrices can be represented as
 \begin{equation}
-    \mathcal{X}=\{\textbf{X}_1,\textbf{X_2},\cdots,\textbf{X}_m\}
+    \mathcal{X}=\{\textbf{X}_1,\textbf{X}_2,\cdots,\textbf{X}_m\}
 \end{equation}
 where $X_{i} \in \mathbb{R}^{n\times s_{i}}$ represents the data of a particular single cell modality, $n$ represents the number of cells, and $s_{i}$ represents the number of features in modality $i$. Here, we focus on multimodal data, where the cells are the same across matrices and there is no direct relation between the features of the distinct modalities. To genereate inputs of our method, we process distinct pre-process and next obtain a dimension reduced matrix for each modality independently using a modality-specific approach:
 \begin{align}
