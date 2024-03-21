@@ -74,10 +74,10 @@ We initiate a standardized pre-processing pipeline for all previous datasets, co
     We adhere to the standard pipeline outlined in the \href{https://satijalab.org/signac/articles/pbmc_vignette.html}{Signac} documentation~\citep{signac}. This involves applying TF-IDF (term frequency-inverse document frequency) on the peaks, running RunSVD on the top features obtained from the FindTopFeatures function with min.cutoff=`q0' parameter, resulting in an LSI dimension-reduced matrix. We retain the first 50 dimensions, excluding the first dimension due to its high correlation with the number of fragments.  
     
     \item[Protein data]
-    We adopt the standard Seurat 4 \href{https://satijalab.org/seurat/articles/multimodal_vignette.html}{pipeline}\citep{hao2021seurat4}. In summary, we use NormalizeData with parameters normalization.method = `CLR' and margin = 2, followed by ScaleData and RunPCA with 30 PCs using default parameters.
+    We adopt the standard Seurat 4 \href{https://satijalab.org/seurat/articles/multimodal_vignette.html}{pipeline}~\citep{hao2021seurat4}. In summary, we use NormalizeData with parameters normalization.method = `CLR' and margin = 2, followed by ScaleData and RunPCA with 30 PCs using default parameters.
     
     \item[Additional step] 
-    \texttt{PBMC-DOGMA} is the only data set evaluated here with two biological conditions (stimulated and unstimulated). To address the presence of batch, we employ Harmony integration\citep{korsunsky2019harmony} independently for RNA-seq and epitope data, integrating control and stimulated samples. For scATAC-seq, integration is carried out by disregarding the first LSI dimension, highly correlated with the stimulation. \afref{fig:batch_correction} illustrates MOJITOO results both with and without batch correction.
+    \texttt{PBMC-DOGMA} is the only data set evaluated here with two biological conditions (stimulated and unstimulated). To address the presence of batch, we employ Harmony integration~\citep{korsunsky2019harmony} independently for RNA-seq and epitope data, integrating control and stimulated samples. For scATAC-seq, integration is carried out by disregarding the first LSI dimension, highly correlated with the stimulation. \afref{fig:batch_correction} illustrates MOJITOO results both with and without batch correction.
 \end{description}
 
 \subsubsection{Competing methods}
