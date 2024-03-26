@@ -9,7 +9,7 @@
 \graphicspath{{chapter3/figs/}}
 
 
-In this chapter, we offer a comprehensive overview of single cell multimodal integration analysis. Initially, we establish the computational framework for such analysis~\srefp{bgInte:introduction}, followed by an exploration of the inherent challenges~\srefp{bgInte:challenge_integration}. Subsequently, we present cutting-edge methods that currently lead the field, aligning with our aim to tackle these challenges effectively~\srefp{bgInte:integration}. Finally, we conclude with a discussion, further delving into the background and implications of our findings~\srefp{bgInte:Discussion}.
+In this chapter, we offer a comprehensive overview of single cell multimodal integration analysis. Initially, we establish the computational framework for such analysis~\srefp{bgInte:introduction}, followed by an exploration of the inherent challenges~\srefp{bgInte:challenge_integration}. Subsequently, we present cutting-edge methods that currently lead the field~\srefp{bgInte:integration}. Next, we align with our aim to tackle these challenges effectively~\srefp{bgInte:MOJITOO_resume}. Finally, we conclude with a discussion, further delving into the background and implications of our findings~\srefp{bgInte:Discussion}.
 
 
 %XXXX should something describe the definition...
@@ -81,7 +81,7 @@ The challenges discussed in \sref{bgInte:challenge_integration} regarding the in
         MOFA   &Matrix Factorization& stochastic variational Bayes &linear& universal & any & 10+ & yes \\
         Schema &Metrics learning& quadratic programming  &  non-linear & universal& any & 2 & no\\
         scAI &Matrix Factorization& multiplicative update algorithm &linear& scRNA,scATAC & 2 & 3 & yes &\\
-        Seurat WNN  & WNN & exponential kernel &non-linear&universal & any & 2 & no &\\
+        Seurat WNN  & WNN & softmax transformation &non-linear&universal & any & 2 & no &\\
 		\bottomrule
 	\end{tabular}
     %\end{Ttabular}
@@ -145,12 +145,7 @@ Several methods have been developed to address this task, and we will now review
 (e.g., MOFA, scAI, Liger). The second group endeavors to construct a weighted nearest network that captures common information across all modalities~(e.g., Seurat WNN). The third group seeks to maximize the covariance or correlation between two modalities, i.e. $\underset{\mathbf{w}_a, \mathbf{w}_b, \mathbf{w}_c}{\arg\max}\sum_{i,j \in\{a,b,c\}, i\neq j} \mathbf{w}_i^\top \mathbf{X}_i^\top \mathbf{X}_j \mathbf{w}_j$ subject to $\|w_n\|^2 \leq 1$ ~(e.g., DIABLO, Symphony). The fourth group employs metric learning to reweigh modality features by maximizing their agreement with other modalities~(e.g., Schema).
 
 
-Regarding the modality types that these methods can handle, DIABLO, MOFA, Schema, and Seurat WNN are capable of dealing with any kinds of modality types, such as modalities with gene expression, chromatin peaks, and proteins. Additionally, these methods allow any number of modalities as inputs. However, methods like Liger and scAI have limitations for the types of modalities they can handle. Liger allows only modalities with shared features, and scAI is designed specifically for scRNA and scATAC integration. Moreover, these two methods only allow two modalities as inputs. When it comes to the number of parameters, which indicate the necessity of tuning the parameters, all the methods listed require at least 2 parameters to achieve the best fit. Interpretability is also another important aspect, as knowing which features a component captured allows for downstream analysis. Seurat WNN only outputs a weighted nearest network, making interpretation impossible. Although Schema outputs components, these components are not interpretable.
-
-
-
-
- \tref{tab:methods_integration_overview} summarizes the characteristics of each method.
+Regarding the modality types that these methods can handle, DIABLO, MOFA, Schema, and Seurat WNN are capable of dealing with any kinds of modality types, such as modalities with gene expression, chromatin peaks, and proteins. Additionally, these methods allow any number of modalities as inputs. However, methods like Liger and scAI have limitations for the types of modalities they can handle. Liger allows only modalities with shared features, and scAI is designed specifically for scRNA and scATAC integration. Moreover, these two methods only allow two modalities as inputs. When it comes to the number of parameters, which indicate the necessity of tuning the parameters, all the methods listed require at least 2 parameters to achieve the best fit. Interpretability is also another important aspect, as knowing which features a component captured allows for downstream analysis. Seurat WNN only outputs a weighted nearest network, making interpretation impossible. Although Schema outputs components, these components are not interpretable. \tref{tab:methods_integration_overview} summarizes the characteristics of each method.
 
 \begin{description}
   \item[DIABLO]
@@ -213,11 +208,26 @@ Regarding the modality types that these methods can handle, DIABLO, MOFA, Schema
 \end{figure} 
 
   \item[Schema]
-  Schema~\citep{singh2021schema} applied metrics learning to reweigh modality features by maximizing the agreement with other modalities~(\fref{fig:Alg_Schema}). Specifically, it utilizes quadratic programming~(QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u * x_i$~(where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated other modalities. Specifically, it assumes $N$ observations across $r$ datasets $D_j$, where $j=1,\cdots,r$ and $D_j = \{x_i^{j}: i = 1,2,\cdots,N\}$ contains data for each observation. First, it refers $D_1$ as the primary modality and $D_2,\cdots,D_r$ as the secondary modalities. Next, it computes the pairwise distances $\rho_1,\cdots,\rho_j$ for each modality $D_j$ where $\rho_j(x_n^{j}, x_m^{(j)})$ is the distance between observation $n$ and $m$ in $D_j$. Then, it aims to find a transformation $\Omega$ with $\Omega(D)$ generating a dataset $D^{*}$ such that the Euclidean metric $\rho^{*}$ on $D^{*}$ on $D^{*}$ aligns the various metrics. $\Omega$ is limited to be a scaling transformation $\Omega(D) = \{diag(u)x: x \in D\}$, where $u \in \mathbb{R}^{k}$ and $diag(u)$ is a $k\times k$ diagonal matrix with diagonal entries $u$. Then, the squared distance between points under the transformation is given by:
+  Schema~\citep{singh2021schema} applied metrics learning to reweigh modality features by maximizing the agreement with other modalities~(\fref{fig:Alg_Schema}). It utilizes quadratic programming~(QP) to learn a scaling transformation $u$ for the primary matrix $X$ such that pairwise distances of the transformation $u * x_i$~(where $*$ is coordinate-wise multiplication, for each $x_i\in X$) are highly correlated other modalities. Specifically, it assumes $N$ observations across $r$ datasets $D_j$, where $j=1,\cdots,r$ and $D_j = \{x_i^{j}: i = 1,2,\cdots,N\}$ contains data for each observation. First, it refers $D_1$ as the primary modality and $D_2,\cdots,D_r$ as the secondary modalities. Next, it computes the pairwise distances $\rho_1,\cdots,\rho_j$ for each modality $D_j$ where $\rho_j(x_n^{j}, x_m^{(j)})$ is the distance between observation $n$ and $m$ in $D_j$. Then, it aims to find a transformation $\Omega$ with $\Omega(D)$ generating a dataset $D^{*}$ such that the Euclidean metric $\rho^{*}$ on $D^{*}$ on $D^{*}$ aligns the various metrics. $\Omega$ is limited to be a scaling transformation $\Omega(D) = \{diag(u)x: x \in D\}$, where $u \in \mathbb{R}^{k}$ and $diag(u)$ is a $k\times k$ diagonal matrix with diagonal entries $u$. Then, the squared distance between points under the transformation is given by:
   \begin{equation}
   \rho^{*}(x_n, x_m) = \|diag(u)x_n - diag(u)x_m\|^2 = \|diag(w)(x_n - x_m)\|^2
   \end{equation}
-  where $w$ is the element-wise square of u. The scaling transforms u acts as a feature-weighting mechanism to choose the features of $D_1$ that align the datasets best. Schema integrates between the metrics $\rho_j$ to learn a metric $\rho^{*}$ that aligns well with all of them. The correlation between $\rho^{*}$ and $\rho_j$ is measured by the Pearson correlation coefficient. And to tackle multiple modalities, Schema maximizes the sum of Pearson correlation between $\rho^{*}$ and all other modalities pairwise distances $\rho_2,\cdots,\rho_j$. Next, Schema put the optimaziation problem in a Quadratic Programming~(QP) formulation and solve it by standard QP solvers. Schema has two main parameters: minimum desired correlation and number of random pairs.
+  where $w$ is the element-wise square of u. The scaling transforms u acts as a feature-weighting mechanism to choose the features of $D_1$ that align the datasets best. Schema integrates between the metrics $\rho_j$ to learn a metric $\rho^{*}$ that aligns well with all of them. The correlation between $\rho^{*}$ and $\rho_j$ is measured by the Pearson correlation coefficient. And to tackle multiple modalities, Schema maximizes the sum of Pearson correlation between $\rho^{*}$ and all other modalities pairwise distances $\rho_2,\cdots,\rho_j$ to meet the goal:
+  \begin{equation}
+  \begin{aligned}
+    &\bigg\{\sum_{j=2}^{r} \gamma_j Corr(\rho^{*}(w), \rho_j)\bigg\} \\
+    &\text{subject to}\\
+    &Corr(\rho^{*}(w), \rho_j) \geq s
+ \end{aligned}
+  \end{equation}
+  where $\gamma_j$ and $s$ are hyperparameters that determine the importance of the various metrics. Schema solves the optimazition problem by putting it in a Quadratic Programming~(QP) formulation and solving it by standard QP solvers. Schema has two main parameters: minimum desired correlation and number of random pairs.
+
+
+%$\{\sum_{j=2}^{r} \gamma_j Corr(\rho^{*}(w), \rho_j)\}$
+%subjec to
+%$(Corr(\rho^{*}(w), \rho_j) \geq s$
+
+
 \begin{figure}[!h]
   	\centering
   	\includegraphics[width=0.55\textwidth]{Alg_scAI/fig}
@@ -258,6 +268,7 @@ Regarding the modality types that these methods can handle, DIABLO, MOFA, Schema
 
 
 \section{Single Cell Multimodal Integration Resume}
+\label{bgInte:MOJITOO_resume}
 Single-cell simultaneous modalities profiling is a nascent area, offering insights into biological processes and cellular heterogeneity. However, the complexity of different modalities' features and the growing library size present challenges, necessitating tools for integration In this thesis, we investigate the aspects with the flowing goals to develop a single cell multimodal integration method:
 
 \begin{itemize}
@@ -273,11 +284,9 @@ Single-cell simultaneous modalities profiling is a nascent area, offering insigh
 	We should strive to interpret the components of the latent space using a dataset, gaining biological insights to determine whether it effectively captures cell type signals or signals related to cell fate differentiation. Additionally, we aim to interpret the latent space by associating it with the gene expression count matrix and epigenomic peak count matrix, selecting features to demonstrate the capabilities of our model.
 \end{itemize}
 \FloatBarrier %% step figure jump to the next subsection.
-end{itemize}
 
-% table of single cell trajectory inference methods
 
 % a figure of single cell trajectory inference methods theory
 \section{Discussion}
 \label{bgInte:Discussion}
-In this chapter, we initially provided an overview of DNA structure and gene regulatory processes. Subsequently, we introduced the profiling techniques for single-cell transcriptome, epigenome, and proteome, including simultaneous profiling protocols. We then delved into the computational analyses associated with these modalities. Subsequently, we directed our focus towards computational analysis methods for single-cell multimodal data. We addressed the challenges posed by two critical analyses: single-cell multimodal integration and trajectory inference. We discussed the related work and outlined our objectives for tackling these tasks.
+In this chapter, we begin by formalizing the integration of the single-cell multimodal problem, providing a schematic example for clarity. We then delve into the challenges associated with addressing this integration problem. Following this, we explore seven state-of-the-art approaches for integration in detail. Finally, we summarize our methodology and list our objectives for solving this problem.

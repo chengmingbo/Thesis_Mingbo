@@ -7,7 +7,8 @@
 \label{chapter:methods_inte}
 \graphicspath{{chapter4/figs}}
 
-In the previous chapter, we introduced the concept of profiling the single-cell transcriptome, genome, epigenome, and proteome, along with simultaneous sequencing. We also outlined the common workflow for analyzing single-cell sequencing data from different protocols and that of single-cell multimodal analysis. We discussed the challenges associated with single-cell multimodal integration due to various feature distributions and types. To tackle this, our goal is to develop computational methods to effectively integrate single cells of multiple modalities. 
+In the previous chapter, we delineated the integration of single-cell sequencing issues and introduced several methods for this purpose. Furthermore, we delved into the challenges inherent in single-cell multimodal integration arising from diverse feature distributions and types. To address these challenges, we aim to devise a computational method that efficiently integrates single cells across multiple modalities.
+
 
 In this chapter, we exclusively present and formalize our computational solution for single-cell multimodal dimensional integration. We first introduce the notation necessary to formalize our methods (\sref{inte_methods:Notation}). Next, we discuss the preprocessing of the input for our single-cell integration method, including the normalization and dimension reduction of multimodal data (\sref{inte_methods:preprocessing}). Subsequently, we introduce our method for single-cell multimodal integration using Canonical Correlation Analysis (CCA) (\sref{inte_methods:integration}). Following that, we delve into the implementation details of our method (\sref{inte_methods:implementation}). Finally, we conclude the chapter by highlighting the innovations of our methods and engaging in a conceptual comparison with competing methods (\sref{inte_methods:discussion}).
 
@@ -32,24 +33,24 @@ ${\mathbf Z}: $ shared latent space \\
 
 \section{Pre-processing and Dimensional reduction}
 \label{inte_methods:preprocessing}
-Our method take dimensional reductions of $m$ modalities count matrices as input, the count matrices can be represented as
+Our method takes dimensional reductions of $m$ modalities count matrices as input, the count matrices can be represented as
 \begin{equation}
     \mathcal{X}=\{\textbf{X}_1,\textbf{X}_2,\cdots,\textbf{X}_m\}
 \end{equation}
-where $X_{i} \in \mathbb{R}^{n\times s_{i}}$ represents the data of a particular single cell modality, $n$ represents the number of cells, and $s_{i}$ represents the number of features in modality $i$. Here, we focus on multimodal data, where the cells are the same across matrices and there is no direct relation between the features of the distinct modalities. To genereate inputs of our method, we process distinct pre-process and next obtain a dimension reduced matrix for each modality independently using a modality-specific approach:
+where $\textbf{X}_{i} \in \mathbb{R}^{n\times s_{i}}$ represents the data of a particular single cell modality, $n$ represents the number of cells, and $s_{i}$ represents the number of features in modality $i$. Here, we focus on multimodal data, where the cells are the same across matrices and there is no direct relation between the features of the distinct modalities. To generate inputs of our method, we process distinct pre-process and next obtain a dimensional reduced matrix for each modality independently using a modality-specific approach:
 \begin{align}
-    Y_{i}=f_{i}(X_{i})
+    \textbf{Y}_{i}=f_{i}(\textbf{X}_{i})
 \end{align}
-where $Y_{i} \in \mathbb{R}^{n\times p_{i}}$ represents the low-dimensional matrix for modality $i$, $p_{i}$ represents the number of dimensions and $f_{i}$ represents the specific dimension reduction method for this modality.
+where $\textbf{Y}_{i} \in \mathbb{R}^{n\times p_{i}}$ represents the low-dimensional matrix for modality $i$, $p_{i}$ represents the number of dimensions and $f_{i}$ represents the specific dimension reduction method for this modality.
 
-The pre-processing steps for transcriptome, epigenome, and proteome modalities have been detailed in \sref{background:computational_singlecell}. We employ widely used methods for pre-processing, including log normalization followed by feature selection for scRNA-seq data, retaining the top 3,000 features and scaling the data. For scATAC-seq data, we apply TF-IDF transformation to the peaks. In the case of surface protein data, a centered log ratio transformation is employed.
+The pre-processing steps for transcriptome, epigenome, and proteome modalities have been detailed in \sref{background:computational_singlecell}. We employ widely used methods for pre-processing, including log normalization followed by feature selection for scRNA-seq data, retaining the top 3,000 features and scaling the data. For scATAC-seq data, we apply TF-IDF transformation to the peaks. In the case of surface protein data, a centered log-ratio transformation is employed.
 
 
 To reduce dimensions, we employ latent semantic indexing (LSI) for scATAC-seq and principal component analysis (PCA) for other modalities, following the common practice in the literature~\cite{granja2021archr, signac, hao2021seurat4}. LSI involves applying singular value decomposition (SVD) on the feature matrix of scATAC data, such that:
 \begin{equation}
-    Y_{i}' = U\Sigma V^\top
+    \textbf{Y}_{i}' = U\Sigma V^\top
 \end{equation}
-Where $Y_{i}'\in \mathbb{R}^{n\times p_{i}}$ represents the TF-IDF transformed feature matrix, $p_{i}$ is the number of features the $i$th modality~(i.e. the scATAC-seq modality), columns of left singular vector $U\in \mathbb{R}^{n\times s_i}$ is the reduced dimensions and $s_i$ represents the number of dimensions.
+Where $\textbf{Y}_{i}'\in \mathbb{R}^{n\times p_{i}}$ represents the TF-IDF transformed feature matrix, $p_{i}$ is the number of features the $i$th modality~(i.e. the scATAC-seq modality), columns of left singular vector $U\in \mathbb{R}^{n\times s_i}$ is the reduced dimensions and $s_i$ represents the number of dimensions.
 
 The rationale behind the use of dimension reduction is three-fold. First, low-dimensional matrices reduce the computing time of the CCA analysis without impacting accuracy for a minimum number of dimensions. Second, the dimension reduction technique effectively aids in denoising noisy data, mitigating biases for downstream analysis. Moreover, it allows to work directly on batch-corrected data, which is usually represented in a low-dimensional space~\citep{hao2021seurat4, korsunsky2019harmony}. Of note, batch correction is recommended previous to the integration, whenever the data is affected by batch effects, see \fref{fig:batch_correction}.
 
@@ -181,7 +182,7 @@ Applying the inverses of the square root factors symmetrically on the joint cova
 \end{pmatrix}
 \end{equation}
 
-The canonical correlation problem is reduced to that of finding a SVD of triple product:
+The canonical correlation problem is reduced to that of finding an SVD of a triple product:
 \begin{equation}
     U^{\top} (C_{aa}^{-1/2}C_{ab}C_{bb}^{-1/2}) V = D
 \end{equation}
@@ -214,7 +215,7 @@ Where the singular values $\gamma_i$ are in descending order such that:
     \gamma_1 \geq \gamma_2 \geq \cdots \geq 0
 \end{equation}
 
-The time complexity of CCA for the calculation of $C_{aa}$ and $C_{bb}$ is $O(n\times p \times p)$ and $O(n\times q \times q)$ respectively whereas the time complexity of $C_{ab}$ is $O(n\times p \times q)$. And the time complexity of the  calculation of SVD to solve the problem is $O(\min(p^2q,qp^2))$.
+The time complexity of CCA for the calculation of $C_{aa}$ and $C_{bb}$ is $O(n\times p \times p)$ and $O(n\times q \times q)$ respectively whereas the time complexity of $C_{ab}$ is $O(n\times p \times q)$. And the time complexity of the calculation of SVD to solve the problem is $O(\min(p^2q,qp^2))$.
 
 \subsection{Uniform latent component}
 CCA does not directly provide a unified dimension reduction for single-cell multimodal data. Combining $\mathbf{Z}_a$ and $\mathbf{Z}_b$ into $q\times 2$ dimensions is not advisable, as a larger dimension increases the risk of the curse of dimensionality. Moreover, correlated components are similar to each other, leading to redundant storage. Additionally, a larger dimensionality negatively impacts the efficiency of downstream analysis. Therefore, we propose a simple method to obtain a unified shared latent space without discarding information from CCA, which involves adding $\mathbf{Z}_a$ and $\mathbf{Z}_b$ together as follows:
@@ -327,7 +328,7 @@ For more information about MOJITOO implementation, source code, tutorials and ex
 
 \section{Discussion}
 \label{inte_methods:discussion}
-In this chapter, we discussed our computational methods for single-cell multimodal integration. Firstly, we described the preprocessing and dimension reduction as inputs~(\sref{inte_methods:integration}). Subsequently, we delved into the core algorithm of our solution, encompassing CCA theory, solving the CCA problem using SVD, obtaining the unified latent space, component selection, and multivariable solutions~(\sref{inte_methods:integration}). We then provided insights into the implementation of MOJITOO~(\sref{inte_methods:implementation}). The algorithm overview of MOJITOO is depicted in \fref{fig:MOJITOO_schematic}, and both the workflow and details are presented in \fref{fig:MOJITOO_schematic} and Algorithm~\ref{alg:MOJITOO}, respectively. In conclusion, our computational method introduces novel concepts to address the challenges of single-cell multimodal integration:
+In this chapter, we discussed our computational methods for single-cell multimodal integration. Firstly, we described the preprocessing and dimension reduction as inputs of the integration. Subsequently, we delved into the core algorithm of our solution, encompassing CCA theory, solving the CCA problem using SVD, obtaining the unified latent space, component selection, and multivariable solutions. We then provided insights into the implementation of MOJITOO. The algorithm overview of MOJITOO is depicted in \fref{fig:CCA_ADD}, and both the workflow and details are presented in \fref{fig:MOJITOO_schematic} and Algorithm~\ref{alg:MOJITOO}, respectively. In conclusion, our computational method introduces novel concepts to address the challenges of single-cell multimodal integration:
 \begin{itemize}
 
     \item We highlighted the significance of dimension reduction in single-cell multimodal integration. Using dimension reduction inputs to replace the original feature count matrix not only alleviates the noise impact on the results but also reduces the running time~(\fref{fig:MOFA}).
@@ -340,13 +341,16 @@ In this chapter, we discussed our computational methods for single-cell multimod
     \item Our method is implemented in R and is compatible with popular single-cell analysis toolkits such as Seurat and ArchR. We have provided a tutorial demonstrating how to apply our method to integrate multimodal data using Seurat \url{https://github.com/CostaLab/MOJITOO/blob/main/vignettes/SeuratObject_integration.Rmd} and ArchR \url{https://github.com/CostaLab/MOJITOO/blob/main/vignettes/ArchRObject_integration.Rmd}. Additionally, we have implemented a simple Python version for users collaborating with scanpy or episcanpy \url{https://github.com/CostaLab/MOJITOO/tree/main/pymojitoo}.
 \end{itemize}
 
-When examining the concepts behind these single-cell multimodal integration methods, canonical correlation analysis (CCA) is a linear method designed to preserve the maximum amount of information from the original dataset. Other approaches, matrix factorization, such as MOFA, scAI, and Liger, is widely employed due to its intuitive matrix multiplication representations. However, matrix factorization poses a non-convex optimization challenge and may be susceptible to a significant drawback wherein the solution exhibits bias towards one of the optimization variables. Moreover, matrix factorization is NP-hard, making iteratively finding solutions computationally expensive.
-
-Methods like Seurat WNN generate intricate weighted nearest neighbors networks to capture inter-modality similarities. Nevertheless, this method treats the contribution of each modality equally to derive the final network. In contrast, Schema employs metric learning to reweigh each modality by maximizing the similarity of distance pairs from each modality. However, this approach distorts the distribution of the original data, delivering suboptimal results, and incurs high computational costs owing to its reliance on quadratic programming.
-
-Certain methodologies, such as DIABLO and Symphony, have explored the concept of maximizing covariance or correlation between two modalities. However, the primary use of DIABLO involves employing PLS-DA in a supervised manner for bulk data, where sample labels contribute to the optimization problem. Additionally, DIABLO inputs the original count matrix, leading to remarkably expensive time and memory usage. Symphony serves as a label-transfer method, utilizing canonical correlation analysis for identifying shared references in single-case studies with single-cell CITE-seq data. Nevertheless, Symphony does not incorporate dimension reduction as input, lacks the capability to handle more than two modalities, and employs a suboptimal approach to batch correction removal. Moreover, simply using output components only from scRNA would result in the loss of valuable information from the other modalities.
+When exploring the concepts behind single-cell multimodal integration methods, MOJITOO's utilization of canonical correlation analysis (CCA) stands out for its aim to preserve the maximum amount of information from the original dataset. In contrast, matrix factorization approaches, such as MOFA, scAI, and Liger, are favored for their intuitive representation via matrix multiplication. However, matrix factorization methods suffer from several weaknesses. Firstly, they are prone to instability; different initializations often result in divergent outcomes. Furthermore, the convergence of matrix factorization methods can be problematic. There's no guarantee of a unique factorization, and different algorithms may converge to different local minima, or even fail to converge altogether. Additionally, CCA vectors possess orthogonal properties, which greatly enhance interpretability compared to matrix factorization. This orthogonality makes interpretations more convincing and robust, aiding in understanding the relationships between variables in the latent space. Thus, while matrix factorization methods offer intuitive representations, MOJITOO's reliance on CCA provides stability, optimality, and enhanced interpretability, making it a compelling choice for single-cell multimodal integration tasks.
 
 
-When scrutinizing the assumptions of the competing methods, our CCA-based approach stand out for their independence from presumptions that may introduce bias to the model. The method focuses on correlating modalities to extract the most relevant information from each, while preserving specific features through the addition of components. In contrast, many competing methods necessitate the setup of hypotheses through parameters. For instance, Weighted Nearest Neighbor-based methods require determining the number of neighbors, and NMF methods involve deciding on regularization parameters. Our approach, on the other hand, employs a correlation test to retain only significant components, resulting in the optimal shared latent space for the modalities.
+
+Further discussing the interpretation of the latent space in these methods, MOJITOO stands out as a linear method capable of interpreting each component distinctly. However, methods like Seurat WNN utilize weighted nearest-neighbor networks to capture inter-modality similarities, deviating from linearity due to the exponential kernel they employ. This non-linearity risks losing global distance information and complicates interpretation. On the other hand, Schema does provide latent components, but it also diverges from linearity. It utilizes metric learning to reweigh each modality, aiming to maximize the similarity of distance pairs from each modality. However, this approach distorts the original data distribution and entails high computational costs, relying on quadratic programming.
+
+
+Certain methodologies, such as DIABLO and Symphony, have explored the concept of maximizing covariance or correlation between two modalities. However, the primary use of DIABLO involves employing PLS-DA in a supervised manner for bulk data, where sample labels contribute to the optimization problem. Additionally, DIABLO inputs the original count matrix, leading to remarkably expensive time and memory usage. Symphony serves as a label-transfer method, utilizing canonical correlation analysis for identifying shared references in single-case studies with single-cell CITE-seq data. Nevertheless, Symphony does not incorporate dimension reduction as input, cannot handle more than two modalities, and employs a suboptimal approach to batch correction removal. Moreover, simply using output components only from scRNA would result in the loss of valuable information from the other modalities.
+
+
+When scrutinizing the assumptions of the competing methods, our CCA-based approach stands out for its independence from presumptions that may introduce bias to the model. The method focuses on correlating modalities to extract the most relevant information from each while preserving specific features through the addition of components. In contrast, all of the competing methods necessitate the setup of hypotheses through parameters. For instance, Weighted Nearest Neighbor-based methods require determining the number of neighbors, and NMF methods involve deciding on regularization parameters. Our approach, on the other hand, employs a correlation test to retain only significant components, resulting in the optimal shared latent space for the modalities.
 
 
