@@ -8,28 +8,41 @@
 \label{chapter:problem_TI}
 \graphicspath{{chapter6/figs/}}
 
-In this chapter, we provide a comprehensive overview of the background knowledge necessary for understanding the thesis, encompassing both biological and computational aspects. We begin by delving into molecular biology involving DNA organization, chromatin accessibility, and gene regulation~(\sref{bgTIDNA_Chromatin_Regulation}). Next, we explore the advancements in single-cell sequencing technologies, covering single-cell transcriptome profiling, and open chromatin measurements in single cells. This section also encompasses sequencing protocols capable of simultaneously measuring multiple types of features, known as multimodal sequencing~(\sref{bgTIprofiling_singlecell}). Following that, we introduce computational approaches for analyzing various single-cell technology assays including single-cell RNA-seq analysis, single-cell ATAC-seq analysis, and single-cell surface protein analysis~(\sref{bgTIcomputational_singlecell}). Subsequently, we present the computational workflow for multimodal analysis. Following that, we outline two main problems that need to be addressed in single-cell multimodal analysis. The first problem is multimodal integration. For this, we first discuss the challenges associated with the task. We then introduce the current state-of-the-art methods for multimodal integration, aligning with our objective to address the issues. The second problem is trajectory inference for multimodal data. Similarly, we first present the challenge of trajectory inference. Next, we introduce the current state-of-the-art methods for trajectory inference, aligning with our goals for solving the trajectory inference issues in our method~(\sref{bgTImultimodal}). Finally, we conclude the chapter with a final discussion on the background~(\sref{bgTIDiscussion}).
+In this chapter, we provide a comprehensive overview of single-cell multimodal trajectory inference analysis. Firstly, we elucidate the concept of trajectory inference and model construction (\sref{bgTI:definition}). Following this, we delve into an exploration of the inherent challenges (\sref{bgTI:challenge_TI}). Subsequently, we showcase cutting-edge methods currently at the forefront of the field (\sref{bgTI:TI}). We then align with our aim to effectively address these challenges (\sref{bgTI:objective}). Finally, we conclude with a detailed discussion, further dissecting the background and implications of our findings (\sref{bgTI:discussion}).
 
 
-
+%We will present the computational challenge of trajectory inference for single-cell multimodal data, provide an overview of current methods developed in this field, and outline our goals to develop a method that addresses these challenges.
 
 \section{Single Cell Multimodal Trajectory Inference}
-Trajectory inference, also known as pseudotemporal ordering, is a computational technique employed in single-cell transcriptomics to elucidate the pattern of a dynamic process undergone by cells. Trajectory inference arranges cells based on their progression through the identified process. Note that various subtasks of trajectory inference have been addressed by researchers, with dimension reduction being a critical aspect. Exclusive dimension reduction is essential due to the potential distortion of the global structure by nonlinear visualization methods like t-SNE and UMAP. Approaches such as multidimensional scaling~(MDS)~\citep{torgerson1952multidimensional} aim to reduce dimensions while preserving distance information in a 2 dimensional space, and diffusion maps~\citep{coifman2006diffusion} utilize Gaussian affinities to capture both local and global structural details. PHATE, developed by~\cite{moon2017phate}, leverages both local and global structure. Palantir employs a forced-directed layout to Gaussian affinities within a graph. Pseudotime simulation is another aspect focused on capturing the temporal order of differentiating cells. Diffusion pseudotime~(DPT), introduced by~\citep{haghverdi2016dpt}, measures transitions between cells using diffusion-like random walks and has been integrated into the popular Python single-cell toolkit Scanpy~\citep{wolf2018scanpy}. Additionally, methods like slingshot~\citep{street2018slingshot} and STREAM~\citep{chen2019stream} are explored in more detail in \sref{bgTIsec2:TI}.
+\label{bgTI:definition}
+Cells sharing the same gene blueprint can differentiate into various cell types. For instance, as illustrated in \fref{fig:traj_concept}A, Hematopoietic Stem and Progenitor Cells (HSPC) can differentiate into immune cell types such as T lymphocytes, or into cell types like neutrophil granulocytes. However, contemporary single-cell sequencing technologies are limited in their ability to naturally capture this dynamic process; instead, they provide a snapshot of a specific moment. Consequently, computational methods have been devised to effectively capture and model this intricate developmental process (\fref{fig:traj_concept}C). 
 
-
-We will present the computational challenge of trajectory inference for single-cell multimodal data, provide an overview of current methods developed in this field, and outline our goals to develop a method that addresses these challenges.
-
-\section{Challenge of Single Cell Trajectory Inference}
-\label{bgTIsec2:challenge_TI}
-Computational trajectory analysis, which explores non-linear embeddings in the cellular space and algorithms to find paths or trees in these spaces, is quite popular in the analysis of single cells~\citep{wolf2019paga,chen2019stream,street2018slingshot,Lynch2022}. Despite the power of these approaches~\citep{saelens2019comparison}. There are still some challenges that need to be addressed:
+Trajectory inference, also known as pseudotemporal ordering, is a computational technique employed in single-cell transcriptomics to elucidate the pattern of a dynamic process undergone by cells. Trajectory inference arranges cells based on their progression through the identified process. 
 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.95\textwidth]{cell_differentiation/fig}
+	\includegraphics[width=0.95\textwidth]{TI_concept/fig}
 	\vspace{0.1cm}
-	\caption[Hematopoiesis Cellular Differentiation]{\textbf{Hematopoiesis Cellular differentiation.} \textbf{A)} Hematopoiesis differentiation tree. Cell types are hematopoietic stem cell~(HSC), common myeloid progenitor~(CMP),  common lymphoid progenitor~(CLP), megakaryocyte–erythroid progenitor cell~(MEP), granulocyte-macrophage progenitor~(GMP), platelet~(Pla), erythrocyte~(Ery), granulocyte~(Gn), monocytes~(Mo), macrophages~(M$\phi$), T cell~(T), B cell~(B) and Natural killer cell~(NK). \textbf{B)} GMP differentiation into two cell types~(Gn and Mo). GMP cells undergo differentiation into two distinct cell types, namely, granulocytes~(Gn) and monocytes~(Mo). During this differentiation process, specific regions of the chromatin become open, and different transcription factors bind to these regions, ultimately influencing the gene expression patterns that characterize these two cell types. \emph{Source:~\cite{costa2023dissecting}}~(modified to fit thesis format and/or clarify key points)}
-	\label{fig:cell_differentiation}
+	\caption[Hematopoiesis Cellular Differentiation]{\textbf{Hematopoiesis Cellular differentiation.} \textbf{A)} cell differentiation \textbf{B)} cells for sequencing. \textbf{C)} trajectory inferecne. }
+	\label{fig:traj_concept}
 \end{figure}
+
+In general, trajectory inference can be broken down into two main subtasks: dimensional reduction and trajectory structure construction. Dimension reduction aims to reduce high-dimensional data into a lower dimension to aid in fitting the trajectory. However, it's typically not feasible to employ techniques like t-SNE and UMAP due to the potential distortion of the global structure caused by nonlinear visualization methods. Approaches such as multidimensional scaling~(MDS)~\citep{torgerson1952multidimensional} aim to reduce dimensions while preserving distance information in a 2-dimensional space, and diffusion maps~\citep{coifman2006diffusion} utilize Gaussian affinities to capture both local and global structural details. PHATE, developed by~\cite{moon2017phate}, leverages both local and global structure. Palantir employs a forced-directed layout to Gaussian affinities within a graph. We will review trajectory structure construction methods in \sref{bgTI:TI}.
+
+
+
+
+\section{Challenge of Single Cell Trajectory Inference}
+\label{bgTI:challenge_TI}
+Computational trajectory analysis, which explores non-linear embeddings in the cellular space and algorithms to find paths or trees in these spaces, is quite popular in the analysis of single cells~\citep{wolf2019paga,chen2019stream,street2018slingshot,Lynch2022}. Despite the power of these approaches~\citep{saelens2019comparison}. There are still some challenges that need to be addressed:
+
+%\begin{figure}[!h]
+%	\centering
+%	\includegraphics[width=0.95\textwidth]{cell_differentiation/fig}
+%	\vspace{0.1cm}
+%	\caption[Hematopoiesis Cellular Differentiation]{\textbf{Hematopoiesis Cellular differentiation.} \textbf{A)} Hematopoiesis differentiation tree. Cell types are hematopoietic stem cell~(HSC), common myeloid progenitor~(CMP),  common lymphoid progenitor~(CLP), megakaryocyte–erythroid progenitor cell~(MEP), granulocyte-macrophage progenitor~(GMP), platelet~(Pla), erythrocyte~(Ery), granulocyte~(Gn), monocytes~(Mo), macrophages~(M$\phi$), T cell~(T), B cell~(B) and Natural killer cell~(NK). \textbf{B)} GMP differentiation into two cell types~(Gn and Mo). GMP cells undergo differentiation into two distinct cell types, namely, granulocytes~(Gn) and monocytes~(Mo). During this differentiation process, specific regions of the chromatin become open, and different transcription factors bind to these regions, ultimately influencing the gene expression patterns that characterize these two cell types. \emph{Source:~\cite{costa2023dissecting}}~(modified to fit thesis format and/or clarify key points)}
+%	\label{fig:cell_differentiation}
+%\end{figure}
 
 \begin{itemize}
 	\item \textbf{Cell Differentiation in Biology:}
@@ -52,9 +65,10 @@ Computational trajectory analysis, which explores non-linear embeddings in the c
 % a figure shows the feature type differences among different modalities
 
 % a figure of single cell multimodal integration methods theory
-\label{bgTIsec2:TI}
-\subsubsection{Computational Methods for Trajectory Inference}
- The challenges highlighted in \sref{bgTIsec2:challenge_TI} regarding the trajectory inference of single-cell multimodal data present complexities in developing methods for handling multimodal data and data exhibiting intricate trajectory structures.
+
+\section{Computational Methods for Trajectory Inference}
+\label{bgTI:TI}
+ The challenges highlighted in \sref{bgTI:challenge_TI} regarding the trajectory inference of single-cell multimodal data present complexities in developing methods for handling multimodal data and data exhibiting intricate trajectory structures.
 
 % table summarizing method
 \begin{table}[!ht]
@@ -70,10 +84,10 @@ Computational trajectory analysis, which explores non-linear embeddings in the c
     MST & R & MST &  \cite{book2023mclust}\\
     PAGA	 & Python & kNN graph partitioning & \cite{wolf2019paga} \\
     pCreode & Python & d-kNN graph & \cite{herring2018pCreode} \\
-		RaceID/StemID &  R & k-medoids clustering &  \cite{grun2016stemid} \\
+    RaceID/StemID &  R & k-medoids clustering &  \cite{grun2016stemid} \\
     SLICE& R & MST & \cite{guo2017slice}\\
-		Slingshot & R & MST & \cite{street2018slingshot}\\
-		STREAM& Python & ElPigraph & \cite{chen2019stream}\\
+	Slingshot & R & MST & \cite{street2018slingshot}\\
+	STREAM& Python & ElPigraph & \cite{chen2019stream}\\
     TSCAN & R & MST &  \cite{ji2016tscan}\\
 		\bottomrule
 	\end{tabular}
@@ -84,21 +98,21 @@ Computational trajectory analysis, which explores non-linear embeddings in the c
 Next, we will discuss several published trajectory inference methods, All of them are top methods according to the dynverse trajectory inference evaluation system~\citep{saelens2019comparison} except STREAM a new method not yet implemented in dynverse. These methods can be broadly categorized into six groups. The first group involves methods utilizing a minimum spanning tree~(MST) to capture the backbone in the embeddings of a dataset~(e.g., TSCAN, slingshot, MST, slice). The second group includes methods like ElPiGraph, which leverages Elastic Principal Graphs to yield an explicit principal tree in data space~(ElPiGraph, STREAM). The third group employs topic model Latent Dirichlet Allocation~(LDA) from the natural language processing~(NLP) field for inference. The fourth group encompasses methods such as PAGA, using kNN graph partitioning, and pCreode, creating a d-kNN graph. The fifth group utilizes cluster distances for inference to derive the structure~(RaceID/StemID). The last method, Monocle3, seeks to create a principal graph on dimension reductions. These methods are summarized in \tref{tab:methods_ti_overview} illustrates the workflow of most of the methods.
 \begin{description}
 
-\begin{figure}[h!]
-  	\centering
-  	\includegraphics[width=0.95\textwidth]{TI_comparison/fig}
-  	\vspace{0.1cm}
-  	\caption[Illustration of TI methods schematic.]{\textbf{Illustration of TI methods schematic.} celltree, elpigraph, monocle3, pCreode, StemID, SLICE, slingshot, STREAM and TSCAN.\emph{Source:~\cite{duverle2016celltree,albergante2020ElPiGraph,cao2019monocle3,herring2018pCreode,grun2016stemid,guo2017slice,street2018slingshot,chen2019stream,ji2016tscan}}~(modified to fit thesis format and/or clarify key points)
-  	}
-  	\label{fig:TI_comparison}
-\end{figure}
+%\begin{figure}[h!]
+%  	\centering
+%  	\includegraphics[width=0.95\textwidth]{TI_comparison/fig}
+%  	\vspace{0.1cm}
+%  	\caption[Illustration of TI methods schematic.]{\textbf{Illustration of TI methods schematic.} celltree, elpigraph, monocle3, pCreode, StemID, SLICE, slingshot, STREAM and TSCAN.\emph{Source:~\cite{duverle2016celltree,albergante2020ElPiGraph,cao2019monocle3,herring2018pCreode,grun2016stemid,guo2017slice,street2018slingshot,chen2019stream,ji2016tscan}}~(modified to fit thesis format and/or clarify key points)
+%  	}
+%  	\label{fig:TI_comparison}
+%\end{figure}
 
 
 \begin{figure}[h!]
   	\centering
   	\includegraphics[width=0.55\textwidth]{TI_Alg_celltree/fig}
   	\vspace{0.1cm}
-  	\caption[Illustration of TI method Celltree schematic.]{\textbf{Illustration of TI method Celltree schematic.} Celltree use myoblast data as example. Backbone tree obtained from the dataset of differentiating myoblasts with cellTree. Larger nodes indicate backbone cells~(selected representatives), whereas smaller nodes represent cells that only show slight variations from the backbone cell they are attached to. Cell nodes have been coloured according to \textbf{A} their sampling time~(in hours from the start of the differentiation process) and \textbf{B} their distribution over topics. \emph{Source:~\cite{duverle2016celltree}}~(modified to fit thesis format and/or clarify key points)
+  	\caption[Illustration of TI method Celltree schematic.]{\textbf{Illustration of TI method Celltree schematic.} Celltree uses myoblast data as example. Backbone tree obtained from the dataset of differentiating myoblasts with cellTree. Larger nodes indicate backbone cells~(selected representatives), whereas smaller nodes represent cells that only show slight variations from the backbone cell they are attached. Cell nodes have been coloured according to \textbf{A} their sampling time~(in hours from the start of the differentiation process) and \textbf{B} their distribution over topics. \emph{Source:~\cite{duverle2016celltree}}~(modified to fit thesis format and/or clarify key points)
   	}
   	\label{fig:TI_Alg_celltree}
 \end{figure}
@@ -136,7 +150,7 @@ Next, we will discuss several published trajectory inference methods, All of the
   	\includegraphics[width=0.85\textwidth]{TI_Alg_PAGA/fig}
   	\vspace{0.1cm}
   	\caption[Illustration of TI method PAGA schematic.]{\textbf{Illustration of TI method PAGA schematic.}
-  	PAGA uses partition-based graph abstraction generating a topology-preserving map of single cells. It creates a kNN graph and partitions it using the Louvain algorithm at a desired resolution where partitions represent groups of connected cells. Next, A PAGA graph is obtained by associating a node with each partition and connecting each node by weighted edges that represent a statistical measure of connectivity between partitions. PAGA graphs reveal the denoised topology of the data at a chosen resolution by discarding low-weight edges. \emph{Source:~\cite{wolf2019paga}}~(modified to fit thesis format and/or clarify key points)
+  	PAGA uses partition-based graph abstraction generating a topology-preserving map of single cells. It creates a kNN graph and partitions it using the Louvain algorithm at a desired resolution where partitions represent groups of connected cells. Next, A PAGA graph is obtained by associating a node with each partition and connecting each node with weighted edges that represent a statistical measure of connectivity between partitions. PAGA graphs reveal the denoised topology of the data at a chosen resolution by discarding low-weight edges. \emph{Source:~\cite{wolf2019paga}}~(modified to fit thesis format and/or clarify key points)
   	}
   	\label{fig:TI_Alg_PAGA}
 \end{figure}
@@ -156,7 +170,7 @@ Next, we will discuss several published trajectory inference methods, All of the
   \item[pCreode]
   %pCreode infer a trajactory for single-cell data through 7 steps:~(i) Input single-cell expression data.~(ii) Density-normalized representation after down-sampling the original dataset. Overlay shows density post down-sampling.~(iii) Density-based k-nearest neighbor~(d-kNN) network from down-sampled data. Overlay represents closeness centrality, a surrogate for cell state.~(iv) K-means clustering identifies end-states based on low closeness values~($<$mean). The number of clusters is doubled for rare cell types.~(v) Topology constructed with a hierarchical placement strategy between end-states, allowing data points along an ancestral continuum. Overlay shows original cell density.~(vi) Aligned topology~(red) achieved through iterative assignment and repositioning of path nodes using neighborhood cell densities.~(vii) Representative topology extracted using p-Creode scoring from an ensemble of N topologies, with node size indicating the original cell density.
 
-  pCreode infer a trajactory for single-cell data through 6 steps~\citep{herring2018pCreode}. 1) Conducts density-dependent down-sampling to normalize the representation of both rare and overrepresented cell states; 2) Constructs a density-based k-nearest neighbor~(d-kNN) network using the down-sampled data; 3) Automatically distinguishes end-states from transition states by employing K-means clustering and assessing silhouette scores for cells with low closeness values~(< mean); 4) Establishes topology through a hierarchical placement strategy, positioning cells on path nodes between end-states; 5) Aligns topology with maximal consensus through an iterative process involving the assignment and repositioning of path nodes based on neighborhood cell densities; 6) Develops a scoring metric within pCreode to compare dissimilarities between topologies facilitating the selection of the most representative graph for visualization purposes~(\fref{fig:TI_Alg_pCreode}).
+  pCreode infer a trajectory for single-cell data through 6 steps~\citep{herring2018pCreode}. 1) Conducts density-dependent down-sampling to normalize the representation of both rare and overrepresented cell states; 2) Constructs a density-based k-nearest neighbor~(d-kNN) network using the down-sampled data; 3) Automatically distinguishes end-states from transition states by employing K-means clustering and assessing silhouette scores for cells with low closeness values~(< mean); 4) Establishes topology through a hierarchical placement strategy, positioning cells on path nodes between end-states; 5) Aligns topology with maximal consensus through an iterative process involving the assignment and repositioning of path nodes based on neighborhood cell densities; 6) Develops a scoring metric within pCreode to compare dissimilarities between topologies facilitating the selection of the most representative graph for visualization purposes~(\fref{fig:TI_Alg_pCreode}).
 
   \begin{figure}[h!]
   	\centering
@@ -182,7 +196,7 @@ Next, we will discuss several published trajectory inference methods, All of the
 \end{figure}
 
   \item[SLICE]
-  Single Cell Lineage Inference Using Cell Expression Similarity and Entropy~(SLICE)~\citep{guo2017slice} comprises two main functions: quantitatively assessing cell differentiation state through single-cell entropy and reconstructing single-cell lineages in silico. The calculation of single-cell entropy~(scEntropy) involves computing the expected value for each cell, representing the uncertainty in cellular functions activation based on gene expression patterns. The scEntropy is utilized to measure the differentiation state of individual cells. Stable states are identified within scRNA-seq datasets using clustering or graph-based methods, considering the scEntropy of each cell. SLICE then constructs a lineage model by inferring a directed minimum spanning tree among stable states, reflecting differentiation trajectories. The reconstruction of cell transitional paths involves either a shortest-path approach or a principal curve-based approach, revealing the dynamics of gene expression during differentiation. Lineage-dependent differentially expressed genes are identified based on smoothed expression profiles, and temporal gene expression patterns are unveiled through clustering analysis~(\fref{fig:TI_Alg_SLICE}).
+  Single Cell Lineage Inference Using Cell Expression Similarity and Entropy~(SLICE)~\citep{guo2017slice} comprises two main functions: quantitatively assessing cell differentiation state through single-cell entropy and reconstructing single-cell lineages in silico. The calculation of single-cell entropy~(scEntropy) involves computing the expected value for each cell, representing the uncertainty in cellular function activation based on gene expression patterns. The scEntropy is utilized to measure the differentiation state of individual cells. Stable states are identified within scRNA-seq datasets using clustering or graph-based methods, considering the scEntropy of each cell. SLICE then constructs a lineage model by inferring a directed minimum spanning tree among stable states, reflecting differentiation trajectories. The reconstruction of cell transitional paths involves either a shortest-path approach or a principal curve-based approach, revealing the dynamics of gene expression during differentiation. Lineage-dependent differentially expressed genes are identified based on smoothed expression profiles, and temporal gene expression patterns are unveiled through clustering analysis~(\fref{fig:TI_Alg_SLICE}).
 
 \begin{figure}[h!]
   	\centering
@@ -195,7 +209,7 @@ Next, we will discuss several published trajectory inference methods, All of the
 \end{figure}
 
   \item[Slingshot]
-  Slingshot~\citep{street2018slingshot} infers a trajectory of datasets with multiple branches by comprising two distinct stages: 1) Global Lineage Structure Inference. In this stage slingshot employs Minimum Spanning Tree~(MST) on clustered data points to infer the overall lineage structure. By utilizing a cluster-based MST, Slingshot stably identifies essential elements such as the number of lineages and their branching points. 2) Pseudotime Inference for Individual Lineages. In the second stage, Slingshot introduces a novel approach known as simultaneous principal curves. This method fittingly applies smooth branching curves to the identified lineages, translating the knowledge of the global lineage structure into reliable estimates of cell-level pseudotime variables for each lineage~(\fref{fig:TI_Alg_slingshot}).
+  Slingshot~\citep{street2018slingshot} infers a trajectory of datasets with multiple branches by comprising two distinct stages: 1) Global Lineage Structure Inference. In this stage, slingshot employs Minimum Spanning Tree~(MST) on clustered data points to infer the overall lineage structure. By utilizing a cluster-based MST, Slingshot stably identifies essential elements such as the number of lineages and their branching points. 2) Pseudotime Inference for Individual Lineages. In the second stage, Slingshot introduces a novel approach known as simultaneous principal curves. This method fittingly applies smooth branching curves to the identified lineages, translating the knowledge of the global lineage structure into reliable estimates of cell-level pseudotime variables for each lineage~(\fref{fig:TI_Alg_slingshot}).
 
 \begin{figure}[h!]
   	\centering
@@ -248,6 +262,7 @@ Next, we will discuss several published trajectory inference methods, All of the
 %Slicer is a KNN-based trajectory inference method that utilizes alpha-hull to estimate the k parameter for locally linear embedding dimensionality reduction. First, Slicer computes a KNN graph from locally linear embedding, next it finds the most “extreme” cells in the graph. The user needs to specify a starting cell from extreme cells, Slicer then find the shortest path to all other cells. Next, the geodesic entropy is used to find branches; high values indicate the existence of a branching point.
 
 \section{Single Cell Multimodal Trajectory Inference Resume}
+\label{bgTI:objective}
 Single-cell simultaneous modalities profiling is a nascent area, offering insights into biological processes and cellular heterogeneity. necessitating tools for trajectory inference. In this thesis, we also investigate the aspect of developing a trajectory inference method for single cell multimodal data:
 \begin{itemize}
 	\item
@@ -260,7 +275,7 @@ Single-cell simultaneous modalities profiling is a nascent area, offering insigh
 	To evaluate its efficacy, we will generate high-dimensional simulated data with varying tree branches, ranging from small to large, to assess the model's capability to capture intricate tree structures. Benchmarking will be performed using the dynverse Trajectory Inference evaluation framework, comparing our method with top-ranked methods.
 
 	\item
-	All methods aferomentioned~\sref{bgTIsec2:TI} will be evaluate in \sref{chapter:PHLOWER_bench} The evaluation of the methods should include an examination of the topological similarity between the inferred trajectory and the ground truth. Furthermore, it should evaluate the accuracy of cell branch allocation and scrutinize the order of cells within each branch, as well as the accuracy of branching point allocation.
+	All methods aferomentioned~\sref{bgTIsec2:TI} will be evaluated in \sref{chapter:PHLOWER_bench} The evaluation of the methods should include an examination of the topological similarity between the inferred trajectory and the ground truth. Furthermore, it should evaluate the accuracy of cell branch allocation and scrutinize the order of cells within each branch, as well as the accuracy of branching point allocation.
 
 	\item The application of our method to in-house single-cell multimodal data involves implementing the 10$\times$ multiome protocol on kidney organoid data at four distinct time points: day 5, day 12, day 19, and day 25. We aim to assess the capability of our method in capturing cell differentiation. Additionally, we plan to uncover insights by exploring the trajectories of our model through statistical differentiation of branches and correlation analyses between genes and transcription factor~(TF) activities. To further validate our findings, we intend to conduct TF knockouts and assess their impact on preventing incorrect cell type differentiation.
 
@@ -270,5 +285,5 @@ Single-cell simultaneous modalities profiling is a nascent area, offering insigh
 
 % a figure of single cell trajectory inference methods theory
 \section{Discussion}
-\label{bgTI:Discussion}
+\label{bgTI:discussion}
 In this chapter, we initially provided an overview of DNA structure and gene regulatory processes. Subsequently, we introduced the profiling techniques for single-cell transcriptome, epigenome, and proteome, including simultaneous profiling protocols. We then delved into the computational analyses associated with these modalities. Subsequently, we directed our focus towards computational analysis methods for single-cell multimodal data. We addressed the challenges posed by two critical analyses: single-cell multimodal integration and trajectory inference. We discussed the related work and outlined our objectives for tackling these tasks.
