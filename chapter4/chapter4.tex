@@ -16,7 +16,8 @@ In this chapter, we exclusively present and formalize our computational solution
 \section{Notation}
 \label{inte_methods:Notation}
 $\mathcal{X}: $ multiple single cell count matrices shared the same rows\\
-$Y_{i} \in \mathbb{R}^{n\times p_{i}}: $ the low-dimensional matrix for modality $i$, $p_{i}$ represents the number of dimensions \\
+$\textbf{X}_{i} \in \mathbb{R}^{n\times s_{i}}: $ the feature matrix for modality $i$, $s_{i}$ represents the number of features \\
+$\textbf{Y}_{i} \in \mathbb{R}^{n\times p_{i}}: $ the low-dimensional matrix for modality $i$, $p_{i}$ represents the number of dimensions \\
 $\mathbf{Y}_a\in \mathbb{R}^{n\times p}: $ matrix $a$ with dimension $n\times p$ \\
 ${\mathbf w}_a\in\mathbb{R}^p: $ CCA transformation weight \\  
 $\mathbf{0}_{p\times q}: $ A $p\times q$ block matrix with all zero elements.\\
