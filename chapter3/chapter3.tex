@@ -176,7 +176,7 @@ When it comes to the number of parameters, which indicates the necessity of tuni
   \begin{equation}
 	  \underset{H^i\geq 0,W\geq 0, V^i\geq 0, U^i \geq 0}{\arg\min} \sum_i^{d}\Big\| (E^i P^i) - H^i \big((W 0) + (V^i U^i)\big)\Big\|_{F}^2 + \lambda_i\sum_i^d\Big\|H^i(V^i U^i)\Big\|_{F}^2
   \end{equation}
-  Liger uses coordinate block descent~(BCD)~\citep{kim2014algorithms} to solve the optimization problem, which derives the parameters into blocks and finds the optimal solution for each block iteratively. LIGER has two major parameters: a regularization term and the number of factors (dimensions of the latent space).
+  where $P^i$ is the unshared feature matrix, $H^i$ are the cell factor loadings, $W$ is the shared metagenes, $V^i$ are the dataset-specific, shared metagenes, and $U^i$ are the dataset-specific, unshared metagenes. Liger uses coordinate block descent~(BCD)~\citep{kim2014algorithms} to solve the optimization problem, which derives the parameters into blocks and finds the optimal solution for each block iteratively. LIGER has two major parameters: a regularization term and the number of factors (dimensions of the latent space).
 
 
 \begin{figure}[!h]
